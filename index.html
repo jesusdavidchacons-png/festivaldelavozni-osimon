@@ -3,54 +3,129 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Acreditación Oficial — Festival Niño Simón</title>
+  <title>Festival de la Voz Niño Simón — Acreditación Oficial</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&family=SF+Pro+Text:wght@400;500&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", sans-serif;
-      letter-spacing: -0.011em;
+      letter-spacing: -0.015em;
       -webkit-font-smoothing: antialiased;
+    }
+
+    /* Animación de entrada suave estilo Apple */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% {
+        transform: scale(1);
+        filter: drop-shadow(0 10px 25px rgba(0, 113, 227, 0.12));
+      }
+      50% {
+        transform: scale(1.02);
+        filter: drop-shadow(0 18px 35px rgba(0, 113, 227, 0.22));
+      }
+    }
+
+    .hero-animate {
+      animation: fadeInUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .logo-float {
+      animation: pulseGlow 4s ease-in-out infinite;
+    }
+
+    .form-container {
+      transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     }
   </style>
 </head>
-<body class="min-h-full flex flex-col justify-between text-[#1d1d1f]">
+<body class="min-h-full flex flex-col justify-between text-[#1d1d1f] antialiased">
 
-  <!-- Encabezado / Barra superior minimalista -->
+  <!-- ================= TAPA / PANTALLA DE INICIO (HERO) ================= -->
+  <section id="portadaInicio" class="fixed inset-0 z-50 bg-[#fbfbfd] flex flex-col items-center justify-between px-6 py-12 transition-all duration-700">
+    <div></div> <!-- Espaciador superior -->
+
+    <div class="max-w-md w-full text-center flex flex-col items-center hero-animate">
+      
+      <!-- Contenedor del Logo con halo suave -->
+      <div class="w-32 h-32 md:w-36 md:h-36 bg-white rounded-3xl p-5 shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-[#d2d2d7]/40 flex items-center justify-center mb-8 logo-float">
+        <img src="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png" alt="Festival Niño Simón" class="w-full h-full object-contain">
+      </div>
+
+      <!-- Badge institucional -->
+      <div class="inline-flex items-center space-x-2 bg-white/80 border border-[#d2d2d7]/50 px-3.5 py-1 rounded-full shadow-sm mb-4">
+        <span class="w-2 h-2 rounded-full bg-[#34c759] animate-pulse"></span>
+        <span class="text-[11px] font-medium tracking-wide uppercase text-[#86868b]">Portal Oficial de Acreditación</span>
+      </div>
+
+      <!-- Títulos -->
+      <h1 class="text-3xl md:text-4xl font-semibold tracking-tight text-[#1d1d1f] mb-3 leading-tight">
+        Festival de la Voz<br><span class="text-[#0071e3]">Niño Simón</span>
+      </h1>
+      
+      <p class="text-sm md:text-base text-[#86868b] leading-relaxed max-w-sm mb-10 font-normal">
+        Recepción federativa de expedientes, permisos de protección legal y auditoría de pistas máster.
+      </p>
+
+      <!-- Botón de apertura -->
+      <button onclick="entrarAlPortal()" class="group relative inline-flex items-center justify-center space-x-2 bg-[#0071e3] hover:bg-[#0077ed] active:bg-[#0062c4] text-white px-8 py-3.5 rounded-2xl text-sm font-medium transition duration-200 shadow-[0_4px_14px_rgba(0,113,227,0.3)]">
+        <span>Ingresar al Expediente</span>
+        <svg class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+      </button>
+
+      <span class="text-[11px] text-[#a1a1a6] mt-4">Plataforma táctica para las 35 delegaciones</span>
+    </div>
+
+    <!-- Pie inferior de la portada -->
+    <div class="text-[11px] text-[#86868b] tracking-wider uppercase">
+      Fundación Festival Niño Simón &copy; 2026
+    </div>
+  </section>
+
+  <!-- ================= BARRA SUPERIOR FIJA ================= -->
   <header class="w-full bg-white/80 backdrop-blur-md border-b border-[#d2d2d7]/40 sticky top-0 z-20">
     <div class="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
       <div class="flex items-center space-x-3">
         <img src="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png" alt="Festival Niño Simón" class="h-9 w-auto object-contain">
         <span class="text-xs uppercase tracking-widest text-[#86868b] font-medium border-l border-[#d2d2d7] pl-3">Módulo 01</span>
       </div>
-      <span class="text-xs font-normal text-[#86868b]">Acreditación Federativa</span>
+      <span class="text-xs font-normal text-[#86868b] hidden sm:inline">Acreditación Federativa</span>
     </div>
   </header>
 
-  <!-- Contenedor Principal -->
-  <main class="max-w-2xl w-full mx-auto px-6 py-12 flex-1">
+  <!-- ================= FORMULARIO PRINCIPAL ================= -->
+  <main class="max-w-2xl w-full mx-auto px-6 py-10 flex-1">
     
-    <div class="text-center mb-10">
-      <h1 class="text-3xl md:text-4xl font-semibold tracking-tight text-[#1d1d1f]">Carga de Expediente</h1>
-      <p class="text-sm md:text-base text-[#86868b] mt-2 font-normal">
-        Registro federativo y auditoría técnica de participantes oficiales.
+    <div class="text-center mb-8">
+      <h1 class="text-3xl font-semibold tracking-tight text-[#1d1d1f]">Carga de Expediente</h1>
+      <p class="text-xs md:text-sm text-[#86868b] mt-1 font-normal">
+        Completa los 4 pasos para formalizar el registro oficial de la delegación.
       </p>
     </div>
 
-    <form id="formularioExpediente" class="space-y-10">
+    <form action="https://formspree.io/f/xwllkjbz" method="POST" enctype="multipart/form-data" class="space-y-6">
       
-      <!-- Paso 1: Delegación -->
-      <section class="bg-white rounded-2xl p-7 border border-[#d2d2d7]/50 shadow-[0_2px_12px_rgba(0,0,0,0.03)] space-y-5">
-        <div class="border-b border-[#d2d2d7]/30 pb-3">
-          <span class="text-xs font-semibold uppercase tracking-wider text-[#0071e3]">Paso 01</span>
-          <h2 class="text-lg font-medium text-[#1d1d1f]">Origen del Participante</h2>
+      <!-- PASO 1: DELEGACIÓN -->
+      <section class="bg-white rounded-2xl p-6 md:p-7 border border-[#d2d2d7]/50 shadow-[0_2px_12px_rgba(0,0,0,0.03)] space-y-4">
+        <div class="border-b border-[#d2d2d7]/30 pb-3 flex items-center justify-between">
+          <span class="text-[11px] font-semibold uppercase tracking-wider text-[#0071e3]">Paso 01</span>
+          <span class="text-[11px] text-[#86868b]">Sede & Región</span>
         </div>
 
         <div>
-          <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Estado Federativo *</label>
-          <select id="estado" required class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm text-[#1d1d1f] focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
+          <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Estado / Delegación Federativa *</label>
+          <select name="Estado" required class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm text-[#1d1d1f] focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition cursor-pointer">
             <option value="">Selecciona una delegación...</option>
             <option value="Amazonas">Amazonas</option>
             <option value="Anzoátegui">Anzoátegui</option>
@@ -81,115 +156,133 @@
         </div>
       </section>
 
-      <!-- Paso 2: Datos Personales y Representación -->
-      <section class="bg-white rounded-2xl p-7 border border-[#d2d2d7]/50 shadow-[0_2px_12px_rgba(0,0,0,0.03)] space-y-5">
-        <div class="border-b border-[#d2d2d7]/30 pb-3">
-          <span class="text-xs font-semibold uppercase tracking-wider text-[#0071e3]">Paso 02</span>
-          <h2 class="text-lg font-medium text-[#1d1d1f]">Ficha del Participante y Representante</h2>
+      <!-- PASO 2: DATOS DEL NIÑO Y REPRESENTANTE -->
+      <section class="bg-white rounded-2xl p-6 md:p-7 border border-[#d2d2d7]/50 shadow-[0_2px_12px_rgba(0,0,0,0.03)] space-y-4">
+        <div class="border-b border-[#d2d2d7]/30 pb-3 flex items-center justify-between">
+          <span class="text-[11px] font-semibold uppercase tracking-wider text-[#0071e3]">Paso 02</span>
+          <span class="text-[11px] text-[#86868b]">Ficha Personal</span>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div class="md:col-span-2">
             <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Nombre Completo del Niño(a) *</label>
-            <input type="text" id="nombreParticipante" required class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
+            <input type="text" name="Nombre_Participante" required placeholder="Nombres y Apellidos" class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
           </div>
           <div>
             <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Edad *</label>
-            <input type="number" id="edadParticipante" min="4" max="17" placeholder="Años" required class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
+            <input type="number" name="Edad" min="4" max="17" placeholder="Años" required class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
           </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Nombre del Representante Legal *</label>
-            <input type="text" id="nombreRepresentante" required class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
+            <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Nombre del Representante *</label>
+            <input type="text" name="Representante_Legal" required placeholder="Familiar o tutor legal" class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
           </div>
           <div>
-            <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Cédula de Identidad *</label>
-            <input type="text" id="cedulaRepresentante" placeholder="V-12345678" required class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
+            <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Cédula del Representante *</label>
+            <input type="text" name="Cedula_Representante" placeholder="V-12345678" required class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
           </div>
         </div>
 
         <div>
-          <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Teléfono de Contacto Directo (WhatsApp) *</label>
-          <input type="tel" id="telefono" placeholder="Ej: 04141234567" required class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
+          <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Teléfono de Contacto (WhatsApp) *</label>
+          <input type="tel" name="Telefono" placeholder="Ej: 04141234567" required class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
         </div>
       </section>
 
-      <!-- Paso 3: Documentación Legal y Médica -->
-      <section class="bg-white rounded-2xl p-7 border border-[#d2d2d7]/50 shadow-[0_2px_12px_rgba(0,0,0,0.03)] space-y-5">
-        <div class="border-b border-[#d2d2d7]/30 pb-3">
-          <span class="text-xs font-semibold uppercase tracking-wider text-[#0071e3]">Paso 03</span>
-          <h2 class="text-lg font-medium text-[#1d1d1f]">Protección y Avales (LOPNNA / Salud)</h2>
+      <!-- PASO 3: PROTECCIÓN LOPNNA Y SALUD (CON CÁMARA DIRECTA) -->
+      <section class="bg-white rounded-2xl p-6 md:p-7 border border-[#d2d2d7]/50 shadow-[0_2px_12px_rgba(0,0,0,0.03)] space-y-4">
+        <div class="border-b border-[#d2d2d7]/30 pb-3 flex items-center justify-between">
+          <span class="text-[11px] font-semibold uppercase tracking-wider text-[#0071e3]">Paso 03</span>
+          <span class="text-[11px] text-[#86868b]">Permisos & Salud</span>
         </div>
 
+        <!-- LOPNNA -->
         <div>
-          <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Permiso LOPNNA (PDF o Foto Clara) *</label>
-          <input type="file" id="archivoLopnna" accept=".pdf,image/*" required class="w-full text-xs text-[#86868b] file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#f5f5f7] file:text-[#1d1d1f] hover:file:bg-[#e8e8ed] transition cursor-pointer">
-        </div>
-
-        <div>
-          <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Ficha Médica / Certificado de Salud *</label>
-          <input type="file" id="archivoMedica" accept=".pdf,image/*" required class="w-full text-xs text-[#86868b] file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#f5f5f7] file:text-[#1d1d1f] hover:file:bg-[#e8e8ed] transition cursor-pointer">
-        </div>
-      </section>
-
-      <!-- Paso 4: Pista Musical con Semáforo -->
-      <section class="bg-white rounded-2xl p-7 border border-[#d2d2d7]/50 shadow-[0_2px_12px_rgba(0,0,0,0.03)] space-y-5">
-        <div class="border-b border-[#d2d2d7]/30 pb-3">
-          <span class="text-xs font-semibold uppercase tracking-wider text-[#0071e3]">Paso 04</span>
-          <h2 class="text-lg font-medium text-[#1d1d1f]">Pista Musical de Presentación</h2>
-        </div>
-
-        <div>
-          <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Título de la Pieza Musical *</label>
-          <input type="text" id="tituloTema" placeholder="Nombre de la canción o tema" required class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
-        </div>
-
-        <div>
-          <div class="flex items-center justify-between mb-1.5">
-            <label class="block text-xs font-medium text-[#515154] uppercase tracking-wide">Archivo de Audio *</label>
-            <span class="text-[11px] text-[#86868b]">Recomendado: WAV a 48 kHz</span>
+          <div class="flex items-center justify-between mb-1">
+            <label class="block text-xs font-medium text-[#515154] uppercase tracking-wide">Permiso LOPNNA Oficial *</label>
+            <span class="text-[11px] text-[#0071e3] font-medium flex items-center gap-1">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="3" stroke-width="2"/></svg>
+              Cámara o Archivo
+            </span>
           </div>
-          <input type="file" id="archivoAudio" accept=".wav,.mp3,audio/*" required class="w-full text-xs text-[#86868b] file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#f5f5f7] file:text-[#1d1d1f] hover:file:bg-[#e8e8ed] transition cursor-pointer">
+          <p class="text-[11px] text-[#86868b] mb-2">Puedes adjuntar el PDF o tomar una foto nítida directamente con la cámara del celular.</p>
+          <input type="file" name="Documento_LOPNNA" accept="image/*,.pdf" capture="environment" required class="w-full text-xs text-[#86868b] file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#f5f5f7] file:text-[#1d1d1f] hover:file:bg-[#e8e8ed] transition cursor-pointer">
         </div>
 
-        <!-- Tarjeta dinámica de estado del audio -->
-        <div id="cajaEstadoAudio" class="hidden rounded-xl p-4 text-xs leading-relaxed transition-all duration-300"></div>
+        <!-- FICHA MÉDICA -->
+        <div class="pt-2">
+          <div class="flex items-center justify-between mb-1">
+            <label class="block text-xs font-medium text-[#515154] uppercase tracking-wide">Ficha Médica / Certificado de Salud *</label>
+            <span class="text-[11px] text-[#0071e3] font-medium flex items-center gap-1">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="3" stroke-width="2"/></svg>
+              Cámara o Archivo
+            </span>
+          </div>
+          <p class="text-[11px] text-[#86868b] mb-2">Foto visible del informe médico o constancia de salud emitida.</p>
+          <input type="file" name="Ficha_Medica" accept="image/*,.pdf" capture="environment" required class="w-full text-xs text-[#86868b] file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#f5f5f7] file:text-[#1d1d1f] hover:file:bg-[#e8e8ed] transition cursor-pointer">
+        </div>
       </section>
 
-      <!-- Botón de Envío -->
+      <!-- PASO 4: PISTA MUSICAL Y DETECCIÓN AUTOMÁTICA -->
+      <section class="bg-white rounded-2xl p-6 md:p-7 border border-[#d2d2d7]/50 shadow-[0_2px_12px_rgba(0,0,0,0.03)] space-y-4">
+        <div class="border-b border-[#d2d2d7]/30 pb-3 flex items-center justify-between">
+          <span class="text-[11px] font-semibold uppercase tracking-wider text-[#0071e3]">Paso 04</span>
+          <span class="text-[11px] text-[#86868b]">Control Técnico de Audio</span>
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Título de la Canción *</label>
+          <input type="text" name="Titulo_Tema" placeholder="Ej: Flor de Sarrapia" required class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <label class="block text-xs font-medium text-[#515154] uppercase tracking-wide">Archivo de Audio de la Pista *</label>
+            <span class="text-[11px] text-[#86868b]">Ideal: WAV a 48 kHz (Acepta MP3)</span>
+          </div>
+          <input type="file" id="campoAudio" name="Pista_Audio" accept=".wav,.mp3,audio/*" required class="w-full text-xs text-[#86868b] file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#f5f5f7] file:text-[#1d1d1f] hover:file:bg-[#e8e8ed] transition cursor-pointer">
+          <input type="hidden" name="Analisis_Tecnico_Audio" id="campoAnalisisAudio" value="Pendiente de carga">
+        </div>
+
+        <!-- Mensaje de estado dinámico del audio -->
+        <div id="cajaAudio" class="hidden rounded-xl p-4 text-xs leading-relaxed transition-all duration-300"></div>
+      </section>
+
+      <!-- BOTÓN DE ENVÍO FORMAL -->
       <div class="pt-2">
-        <button type="submit" id="btnEnviar" class="w-full bg-[#0071e3] hover:bg-[#0077ed] active:bg-[#0062c4] text-white font-medium py-3.5 px-6 rounded-2xl transition duration-200 shadow-sm text-sm">
+        <button type="submit" class="w-full bg-[#0071e3] hover:bg-[#0077ed] active:bg-[#0062c4] text-white font-medium py-4 px-6 rounded-2xl transition duration-200 shadow-sm text-sm">
           Registrar Expediente Oficial
         </button>
       </div>
-
-      <div id="mensajeEnvio" class="hidden text-center text-xs font-medium p-4 rounded-xl"></div>
     </form>
   </main>
 
+  <!-- PIE DE PÁGINA -->
   <footer class="py-8 text-center text-xs text-[#86868b] border-t border-[#d2d2d7]/30">
     Festival de la Voz Niño Simón &copy; 2026. Todos los derechos reservados.
   </footer>
 
   <script>
-    // Enlace Web App de Google Apps Script (reemplázalo con tu URL generada de Apps Script)
-    const GOOGLE_SCRIPT_URL = "PEGA_AQUI_LA_URL_DE_APPS_SCRIPT";
+    // Función para ocultar la portada con transición suave
+    function entrarAlPortal() {
+      const portada = document.getElementById('portadaInicio');
+      portada.style.opacity = '0';
+      portada.style.transform = 'translateY(-12px)';
+      setTimeout(() => {
+        portada.style.display = 'none';
+      }, 600);
+    }
 
-    let auditoriaAudio = {
-      esOptimo: false,
-      formatoDetectado: "Desconocido",
-      mensaje: "Sin auditar"
-    };
-
-    // Verificación de audio en el navegador
-    document.getElementById('archivoAudio').addEventListener('change', async function(e) {
+    // Análisis de frecuencia y formato de audio en el navegador
+    document.getElementById('campoAudio').addEventListener('change', async function(e) {
       const file = e.target.files[0];
-      const caja = document.getElementById('cajaEstadoAudio');
+      const caja = document.getElementById('cajaAudio');
+      const hiddenInput = document.getElementById('campoAnalisisAudio');
       if (!file) return;
 
-      caja.classList.remove('hidden', 'bg-[#edfcf2]', 'text-[#1e7e34]', 'border', 'border-[#bbf7d0]', 'bg-[#fffbeb]', 'text-[#b45309]', 'border-[#fef3c7]');
+      caja.classList.remove('hidden', 'bg-[#edfcf2]', 'text-[#15803d]', 'border', 'border-[#bbf7d0]', 'bg-[#fffbeb]', 'text-[#b45309]', 'border-[#fef3c7]');
 
       if (file.name.toLowerCase().endsWith('.wav')) {
         try {
@@ -198,109 +291,23 @@
           const sampleRate = view.getUint32(24, true);
 
           if (sampleRate === 48000) {
-            auditoriaAudio = {
-              esOptimo: true,
-              formatoDetectado: "WAV 48 kHz",
-              mensaje: "Formato óptimo profesional (WAV a 48.000 Hz)"
-            };
+            hiddenInput.value = "ÓPTIMO: WAV 48 kHz";
             caja.classList.add('bg-[#edfcf2]', 'text-[#15803d]', 'border', 'border-[#bbf7d0]');
-            caja.innerHTML = `<strong>Pista Óptima:</strong> Archivo WAV a 48.000 Hz detectado. Cumple con los requerimientos técnicos de la consola de sala.`;
+            caja.innerHTML = "<strong>Pista Óptima:</strong> Archivo WAV a 48.000 Hz detectado. Cumple con los requerimientos técnicos de la consola de sala.";
           } else {
-            auditoriaAudio = {
-              esOptimo: false,
-              formatoDetectado: `WAV ${sampleRate} Hz`,
-              mensaje: `WAV detectado a ${sampleRate} Hz (se sugiere 48 kHz)`
-            };
+            hiddenInput.value = `WAV a ${sampleRate} Hz`;
             caja.classList.add('bg-[#fffbeb]', 'text-[#b45309]', 'border', 'border-[#fef3c7]');
-            caja.innerHTML = `<strong>Aviso de Frecuencia:</strong> El archivo es WAV pero está a ${sampleRate} Hz. Se acepta para el registro, pero el equipo técnico coordinará contigo para optimizarlo.`;
+            caja.innerHTML = `<strong>Aviso:</strong> El archivo es WAV a ${sampleRate} Hz. Se acepta para el registro, pero el equipo técnico de sonido coordinará para optimizarlo.`;
           }
         } catch (err) {
-          auditoriaAudio = { esOptimo: false, formatoDetectado: "WAV", mensaje: "WAV estándar cargado" };
+          hiddenInput.value = "WAV cargado";
           caja.classList.add('bg-[#edfcf2]', 'text-[#15803d]', 'border', 'border-[#bbf7d0]');
-          caja.innerHTML = `Archivo WAV cargado correctamente.`;
+          caja.innerHTML = "Archivo WAV cargado correctamente.";
         }
       } else {
-        auditoriaAudio = {
-          esOptimo: false,
-          formatoDetectado: "MP3 / Audio Estándar",
-          mensaje: "Pista en MP3 (Aceptada, sujeta a revisión)"
-        };
+        hiddenInput.value = "MP3 / Audio Estándar";
         caja.classList.add('bg-[#fffbeb]', 'text-[#b45309]', 'border', 'border-[#fef3c7]');
-        caja.innerHTML = `<strong>Aviso de Formato:</strong> Has cargado un archivo de audio comprimido (MP3). El sistema lo recibe para tu registro, pero si posees el máster en WAV a 48 kHz, te recomendamos coordinarlo antes de la prueba de sonido.`;
-      }
-    });
-
-    function archivoABase64(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve({
-          nombre: file.name,
-          mimeType: file.type || 'application/octet-stream',
-          base64: reader.result.split(',')[1]
-        });
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
-    }
-
-    document.getElementById('formularioExpediente').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const btn = document.getElementById('btnEnviar');
-      const mensaje = document.getElementById('mensajeEnvio');
-
-      btn.disabled = true;
-      btn.innerText = "Transfiriendo expediente...";
-      mensaje.classList.add('hidden');
-
-      try {
-        const fileLopnna = document.getElementById('archivoLopnna').files[0];
-        const fileMedica = document.getElementById('archivoMedica').files[0];
-        const fileAudio = document.getElementById('archivoAudio').files[0];
-
-        const [dataLopnna, dataMedica, dataAudio] = await Promise.all([
-          archivoABase64(fileLopnna),
-          archivoABase64(fileMedica),
-          archivoABase64(fileAudio)
-        ]);
-
-        const payload = {
-          correoDestino: "admin@fvns.org",
-          estado: document.getElementById('estado').value,
-          nombreParticipante: document.getElementById('nombreParticipante').value,
-          edadParticipante: document.getElementById('edadParticipante').value,
-          nombreRepresentante: document.getElementById('nombreRepresentante').value,
-          cedulaRepresentante: document.getElementById('cedulaRepresentante').value,
-          telefono: document.getElementById('telefono').value,
-          tituloTema: document.getElementById('tituloTema').value,
-          audioAuditado: auditoriaAudio,
-          archivoLopnna: dataLopnna,
-          archivoMedica: dataMedica,
-          archivoAudio: dataAudio
-        };
-
-        const response = await fetch(GOOGLE_SCRIPT_URL, {
-          method: 'POST',
-          body: JSON.stringify(payload)
-        });
-
-        const res = await response.json();
-
-        if (res.exito) {
-          mensaje.classList.remove('hidden');
-          mensaje.className = "text-center text-xs font-medium p-4 rounded-xl bg-[#edfcf2] text-[#15803d] border border-[#bbf7d0]";
-          mensaje.innerHTML = `<strong>Expediente remitido con éxito.</strong> La información ha sido catalogada y enviada a la coordinación general.`;
-          document.getElementById('formularioExpediente').reset();
-          document.getElementById('cajaEstadoAudio').classList.add('hidden');
-        } else {
-          throw new Error(res.error || "Error al procesar el expediente.");
-        }
-      } catch (err) {
-        mensaje.classList.remove('hidden');
-        mensaje.className = "text-center text-xs font-medium p-4 rounded-xl bg-[#fff5f5] text-[#b91c1c] border border-[#fecaca]";
-        mensaje.innerHTML = `No se pudo enviar el expediente (${err.message}). Por favor verifica tu red e inténtalo nuevamente.`;
-      } finally {
-        btn.disabled = false;
-        btn.innerText = "Registrar Expediente Oficial";
+        caja.innerHTML = "<strong>Aviso de Audio:</strong> Has cargado un archivo en MP3. El sistema lo acepta para tu inscripción oficial, pero si tienes el máster original en WAV a 48 kHz, te recomendamos coordinarlo antes de la prueba de sonido.";
       }
     });
   </script>
