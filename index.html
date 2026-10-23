@@ -5,11 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Festival de la Voz Niño Simón 2026 — Fundación Nacional El Niño Simón</title>
 
-  <!-- ================= METADATOS PARA COMPARTIR POR WHATSAPP Y REDES ================= -->
+  <!-- ================= METADATOS PARA REDES Y WHATSAPP ================= -->
   <meta name="title" content="Festival de la Voz Niño Simón 2026 — FNNS">
   <meta name="description" content="Organizado por la Fundación Nacional El Niño Simón. Celebramos el talento, la identidad y las tradiciones de nuestros niños en el histórico Teatro Juares. Acreditación oficial abierta.">
-  
-  <!-- Open Graph / WhatsApp / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://xn--festivaldelavozniosimon-8hc.com/">
   <meta property="og:title" content="Festival de la Voz Niño Simón 2026 — Fundación Nacional El Niño Simón">
@@ -17,14 +15,10 @@
   <meta property="og:image" content="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-
-  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Festival de la Voz Niño Simón 2026 — Fundación Nacional El Niño Simón">
   <meta name="twitter:description" content="Organizado por la Fundación Nacional El Niño Simón. Celebramos el talento, la identidad y las tradiciones de nuestros niños en el histórico Teatro Juares. Acreditación oficial abierta.">
   <meta name="twitter:image" content="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png">
-
-  <!-- Favicon para la pestaña del navegador -->
   <link rel="icon" type="image/png" href="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png">
 
   <script src="https://cdn.tailwindcss.com"></script>
@@ -36,14 +30,8 @@
     }
 
     @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(18px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     @keyframes pulseGlow {
@@ -57,6 +45,17 @@
       }
     }
 
+    @keyframes modalPop {
+      from {
+        opacity: 0;
+        transform: scale(0.96) translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
     .hero-animate {
       animation: fadeInUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
@@ -64,33 +63,33 @@
     .logo-float {
       animation: pulseGlow 4s ease-in-out infinite;
     }
+
+    .modal-animate {
+      animation: modalPop 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
   </style>
 </head>
 <body class="min-h-full flex flex-col justify-between text-[#1d1d1f] antialiased">
 
   <!-- ================= TAPA / PANTALLA DE INICIO (HERO) ================= -->
   <section id="portadaInicio" class="fixed inset-0 z-50 bg-[#fbfbfd] flex flex-col items-center justify-between px-6 py-10 transition-all duration-700 overflow-y-auto">
-    <div></div> <!-- Espaciador superior -->
+    <div></div>
 
     <div class="max-w-md w-full text-center flex flex-col items-center hero-animate my-auto">
       
-      <!-- Logo institucional -->
       <div class="w-28 h-28 md:w-32 md:h-32 bg-white rounded-3xl p-4 shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-[#d2d2d7]/40 flex items-center justify-center mb-6 logo-float">
         <img src="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png" alt="Festival Niño Simón" class="w-full h-full object-contain">
       </div>
 
-      <!-- Badge institucional -->
       <div class="inline-flex items-center space-x-2 bg-white/80 border border-[#d2d2d7]/50 px-3.5 py-1 rounded-full shadow-sm mb-3">
         <span class="w-2 h-2 rounded-full bg-[#34c759] animate-pulse"></span>
         <span class="text-[11px] font-medium tracking-wide uppercase text-[#86868b]">Fundación Nacional El Niño Simón</span>
       </div>
 
-      <!-- Título Principal -->
       <h1 class="text-3xl md:text-4xl font-semibold tracking-tight text-[#1d1d1f] mb-3 leading-tight">
         Festival de la Voz<br><span class="text-[#0071e3]">Niño Simón 2026</span>
       </h1>
       
-      <!-- Reseña emocional e institucional -->
       <div class="bg-white/70 border border-[#d2d2d7]/40 rounded-2xl p-5 mb-6 shadow-sm text-left space-y-2">
         <p class="text-xs text-[#515154] leading-relaxed">
           Iniciativa organizada por la <strong>Fundación Nacional El Niño Simón</strong> para celebrar y enaltecer el talento, la identidad folclórica y las raíces de nuestras niñas y niños de toda Venezuela.
@@ -104,7 +103,6 @@
         Portal táctico de acreditación federativa, protección LOPNNA y control técnico de audio máster.
       </p>
 
-      <!-- Botón de apertura al formulario -->
       <button onclick="entrarAlPortal()" class="group relative inline-flex items-center justify-center space-x-2 bg-[#0071e3] hover:bg-[#0077ed] active:bg-[#0062c4] text-white px-8 py-3.5 rounded-2xl text-sm font-medium transition duration-200 shadow-[0_4px_14px_rgba(0,113,227,0.3)]">
         <span>Ingresar al Expediente</span>
         <svg class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -115,7 +113,6 @@
       <span class="text-[11px] text-[#a1a1a6] mt-3">Recepción abierta para las 35 delegaciones</span>
     </div>
 
-    <!-- Pie inferior de la portada -->
     <div class="text-[11px] text-[#86868b] tracking-wider uppercase mt-6 text-center">
       Fundación Nacional El Niño Simón &copy; 2026
     </div>
@@ -145,7 +142,7 @@
       </p>
     </div>
 
-    <form action="https://formspree.io/f/xwllkjbz" method="POST" enctype="multipart/form-data" class="space-y-6">
+    <form id="formularioAcreditacion" action="https://formspree.io/f/xwllkjbz" method="POST" enctype="multipart/form-data" class="space-y-6">
       
       <!-- PASO 1: DELEGACIÓN -->
       <section class="bg-white rounded-2xl p-6 md:p-7 border border-[#d2d2d7]/50 shadow-[0_2px_12px_rgba(0,0,0,0.03)] space-y-4">
@@ -156,7 +153,7 @@
 
         <div>
           <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Estado / Delegación Federativa *</label>
-          <select name="Estado" required class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm text-[#1d1d1f] focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition cursor-pointer">
+          <select id="campoEstado" name="Estado" required class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm text-[#1d1d1f] focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition cursor-pointer">
             <option value="">Selecciona una delegación...</option>
             <option value="Amazonas">Amazonas</option>
             <option value="Anzoátegui">Anzoátegui</option>
@@ -197,28 +194,28 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div class="md:col-span-2">
             <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Nombre Completo del Niño(a) *</label>
-            <input type="text" name="Nombre_Participante" required placeholder="Nombres y Apellidos" class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
+            <input type="text" id="campoNombre" name="Nombre_Participante" required placeholder="Nombres y Apellidos" class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
           </div>
           <div>
             <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Edad *</label>
-            <input type="number" name="Edad" min="4" max="17" placeholder="Años" required class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
+            <input type="number" id="campoEdad" name="Edad" min="4" max="17" placeholder="Años" required class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
           </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Nombre del Representante Legal *</label>
-            <input type="text" name="Representante_Legal" required placeholder="Familiar o tutor legal" class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
+            <input type="text" id="campoRepresentante" name="Representante_Legal" required placeholder="Familiar o tutor legal" class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
           </div>
           <div>
             <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Cédula del Representante *</label>
-            <input type="text" name="Cedula_Representante" placeholder="V-12345678" required class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
+            <input type="text" id="campoCedula" name="Cedula_Representante" placeholder="V-12345678" required class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
           </div>
         </div>
 
         <div>
           <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Teléfono de Contacto (WhatsApp) *</label>
-          <input type="tel" name="Telefono" placeholder="Ej: 04141234567" required class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
+          <input type="tel" id="campoTelefono" name="Telefono" placeholder="Ej: 04141234567" required class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
         </div>
       </section>
 
@@ -263,7 +260,7 @@
 
         <div>
           <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Título de la Canción *</label>
-          <input type="text" name="Titulo_Tema" placeholder="Ej: Flor de Sarrapia" required class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
+          <input type="text" id="campoTema" name="Titulo_Tema" placeholder="Ej: Flor de Sarrapia" required class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
         </div>
 
         <div>
@@ -281,19 +278,74 @@
 
       <!-- BOTÓN DE ENVÍO -->
       <div class="pt-2">
-        <button type="submit" class="w-full bg-[#0071e3] hover:bg-[#0077ed] active:bg-[#0062c4] text-white font-medium py-4 px-6 rounded-2xl transition duration-200 shadow-sm text-sm">
+        <button type="submit" id="btnSubmit" class="w-full bg-[#0071e3] hover:bg-[#0077ed] active:bg-[#0062c4] text-white font-medium py-4 px-6 rounded-2xl transition duration-200 shadow-sm text-sm">
           Registrar Expediente Oficial
         </button>
       </div>
+
+      <!-- ALERTA DE ERROR SI FALLA EL ENVÍO -->
+      <div id="cajaError" class="hidden rounded-2xl p-4 text-center text-xs font-medium bg-[#fff5f5] text-[#b91c1c] border border-[#fecaca]"></div>
     </form>
   </main>
 
-  <!-- PIE DE PÁGINA INSTITUCIONAL -->
+  <!-- ================= VENTANA MODAL DE AGRADECIMIENTO FORMAL ================= -->
+  <div id="modalAgradecimiento" class="fixed inset-0 z-50 bg-[#1d1d1f]/40 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="bg-white max-w-md w-full rounded-3xl p-7 md:p-8 shadow-[0_20px_60px_rgba(0,0,0,0.15)] border border-[#d2d2d7]/50 text-center modal-animate space-y-6">
+      
+      <!-- Icono de Confirmación Oficial -->
+      <div class="w-16 h-16 bg-[#edfcf2] text-[#34c759] rounded-2xl mx-auto flex items-center justify-center shadow-sm">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+        </svg>
+      </div>
+
+      <div class="space-y-2">
+        <span class="text-[11px] font-semibold uppercase tracking-wider text-[#0071e3]">Registro Exitoso</span>
+        <h2 class="text-xl md:text-2xl font-semibold text-[#1d1d1f]">¡Gracias por ser parte del Festival!</h2>
+        <p class="text-xs text-[#515154] leading-relaxed">
+          La <strong>Fundación Nacional El Niño Simón</strong> agradece formalmente el compromiso y dedicación de su delegación. El expediente y los recaudos legales han sido consignados correctamente.
+        </p>
+      </div>
+
+      <!-- Ficha de resumen del participante -->
+      <div class="bg-[#f5f5f7] rounded-2xl p-4 text-left text-xs space-y-1.5 border border-[#d2d2d7]/40">
+        <div class="flex justify-between">
+          <span class="text-[#86868b]">Delegación:</span>
+          <span id="resumenEstado" class="font-semibold text-[#1d1d1f]"></span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-[#86868b]">Participante:</span>
+          <span id="resumenParticipante" class="font-semibold text-[#1d1d1f]"></span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-[#86868b]">Tema musical:</span>
+          <span id="resumenTema" class="font-semibold text-[#1d1d1f]"></span>
+        </div>
+      </div>
+
+      <p class="text-[11px] text-[#86868b] leading-tight">
+        Presiona aceptar para abrir el canal de enlace directo por WhatsApp con la coordinación técnica del festival.
+      </p>
+
+      <!-- Botón de Aceptar y Continuar a WhatsApp -->
+      <div class="pt-1">
+        <button id="btnAceptarModal" class="w-full inline-flex items-center justify-center space-x-2 bg-[#25d366] hover:bg-[#20ba59] active:bg-[#1caa4f] text-white font-medium py-3.5 px-6 rounded-2xl text-xs transition duration-200 shadow-sm">
+          <span>Aceptar y Notificar por WhatsApp</span>
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
   <footer class="py-8 text-center text-xs text-[#86868b] border-t border-[#d2d2d7]/30">
     Fundación Nacional El Niño Simón &copy; 2026. Todos los derechos reservados.
   </footer>
 
   <script>
+    const NUMERO_WHATSAPP_FESTIVAL = "584129315743";
+    let enlaceWhatsAppFinal = "";
+
     function entrarAlPortal() {
       const portada = document.getElementById('portadaInicio');
       portada.style.opacity = '0';
@@ -303,6 +355,7 @@
       }, 600);
     }
 
+    // Análisis del audio en cliente
     document.getElementById('campoAudio').addEventListener('change', async function(e) {
       const file = e.target.files[0];
       const caja = document.getElementById('cajaAudio');
@@ -324,7 +377,7 @@
           } else {
             hiddenInput.value = `WAV a ${sampleRate} Hz`;
             caja.classList.add('bg-[#fffbeb]', 'text-[#b45309]', 'border', 'border-[#fef3c7]');
-            caja.innerHTML = `<strong>Aviso:</strong> El archivo es WAV a ${sampleRate} Hz. Se acepta para el registro, pero el equipo técnico de sonido coordinará para optimizarlo.`;
+            caja.innerHTML = `<strong>Aviso:</strong> El archivo es WAV a ${sampleRate} Hz. Se acepta para el registro, pero el equipo técnico coordinará contigo para optimizarlo.`;
           }
         } catch (err) {
           hiddenInput.value = "WAV cargado";
@@ -335,6 +388,76 @@
         hiddenInput.value = "MP3 / Audio Estándar";
         caja.classList.add('bg-[#fffbeb]', 'text-[#b45309]', 'border', 'border-[#fef3c7]');
         caja.innerHTML = "<strong>Aviso de Audio:</strong> Has cargado un archivo en MP3. El sistema lo acepta para tu inscripción oficial, pero si tienes el máster original en WAV a 48 kHz, te recomendamos coordinarlo antes de la prueba de sonido.";
+      }
+    });
+
+    // Envío y apertura del modal formal
+    const form = document.getElementById('formularioAcreditacion');
+    const btn = document.getElementById('btnSubmit');
+    const modal = document.getElementById('modalAgradecimiento');
+    const btnAceptarModal = document.getElementById('btnAceptarModal');
+    const cajaError = document.getElementById('cajaError');
+
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      btn.disabled = true;
+      btn.innerText = "Transfiriendo expediente y documentos oficiales...";
+      cajaError.classList.add('hidden');
+
+      const estado = document.getElementById('campoEstado').value;
+      const nombre = document.getElementById('campoNombre').value;
+      const representante = document.getElementById('campoRepresentante').value;
+      const telefono = document.getElementById('campoTelefono').value;
+      const tema = document.getElementById('campoTema').value;
+
+      const formData = new FormData(form);
+
+      try {
+        const response = await fetch(form.action, {
+          method: "POST",
+          body: formData,
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (response.ok) {
+          // Llenar datos de la ficha de agradecimiento
+          document.getElementById('resumenEstado').innerText = estado;
+          document.getElementById('resumenParticipante').innerText = nombre;
+          document.getElementById('resumenTema').innerText = `"${tema}"`;
+
+          // Construir mensaje estructurado para WhatsApp
+          const textoWhatsApp = `👋 ¡Hola! He completado la carga del expediente oficial para el *Festival de la Voz Niño Simón 2026*:\n\n` +
+            `📍 *Delegación:* ${estado}\n` +
+            `👤 *Participante:* ${nombre}\n` +
+            `🎵 *Tema Musical:* "${tema}"\n` +
+            `👨‍👦 *Representante:* ${representante}\n` +
+            `📞 *Contacto:* ${telefono}\n\n` +
+            `✅ Los documentos LOPNNA, ficha médica y la pista de audio ya fueron cargados en el portal. Quedo atento a las indicaciones técnicas.`;
+
+          enlaceWhatsAppFinal = `https://wa.me/${NUMERO_WHATSAPP_FESTIVAL}?text=${encodeURIComponent(textoWhatsApp)}`;
+
+          // Resetear formulario y mostrar la ventanilla modal de agradecimiento
+          form.reset();
+          document.getElementById('cajaAudio').classList.add('hidden');
+          modal.classList.remove('hidden');
+        } else {
+          const data = await response.json();
+          throw new Error(data.error || "Ocurrió un error al procesar los archivos.");
+        }
+      } catch (err) {
+        cajaError.innerHTML = `<strong>Error en la entrega:</strong> ${err.message}. Por favor verifica tu red e inténtalo de nuevo.`;
+        cajaError.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+        btn.innerText = "Registrar Expediente Oficial";
+      }
+    });
+
+    // Acción al pulsar Aceptar en el modal
+    btnAceptarModal.addEventListener('click', function() {
+      modal.classList.add('hidden');
+      if (enlaceWhatsAppFinal) {
+        window.open(enlaceWhatsAppFinal, '_blank');
       }
     });
   </script>
