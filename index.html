@@ -29,19 +29,43 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(18px); }
-      to { opacity: 1; transform: translateY(0); }
+    /* Animación de entrada del Logo */
+    @keyframes logoReveal {
+      0% {
+        opacity: 0;
+        transform: translateY(22px) scale(0.88);
+        filter: blur(10px);
+      }
+      70% {
+        transform: translateY(-3px) scale(1.02);
+        filter: blur(0px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0px);
+      }
     }
 
-    @keyframes pulseGlow {
+    /* Movimiento sutil de flotación continua */
+    @keyframes logoFloating {
       0%, 100% {
-        transform: scale(1);
-        filter: drop-shadow(0 10px 25px rgba(0, 113, 227, 0.12));
+        transform: translateY(0);
       }
       50% {
-        transform: scale(1.02);
-        filter: drop-shadow(0 18px 35px rgba(0, 113, 227, 0.22));
+        transform: translateY(-6px);
+      }
+    }
+
+    /* Animación del texto y elementos de la portada */
+    @keyframes contentFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
       }
     }
 
@@ -56,12 +80,14 @@
       }
     }
 
-    .hero-animate {
-      animation: fadeInUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    .logo-intro {
+      animation: logoReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+                 logoFloating 4.5s ease-in-out 1.2s infinite;
     }
 
-    .logo-float {
-      animation: pulseGlow 4s ease-in-out infinite;
+    .content-intro {
+      animation: contentFadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.25s forwards;
+      opacity: 0;
     }
 
     .modal-animate {
@@ -75,42 +101,49 @@
   <section id="portadaInicio" class="fixed inset-0 z-50 bg-[#fbfbfd] flex flex-col items-center justify-between px-6 py-10 transition-all duration-700 overflow-y-auto">
     <div></div>
 
-    <div class="max-w-md w-full text-center flex flex-col items-center hero-animate my-auto">
+    <div class="max-w-md w-full text-center flex flex-col items-center my-auto">
       
-      <div class="w-28 h-28 md:w-32 md:h-32 bg-white rounded-3xl p-4 shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-[#d2d2d7]/40 flex items-center justify-center mb-6 logo-float">
-        <img src="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png" alt="Festival Niño Simón" class="w-full h-full object-contain">
+      <!-- Logo sin marcos ni fondos cuadrados, con animación de entrada orgánica -->
+      <div class="w-44 h-44 md:w-52 md:h-52 flex items-center justify-center mb-6 logo-intro">
+        <img src="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png" alt="Festival Niño Simón" class="w-full h-full object-contain filter drop-shadow-[0_12px_24px_rgba(0,0,0,0.06)]">
       </div>
 
-      <div class="inline-flex items-center space-x-2 bg-white/80 border border-[#d2d2d7]/50 px-3.5 py-1 rounded-full shadow-sm mb-3">
-        <span class="w-2 h-2 rounded-full bg-[#34c759] animate-pulse"></span>
-        <span class="text-[11px] font-medium tracking-wide uppercase text-[#86868b]">Fundación Nacional El Niño Simón</span>
-      </div>
+      <div class="content-intro flex flex-col items-center w-full">
+        <!-- Badge institucional -->
+        <div class="inline-flex items-center space-x-2 bg-white/90 border border-[#d2d2d7]/50 px-3.5 py-1 rounded-full shadow-sm mb-3">
+          <span class="w-2 h-2 rounded-full bg-[#34c759] animate-pulse"></span>
+          <span class="text-[11px] font-medium tracking-wide uppercase text-[#86868b]">Fundación Nacional El Niño Simón</span>
+        </div>
 
-      <h1 class="text-3xl md:text-4xl font-semibold tracking-tight text-[#1d1d1f] mb-3 leading-tight">
-        Festival de la Voz<br><span class="text-[#0071e3]">Niño Simón 2026</span>
-      </h1>
-      
-      <div class="bg-white/70 border border-[#d2d2d7]/40 rounded-2xl p-5 mb-6 shadow-sm text-left space-y-2">
-        <p class="text-xs text-[#515154] leading-relaxed">
-          Iniciativa organizada por la <strong>Fundación Nacional El Niño Simón</strong> para celebrar y enaltecer el talento, la identidad folclórica y las raíces de nuestras niñas y niños de toda Venezuela.
+        <!-- Título Principal -->
+        <h1 class="text-3xl md:text-4xl font-semibold tracking-tight text-[#1d1d1f] mb-3 leading-tight">
+          Festival de la Voz<br><span class="text-[#0071e3]">Niño Simón 2026</span>
+        </h1>
+        
+        <!-- Reseña emocional e institucional -->
+        <div class="bg-white/70 border border-[#d2d2d7]/40 rounded-2xl p-5 mb-6 shadow-sm text-left space-y-2">
+          <p class="text-xs text-[#515154] leading-relaxed">
+            Iniciativa organizada por la <strong>Fundación Nacional El Niño Simón</strong> para celebrar y enaltecer el talento, la identidad folclórica y las raíces de nuestras niñas y niños de toda Venezuela.
+          </p>
+          <p class="text-xs text-[#86868b] leading-relaxed">
+            Cada delegación estadal subirá al emblemático escenario del <strong>Teatro Juares</strong> para compartir su voz, disciplina y alegría con todo el país.
+          </p>
+        </div>
+
+        <p class="text-xs text-[#86868b] leading-relaxed max-w-sm mb-6 font-normal">
+          Portal táctico de acreditación federativa, protección LOPNNA y control técnico de audio máster.
         </p>
-        <p class="text-xs text-[#86868b] leading-relaxed">
-          Cada delegación estadal subirá al emblemático escenario del <strong>Teatro Juares</strong> para compartir su voz, disciplina y alegría con todo el país.
-        </p>
+
+        <!-- Botón de apertura al formulario -->
+        <button onclick="entrarAlPortal()" class="group relative inline-flex items-center justify-center space-x-2 bg-[#0071e3] hover:bg-[#0077ed] active:bg-[#0062c4] text-white px-8 py-3.5 rounded-2xl text-sm font-medium transition duration-200 shadow-[0_4px_14px_rgba(0,113,227,0.3)]">
+          <span>Ingresar al Expediente</span>
+          <svg class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </button>
+
+        <span class="text-[11px] text-[#a1a1a6] mt-3">Recepción abierta para las 35 delegaciones</span>
       </div>
-
-      <p class="text-xs text-[#86868b] leading-relaxed max-w-sm mb-6 font-normal">
-        Portal táctico de acreditación federativa, protección LOPNNA y control técnico de audio máster.
-      </p>
-
-      <button onclick="entrarAlPortal()" class="group relative inline-flex items-center justify-center space-x-2 bg-[#0071e3] hover:bg-[#0077ed] active:bg-[#0062c4] text-white px-8 py-3.5 rounded-2xl text-sm font-medium transition duration-200 shadow-[0_4px_14px_rgba(0,113,227,0.3)]">
-        <span>Ingresar al Expediente</span>
-        <svg class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-        </svg>
-      </button>
-
-      <span class="text-[11px] text-[#a1a1a6] mt-3">Recepción abierta para las 35 delegaciones</span>
     </div>
 
     <div class="text-[11px] text-[#86868b] tracking-wider uppercase mt-6 text-center">
@@ -283,7 +316,6 @@
         </button>
       </div>
 
-      <!-- ALERTA DE ERROR SI FALLA EL ENVÍO -->
       <div id="cajaError" class="hidden rounded-2xl p-4 text-center text-xs font-medium bg-[#fff5f5] text-[#b91c1c] border border-[#fecaca]"></div>
     </form>
   </main>
@@ -292,7 +324,6 @@
   <div id="modalAgradecimiento" class="fixed inset-0 z-50 bg-[#1d1d1f]/40 backdrop-blur-md hidden flex items-center justify-center p-4">
     <div class="bg-white max-w-md w-full rounded-3xl p-7 md:p-8 shadow-[0_20px_60px_rgba(0,0,0,0.15)] border border-[#d2d2d7]/50 text-center modal-animate space-y-6">
       
-      <!-- Icono de Confirmación Oficial -->
       <div class="w-16 h-16 bg-[#edfcf2] text-[#34c759] rounded-2xl mx-auto flex items-center justify-center shadow-sm">
         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
@@ -307,7 +338,6 @@
         </p>
       </div>
 
-      <!-- Ficha de resumen del participante -->
       <div class="bg-[#f5f5f7] rounded-2xl p-4 text-left text-xs space-y-1.5 border border-[#d2d2d7]/40">
         <div class="flex justify-between">
           <span class="text-[#86868b]">Delegación:</span>
@@ -327,7 +357,6 @@
         Presiona aceptar para abrir el canal de enlace directo por WhatsApp con la coordinación técnica del festival.
       </p>
 
-      <!-- Botón de Aceptar y Continuar a WhatsApp -->
       <div class="pt-1">
         <button id="btnAceptarModal" class="w-full inline-flex items-center justify-center space-x-2 bg-[#25d366] hover:bg-[#20ba59] active:bg-[#1caa4f] text-white font-medium py-3.5 px-6 rounded-2xl text-xs transition duration-200 shadow-sm">
           <span>Aceptar y Notificar por WhatsApp</span>
@@ -355,7 +384,6 @@
       }, 600);
     }
 
-    // Análisis del audio en cliente
     document.getElementById('campoAudio').addEventListener('change', async function(e) {
       const file = e.target.files[0];
       const caja = document.getElementById('cajaAudio');
@@ -391,7 +419,6 @@
       }
     });
 
-    // Envío y apertura del modal formal
     const form = document.getElementById('formularioAcreditacion');
     const btn = document.getElementById('btnSubmit');
     const modal = document.getElementById('modalAgradecimiento');
@@ -420,12 +447,10 @@
         });
 
         if (response.ok) {
-          // Llenar datos de la ficha de agradecimiento
           document.getElementById('resumenEstado').innerText = estado;
           document.getElementById('resumenParticipante').innerText = nombre;
           document.getElementById('resumenTema').innerText = `"${tema}"`;
 
-          // Construir mensaje estructurado para WhatsApp
           const textoWhatsApp = `👋 ¡Hola! He completado la carga del expediente oficial para el *Festival de la Voz Niño Simón 2026*:\n\n` +
             `📍 *Delegación:* ${estado}\n` +
             `👤 *Participante:* ${nombre}\n` +
@@ -436,7 +461,6 @@
 
           enlaceWhatsAppFinal = `https://wa.me/${NUMERO_WHATSAPP_FESTIVAL}?text=${encodeURIComponent(textoWhatsApp)}`;
 
-          // Resetear formulario y mostrar la ventanilla modal de agradecimiento
           form.reset();
           document.getElementById('cajaAudio').classList.add('hidden');
           modal.classList.remove('hidden');
@@ -453,7 +477,6 @@
       }
     });
 
-    // Acción al pulsar Aceptar en el modal
     btnAceptarModal.addEventListener('click', function() {
       modal.classList.add('hidden');
       if (enlaceWhatsAppFinal) {
