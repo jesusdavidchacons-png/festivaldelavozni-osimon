@@ -1,0 +1,1546 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full bg-[#08090E] text-slate-100 antialiased selection:bg-amber-400 selection:text-black">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Festival de la Voz Niño Simón | Diseño de Producción & Ecosistema Institucional</title>
+    
+    <!-- Framework Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tipografías: Space Grotesk e Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Iconografía Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['"Space Grotesk"', 'sans-serif'],
+                    },
+                    colors: {
+                        vzla: {
+                            gold: '#F59E0B',
+                            'gold-soft': '#FEF3C7',
+                            blue: '#3B82F6',
+                            'blue-soft': '#DBEAFE',
+                            rose: '#E11D48',
+                            'rose-soft': '#FFE4E6',
+                            dark: '#08090E',
+                            card: '#0E1118',
+                            border: '#1F2430'
+                        }
+                    },
+                    boxShadow: {
+                        'glow-gold': '0 0 35px -5px rgba(245, 158, 11, 0.25)',
+                        'glow-rose': '0 0 35px -5px rgba(225, 29, 72, 0.25)',
+                        'glow-blue': '0 0 35px -5px rgba(59, 130, 246, 0.25)'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        html { scroll-behavior: smooth; }
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: #08090E; }
+        ::-webkit-scrollbar-thumb { background: #1F2430; border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: #F59E0B; }
+
+        .glass-panel {
+            background: rgba(14, 17, 24, 0.88);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+        }
+
+        .tricolor-ribbon {
+            background: linear-gradient(90deg, #F59E0B 0%, #3B82F6 50%, #E11D48 100%);
+            height: 2.5px;
+        }
+
+        .tricolor-border {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.35) 0%, rgba(59, 130, 246, 0.25) 50%, rgba(225, 29, 72, 0.25) 100%);
+            padding: 1px;
+            border-radius: 1.5rem;
+        }
+
+        @keyframes laser-sweep {
+            0% { top: 10%; opacity: 0.3; }
+            50% { top: 90%; opacity: 1; }
+            100% { top: 10%; opacity: 0.3; }
+        }
+        .animate-laser { animation: laser-sweep 2s infinite ease-in-out; }
+
+        @keyframes vu-bounce {
+            0%, 100% { height: 25%; }
+            50% { height: 95%; }
+        }
+        .animate-vu-1 { animation: vu-bounce 0.8s infinite ease-in-out; }
+        .animate-vu-2 { animation: vu-bounce 0.6s infinite ease-in-out 0.2s; }
+        .animate-vu-3 { animation: vu-bounce 1.1s infinite ease-in-out 0.4s; }
+        .animate-vu-4 { animation: vu-bounce 0.7s infinite ease-in-out 0.1s; }
+    </style>
+</head>
+
+<body class="bg-[#08090E] text-slate-100 font-sans min-h-screen flex flex-col selection:bg-amber-400 selection:text-black">
+
+    <!-- Cinta superior tricolor -->
+    <div class="tricolor-ribbon w-full"></div>
+
+    <!-- ========================================================================= -->
+    <!-- BARRA SUPERIOR INSTITUCIONAL (SIN PRECIOS) -->
+    <!-- ========================================================================= -->
+    <header class="sticky top-0 z-40 w-full glass-panel border-b border-vzla-border px-4 md:px-8 py-3 transition-all">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+            
+            <!-- Identidad Oficial -->
+            <div class="flex items-center gap-3.5">
+                <div class="h-12 w-auto flex items-center justify-center p-1 rounded-xl bg-white/5 border border-white/10 shadow-sm">
+                    <img src="https://i.postimg.cc/d0cgNdjq/logo-color.png" alt="Festival de la Voz Niño Simón" class="h-10 w-auto object-contain">
+                </div>
+                <div class="border-l border-slate-800 pl-3">
+                    <span class="font-display font-bold tracking-wide text-sm md:text-base text-white block">
+                        Festival de la Voz Niño Simón
+                    </span>
+                    <span class="text-[10px] md:text-[11px] font-mono text-amber-300 uppercase tracking-widest block font-medium">
+                        Diseño de Producción & Ecosistema Institucional
+                    </span>
+                </div>
+            </div>
+
+            <!-- Selector de Escala Táctil -->
+            <div class="flex items-center gap-2 bg-black/60 p-1 rounded-2xl border border-vzla-border">
+                <span class="text-[10px] font-mono uppercase text-slate-400 px-2 hidden lg:inline">Escala:</span>
+                
+                <button id="btnScale16" onclick="setScale(16)" class="px-3.5 py-1.5 rounded-xl text-xs font-display font-semibold uppercase tracking-wider transition-all bg-amber-400 text-black shadow-glow-gold flex items-center gap-1.5 cursor-pointer">
+                    <i class="fa-solid fa-microphone-lines text-[10px]"></i>
+                    <span>16 Finalistas</span>
+                </button>
+
+                <button id="btnScale32" onclick="setScale(32)" class="px-3.5 py-1.5 rounded-xl text-xs font-display font-semibold uppercase tracking-wider transition-all text-slate-400 hover:text-white hover:bg-white/5 flex items-center gap-1.5 cursor-pointer">
+                    <i class="fa-solid fa-users text-[10px]"></i>
+                    <span>32 Finalistas</span>
+                </button>
+            </div>
+
+            <!-- Navegación Temática -->
+            <div class="hidden md:flex items-center gap-6">
+                <a href="#modulo-activo" class="text-xs text-slate-300 hover:text-amber-300 transition-colors">Activo Heredable</a>
+                <a href="#modulo-proteccion" class="text-xs text-slate-300 hover:text-blue-300 transition-colors">Acreditación & Control</a>
+                <a href="#modulo-audiovisual" class="text-xs text-slate-300 hover:text-rose-300 transition-colors">Ruta Barquisimeto</a>
+                <a href="#modulo-streaming" class="text-xs text-slate-300 hover:text-amber-300 transition-colors">Transmisión 4K</a>
+            </div>
+
+        </div>
+    </header>
+
+
+    <!-- ========================================================================= -->
+    <!-- HERO SECTION: CALIDEZ, DIGNIDAD & PROPÓSITO INSTITUCIONAL (SIN PRECIOS) -->
+    <!-- ========================================================================= -->
+    <section class="relative pt-12 pb-16 md:pt-20 md:pb-24 px-4 md:px-8 overflow-hidden">
+        <div class="absolute -top-40 left-1/4 w-[500px] h-[400px] bg-amber-500/10 blur-[140px] rounded-full pointer-events-none"></div>
+        <div class="absolute -top-32 right-1/4 w-[500px] h-[400px] bg-blue-500/10 blur-[140px] rounded-full pointer-events-none"></div>
+        <div class="absolute top-20 right-1/3 w-[400px] h-[350px] bg-rose-500/10 blur-[130px] rounded-full pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-10">
+                
+                <div class="max-w-3xl">
+                    <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-slate-200 text-xs font-mono tracking-wider uppercase mb-5">
+                        <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                        PRODUCCIÓN BROADCAST · PATRIMONIO CULTURAL INFANTIL
+                    </div>
+
+                    <h1 class="text-3xl sm:text-5xl lg:text-6xl font-display font-bold text-white tracking-tight leading-[1.15] mb-5">
+                        El Canto de Nuestros Niños en el <br class="hidden sm:inline">
+                        <span class="bg-gradient-to-r from-amber-300 via-blue-300 to-rose-300 bg-clip-text text-transparent">
+                            Escenario que Merecen
+                        </span>
+                    </h1>
+
+                    <p class="text-sm sm:text-base text-slate-300 leading-relaxed font-light mb-8 max-w-2xl">
+                        Un diseño de producción concebido para dignificar el talento infantil y brindar tranquilidad absoluta a sus familias. Integra un protocolo digital de acreditación federativa para los ganadores de cada estado, control de aforo familiar con boletos gratuitos, producción cinematográfica rodada en los monumentos de Barquisimeto y transmisión satelital multicámara propia.
+                    </p>
+
+                    <div class="flex flex-wrap items-center gap-3.5">
+                        <a href="#modulo-proteccion" class="px-7 py-3.5 rounded-xl bg-amber-400 text-black font-display font-bold text-xs uppercase tracking-wider hover:bg-amber-300 hover:scale-105 active:scale-95 transition-all shadow-glow-gold flex items-center gap-2">
+                            <i class="fa-solid fa-layer-group text-sm"></i>
+                            <span>Probar Simuladores Digitales</span>
+                        </a>
+
+                        <button onclick="toggleModal('modalFamilia')" class="px-6 py-3.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-rose-400/50 text-slate-200 text-xs font-mono uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer">
+                            <i class="fa-solid fa-heart text-rose-400"></i>
+                            <span>Protocolo de Cuidado Familiar</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tarjeta de Arquitectura Institucional -->
+                <div class="w-full lg:w-[380px] shrink-0">
+                    <div class="tricolor-border">
+                        <div class="bg-vzla-card rounded-[1.45rem] p-6 text-left relative overflow-hidden">
+                            <div class="flex items-center justify-between pb-4 border-b border-vzla-border">
+                                <span class="text-xs font-mono uppercase text-slate-400">Estructura del Proyecto:</span>
+                                <span id="summaryBadge" class="text-xs font-mono font-bold px-2.5 py-1 rounded-full bg-amber-400/15 text-amber-300 border border-amber-400/30">
+                                    16 Finalistas
+                                </span>
+                            </div>
+
+                            <div class="py-5 space-y-4">
+                                <div class="flex items-start gap-3">
+                                    <div class="w-8 h-8 rounded-lg bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 text-xs shrink-0 mt-0.5">
+                                        <i class="fa-solid fa-stamp"></i>
+                                    </div>
+                                    <div>
+                                        <span class="text-xs font-semibold text-white block">Acreditación Estadal Blindada</span>
+                                        <span class="text-[11px] text-slate-400">Expedientes de ganadores regionales 100% auditados y sin pendientes.</span>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start gap-3">
+                                    <div class="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xs shrink-0 mt-0.5">
+                                        <i class="fa-solid fa-ticket"></i>
+                                    </div>
+                                    <div>
+                                        <span class="text-xs font-semibold text-white block">Boletería de Cuidado Familiar</span>
+                                        <span class="text-[11px] text-slate-400">100% gratuita, numerada y con control de butaca anti-estampidas.</span>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start gap-3">
+                                    <div class="w-8 h-8 rounded-lg bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-400 text-xs shrink-0 mt-0.5">
+                                        <i class="fa-solid fa-music"></i>
+                                    </div>
+                                    <div>
+                                        <span class="text-xs font-semibold text-white block">Ruta Coral Barquisimeto</span>
+                                        <span id="summaryMusicVideoText" class="text-[11px] text-slate-400">Videoclip grabado con 16 niños en 4 monumentos de la ciudad.</span>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start gap-3">
+                                    <div class="w-8 h-8 rounded-lg bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 text-xs shrink-0 mt-0.5">
+                                        <i class="fa-solid fa-satellite"></i>
+                                    </div>
+                                    <div>
+                                        <span class="text-xs font-semibold text-white block">Transmisión Satelital Starlink</span>
+                                        <span class="text-[11px] text-slate-400">Circuito cerrado de 4 cámaras sin depender de la red del teatro.</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pt-4 border-t border-vzla-border bg-black/40 -mx-6 -mb-6 p-5 text-center">
+                                <span class="text-[11px] font-mono text-slate-400 flex items-center justify-center gap-1.5">
+                                    <i class="fa-solid fa-shield-check text-emerald-400"></i>
+                                    <span>Ecosistema Diseñado a la Medida de la Fundación</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ========================================================================= -->
+    <!-- SECCIÓN: EL VALOR ESTRATÉGICO · INFRAESTRUCTURA HEREDABLE -->
+    <!-- ========================================================================= -->
+    <section id="modulo-activo" class="py-16 px-4 md:px-8 border-t border-vzla-border bg-[#0B0E14]">
+        <div class="max-w-7xl mx-auto">
+            
+            <div class="max-w-3xl mb-12">
+                <div class="flex items-center gap-2 text-amber-400 text-xs font-mono tracking-widest uppercase mb-1">
+                    <i class="fa-solid fa-chess-rook"></i> Visión Institucional de Largo Alcance
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-display font-bold text-white tracking-tight">
+                    Una Infraestructura Creada Hoy, Heredable para Siempre
+                </h2>
+                <p class="text-xs sm:text-sm text-slate-400 mt-2 leading-relaxed font-light">
+                    La institución no contrata un servicio pasajero. Incorpora el <strong>Diseño de Producción Fundacional</strong> del festival: software propietario, flujos de seguridad y estándares visuales que quedarán como patrimonio operativo de la organización para futuras ediciones.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-4">
+                
+                <div class="p-6 md:p-8 rounded-3xl bg-vzla-card border border-amber-400/30 relative overflow-hidden">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-[10px] font-mono uppercase px-3 py-1 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300 font-bold">
+                            Fase Fundacional
+                        </span>
+                        <i class="fa-solid fa-compass-drafting text-amber-400 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg sm:text-xl font-display font-bold text-white mb-2">
+                        Desarrollo & Configuración del Ecosistema
+                    </h3>
+                    <p class="text-xs text-slate-400 leading-relaxed font-light mb-4">
+                        Creación desde cero del portal de acreditación estadal, servidores, código QR de boletos gratuitos, protocolos de aforo con seat mapping, línea gráfica 3D y dirección cinematográfica en Barquisimeto.
+                    </p>
+                    <span class="text-[11px] font-mono text-amber-300 flex items-center gap-1.5">
+                        <i class="fa-solid fa-check"></i> Montaje completo de la arquitectura fundacional
+                    </span>
+                </div>
+
+                <div class="p-6 md:p-8 rounded-3xl bg-vzla-card border border-emerald-500/30 relative overflow-hidden">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-[10px] font-mono uppercase px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-bold">
+                            Próximas Ediciones
+                        </span>
+                        <i class="fa-solid fa-arrows-rotate text-emerald-400 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg sm:text-xl font-display font-bold text-white mb-2">
+                        Solo Revisión, Adaptación & Rodaje
+                    </h3>
+                    <p class="text-xs text-slate-400 leading-relaxed font-light mb-4">
+                        Al ser propietarios de la plataforma y de las plantillas de transmisión, las próximas ediciones no requieren inversiones de desarrollo de software ni diseños desde cero; únicamente ajustes operativos de fecha y producción en set.
+                    </p>
+                    <span class="text-[11px] font-mono text-emerald-400 flex items-center gap-1.5">
+                        <i class="fa-solid fa-shield-halved"></i> Autonomía institucional garantizada
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ========================================================================= -->
+    <!-- MÓDULO 1: LOS 6 COMPONENTES DIGITALES (CON SIMULADORES EMOCIONANTES) -->
+    <!-- ========================================================================= -->
+    <section id="modulo-proteccion" class="py-16 px-4 md:px-8 border-t border-vzla-border bg-[#08090E]">
+        <div class="max-w-7xl mx-auto">
+            
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
+                <div>
+                    <div class="flex items-center gap-2 text-blue-400 text-xs font-mono tracking-widest uppercase mb-1">
+                        <i class="fa-solid fa-laptop-code"></i> Experiencias Táctiles & Seguridad
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-display font-bold text-white tracking-tight">
+                        1. Módulos Digitales de Gestión & Cuidado Familiar
+                    </h2>
+                    <p class="text-xs sm:text-sm text-slate-400 max-w-2xl mt-1.5 font-light">
+                        Pruebe cada herramienta en tiempo real: desde la acreditación formal de los ganadores de cada estado hasta la sala interactiva de butacas y el monitor multicámara.
+                    </p>
+                </div>
+
+                <div class="px-4 py-2 rounded-xl bg-blue-950/40 border border-blue-500/30 text-blue-300 text-xs font-mono">
+                    <i class="fa-solid fa-hand-pointer mr-1.5 animate-bounce"></i> Toque para probar cada simulador
+                </div>
+            </div>
+
+            <!-- Grilla de los 6 Módulos con Acceso Interactivo -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <!-- 1. Acreditación de Ganadores Estadales -->
+                <div class="p-6 rounded-2xl bg-vzla-card border border-vzla-border flex flex-col justify-between hover:border-blue-500/40 transition-all group">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 text-xl mb-4 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-stamp"></i>
+                        </div>
+                        <span class="text-[10px] font-mono uppercase text-slate-400 tracking-widest block mb-1">MÓDULO DIGITAL 01 · CANAL FEDERATIVO</span>
+                        <h3 class="font-display font-bold text-base text-white mb-2">Acreditación Oficial de Ganadores Estadales</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed font-light mb-5">
+                            Plataforma formal para que cada delegación regional registre a su niño ganador. Garantiza expedientes 100% completos (permisos LOPNNA, ficha médica, audio master sin fallas), asegurando cero pendientes y comunicación formal blindada.
+                        </p>
+                    </div>
+                    <button onclick="openDemo('inscripcion')" class="w-full py-3 rounded-xl bg-blue-500/15 hover:bg-blue-500 hover:text-black border border-blue-500/40 text-blue-300 font-mono text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer shadow-glow-blue">
+                        <i class="fa-solid fa-clipboard-check text-xs"></i>
+                        <span>Auditar Expediente Estadal</span>
+                    </button>
+                </div>
+
+                <!-- 2. Boleto Digital Gratuito -->
+                <div class="p-6 rounded-2xl bg-vzla-card border-2 border-emerald-500/40 flex flex-col justify-between hover:border-emerald-400 transition-all group">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xl mb-4 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-ticket"></i>
+                        </div>
+                        <span class="text-[10px] font-mono uppercase text-emerald-400 tracking-widest block mb-1">MÓDULO DIGITAL 02 · GRATUITO</span>
+                        <h3 class="font-display font-bold text-base text-white mb-2">Pase Digital Familiar Anti-Estampidas</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed font-light mb-5">
+                            Boleto interactivo numerado sin costo comercial. Garantiza aforo exacto para bomberos y elimina aglomeraciones en puertas.
+                        </p>
+                    </div>
+                    <button onclick="openDemo('boleto')" class="w-full py-3 rounded-xl bg-emerald-500/15 hover:bg-emerald-500 hover:text-black border border-emerald-500/40 text-emerald-300 font-mono text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer">
+                        <i class="fa-solid fa-qrcode text-xs"></i>
+                        <span>Generar Pase 3D en Vivo</span>
+                    </button>
+                </div>
+
+                <!-- 3. Asignación de Puestos -->
+                <div class="p-6 rounded-2xl bg-vzla-card border border-vzla-border flex flex-col justify-between hover:border-blue-500/40 transition-all group">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 text-xl mb-4 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-couch"></i>
+                        </div>
+                        <span class="text-[10px] font-mono uppercase text-slate-400 tracking-widest block mb-1">MÓDULO DIGITAL 03</span>
+                        <h3 class="font-display font-bold text-base text-white mb-2">Seat Mapping 2D Teatro Juares</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed font-light mb-5">
+                            Plano interactivo con selección de asientos en vivo. Las familias de los niños tienen sus primeras filas aseguradas.
+                        </p>
+                    </div>
+                    <button onclick="openDemo('mapa')" class="w-full py-3 rounded-xl bg-blue-500/15 hover:bg-blue-500 hover:text-black border border-blue-500/40 text-blue-300 font-mono text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer">
+                        <i class="fa-solid fa-map-location-dot text-xs"></i>
+                        <span>Seleccionar Butacas en Sala</span>
+                    </button>
+                </div>
+
+                <!-- 4. Check-in de Alta Velocidad con Sonido -->
+                <div class="p-6 rounded-2xl bg-vzla-card border border-vzla-border flex flex-col justify-between hover:border-blue-500/40 transition-all group">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 text-xl mb-4 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-barcode-read"></i>
+                        </div>
+                        <span class="text-[10px] font-mono uppercase text-slate-400 tracking-widest block mb-1">MÓDULO DIGITAL 04</span>
+                        <h3 class="font-display font-bold text-base text-white mb-2">Escáner Táctico en Puertas (0.8s)</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed font-light mb-5">
+                            Lector de alta velocidad con confirmación sonora y soporte offline para que el ingreso jamás se detenga ante fallas de red.
+                        </p>
+                    </div>
+                    <button onclick="openDemo('checkin')" class="w-full py-3 rounded-xl bg-blue-500/15 hover:bg-blue-500 hover:text-black border border-blue-500/40 text-blue-300 font-mono text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer">
+                        <i class="fa-solid fa-mobile-screen-button text-xs"></i>
+                        <span>Activar Escáner con Sonido</span>
+                    </button>
+                </div>
+
+                <!-- 5. Votación Blindada -->
+                <div class="p-6 rounded-2xl bg-vzla-card border border-vzla-border flex flex-col justify-between hover:border-amber-500/40 transition-all group">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 text-xl mb-4 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-square-poll-vertical"></i>
+                        </div>
+                        <span class="text-[10px] font-mono uppercase text-slate-400 tracking-widest block mb-1">MÓDULO DIGITAL 05</span>
+                        <h3 class="font-display font-bold text-base text-white mb-2">Votación Popular Blindada</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed font-light mb-5">
+                            Cabina de votación protegida con verificación OTP y barras de porcentaje animadas que se actualizan para la pantalla del show.
+                        </p>
+                    </div>
+                    <button onclick="openDemo('votacion')" class="w-full py-3 rounded-xl bg-amber-500/15 hover:bg-amber-500 hover:text-black border border-amber-500/40 text-amber-300 font-mono text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer shadow-glow-gold">
+                        <i class="fa-solid fa-check-to-slot text-xs"></i>
+                        <span>Emitir Voto & Ver Gráficas</span>
+                    </button>
+                </div>
+
+                <!-- 6. Streaming Oficial con Conmutador -->
+                <div class="p-6 rounded-2xl bg-vzla-card border border-vzla-border flex flex-col justify-between hover:border-blue-500/40 transition-all group">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 text-xl mb-4 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-tower-broadcast"></i>
+                        </div>
+                        <span class="text-[10px] font-mono uppercase text-slate-400 tracking-widest block mb-1">MÓDULO DIGITAL 06</span>
+                        <h3 class="font-display font-bold text-base text-white mb-2">Control Broadcast & Transmisión</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed font-light mb-5">
+                            Monitor de dirección con conmutador de 4 cámaras, vúmetro de audio y chat internacional en vivo para familias en el exterior.
+                        </p>
+                    </div>
+                    <button onclick="openDemo('streaming')" class="w-full py-3 rounded-xl bg-blue-500/15 hover:bg-blue-500 hover:text-black border border-blue-500/40 text-blue-300 font-mono text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer">
+                        <i class="fa-solid fa-tv text-xs"></i>
+                        <span>Conmutar Cámaras en Vivo</span>
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ========================================================================= -->
+    <!-- MÓDULO 2: PRODUCCIÓN CINEMATOGRÁFICA · HOMENAJE A BARQUISIMETO -->
+    <!-- ========================================================================= -->
+    <section id="modulo-audiovisual" class="py-16 px-4 md:px-8 border-t border-vzla-border bg-[#0B0E14]">
+        <div class="max-w-7xl mx-auto">
+            
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
+                <div>
+                    <div class="flex items-center gap-2 text-rose-400 text-xs font-mono tracking-widest uppercase mb-1">
+                        <i class="fa-solid fa-guitar"></i> Orgullo & Alma de Lara
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-display font-bold text-white tracking-tight">
+                        2. Producción Cinematográfica en Barquisimeto
+                    </h2>
+                    <p class="text-xs sm:text-sm text-slate-400 max-w-2xl mt-1.5 font-light">
+                        El video musical coral une a los niños en los escenarios más hermosos de la Capital Musical de Venezuela, construyendo memoria viva y orgullo nacional.
+                    </p>
+                </div>
+
+                <div class="px-4 py-2 rounded-xl bg-rose-950/40 border border-rose-500/30 text-rose-300 text-xs font-mono">
+                    <i class="fa-solid fa-map-pin mr-1.5"></i> Locaciones Icónicas de Lara
+                </div>
+            </div>
+
+            <!-- Gran Tarjeta Destacada: El Videoclip en Barquisimeto -->
+            <div class="rounded-3xl bg-gradient-to-r from-zinc-950 via-zinc-900 to-zinc-950 border border-rose-500/30 p-6 md:p-8 mb-8 relative overflow-hidden shadow-glow-rose">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                    <div class="max-w-3xl">
+                        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs font-mono uppercase mb-3">
+                            <i class="fa-solid fa-clapperboard"></i> Obra Insignia del Festival
+                        </span>
+                        <h3 class="text-2xl sm:text-3xl font-display font-bold text-white mb-2">
+                            Video Musical Coral: "La Voz de Nuestra Tierra"
+                        </h3>
+                        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-light mb-4">
+                            Una pieza audiovisual conmovedora y luminosa rodada con todos los niños en los monumentos más emblemáticos de Barquisimeto: <strong>El Monumento Manto de María Divina Pastora, La Flor de Venezuela, el emblemático Teatro Juares y el Obelisco</strong>. Los participantes interpretan juntos el tema himno del festival con tomas aéreas de drones al atardecer, ópticas de cine y sonido mezclado profesionalmente.
+                        </p>
+                        <div class="flex flex-wrap gap-2 text-[11px] font-mono">
+                            <span class="px-2.5 py-1 rounded-lg bg-black/60 border border-rose-500/30 text-rose-300">Monumento Manto de María</span>
+                            <span class="px-2.5 py-1 rounded-lg bg-black/60 border border-rose-500/30 text-rose-300">La Flor de Venezuela</span>
+                            <span class="px-2.5 py-1 rounded-lg bg-black/60 border border-rose-500/30 text-rose-300">Teatro Juares</span>
+                            <span class="px-2.5 py-1 rounded-lg bg-black/60 border border-rose-500/30 text-rose-300">El Obelisco</span>
+                        </div>
+                    </div>
+
+                    <div class="shrink-0 p-5 rounded-2xl bg-black/80 border border-vzla-border text-center min-w-[240px]">
+                        <span class="text-[10px] font-mono uppercase text-slate-400 block mb-1">Elenco Infantil:</span>
+                        <span class="text-2xl font-display font-bold text-rose-300 block">
+                            Voces de Toda Venezuela
+                        </span>
+                        <span class="text-[11px] font-mono text-slate-400 block mt-1">
+                            Plan de Rodaje Completo en Locación
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rejilla de Entregables Audiovisuales -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <div class="p-5 rounded-2xl bg-vzla-card border border-vzla-border flex flex-col justify-between">
+                    <div>
+                        <div class="w-10 h-10 rounded-xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-400 text-base mb-3">
+                            <i class="fa-solid fa-sparkles"></i>
+                        </div>
+                        <h4 class="font-display font-bold text-white text-base mb-1">Campaña de Intriga</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed font-light">
+                            3 cápsulas dinámicas (15-20s) diseñadas para redes sociales (Reels, TikTok) para despertar ternura y expectativa familiar.
+                        </p>
+                    </div>
+                    <div class="pt-3 mt-3 border-t border-slate-800 text-[10px] font-mono text-rose-400">
+                        ✓ 3 Cortes Verticales & Horizontales
+                    </div>
+                </div>
+
+                <div class="p-5 rounded-2xl bg-vzla-card border border-vzla-border flex flex-col justify-between">
+                    <div>
+                        <div class="w-10 h-10 rounded-xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-400 text-base mb-3">
+                            <i class="fa-solid fa-bullhorn"></i>
+                        </div>
+                        <h4 class="font-display font-bold text-white text-base mb-1">Spot Promocional Master</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed font-light">
+                            Comercial de televisión y medios digitales (45-60s) con locución profesional cálida, llamado al registro y logo animado.
+                        </p>
+                    </div>
+                    <div class="pt-3 mt-3 border-t border-slate-800 text-[10px] font-mono text-rose-400">
+                        ✓ Formato Oficial de Invitación
+                    </div>
+                </div>
+
+                <div class="p-5 rounded-2xl bg-vzla-card border border-vzla-border flex flex-col justify-between">
+                    <div>
+                        <div class="w-10 h-10 rounded-xl bg-amber-400/10 border border-amber-400/30 flex items-center justify-center text-amber-400 text-base mb-3">
+                            <i class="fa-solid fa-id-card-clip"></i>
+                        </div>
+                        <h4 class="font-display font-bold text-white text-base mb-1">Videos de Antesala</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed font-light">
+                            Retratos íntimos y cinematográficos de cada finalista y su vocación, proyectados en pantalla antes de su presentación en tarima.
+                        </p>
+                    </div>
+                    <div class="pt-3 mt-3 border-t border-slate-800 text-[10px] font-mono text-amber-400">
+                        ✓ Perfiles Cinematográficos 4K
+                    </div>
+                </div>
+
+                <div class="p-5 rounded-2xl bg-vzla-card border border-vzla-border flex flex-col justify-between">
+                    <div>
+                        <div class="w-10 h-10 rounded-xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-400 text-base mb-3">
+                            <i class="fa-solid fa-compact-disc"></i>
+                        </div>
+                        <h4 class="font-display font-bold text-white text-base mb-1">Aftermovie & Fotografías</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed font-light">
+                            Película resumen de la gala (3-4 min) en 4K más sesión de fotos de estudio de los niños y cobertura en vivo para prensa.
+                        </p>
+                    </div>
+                    <div class="pt-3 mt-3 border-t border-slate-800 text-[10px] font-mono text-rose-400">
+                        ✓ Memoria Emocional de la Fundación
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ========================================================================= -->
+    <!-- MÓDULO 3: TRANSMISIÓN EN VIVO MULTICÁMARA CON ENLACE STARLINK -->
+    <!-- ========================================================================= -->
+    <section id="modulo-streaming" class="py-16 px-4 md:px-8 border-t border-vzla-border bg-[#08090E]">
+        <div class="max-w-7xl mx-auto">
+            
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
+                <div>
+                    <div class="flex items-center gap-2 text-amber-400 text-xs font-mono tracking-widest uppercase mb-1">
+                        <i class="fa-solid fa-satellite-dish"></i> Estándar Televisivo Impecable
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-display font-bold text-white tracking-tight">
+                        3. Transmisión en Vivo Multicámara de la Gran Gala
+                    </h2>
+                    <p class="text-xs sm:text-sm text-slate-400 max-w-2xl mt-1.5 font-light">
+                        Producción en directo con 4 cámaras de cine digital, mezcla en vivo, captura de audio limpio desde consola y conectividad satelital independiente para evitar caídas de señal.
+                    </p>
+                </div>
+
+                <div class="px-4 py-2 rounded-xl bg-amber-950/40 border border-amber-500/30 text-amber-300 text-xs font-mono">
+                    <i class="fa-solid fa-wifi mr-1.5"></i> Conectividad Satelital Redundante
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <div class="p-5 rounded-2xl bg-vzla-card border border-vzla-border">
+                    <div class="w-10 h-10 rounded-xl bg-amber-400/10 border border-amber-400/30 flex items-center justify-center text-amber-400 text-base mb-3">
+                        <i class="fa-solid fa-video"></i>
+                    </div>
+                    <h4 class="font-display font-bold text-white text-base mb-1">Circuito de 4 Cámaras 4K</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed font-light">
+                        Cámara general, cámara de primeros planos emotivos del intérprete, cámara móvil en escenario y cámara para el público y jurado.
+                    </p>
+                </div>
+
+                <div class="p-5 rounded-2xl bg-vzla-card border border-vzla-border">
+                    <div class="w-10 h-10 rounded-xl bg-amber-400/10 border border-amber-400/30 flex items-center justify-center text-amber-400 text-base mb-3">
+                        <i class="fa-solid fa-sliders"></i>
+                    </div>
+                    <h4 class="font-display font-bold text-white text-base mb-1">Conmutación & Gráficos en Vivo</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed font-light">
+                        Dirección en directo con vMix, inserción de placas institucionales, nombres de los niños y enlace al conteo de votación.
+                    </p>
+                </div>
+
+                <div class="p-5 rounded-2xl bg-vzla-card border border-vzla-border">
+                    <div class="w-10 h-10 rounded-xl bg-amber-400/10 border border-amber-400/30 flex items-center justify-center text-amber-400 text-base mb-3">
+                        <i class="fa-solid fa-headphones"></i>
+                    </div>
+                    <h4 class="font-display font-bold text-white text-base mb-1">Audio Matriz de Consola</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed font-light">
+                        Línea de audio estéreo directa e independiente desde la consola del show para que la voz de los niños se escuche pura y nítida.
+                    </p>
+                </div>
+
+                <div class="p-5 rounded-2xl bg-vzla-card border border-vzla-border">
+                    <div class="w-10 h-10 rounded-xl bg-amber-400/10 border border-amber-400/30 flex items-center justify-center text-amber-400 text-base mb-3">
+                        <i class="fa-solid fa-satellite"></i>
+                    </div>
+                    <h4 class="font-display font-bold text-white text-base mb-1">Enlace Satelital Starlink</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed font-light">
+                        Antena de alta velocidad dedicada exclusivamente a la mesa de transmisión, garantizando que el streaming jamás se corte.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ========================================================================= -->
+    <!-- INVERSIÓN TOTAL CERRADA (AMBAS ESCALAS VISIBLES LADO A LADO) -->
+    <!-- ========================================================================= -->
+    <section id="inversion-total" class="py-20 px-4 md:px-8 border-t border-vzla-border bg-[#08090E]">
+        <div class="max-w-7xl mx-auto">
+            
+            <div class="text-center max-w-3xl mx-auto mb-14">
+                <div class="inline-flex items-center gap-2 text-amber-400 text-xs font-mono tracking-widest uppercase mb-2">
+                    <i class="fa-solid fa-receipt"></i> Propuesta Económica Unificada
+                </div>
+                <h2 class="text-2xl sm:text-4xl font-display font-bold text-white tracking-tight">
+                    Inversión Total del Proyecto
+                </h2>
+                <p class="text-xs sm:text-sm text-slate-400 mt-2 font-light">
+                    Tras detallar la infraestructura digital, el cuidado familiar y el rodaje en Barquisimeto, presentamos ambas opciones de escala con el <strong>10% de descuento institucional ya aplicado</strong>:
+                </p>
+            </div>
+
+            <!-- COMPARATIVA LADO A LADO DE AMBAS ESCALAS: 16 Y 32 FINALISTAS -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
+                
+                <!-- TARJETA ESCALA 1: 16 FINALISTAS -->
+                <div id="cardPlan16" class="rounded-3xl bg-vzla-card border-2 border-slate-800 p-6 sm:p-8 flex flex-col justify-between shadow-xl transition-all relative overflow-hidden">
+                    <div class="absolute top-0 right-0 tricolor-ribbon w-32"></div>
+                    
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs font-mono uppercase px-3 py-1 rounded-full bg-blue-500/10 text-blue-300 border border-blue-500/30 font-bold">
+                                Escala A · 16 Finalistas
+                            </span>
+                            <span class="text-[10px] font-mono text-emerald-400 font-bold bg-emerald-500/10 px-2.5 py-0.5 rounded border border-emerald-500/20">
+                                10% Descuento Incluido
+                            </span>
+                        </div>
+
+                        <h3 class="text-xl sm:text-2xl font-display font-bold text-white mb-2">
+                            Paquete Maestro: 16 Niños en Escenario
+                        </h3>
+                        <p class="text-xs text-slate-400 font-light mb-6">
+                            Diseñado para 16 delegaciones estadales. Incluye 16 expedientes auditados, 16 antesalas cinematográficas y 2 jornadas de rodaje coral en los monumentos de Barquisimeto.
+                        </p>
+
+                        <!-- Precio Visible Opción A -->
+                        <div class="p-5 rounded-2xl bg-black border border-slate-800 mb-6">
+                            <span class="text-[10px] font-mono uppercase text-slate-500 block mb-0.5">Inversión Final Llave en Mano:</span>
+                            <div class="text-3xl sm:text-4xl font-display font-extrabold text-amber-400">
+                                $26.730 <span class="text-xs font-mono text-slate-400 font-normal">USD</span>
+                            </div>
+                            <span class="text-[11px] font-mono text-slate-500 block mt-1">Costo neto cerrado sin cargos ocultos</span>
+                        </div>
+
+                        <!-- Esquema de Pagos por Hitos -->
+                        <div class="space-y-2.5 text-xs font-mono pb-6 border-b border-slate-800/80 mb-6">
+                            <div class="flex justify-between text-slate-300">
+                                <span class="text-slate-400">50% Anticipo & Inicio Web:</span>
+                                <span class="font-bold text-white">$13.365 USD</span>
+                            </div>
+                            <div class="flex justify-between text-slate-300">
+                                <span class="text-slate-400">30% Rodajes Culminados (2 Días):</span>
+                                <span class="font-bold text-white">$8.019 USD</span>
+                            </div>
+                            <div class="flex justify-between text-slate-300">
+                                <span class="text-slate-400">20% Gala & Transmisión Final:</span>
+                                <span class="font-bold text-white">$5.346 USD</span>
+                            </div>
+                        </div>
+
+                        <!-- Entregables clave -->
+                        <ul class="space-y-2 text-xs text-slate-300 font-light mb-6">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400 text-[10px]"></i> 16 Expedientes de Ganadores Estadales Auditados</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400 text-[10px]"></i> Boletería Gratuita Numerada (Seat Map Teatro Juares)</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400 text-[10px]"></i> Videoclip Coral (16 niños en 4 monumentos de Lara)</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400 text-[10px]"></i> 16 Cápsulas de Antesala 4K + Spot Promocional Master</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400 text-[10px]"></i> Transmisión 4K Multicámara con Enlace Satelital Starlink</li>
+                        </ul>
+                    </div>
+
+                    <button onclick="selectScaleForContract(16)" class="w-full py-3.5 rounded-xl bg-slate-900 hover:bg-amber-400 hover:text-black border border-slate-700 hover:border-amber-400 text-white font-display font-bold text-xs uppercase tracking-wider transition-all cursor-pointer">
+                        Seleccionar Propuesta (16 Finalistas)
+                    </button>
+                </div>
+
+
+                <!-- TARJETA ESCALA 2: 32 FINALISTAS -->
+                <div id="cardPlan32" class="rounded-3xl bg-vzla-card border-2 border-amber-400/60 p-6 sm:p-8 flex flex-col justify-between shadow-2xl transition-all relative overflow-hidden bg-gradient-to-b from-amber-400/[0.03] to-transparent">
+                    <div class="absolute top-0 right-0 tricolor-ribbon w-32"></div>
+                    
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs font-mono uppercase px-3 py-1 rounded-full bg-amber-400/15 text-amber-300 border border-amber-400/30 font-bold">
+                                Escala B · 32 Finalistas (Cobertura Nacional Total)
+                            </span>
+                            <span class="text-[10px] font-mono text-emerald-400 font-bold bg-emerald-500/10 px-2.5 py-0.5 rounded border border-emerald-500/20">
+                                10% Descuento Incluido
+                            </span>
+                        </div>
+
+                        <h3 class="text-xl sm:text-2xl font-display font-bold text-white mb-2">
+                            Paquete Maestro Extendido: 32 Niños en Escenario
+                        </h3>
+                        <p class="text-xs text-slate-400 font-light mb-6">
+                            Cobertura integral para todos los estados de Venezuela. Incluye 32 expedientes auditados, 32 antesalas cinematográficas y 3 jornadas intensivas de rodaje en los monumentos de Barquisimeto.
+                        </p>
+
+                        <!-- Precio Visible Opción B -->
+                        <div class="p-5 rounded-2xl bg-black border border-amber-400/40 mb-6 shadow-glow-gold">
+                            <span class="text-[10px] font-mono uppercase text-slate-500 block mb-0.5">Inversión Final Llave en Mano:</span>
+                            <div class="text-3xl sm:text-4xl font-display font-extrabold text-amber-400">
+                                $33.980 <span class="text-xs font-mono text-slate-400 font-normal">USD</span>
+                            </div>
+                            <span class="text-[11px] font-mono text-slate-500 block mt-1">Costo neto cerrado sin cargos ocultos</span>
+                        </div>
+
+                        <!-- Esquema de Pagos por Hitos -->
+                        <div class="space-y-2.5 text-xs font-mono pb-6 border-b border-slate-800/80 mb-6">
+                            <div class="flex justify-between text-slate-300">
+                                <span class="text-slate-400">50% Anticipo & Inicio Web:</span>
+                                <span class="font-bold text-white">$16.990 USD</span>
+                            </div>
+                            <div class="flex justify-between text-slate-300">
+                                <span class="text-slate-400">30% Rodajes Culminados (3 Días):</span>
+                                <span class="font-bold text-white">$10.194 USD</span>
+                            </div>
+                            <div class="flex justify-between text-slate-300">
+                                <span class="text-slate-400">20% Gala & Transmisión Final:</span>
+                                <span class="font-bold text-white">$6.796 USD</span>
+                            </div>
+                        </div>
+
+                        <!-- Entregables clave -->
+                        <ul class="space-y-2 text-xs text-slate-300 font-light mb-6">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400 text-[10px]"></i> 32 Expedientes de Ganadores Estadales Auditados</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400 text-[10px]"></i> Boletería Gratuita Numerada (Seat Map Teatro Juares)</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400 text-[10px]"></i> Videoclip Coral Extendido (32 niños en 4 monumentos de Lara)</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400 text-[10px]"></i> 32 Cápsulas de Antesala 4K + Spot Promocional Master</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400 text-[10px]"></i> Transmisión 4K Multicámara con Enlace Satelital Starlink</li>
+                        </ul>
+                    </div>
+
+                    <button onclick="selectScaleForContract(32)" class="w-full py-3.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-black font-display font-extrabold text-xs uppercase tracking-wider transition-all shadow-glow-gold cursor-pointer">
+                        Seleccionar Propuesta (32 Finalistas)
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- Nota de Transferencia de Propiedad Institucional -->
+            <div class="p-5 rounded-2xl bg-black border border-slate-800 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 font-mono gap-3 text-center sm:text-left">
+                <span class="flex items-center gap-2.5">
+                    <i class="fa-solid fa-key text-amber-400 text-base"></i>
+                    <span><strong>Activo Permanente:</strong> En cualquiera de las dos escalas, el software de acreditación, el sistema de boletos y las plantillas de streaming quedan como propiedad definitiva de la fundación.</span>
+                </span>
+                <span class="text-emerald-400 font-bold shrink-0">Heredable para Próximas Ediciones</span>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ========================================================================= -->
+    <!-- MODAL DE DEMOSTRACIONES INTERACTIVAS DINÁMICAS (LOS 6 MÓDULOS) -->
+    <!-- ========================================================================= -->
+    <div id="modalDemoContainer" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden items-center justify-center p-3 sm:p-5">
+        <div class="relative w-full max-w-2xl bg-vzla-card border border-vzla-border rounded-3xl p-6 sm:p-8 shadow-2xl max-h-[90vh] overflow-y-auto">
+            <button onclick="closeDemo()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-slate-900 border border-slate-800 text-slate-400 hover:text-white flex items-center justify-center cursor-pointer">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="flex items-center gap-2.5 mb-2">
+                <span id="demoBadge" class="text-xs font-mono uppercase px-2.5 py-0.5 rounded bg-blue-500/15 border border-blue-500/30 text-blue-300 font-bold">
+                    Módulo Digital
+                </span>
+                <span class="text-slate-400 text-xs font-mono">Simulador Activo</span>
+            </div>
+            
+            <h3 id="demoTitle" class="text-xl sm:text-2xl font-display font-bold text-white mb-2">
+                Título del Módulo
+            </h3>
+            
+            <p id="demoDescription" class="text-xs text-slate-400 mb-6 font-light">
+                Descripción detallada de la función de seguridad y valor para el festival.
+            </p>
+
+            <div id="demoContent" class="rounded-2xl bg-black/80 border border-slate-800 p-4 sm:p-5">
+                <!-- Inyectado dinámicamente -->
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between text-xs font-mono text-slate-400">
+                <span class="flex items-center gap-1.5 text-emerald-400">
+                    <i class="fa-solid fa-shield-check"></i>
+                    <span>Solución de Grado Institucional</span>
+                </span>
+                <button onclick="closeDemo()" class="px-4 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white transition-colors cursor-pointer">
+                    Cerrar Simulador
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ========================================================================= -->
+    <!-- MODAL: CUIDADO Y PROTECCIÓN A LAS FAMILIAS -->
+    <!-- ========================================================================= -->
+    <div id="modalFamilia" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden items-center justify-center p-4">
+        <div class="relative w-full max-w-2xl bg-vzla-card border border-vzla-border rounded-3xl p-6 md:p-8 shadow-2xl max-h-[90vh] overflow-y-auto">
+            <button onclick="toggleModal('modalFamilia')" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-slate-900 border border-slate-800 text-slate-400 hover:text-white flex items-center justify-center cursor-pointer">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="flex items-center gap-3 mb-2">
+                <div class="w-8 h-8 rounded-xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-400 text-sm">
+                    <i class="fa-solid fa-heart"></i>
+                </div>
+                <span class="text-xs font-mono uppercase text-rose-400 tracking-wider">Compromiso con la Infancia & la Familia</span>
+            </div>
+            <h3 class="text-xl md:text-2xl font-display font-bold text-white mb-2">El Porqué de los Boletos Gratuitos</h3>
+            <p class="text-xs text-slate-400 mb-6 font-light">Diseñamos esta herramienta para preservar la tranquilidad y el respeto hacia los niños y sus acompañantes.</p>
+
+            <div class="space-y-4 text-xs text-slate-300 font-light">
+                <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
+                    <h4 class="font-display font-bold text-white mb-1 flex items-center gap-2">
+                        <i class="fa-solid fa-sun text-amber-400"></i>
+                        1. Evitar Filas Bajo el Sol y Tiempos de Espera Innecesarios
+                    </h4>
+                    <p class="text-slate-400 text-[11px] leading-relaxed">
+                        Cuando un evento es libre sin registro, los familiares sienten la necesidad de llegar horas antes para conseguir un buen lugar. Con butaca asignada desde el teléfono, las familias llegan con calma sabiendo que su espacio está garantizado.
+                    </p>
+                </div>
+
+                <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
+                    <h4 class="font-display font-bold text-white mb-1 flex items-center gap-2">
+                        <i class="fa-solid fa-shield-halved text-blue-400"></i>
+                        2. Cuidado de Aforo y Prevención de Aglomeraciones
+                    </h4>
+                    <p class="text-slate-400 text-[11px] leading-relaxed">
+                        El sistema emite exactamente el número de pases permitidos por la capacidad del recinto. Ninguna persona se queda parada en los pasillos ni se generan situaciones de sobrecupo que comprometan la seguridad de los menores.
+                    </p>
+                </div>
+
+                <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
+                    <h4 class="font-display font-bold text-white mb-1 flex items-center gap-2">
+                        <i class="fa-solid fa-hands-holding text-rose-400"></i>
+                        3. Asientos Preferenciales para los Seres Queridos
+                    </h4>
+                    <p class="text-slate-400 text-[11px] leading-relaxed">
+                        Los padres, madres y representantes de los niños concursantes cuentan con su ubicación reservada en las primeras filas, permitiéndoles disfrutar del momento más importante de sus hijos con total serenidad.
+                    </p>
+                </div>
+            </div>
+
+            <button onclick="toggleModal('modalFamilia')" class="w-full mt-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-mono text-xs uppercase transition-colors cursor-pointer">
+                Entendido
+            </button>
+        </div>
+    </div>
+
+
+    <!-- ========================================================================= -->
+    <!-- MODAL: FORMULARIO DE FORMALIZACIÓN INSTITUCIONAL -->
+    <!-- ========================================================================= -->
+    <div id="modalApproval" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden items-center justify-center p-4">
+        <div class="relative w-full max-w-lg bg-vzla-card border border-vzla-border rounded-3xl p-6 md:p-8 shadow-2xl">
+            <button onclick="toggleModal('modalApproval')" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-slate-900 border border-slate-800 text-slate-400 hover:text-white flex items-center justify-center cursor-pointer">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="flex items-center gap-3 mb-2">
+                <img src="https://i.postimg.cc/d0cgNdjq/logo-color.png" alt="Festival de la Voz Niño Simón" class="h-6 w-auto object-contain">
+                <span class="text-xs font-mono uppercase text-amber-400 tracking-wider">Aprobación Institucional</span>
+            </div>
+            <h3 class="text-xl md:text-2xl font-display font-bold text-white mb-2">Formalización del Proyecto</h3>
+            <p class="text-xs text-slate-400 mb-6 font-light">Complete los datos de la comisión o directiva para emitir el contrato de diseño de producción.</p>
+
+            <form id="formApproval" onsubmit="handleFormSubmit(event)" class="space-y-3.5">
+                <div>
+                    <label class="block text-[10px] font-mono uppercase text-slate-400 mb-1">Institución / Dirección del Festival</label>
+                    <input required type="text" placeholder="Ej. Fundación del Niño Simón" class="w-full px-3.5 py-2.5 bg-black/60 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-600 focus:outline-none focus:border-amber-400">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[10px] font-mono uppercase text-slate-400 mb-1">Representante</label>
+                        <input required type="text" placeholder="Nombre completo" class="w-full px-3.5 py-2.5 bg-black/60 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-600 focus:outline-none focus:border-amber-400">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-mono uppercase text-slate-400 mb-1">Escala del Evento</label>
+                        <select id="selectScaleForm" class="w-full px-3.5 py-2.5 bg-black/60 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-amber-400">
+                            <option value="16">16 Finalistas ($26.730 USD Total)</option>
+                            <option value="32">32 Finalistas ($33.980 USD Total)</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-[10px] font-mono uppercase text-slate-400 mb-1">Correo Electrónico Institucional</label>
+                    <input required type="email" placeholder="presidencia@fundacion.gob.ve" class="w-full px-3.5 py-2.5 bg-black/60 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-600 focus:outline-none focus:border-amber-400">
+                </div>
+
+                <button type="submit" class="w-full py-3.5 rounded-xl bg-amber-400 text-black font-display font-bold text-xs uppercase tracking-wider hover:bg-amber-300 transition-all flex items-center justify-center gap-2 mt-4 shadow-glow-gold cursor-pointer">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <span>Confirmar Interés & Solicitar Contrato</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- ========================================================================= -->
+    <!-- FOOTER INSTITUCIONAL -->
+    <!-- ========================================================================= -->
+    <footer class="mt-auto border-t border-vzla-border bg-black px-6 py-6 text-center text-xs text-slate-500 font-mono">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div class="flex items-center gap-2.5">
+                <img src="https://i.postimg.cc/d0cgNdjq/logo-color.png" alt="mini" class="h-5 w-auto object-contain">
+                <span>Festival de la Voz Niño Simón · Barquisimeto, Capital Musical de Venezuela</span>
+            </div>
+            <span>Diseño de Producción & Ecosistema Institucional</span>
+        </div>
+    </footer>
+
+
+    <!-- ========================================================================= -->
+    <!-- JAVASCRIPT: CONTROL ROBUSTO DE ESCALAS Y SIMULADORES INTERACTIVOS -->
+    <!-- ========================================================================= -->
+    <script>
+        // Asegurar que la página inicie siempre desde arriba
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+        window.scrollTo(0, 0);
+
+        const SCALE_CONFIG = {
+            16: {
+                participants: 16,
+                badgeText: "16 Finalistas",
+                capsulesCount: "16 retratos cinematográficos de los niños.",
+                musicVideoHeroText: "Videoclip grabado con 16 niños en 4 monumentos de la ciudad.",
+                priceText: "$26.730 USD"
+            },
+            32: {
+                participants: 32,
+                badgeText: "32 Finalistas",
+                capsulesCount: "32 retratos cinematográficos de los niños.",
+                musicVideoHeroText: "Videoclip grabado con 32 niños en 4 monumentos de la ciudad.",
+                priceText: "$33.980 USD"
+            }
+        };
+
+        function setScale(scale) {
+            const data = SCALE_CONFIG[scale];
+            if (!data) return;
+
+            // Actualizar botones de selector superior
+            const btn16 = document.getElementById('btnScale16');
+            const btn32 = document.getElementById('btnScale32');
+
+            if (scale === 16) {
+                if (btn16) btn16.className = "px-3.5 py-1.5 rounded-xl text-xs font-display font-semibold uppercase tracking-wider transition-all bg-amber-400 text-black shadow-glow-gold flex items-center gap-1.5 cursor-pointer";
+                if (btn32) btn32.className = "px-3.5 py-1.5 rounded-xl text-xs font-display font-semibold uppercase tracking-wider transition-all text-slate-400 hover:text-white hover:bg-white/5 flex items-center gap-1.5 cursor-pointer";
+                
+                // Resaltar visualmente tarjeta 16
+                const card16 = document.getElementById('cardPlan16');
+                const card32 = document.getElementById('cardPlan32');
+                if (card16) card16.className = "rounded-3xl bg-vzla-card border-2 border-amber-400/80 p-6 sm:p-8 flex flex-col justify-between shadow-2xl transition-all relative overflow-hidden bg-gradient-to-b from-amber-400/[0.04] to-transparent";
+                if (card32) card32.className = "rounded-3xl bg-vzla-card border-2 border-slate-800 hover:border-amber-400/50 p-6 sm:p-8 flex flex-col justify-between shadow-xl transition-all relative overflow-hidden";
+            } else {
+                if (btn32) btn32.className = "px-3.5 py-1.5 rounded-xl text-xs font-display font-semibold uppercase tracking-wider transition-all bg-amber-400 text-black shadow-glow-gold flex items-center gap-1.5 cursor-pointer";
+                if (btn16) btn16.className = "px-3.5 py-1.5 rounded-xl text-xs font-display font-semibold uppercase tracking-wider transition-all text-slate-400 hover:text-white hover:bg-white/5 flex items-center gap-1.5 cursor-pointer";
+                
+                // Resaltar visualmente tarjeta 32
+                const card16 = document.getElementById('cardPlan16');
+                const card32 = document.getElementById('cardPlan32');
+                if (card32) card32.className = "rounded-3xl bg-vzla-card border-2 border-amber-400/80 p-6 sm:p-8 flex flex-col justify-between shadow-2xl transition-all relative overflow-hidden bg-gradient-to-b from-amber-400/[0.04] to-transparent";
+                if (card16) card16.className = "rounded-3xl bg-vzla-card border-2 border-slate-800 hover:border-amber-400/50 p-6 sm:p-8 flex flex-col justify-between shadow-xl transition-all relative overflow-hidden";
+            }
+
+            // Actualizar referencias dinámicas del Hero si existen
+            const summaryBadge = document.getElementById('summaryBadge');
+            const summaryCapsulesCount = document.getElementById('summaryCapsulesCount');
+            const summaryMusicVideoText = document.getElementById('summaryMusicVideoText');
+            const selectScaleForm = document.getElementById('selectScaleForm');
+
+            if (summaryBadge) summaryBadge.textContent = data.badgeText;
+            if (summaryCapsulesCount) summaryCapsulesCount.textContent = data.capsulesCount;
+            if (summaryMusicVideoText) summaryMusicVideoText.textContent = data.musicVideoHeroText;
+            if (selectScaleForm) selectScaleForm.value = String(scale);
+        }
+
+        function selectScaleForContract(scaleNumber) {
+            const selectScaleForm = document.getElementById('selectScaleForm');
+            if (selectScaleForm) selectScaleForm.value = String(scaleNumber);
+            toggleModal('modalApproval');
+        }
+
+        function playBeepSound(type = 'success') {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                if (type === 'success') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+                    osc.frequency.setValueAtTime(1760, audioCtx.currentTime + 0.08);
+                    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.25);
+                } else {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.15);
+                }
+            } catch (e) {
+                // Audio silenciado
+            }
+        }
+
+        const STATE_WINNERS = {
+            lara: { name: "Camila V. Sánchez (10 años)", song: "Canto a Barquisimeto", rep: "Elena Sánchez" },
+            zulia: { name: "Santiago Alarcón (11 años)", song: "Gaita con Sentimiento", rep: "María Alarcón" },
+            miranda: { name: "Valeria Morillo (9 años)", song: "Venezuela de Esperanza", rep: "Carmen Morillo" },
+            bolivar: { name: "Diego Carvajal (12 años)", song: "Río Orinoco Majestuoso", rep: "Rosa Carvajal" }
+        };
+
+        const DEMO_TEMPLATES = {
+            inscripcion: {
+                badge: "Simulador Módulo 01 · Acreditación Estadal",
+                title: "Expediente Oficial de Ganador Regional",
+                desc: "Plataforma formal para que cada delegación regional inscriba a su niño ganador. Garantiza recaudos completos, pista técnica auditada y cero pendientes.",
+                html: `
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between pb-3 border-b border-slate-800 text-xs">
+                            <span class="text-slate-400 font-mono">Seleccione Delegación Estadal:</span>
+                            <select onchange="changeStateWinner(this.value)" class="bg-black border border-blue-500/40 text-blue-300 rounded-lg px-2.5 py-1 text-xs focus:outline-none font-mono">
+                                <option value="lara">Estado Lara (Sede)</option>
+                                <option value="zulia">Estado Zulia</option>
+                                <option value="miranda">Estado Miranda</option>
+                                <option value="bolivar">Estado Bolívar</option>
+                            </select>
+                        </div>
+
+                        <div class="p-3.5 rounded-2xl bg-slate-950 border border-slate-800 grid grid-cols-2 gap-3 text-xs">
+                            <div>
+                                <span class="text-slate-500 text-[10px] block font-mono">Niño Ganador Estadal:</span>
+                                <span id="stateWinnerName" class="font-bold text-white text-sm">Camila V. Sánchez (10 años)</span>
+                                <span id="stateWinnerSong" class="text-amber-300 text-[11px] block mt-0.5 font-mono">Obra: Canto a Barquisimeto</span>
+                            </div>
+                            <div>
+                                <span class="text-slate-500 text-[10px] block font-mono">Representante Legal (LOPNNA):</span>
+                                <span id="stateWinnerRep" class="font-bold text-slate-200">Elena Sánchez</span>
+                                <span class="text-emerald-400 text-[11px] block mt-0.5 font-mono">✓ Notaría Estadal Aprobada</span>
+                            </div>
+                        </div>
+
+                        <div class="p-3.5 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-2 text-xs">
+                            <span class="text-[10px] font-mono uppercase text-slate-400 block font-bold">
+                                Auditoría de Recaudos (El sistema bloquea inconsistencias):
+                            </span>
+
+                            <div class="flex items-center justify-between p-2 rounded-lg bg-black/60 border border-slate-800">
+                                <span class="text-slate-300 flex items-center gap-2">
+                                    <i class="fa-solid fa-file-shield text-blue-400"></i>
+                                    <span>1. Permiso Legal de Viaje LOPNNA + Cédula de Identidad</span>
+                                </span>
+                                <span class="text-[10px] font-mono text-emerald-400 font-bold">Auditado ✓</span>
+                            </div>
+
+                            <div class="flex items-center justify-between p-2 rounded-lg bg-black/60 border border-slate-800">
+                                <span class="text-slate-300 flex items-center gap-2">
+                                    <i class="fa-solid fa-notes-medical text-rose-400"></i>
+                                    <span>2. Ficha Médica Oficial, Alergias & Logística de Traslado</span>
+                                </span>
+                                <span class="text-[10px] font-mono text-emerald-400 font-bold">Auditado ✓</span>
+                            </div>
+
+                            <div class="flex items-center justify-between p-2 rounded-lg bg-black/60 border border-slate-800">
+                                <span class="text-slate-300 flex items-center gap-2">
+                                    <i class="fa-solid fa-certificate text-amber-400"></i>
+                                    <span>3. Acta de Proclamación de la Fundación Niño Simón Regional</span>
+                                </span>
+                                <span class="text-[10px] font-mono text-emerald-400 font-bold">Verificado ✓</span>
+                            </div>
+
+                            <div class="flex items-center justify-between p-2 rounded-lg bg-black/60 border border-slate-800">
+                                <span class="text-slate-300 flex items-center gap-2">
+                                    <i class="fa-solid fa-sliders text-blue-400"></i>
+                                    <span>4. Pista Master Verificada (WAV 48kHz / Sin Saturación / Tono Exacto)</span>
+                                </span>
+                                <span class="text-[10px] font-mono text-emerald-400 font-bold">Sin Errores Técnicos ✓</span>
+                            </div>
+                        </div>
+
+                        <div class="p-3.5 rounded-xl bg-emerald-950/30 border border-emerald-500/40 flex items-center justify-between text-xs font-mono">
+                            <span class="text-slate-300 flex items-center gap-2">
+                                <i class="fa-solid fa-check-double text-emerald-400"></i>
+                                <span>Estatus del Expediente:</span>
+                            </span>
+                            <span class="font-bold text-emerald-300 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/30">
+                                100% CERRADO · CERO PENDIENTES
+                            </span>
+                        </div>
+                    </div>
+                `
+            },
+
+            boleto: {
+                badge: "Simulador Módulo 02 · Pase Familiar 3D",
+                title: "Boleto Digital Gratuito con Protección Anti-Estampidas",
+                desc: "Pase seguro numerado para los padres y representantes. Cada butaca está garantizada sin hacer cola bajo el sol.",
+                html: `
+                    <div class="max-w-md mx-auto rounded-3xl bg-gradient-to-b from-slate-900 via-slate-950 to-black border-2 border-emerald-500/60 p-6 relative overflow-hidden shadow-2xl">
+                        <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+                            <div class="flex items-center gap-2">
+                                <img src="https://i.postimg.cc/d0cgNdjq/logo-color.png" alt="Logo" class="h-6 w-auto object-contain">
+                                <span class="text-xs font-display font-bold text-white">Festival de la Voz Niño Simón</span>
+                            </div>
+                            <span class="text-[9px] font-mono uppercase bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded border border-emerald-500/30 font-bold">
+                                Pase Gratuito Oficial
+                            </span>
+                        </div>
+                        
+                        <div class="py-4 text-center">
+                            <span class="text-[10px] font-mono uppercase text-slate-400 block">Titular del Pase Familiar:</span>
+                            <h4 class="text-base font-display font-bold text-white mt-0.5">Familia Sánchez Márquez</h4>
+                            <span class="text-xs text-amber-300 font-mono block mt-1">Representante de: Camila V. Sánchez (Ganadora Edo. Lara)</span>
+                        </div>
+
+                        <div class="grid grid-cols-3 gap-2 p-3 rounded-2xl bg-black border border-slate-800 text-center text-xs font-mono my-2">
+                            <div>
+                                <span class="text-slate-500 text-[9px] block">Zona</span>
+                                <span class="font-bold text-emerald-400">Familia Preferencial</span>
+                            </div>
+                            <div>
+                                <span class="text-slate-500 text-[9px] block">Fila</span>
+                                <span class="font-bold text-white">Fila B</span>
+                            </div>
+                            <div>
+                                <span class="text-slate-500 text-[9px] block">Butaca</span>
+                                <span class="font-bold text-white">Asiento 14</span>
+                            </div>
+                        </div>
+
+                        <div class="pt-2 flex flex-col items-center">
+                            <div class="w-32 h-32 rounded-2xl bg-white p-2.5 flex items-center justify-center shadow-glow-emerald">
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=FESTIVAL-NINO-SIMON-PASE-FAMILIA-014" alt="QR Pase" class="w-full h-full">
+                            </div>
+                            <span class="text-[9px] font-mono text-slate-400 mt-2">Código Cifrado SHA-256 · Control de Aforo Único</span>
+                            
+                            <button onclick="playBeepSound('success'); alert('¡Pase guardado en el Wallet del teléfono con éxito!');" class="mt-4 px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-mono text-xs font-bold transition-all shadow-glow-emerald cursor-pointer">
+                                <i class="fa-solid fa-download mr-1"></i> Simular Descarga al Teléfono
+                            </button>
+                        </div>
+                    </div>
+                `
+            },
+
+            mapa: {
+                badge: "Simulador Módulo 03 · Seat Mapping Interactivo",
+                title: "Plano Interactivo de Asientos (Teatro Juares)",
+                desc: "Haga clic en cualquiera de las butacas de la sala para asignarla y comprobar cómo el sistema actualiza el aforo en tiempo real.",
+                html: `
+                    <div class="space-y-4">
+                        <div class="p-2.5 rounded-xl bg-amber-400/10 border border-amber-400/30 text-amber-300 text-center text-xs font-mono font-bold uppercase">
+                            Tarima & Escenario Principal
+                        </div>
+
+                        <div class="flex justify-center gap-4 text-[10px] font-mono text-slate-400">
+                            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-rose-500"></span> Familia Concursante</span>
+                            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-amber-500"></span> Mesa Directiva</span>
+                            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-blue-500"></span> Público Registrado</span>
+                        </div>
+
+                        <div class="space-y-2 py-2">
+                            <span class="text-[10px] font-mono uppercase text-slate-400 block text-center">Fila A (Familiares Directos):</span>
+                            <div class="flex justify-center gap-2 flex-wrap">
+                                <button onclick="selectSeat('A-01', 'Familia Concursante', 'rose')" class="w-8 h-8 rounded-lg bg-rose-500/30 hover:bg-rose-500 hover:scale-110 border border-rose-500/50 text-[10px] font-mono flex items-center justify-center text-white transition-all cursor-pointer">A1</button>
+                                <button onclick="selectSeat('A-02', 'Familia Concursante', 'rose')" class="w-8 h-8 rounded-lg bg-rose-500/30 hover:bg-rose-500 hover:scale-110 border border-rose-500/50 text-[10px] font-mono flex items-center justify-center text-white transition-all cursor-pointer">A2</button>
+                                <button onclick="selectSeat('A-03', 'Reservado Directiva', 'amber')" class="w-8 h-8 rounded-lg bg-amber-500/30 hover:bg-amber-500 hover:scale-110 border border-amber-500/50 text-[10px] font-mono flex items-center justify-center text-white transition-all cursor-pointer">A3</button>
+                                <button onclick="selectSeat('A-04', 'Reservado Directiva', 'amber')" class="w-8 h-8 rounded-lg bg-amber-500/30 hover:bg-amber-500 hover:scale-110 border border-amber-500/50 text-[10px] font-mono flex items-center justify-center text-white transition-all cursor-pointer">A4</button>
+                                <button onclick="selectSeat('A-05', 'Familia Concursante', 'rose')" class="w-8 h-8 rounded-lg bg-rose-500/30 hover:bg-rose-500 hover:scale-110 border border-rose-500/50 text-[10px] font-mono flex items-center justify-center text-white transition-all cursor-pointer">A5</button>
+                                <button onclick="selectSeat('A-06', 'Familia Concursante', 'rose')" class="w-8 h-8 rounded-lg bg-rose-500/30 hover:bg-rose-500 hover:scale-110 border border-rose-500/50 text-[10px] font-mono flex items-center justify-center text-white transition-all cursor-pointer">A6</button>
+                            </div>
+
+                            <span class="text-[10px] font-mono uppercase text-slate-400 block text-center pt-2">Fila B (Invitados Registrados):</span>
+                            <div class="flex justify-center gap-2 flex-wrap">
+                                <button onclick="selectSeat('B-01', 'Público Registrado', 'blue')" class="w-8 h-8 rounded-lg bg-blue-500/20 hover:bg-blue-500 hover:scale-110 border border-blue-500/40 text-[10px] font-mono flex items-center justify-center text-slate-300 transition-all cursor-pointer">B1</button>
+                                <button onclick="selectSeat('B-02', 'Público Registrado', 'blue')" class="w-8 h-8 rounded-lg bg-blue-500/20 hover:bg-blue-500 hover:scale-110 border border-blue-500/40 text-[10px] font-mono flex items-center justify-center text-slate-300 transition-all cursor-pointer">B2</button>
+                                <button onclick="selectSeat('B-03', 'Público Registrado', 'blue')" class="w-8 h-8 rounded-lg bg-blue-500/20 hover:bg-blue-500 hover:scale-110 border border-blue-500/40 text-[10px] font-mono flex items-center justify-center text-slate-300 transition-all cursor-pointer">B3</button>
+                                <button onclick="selectSeat('B-04', 'Público Registrado', 'blue')" class="w-8 h-8 rounded-lg bg-blue-500/20 hover:bg-blue-500 hover:scale-110 border border-blue-500/40 text-[10px] font-mono flex items-center justify-center text-slate-300 transition-all cursor-pointer">B4</button>
+                                <button onclick="selectSeat('B-05', 'Público Registrado', 'blue')" class="w-8 h-8 rounded-lg bg-blue-500/20 hover:bg-blue-500 hover:scale-110 border border-blue-500/40 text-[10px] font-mono flex items-center justify-center text-slate-300 transition-all cursor-pointer">B5</button>
+                                <button onclick="selectSeat('B-06', 'Público Registrado', 'blue')" class="w-8 h-8 rounded-lg bg-blue-500/20 hover:bg-blue-500 hover:scale-110 border border-blue-500/40 text-[10px] font-mono flex items-center justify-center text-slate-300 transition-all cursor-pointer">B6</button>
+                            </div>
+                        </div>
+
+                        <div id="seatDetailsOutput" class="p-3.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-300 text-center font-mono">
+                            Toque cualquier butaca arriba para verificar la reserva familiar.
+                        </div>
+                    </div>
+                `
+            },
+
+            checkin: {
+                badge: "Simulador Módulo 04 · Escáner Táctico en Puerta",
+                title: "Validación de Entrada con Sonido y Aforo en Vivo",
+                desc: "Presione el botón para simular el escaneo con la cámara del operador. Compruebe la rapidez de lectura y el control de capacidad.",
+                html: `
+                    <div class="max-w-sm mx-auto space-y-4">
+                        <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 text-center">
+                            <span class="text-[10px] font-mono uppercase text-slate-400 block mb-1">Capacidad Controlada en Puerta:</span>
+                            <div class="flex items-center justify-center gap-2">
+                                <span id="gateCounter" class="text-3xl font-mono font-bold text-emerald-400">412</span>
+                                <span class="text-xs text-slate-500">/ 650 butacas ocupadas</span>
+                            </div>
+                            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden mt-2">
+                                <div id="gateProgressBar" class="bg-emerald-400 h-full w-[63%] transition-all duration-500"></div>
+                            </div>
+                        </div>
+
+                        <div class="relative h-44 rounded-2xl bg-black border-2 border-emerald-500/50 flex flex-col items-center justify-center overflow-hidden p-4">
+                            <div class="absolute inset-x-6 h-0.5 bg-emerald-400 shadow-glow-emerald animate-laser"></div>
+                            <i class="fa-solid fa-qrcode text-6xl text-slate-600 mb-2"></i>
+                            <span class="text-[11px] font-mono text-emerald-300 font-bold bg-black/80 px-3 py-1 rounded-full border border-emerald-500/40">
+                                Lente Óptico Activo (0.4s)
+                            </span>
+                        </div>
+
+                        <button onclick="triggerScanSimulation()" class="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-mono text-xs font-bold uppercase transition-all shadow-glow-emerald flex items-center justify-center gap-2 cursor-pointer">
+                            <i class="fa-solid fa-camera"></i>
+                            <span>Simular Escaneo de Pase QR</span>
+                        </button>
+
+                        <div id="scanResultBox" class="p-3 rounded-xl bg-slate-900 border border-slate-800 text-xs text-center font-mono text-slate-400">
+                            Presione el botón para simular una lectura de pase.
+                        </div>
+                    </div>
+                `
+            },
+
+            votacion: {
+                badge: "Simulador Módulo 05 · Votación en Vivo",
+                title: "Votación Popular Blindada con Conteo en Directo",
+                desc: "Haga clic en uno de los niños finalistas para emitir un voto de prueba y ver cómo suben las barras de porcentaje para la pantalla gigante.",
+                html: `
+                    <div class="space-y-4">
+                        <span class="text-xs text-slate-400 block text-center font-light">
+                            Selección de la "Voz Popular Infantil del Año" (Haga clic para votar):
+                        </span>
+
+                        <div class="space-y-3">
+                            <div onclick="castVote(1)" class="p-3.5 rounded-2xl bg-slate-900 hover:border-amber-400 border border-slate-800 transition-all cursor-pointer group">
+                                <div class="flex items-center justify-between text-xs mb-1.5">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-6 h-6 rounded-full bg-amber-400/20 text-amber-300 flex items-center justify-center text-[10px] font-bold">1</div>
+                                        <span class="font-bold text-white group-hover:text-amber-300">Camila Sánchez (Edo. Lara)</span>
+                                    </div>
+                                    <span id="votePercent1" class="font-mono font-bold text-amber-300 text-sm">48%</span>
+                                </div>
+                                <div class="w-full bg-black h-2.5 rounded-full overflow-hidden">
+                                    <div id="voteBar1" class="bg-amber-400 h-full w-[48%] transition-all duration-700"></div>
+                                </div>
+                            </div>
+
+                            <div onclick="castVote(2)" class="p-3.5 rounded-2xl bg-slate-900 hover:border-amber-400 border border-slate-800 transition-all cursor-pointer group">
+                                <div class="flex items-center justify-between text-xs mb-1.5">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-6 h-6 rounded-full bg-blue-400/20 text-blue-300 flex items-center justify-center text-[10px] font-bold">2</div>
+                                        <span class="font-bold text-white group-hover:text-amber-300">Santiago Alarcón (Edo. Zulia)</span>
+                                    </div>
+                                    <span id="votePercent2" class="font-mono font-bold text-blue-300 text-sm">32%</span>
+                                </div>
+                                <div class="w-full bg-black h-2.5 rounded-full overflow-hidden">
+                                    <div id="voteBar2" class="bg-blue-400 h-full w-[32%] transition-all duration-700"></div>
+                                </div>
+                            </div>
+
+                            <div onclick="castVote(3)" class="p-3.5 rounded-2xl bg-slate-900 hover:border-amber-400 border border-slate-800 transition-all cursor-pointer group">
+                                <div class="flex items-center justify-between text-xs mb-1.5">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-6 h-6 rounded-full bg-rose-400/20 text-rose-300 flex items-center justify-center text-[10px] font-bold">3</div>
+                                        <span class="font-bold text-white group-hover:text-amber-300">Valeria Morillo (Edo. Miranda)</span>
+                                    </div>
+                                    <span id="votePercent3" class="font-mono font-bold text-rose-300 text-sm">20%</span>
+                                </div>
+                                <div class="w-full bg-black h-2.5 rounded-full overflow-hidden">
+                                    <div id="voteBar3" class="bg-rose-400 h-full w-[20%] transition-all duration-700"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="voteStatusFeedback" class="p-3 rounded-xl bg-black border border-amber-500/30 text-[11px] font-mono text-center text-amber-300">
+                            Toque a cualquiera de los niños para registrar un voto interactivo.
+                        </div>
+                    </div>
+                `
+            },
+
+            streaming: {
+                badge: "Simulador Módulo 06 · Control Multicámara",
+                title: "Conmutador Broadcast en Vivo (Teatro Juares)",
+                desc: "Haga clic en los botones de cámara para conmutar la toma en directo y escriba un mensaje de aliento en el chat familiar internacional.",
+                html: `
+                    <div class="space-y-4">
+                        <div class="relative aspect-video rounded-2xl bg-black border-2 border-slate-800 flex flex-col justify-between p-4 overflow-hidden shadow-2xl">
+                            <div class="flex items-center justify-between z-10">
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-600 text-white text-[10px] font-mono font-bold uppercase">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+                                    EN VIVO 4K
+                                </span>
+                                <span id="currentCamBadge" class="text-[10px] font-mono text-amber-300 bg-black/80 px-2.5 py-0.5 rounded border border-amber-400/30">
+                                    CÁMARA 1: MÁSTER ESCENARIO
+                                </span>
+                            </div>
+
+                            <div class="text-center my-auto">
+                                <div id="camIconContainer" class="w-12 h-12 rounded-full bg-white/10 mx-auto flex items-center justify-center text-amber-400 text-xl mb-2">
+                                    <i class="fa-solid fa-video"></i>
+                                </div>
+                                <span id="camCaptionText" class="text-sm font-display font-bold text-white block">
+                                    Toma Panorámica General del Escenario
+                                </span>
+                            </div>
+
+                            <div class="flex items-center justify-between z-10 text-[10px] font-mono text-slate-400">
+                                <span>Starlink Satelital · 60 FPS</span>
+                                <span>4.210 Familias Conectadas</span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-4 gap-2">
+                            <button onclick="switchLiveCam(1)" class="p-2 rounded-xl bg-amber-400/20 border border-amber-400/40 text-[10px] font-mono font-bold text-amber-300 text-center hover:bg-amber-400 hover:text-black transition-all cursor-pointer">
+                                Cam 1: General
+                            </button>
+                            <button onclick="switchLiveCam(2)" class="p-2 rounded-xl bg-slate-900 border border-slate-800 text-[10px] font-mono font-bold text-slate-300 text-center hover:bg-amber-400 hover:text-black transition-all cursor-pointer">
+                                Cam 2: Intérprete
+                            </button>
+                            <button onclick="switchLiveCam(3)" class="p-2 rounded-xl bg-slate-900 border border-slate-800 text-[10px] font-mono font-bold text-slate-300 text-center hover:bg-amber-400 hover:text-black transition-all cursor-pointer">
+                                Cam 3: Escenario
+                            </button>
+                            <button onclick="switchLiveCam(4)" class="p-2 rounded-xl bg-slate-900 border border-slate-800 text-[10px] font-mono font-bold text-slate-300 text-center hover:bg-amber-400 hover:text-black transition-all cursor-pointer">
+                                Cam 4: Público
+                            </button>
+                        </div>
+
+                        <div class="rounded-xl bg-slate-900 border border-slate-800 p-3 space-y-2">
+                            <span class="text-[10px] font-mono uppercase text-slate-400 block font-bold">Chat Familiar Internacional:</span>
+                            <div id="liveChatMessages" class="space-y-1 text-[11px] max-h-20 overflow-y-auto pr-1">
+                                <div><strong class="text-blue-300">Tía Carmen (Madrid):</strong> ¡Orgullo larense! Dios bendiga a todos los niños.</div>
+                                <div><strong class="text-rose-300">Familia Márquez (Santiago):</strong> Viendo la transmisión con toda la familia reunida.</div>
+                            </div>
+                            <div class="flex gap-2 pt-1">
+                                <input type="text" id="chatInputMessage" placeholder="Escriba un mensaje de apoyo..." class="flex-1 bg-black border border-slate-800 rounded-lg px-2.5 py-1 text-xs text-white focus:outline-none focus:border-amber-400">
+                                <button onclick="sendChatMessage()" class="px-3 py-1 rounded-lg bg-amber-400 text-black font-mono font-bold text-xs hover:bg-amber-300 transition-colors cursor-pointer">
+                                    Enviar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `
+            }
+        };
+
+        function openDemo(moduleId) {
+            const template = DEMO_TEMPLATES[moduleId];
+            if (!template) return;
+
+            document.getElementById('demoBadge').textContent = template.badge;
+            document.getElementById('demoTitle').textContent = template.title;
+            document.getElementById('demoDescription').textContent = template.desc;
+            document.getElementById('demoContent').innerHTML = template.html;
+
+            const modal = document.getElementById('modalDemoContainer');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeDemo() {
+            const modal = document.getElementById('modalDemoContainer');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function changeStateWinner(stateKey) {
+            playBeepSound('click');
+            const data = STATE_WINNERS[stateKey];
+            if (!data) return;
+            document.getElementById('stateWinnerName').textContent = data.name;
+            document.getElementById('stateWinnerSong').textContent = `Obra: ${data.song}`;
+            document.getElementById('stateWinnerRep').textContent = data.rep;
+        }
+
+        function selectSeat(seatCode, seatType, color) {
+            playBeepSound('click');
+            const output = document.getElementById('seatDetailsOutput');
+            output.innerHTML = `Butaca <strong class="text-white text-sm">${seatCode}</strong> seleccionada: <span class="text-${color}-400 font-bold">${seatType}</span> (Asignada en el padrón familiar).`;
+        }
+
+        let simulatedGuests = 412;
+        function triggerScanSimulation() {
+            playBeepSound('success');
+            simulatedGuests++;
+            const pct = Math.min(100, Math.round((simulatedGuests / 650) * 100));
+            document.getElementById('gateCounter').textContent = simulatedGuests;
+            document.getElementById('gateProgressBar').style.width = `${pct}%`;
+
+            const box = document.getElementById('scanResultBox');
+            box.className = "p-3 rounded-xl bg-emerald-950/40 border border-emerald-500/50 text-xs text-center font-mono text-emerald-300";
+            box.innerHTML = `<strong>✓ ACCESO CONCEDIDO (0.38s):</strong> Familia Sánchez Márquez · Butaca B-14 (Aforo: ${pct}%)`;
+        }
+
+        let voteCounts = { 1: 48, 2: 32, 3: 20 };
+        function castVote(candidateId) {
+            playBeepSound('success');
+            voteCounts[candidateId] += 3;
+            const total = voteCounts[1] + voteCounts[2] + voteCounts[3];
+            const p1 = Math.round((voteCounts[1] / total) * 100);
+            const p2 = Math.round((voteCounts[2] / total) * 100);
+            const p3 = 100 - p1 - p2;
+
+            document.getElementById('votePercent1').textContent = `${p1}%`;
+            document.getElementById('voteBar1').style.width = `${p1}%`;
+
+            document.getElementById('votePercent2').textContent = `${p2}%`;
+            document.getElementById('voteBar2').style.width = `${p2}%`;
+
+            document.getElementById('votePercent3').textContent = `${p3}%`;
+            document.getElementById('voteBar3').style.width = `${p3}%`;
+
+            const feedback = document.getElementById('voteStatusFeedback');
+            feedback.innerHTML = `<strong>✓ VOTO VERIFICADO POR OTP:</strong> Conteo actualizado y transmitido a la pantalla LED de tarima.`;
+        }
+
+        function switchLiveCam(camNum) {
+            playBeepSound('click');
+            const titles = {
+                1: { badge: "CÁMARA 1: MÁSTER ESCENARIO", text: "Toma Panorámica General del Escenario", icon: "fa-video" },
+                2: { badge: "CÁMARA 2: PRIMER PLANO", text: "Enfoque Emotivo del Rostro del Niño Intérprete", icon: "fa-user" },
+                3: { badge: "CÁMARA 3: STEADY EN TARIMA", text: "Cámara Móvil Dinámica al Borde del Escenario", icon: "fa-film" },
+                4: { badge: "CÁMARA 4: PÚBLICO & FAMILIAS", text: "Reacción y Emoción de los Padres y Jurado", icon: "fa-users" }
+            };
+
+            const data = titles[camNum];
+            document.getElementById('currentCamBadge').textContent = data.badge;
+            document.getElementById('camCaptionText').textContent = data.text;
+            document.getElementById('camIconContainer').innerHTML = `<i class="fa-solid ${data.icon}"></i>`;
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('chatInputMessage');
+            const msg = input.value.trim();
+            if (!msg) return;
+
+            playBeepSound('click');
+            const chatBox = document.getElementById('liveChatMessages');
+            const newDiv = document.createElement('div');
+            newDiv.innerHTML = `<strong class="text-amber-300">Usted (En vivo):</strong> ${msg}`;
+            chatBox.appendChild(newDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+            input.value = "";
+        }
+
+        function toggleModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (!modal) return;
+            if (modal.classList.contains('hidden')) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            } else {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            toggleModal('modalApproval');
+            alert(`Solicitud formal registrada para el Festival de la Voz Niño Simón.`);
+            e.target.reset();
+        }
+
+        // Inicializar en 16 participantes y asegurar vista arriba
+        document.addEventListener('DOMContentLoaded', () => {
+            window.scrollTo(0, 0);
+            setScale(16);
+        });
+    </script>
+</body>
+</html>
