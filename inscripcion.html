@@ -90,19 +90,19 @@
       <source src="TEATROHORIZONTAL.mp4" type="video/mp4">
     </video>
 
-    <!-- Capa cinemática para alto contraste de lectura -->
-    <div class="absolute inset-0 bg-[#0b0d12]/75 backdrop-blur-[2px]"></div>
+    <!-- Capa cinemática base para alto contraste del formulario -->
+    <div class="absolute inset-0 bg-[#0b0d12]/60 backdrop-blur-[1px]"></div>
   </div>
 
-  <!-- ================= TAPA / PANTALLA DE INICIO (HERO) ================= -->
-  <section id="portadaInicio" class="fixed inset-0 z-50 flex flex-col items-center justify-between px-6 py-10 transition-all duration-700 overflow-y-auto">
+  <!-- ================= TAPA / PANTALLA DE INICIO (CON CAPA DE OPACIDAD Y DESENFOQUE) ================= -->
+  <section id="portadaInicio" class="fixed inset-0 z-50 flex flex-col items-center justify-between px-6 py-10 transition-all duration-700 ease-out overflow-y-auto bg-[#0b0d12]/90 backdrop-blur-md">
     <div></div>
 
     <div class="max-w-md w-full text-center flex flex-col items-center my-auto">
       
       <!-- Logo institucional con sombra flotante -->
       <div class="w-44 h-44 md:w-52 md:h-52 flex items-center justify-center mb-6 logo-intro">
-        <img src="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png" alt="Festival Niño Simón" class="w-full h-full object-contain filter drop-shadow-[0_16px_32px_rgba(0,0,0,0.4)]">
+        <img src="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png" alt="Festival Niño Simón" class="w-full h-full object-contain filter drop-shadow-[0_16px_32px_rgba(0,0,0,0.5)]">
       </div>
 
       <div class="content-intro flex flex-col items-center w-full">
@@ -128,7 +128,7 @@
           Portal táctico de acreditación federativa, emisión de pases QR y control técnico de audio máster.
         </p>
 
-        <button onclick="entrarAlPortal()" class="group relative inline-flex items-center justify-center space-x-2 bg-[#0071e3] hover:bg-[#0077ed] active:bg-[#0062c4] text-white px-8 py-3.5 rounded-2xl text-sm font-medium transition duration-200 shadow-[0_8px_25px_rgba(0,113,227,0.45)]">
+        <button onclick="entrarAlPortal()" class="group relative inline-flex items-center justify-center space-x-2 bg-[#0071e3] hover:bg-[#0077ed] active:bg-[#0062c4] text-white px-8 py-3.5 rounded-2xl text-sm font-medium transition duration-200 shadow-[0_8px_25px_rgba(0,113,227,0.45)] cursor-pointer">
           <span>Ingresar al Expediente</span>
           <svg class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -394,7 +394,7 @@
 
       <!-- BOTÓN DE ENVÍO -->
       <div class="pt-2">
-        <button type="submit" id="btnSubmit" class="w-full bg-[#0071e3] hover:bg-[#0077ed] active:bg-[#0062c4] text-white font-medium py-4 px-6 rounded-2xl transition duration-200 shadow-xl text-sm">
+        <button type="submit" id="btnSubmit" class="w-full bg-[#0071e3] hover:bg-[#0077ed] active:bg-[#0062c4] text-white font-medium py-4 px-6 rounded-2xl transition duration-200 shadow-xl text-sm cursor-pointer">
           Registrar Expediente & Generar Pase Oficial
         </button>
       </div>
@@ -460,7 +460,7 @@
       </p>
 
       <div class="pt-1">
-        <button id="btnAceptarModal" class="w-full inline-flex items-center justify-center space-x-2 bg-[#25d366] hover:bg-[#20ba59] active:bg-[#1caa4f] text-white font-medium py-3.5 px-6 rounded-2xl text-xs transition duration-200 shadow-md">
+        <button id="btnAceptarModal" class="w-full inline-flex items-center justify-center space-x-2 bg-[#25d366] hover:bg-[#20ba59] active:bg-[#1caa4f] text-white font-medium py-3.5 px-6 rounded-2xl text-xs transition duration-200 shadow-md cursor-pointer">
           <span>Notificar por WhatsApp</span>
           <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
         </button>
@@ -481,11 +481,14 @@
 
     function entrarAlPortal() {
       const portada = document.getElementById('portadaInicio');
+      // Transición suave: se desvanece la opacidad y el desenfoque
       portada.style.opacity = '0';
-      portada.style.transform = 'translateY(-12px)';
+      portada.style.backdropFilter = 'blur(0px)';
+      portada.style.webkitBackdropFilter = 'blur(0px)';
+      portada.style.transform = 'translateY(-16px) scale(0.99)';
       setTimeout(() => {
         portada.style.display = 'none';
-      }, 600);
+      }, 700);
     }
 
     // Código Único de Pase para Puerta y QR
@@ -550,21 +553,14 @@
           const sampleRate = view.getUint32(24, true);
 
           if (sampleRate === 48000) {
-            hiddenInput.value = `Pista ${trackNumero}: ÓPTIMO WAV 48 kHz (${file.name})`;
-            caja.classList.add('bg-[#edfcf2]', 'text-[#15803d]', 'border', 'border-[#bbf7d0]');
-            caja.innerHTML = `<strong>Pista ${trackNumero} Óptima:</strong> Archivo WAV a 48.000 Hz detectado (${file.name}). Cumple con los requerimientos técnicos de la consola de sala.`;
+            hiddenInput.value = `Pista ${trackNumero}: ÓPTIMO WAV 48 kHz (${file.name})`; caja.classList.add('bg-[#edfcf2]', 'text-[#15803d]', 'border', 'border-[#bbf7d0]'); caja.innerHTML = `<strong>Pista ${trackNumero} Óptima:</strong> Archivo WAV a 48.000 Hz detectado (${file.name}). Cumple con los requerimientos técnicos de la consola de sala.`;
           } else {
             hiddenInput.value = `Pista ${trackNumero}: WAV a ${sampleRate} Hz (${file.name})`;
             caja.classList.add('bg-[#fffbeb]', 'text-[#b45309]', 'border', 'border-[#fef3c7]');
-            caja.innerHTML = `<strong>Aviso Pista ${trackNumero}:</strong> Archivo WAV a ${sampleRate} Hz detectado. Se acepta para el registro, pero el equipo técnico coordinará contigo para optimizarlo.`;
+            caja.innerHTML = `<strong>Aviso Pista ${trackNumero}:</strong> Archivo WAV a${sampleRate} Hz detectado. Se acepta para el registro, pero el equipo técnico coordinará contigo para optimizarlo.`;
           }
         } catch (err) {
-          hiddenInput.value = `Pista ${trackNumero}: WAV (${file.name})`;
-          caja.classList.add('bg-[#edfcf2]', 'text-[#15803d]', 'border', 'border-[#bbf7d0]');
-          caja.innerHTML = `<strong>Pista ${trackNumero}:</strong> Archivo WAV cargado correctamente (${file.name}).`;
-        }
-      } else {
-        hiddenInput.value = `Pista ${trackNumero}: MP3 / Audio Estándar (${file.name})`;
+          hiddenInput.value = `Pista ${trackNumero}: WAV (${file.name})`; caja.classList.add('bg-[#edfcf2]', 'text-[#15803d]', 'border', 'border-[#bbf7d0]'); caja.innerHTML = `<strong>Pista ${trackNumero}:</strong> Archivo WAV cargado correctamente (${file.name}).`; } } else { hiddenInput.value = `Pista ${trackNumero}: MP3 / Audio Estándar (${file.name})`;
         caja.classList.add('bg-[#fffbeb]', 'text-[#b45309]', 'border', 'border-[#fef3c7]');
         caja.innerHTML = `<strong>Aviso Pista ${trackNumero}:</strong> Has cargado un archivo en MP3 (${file.name}). El sistema lo acepta para tu inscripción; si dispones del máster en WAV a 48 kHz podrás entregarlo en cabina.`;
       }
@@ -610,112 +606,5 @@
       document.getElementById('campoIdPase').value = idPase;
 
       // Código QR generado para escanear en puerta del teatro
-      const qrDataText = encodeURIComponent(`PASE:${idPase}|DELEGACION:${estado}|NINO:${nombre}|REP:${representante}|CI:${cedula}|TEL:${telefonoLimpio}`);
-      const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${qrDataText}&format=svg`;
-
-      const formData = new FormData(form);
-
-      // Objeto estructurado enviado a Google Sheets (Excel en tiempo real)
-      const payloadBaseDatos = {
-        idPase: idPase,
-        fecha: new Date().toLocaleString("es-VE", { timeZone: "America/Caracas" }),
-        estado: estado,
-        participante: nombre,
-        edad: edad,
-        representante: representante,
-        cedula: cedula,
-        telefonoWhatsApp: telefonoLimpio,
-        linkMarketingWhatsApp: `https://wa.me/${telefonoLimpio}`,
-        tema1: tema1,
-        tema2: tema2 || "N/A",
-        tema3: tema3 || "N/A",
-        estatus: "Acreditado"
-      };
-
-      try {
-        // 1. Envío de archivos pesados a Formspree
-        const formspreePromise = fetch(form.action, {
-          method: "POST",
-          body: formData,
-          headers: { 'Accept': 'application/json' }
-        });
-
-        // 2. Envío a Google Sheets (Apps Script Webhook)
-        const sheetsPromise = fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
-          method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payloadBaseDatos)
-        }).catch(err => console.warn("Aviso de sincronización Sheets:", err));
-
-        // Respaldo de seguridad en almacenamiento local
-        try {
-          const registrosLocales = JSON.parse(localStorage.getItem('fnns_expedientes') || "[]");
-          registrosLocales.push(payloadBaseDatos);
-          localStorage.setItem('fnns_expedientes', JSON.stringify(registrosLocales));
-        } catch(e) {}
-
-        const [response] = await Promise.all([formspreePromise, sheetsPromise]);
-
-        if (response.ok) {
-          document.getElementById('resumenCodigoPase').innerText = idPase;
-          document.getElementById('imagenQrPase').src = qrImageUrl;
-          document.getElementById('resumenEstado').innerText = estado;
-          document.getElementById('resumenParticipante').innerText = nombre;
-          document.getElementById('resumenRepresentante').innerText = representante;
-
-          const resumenTemas = document.getElementById('resumenTemas');
-          let temasHtml = `<div>1. ${tema1} (Principal)</div>`;
-          let textoWhatsAppPistas = `🎵 *Pista 1:* "${tema1}" (Principal)`;
-
-          if (tema2) {
-            temasHtml += `<div>2. ${tema2} (Alternativa)</div>`;
-            textoWhatsAppPistas += `\n🎵 *Pista 2:* "${tema2}" (Alternativa)`;
-          }
-          if (tema3) {
-            temasHtml += `<div>3. ${tema3} (Respaldo)</div>`;
-            textoWhatsAppPistas += `\n🎵 *Pista 3:* "${tema3}" (Respaldo)`;
-          }
-
-          resumenTemas.innerHTML = temasHtml;
-
-          const textoWhatsApp = `👋 ¡Hola! He completado la carga del expediente oficial para el *Festival de la Voz Niño Simón 2026*:\n\n` +
-            `🎟️ *Pase Oficial:* ${idPase}\n` +
-            `📍 *Delegación:* ${estado}\n` +
-            `👤 *Participante:* ${nombre} (${edad} años)\n` +
-            `${textoWhatsAppPistas}\n` +
-            `👨‍👦 *Representante:* ${representante} (CI: ${cedula})\n` +
-            `📞 *Contacto:* ${telefonoLimpio}\n\n` +
-            `✅ Documentos LOPNNA, constancia médica y pistas consignadas. Confirmado para el Teatro Juares.`;
-
-          enlaceWhatsAppFinal = `https://wa.me/${NUMERO_WHATSAPP_FESTIVAL}?text=${encodeURIComponent(textoWhatsApp)}`;
-
-          form.reset();
-          document.getElementById('cajaAudio1').classList.add('hidden');
-          document.getElementById('cajaAudio2').classList.add('hidden');
-          document.getElementById('cajaAudio3').classList.add('hidden');
-          document.getElementById('statusLopnna').classList.add('hidden');
-          document.getElementById('statusMedica').classList.add('hidden');
-          modal.classList.remove('hidden');
-        } else {
-          const data = await response.json();
-          throw new Error(data.error || "Ocurrió un error al procesar los archivos.");
-        }
-      } catch (err) {
-        cajaError.innerHTML = `<strong>Error en la entrega:</strong> ${err.message}. Por favor verifica tu red e inténtalo de nuevo.`;
-        cajaError.classList.remove('hidden');
-      } finally {
-        btn.disabled = false;
-        btn.innerText = "Registrar Expediente & Generar Pase Oficial";
-      }
-    });
-
-    btnAceptarModal.addEventListener('click', function() {
-      modal.classList.add('hidden');
-      if (enlaceWhatsAppFinal) {
-        window.open(enlaceWhatsAppFinal, '_blank');
-      }
-    });
-  </script>
-</body>
-</html>
+      const qrDataText = encodeURIComponent(`PASE:${idPase}\vert{}DELEGACION:${estado}|NINO:${nombre}\vert{}REP:${representante}|CI:${cedula}\vert{}TEL:${telefonoLimpio}`);
+      const qrImageUrl = `
