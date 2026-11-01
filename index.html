@@ -32,7 +32,7 @@
       font-variant-numeric: tabular-nums;
     }
 
-    /* Sombras de proyección cinematográfica para alto contraste sobre el video */
+    /* Sombras de proyección cinematográfica para alto contraste */
     .film-shadow {
       text-shadow: 0 4px 24px rgba(6, 22, 45, 0.75), 0 1px 4px rgba(0, 0, 0, 0.6);
     }
@@ -50,7 +50,7 @@
       animation: pulseSoft 2s ease-in-out infinite;
     }
 
-    /* Video fijo en el fondo */
+    /* Video de fondo a pantalla completa */
     .video-bg {
       position: fixed;
       top: 50%;
@@ -64,18 +64,39 @@
       z-index: 0;
       pointer-events: none;
     }
+
+    /* Alternancia automática según la orientación del dispositivo */
+    .video-portrait {
+      display: block;
+    }
+    .video-landscape {
+      display: none;
+    }
+
+    @media (orientation: landscape) {
+      .video-portrait {
+        display: none !important;
+      }
+      .video-landscape {
+        display: block !important;
+      }
+    }
   </style>
 </head>
 <body class="min-h-full flex flex-col justify-between bg-[#061528] text-white antialiased relative overflow-x-hidden selection:bg-white selection:text-black">
 
-  <!-- ================= VIDEO DE FONDO: TEATRO.mp4 ================= -->
-  <video class="video-bg" autoplay muted loop playsinline preload="auto">
-    <!-- Si colocas el video en la raíz del repositorio de GitHub Pages usa src="TEATRO.mp4".
-         Si usas la URL cruda directa de GitHub, puedes reemplazar el src por esa ruta completa. -->
+  <!-- ================= VIDEOS DE FONDO ADAPTATIVOS ================= -->
+  <!-- 1. Video Vertical para móviles y pantallas en orientación vertical -->
+  <video class="video-bg video-portrait" autoplay muted loop playsinline preload="auto">
     <source src="TEATRO.mp4" type="video/mp4">
   </video>
 
-  <!-- Viñeta cinematográfica para garantizar contraste sobre el cielo del video -->
+  <!-- 2. Video Horizontal para pantallas panorámicas, laptops, PC y móviles girados -->
+  <video class="video-bg video-landscape" autoplay muted loop playsinline preload="auto">
+    <source src="TEATROHORIZONTAL.mp4" type="video/mp4">
+  </video>
+
+  <!-- Viñeta cinematográfica para contraste del texto en el cielo -->
   <div class="fixed inset-0 z-[1] bg-gradient-to-b from-[#061528]/65 via-[#061528]/25 to-[#061528]/15 pointer-events-none"></div>
 
   <!-- ================= IDENTIFICADOR SUPERIOR ================= -->
@@ -177,7 +198,6 @@
 
   <!-- ================= LÓGICA DEL CONTADOR REGRESIVO ================= -->
   <script>
-    // Fecha de inicio: 22 de Noviembre de 2026 a las 08:00 AM (Zona Horaria VET UTC-4)
     const fechaFestival = new Date("2026-11-22T08:00:00-04:00").getTime();
 
     const spanDias = document.getElementById("dias");
