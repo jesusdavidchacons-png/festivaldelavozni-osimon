@@ -76,46 +76,48 @@
     }
   </style>
 </head>
-<body class="min-h-full flex flex-col justify-between text-[#1d1d1f] antialiased relative selection:bg-[#0071e3] selection:text-white">
+<body class="min-h-full flex flex-col justify-between text-[#1d1d1f] antialiased relative selection:bg-[#0071e3] selection:text-white bg-[#0b0d12]">
 
   <!-- ================= FONDO DE VIDEO RESPONSIVE (TEATRO JUARES) ================= -->
+  <!-- Permanece detrás de la web y se revela al entrar al portal -->
   <div class="fixed inset-0 w-full h-full -z-20 overflow-hidden pointer-events-none bg-[#0b0d12]">
-    <!-- Versión Vertical: Smartphones en vertical -->
+    <!-- Versión Vertical: Smartphones en posición vertical -->
     <video autoplay muted loop playsinline class="block sm:hidden w-full h-full object-cover">
       <source src="TEATRO.mp4" type="video/mp4">
     </video>
 
-    <!-- Versión Horizontal: Pantallas de escritorio, laptops y tablets apaisadas -->
+    <!-- Versión Horizontal: Laptops, computadoras y tablets apaisadas -->
     <video autoplay muted loop playsinline class="hidden sm:block w-full h-full object-cover">
       <source src="TEATROHORIZONTAL.mp4" type="video/mp4">
     </video>
 
-    <!-- Capa cinemática base para alto contraste del formulario -->
-    <div class="absolute inset-0 bg-[#0b0d12]/60 backdrop-blur-[1px]"></div>
+    <!-- Capa cinemática para contraste de lectura del formulario -->
+    <div class="absolute inset-0 bg-[#0b0d12]/65 backdrop-blur-[1px]"></div>
   </div>
 
-  <!-- ================= TAPA / PANTALLA DE INICIO (CON CAPA DE OPACIDAD Y DESENFOQUE) ================= -->
-  <section id="portadaInicio" class="fixed inset-0 z-50 flex flex-col items-center justify-between px-6 py-10 transition-all duration-700 ease-out overflow-y-auto bg-[#0b0d12]/90 backdrop-blur-md">
+  <!-- ================= PORTADA DE INICIO EN FONDO BLANCO ================= -->
+  <section id="portadaInicio" class="fixed inset-0 z-50 flex flex-col items-center justify-between px-6 py-10 transition-all duration-700 ease-out overflow-y-auto bg-[#fbfbfd]">
     <div></div>
 
     <div class="max-w-md w-full text-center flex flex-col items-center my-auto">
       
-      <!-- Logo institucional con sombra flotante -->
+      <!-- Logo institucional con relieve y sombra -->
       <div class="w-44 h-44 md:w-52 md:h-52 flex items-center justify-center mb-6 logo-intro">
-        <img src="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png" alt="Festival Niño Simón" class="w-full h-full object-contain filter drop-shadow-[0_16px_32px_rgba(0,0,0,0.5)]">
+        <img src="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png" alt="Festival Niño Simón" class="w-full h-full object-contain filter drop-shadow-[0_16px_32px_rgba(0,0,0,0.14)]">
       </div>
 
       <div class="content-intro flex flex-col items-center w-full">
-        <div class="inline-flex items-center space-x-2 bg-white/90 backdrop-blur-md border border-white/40 px-3.5 py-1 rounded-full shadow-lg mb-3">
+        <div class="inline-flex items-center space-x-2 bg-white border border-[#d2d2d7]/70 px-3.5 py-1 rounded-full shadow-sm mb-3">
           <span class="w-2 h-2 rounded-full bg-[#34c759] animate-pulse"></span>
-          <span class="text-[11px] font-medium tracking-wide uppercase text-[#515154]">Fundación Nacional El Niño Simón</span>
+          <span class="text-[11px] font-semibold tracking-wide uppercase text-[#515154]">Fundación Nacional El Niño Simón</span>
         </div>
 
-        <h1 class="text-3xl md:text-4xl font-semibold tracking-tight text-white mb-3 leading-tight drop-shadow-md">
-          Festival de la Voz<br><span class="text-[#38a0ff]">Niño Simón 2026</span>
+        <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-[#1d1d1f] mb-3 leading-tight">
+          Festival de la Voz<br><span class="text-[#0071e3]">Niño Simón 2026</span>
         </h1>
         
-        <div class="bg-white/85 backdrop-blur-xl border border-white/60 rounded-3xl p-6 mb-6 shadow-2xl text-left space-y-2.5">
+        <!-- Tarjeta informativa institucional -->
+        <div class="bg-white border border-[#d2d2d7]/60 rounded-3xl p-6 mb-6 shadow-xl text-left space-y-2.5">
           <p class="text-xs text-[#333336] leading-relaxed">
             Iniciativa organizada por la <strong>Fundación Nacional El Niño Simón</strong> para celebrar y enaltecer el talento, la identidad folclórica y las raíces de nuestras niñas y niños de toda Venezuela.
           </p>
@@ -124,28 +126,29 @@
           </p>
         </div>
 
-        <p class="text-xs text-slate-200 leading-relaxed max-w-sm mb-6 font-normal drop-shadow">
+        <p class="text-xs text-[#6e6e73] leading-relaxed max-w-sm mb-6 font-normal">
           Portal táctico de acreditación federativa, emisión de pases QR y control técnico de audio máster.
         </p>
 
-        <button onclick="entrarAlPortal()" class="group relative inline-flex items-center justify-center space-x-2 bg-[#0071e3] hover:bg-[#0077ed] active:bg-[#0062c4] text-white px-8 py-3.5 rounded-2xl text-sm font-medium transition duration-200 shadow-[0_8px_25px_rgba(0,113,227,0.45)] cursor-pointer">
+        <!-- Botón de Entrada: Desvanece la portada blanca y activa la vista con el video de fondo -->
+        <button onclick="entrarAlPortal()" class="group relative inline-flex items-center justify-center space-x-2 bg-[#0071e3] hover:bg-[#0077ed] active:bg-[#0062c4] text-white px-8 py-3.5 rounded-2xl text-sm font-semibold transition duration-200 shadow-[0_8px_25px_rgba(0,113,227,0.35)] cursor-pointer">
           <span>Ingresar al Expediente</span>
           <svg class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
           </svg>
         </button>
 
-        <span class="text-[11px] text-slate-300/80 mt-3">Recepción abierta para las 35 delegaciones</span>
+        <span class="text-[11px] text-[#86868b] mt-3">Recepción abierta para las delegaciones</span>
       </div>
     </div>
 
-    <div class="text-[11px] text-slate-300/70 tracking-wider uppercase mt-6 text-center">
+    <div class="text-[11px] text-[#86868b] tracking-wider uppercase mt-6 text-center">
       Fundación Nacional El Niño Simón &copy; 2026
     </div>
   </section>
 
   <!-- ================= BARRA SUPERIOR FIJA ================= -->
-  <header class="w-full bg-white/80 backdrop-blur-xl border-b border-white/40 sticky top-0 z-20 shadow-sm">
+  <header class="w-full bg-white/85 backdrop-blur-xl border-b border-white/40 sticky top-0 z-20 shadow-sm">
     <div class="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
       <div class="flex items-center space-x-3">
         <img src="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png" alt="Festival Niño Simón" class="h-9 w-auto object-contain">
@@ -158,12 +161,12 @@
     </div>
   </header>
 
-  <!-- ================= FORMULARIO PRINCIPAL ================= -->
+  <!-- ================= FORMULARIO PRINCIPAL (SOBRE EL VIDEO DEL TEATRO) ================= -->
   <main class="max-w-2xl w-full mx-auto px-6 py-10 flex-1 relative z-10">
     
     <div class="text-center mb-8">
       <span class="inline-block bg-white/20 backdrop-blur-md text-white border border-white/30 text-[11px] font-semibold uppercase px-3 py-1 rounded-full mb-2">Teatro Juares — Barquisimeto</span>
-      <h1 class="text-3xl font-semibold tracking-tight text-white drop-shadow">Carga de Expediente Oficial</h1>
+      <h1 class="text-3xl font-bold tracking-tight text-white drop-shadow-md">Carga de Expediente Oficial</h1>
       <p class="text-xs md:text-sm text-slate-200 mt-1 font-normal drop-shadow">
         Recepción de recaudos oficiales para delegaciones y participantes.
       </p>
@@ -481,11 +484,10 @@
 
     function entrarAlPortal() {
       const portada = document.getElementById('portadaInicio');
-      // Transición suave: se desvanece la opacidad y el desenfoque
+      // Desvanece la portada blanca suavemente revelando el video del teatro
       portada.style.opacity = '0';
-      portada.style.backdropFilter = 'blur(0px)';
-      portada.style.webkitBackdropFilter = 'blur(0px)';
       portada.style.transform = 'translateY(-16px) scale(0.99)';
+      portada.style.pointerEvents = 'none';
       setTimeout(() => {
         portada.style.display = 'none';
       }, 700);
@@ -553,14 +555,21 @@
           const sampleRate = view.getUint32(24, true);
 
           if (sampleRate === 48000) {
-            hiddenInput.value = `Pista ${trackNumero}: ÓPTIMO WAV 48 kHz (${file.name})`; caja.classList.add('bg-[#edfcf2]', 'text-[#15803d]', 'border', 'border-[#bbf7d0]'); caja.innerHTML = `<strong>Pista ${trackNumero} Óptima:</strong> Archivo WAV a 48.000 Hz detectado (${file.name}). Cumple con los requerimientos técnicos de la consola de sala.`;
+            hiddenInput.value = `Pista ${trackNumero}: ÓPTIMO WAV 48 kHz (${file.name})`;
+            caja.classList.add('bg-[#edfcf2]', 'text-[#15803d]', 'border', 'border-[#bbf7d0]');
+            caja.innerHTML = `<strong>Pista ${trackNumero} Óptima:</strong> Archivo WAV a 48.000 Hz detectado (${file.name}). Cumple con los requerimientos técnicos de la consola de sala.`;
           } else {
             hiddenInput.value = `Pista ${trackNumero}: WAV a ${sampleRate} Hz (${file.name})`;
             caja.classList.add('bg-[#fffbeb]', 'text-[#b45309]', 'border', 'border-[#fef3c7]');
-            caja.innerHTML = `<strong>Aviso Pista ${trackNumero}:</strong> Archivo WAV a${sampleRate} Hz detectado. Se acepta para el registro, pero el equipo técnico coordinará contigo para optimizarlo.`;
+            caja.innerHTML = `<strong>Aviso Pista ${trackNumero}:</strong> Archivo WAV a ${sampleRate} Hz detectado. Se acepta para el registro, pero el equipo técnico coordinará contigo para optimizarlo.`;
           }
         } catch (err) {
-          hiddenInput.value = `Pista ${trackNumero}: WAV (${file.name})`; caja.classList.add('bg-[#edfcf2]', 'text-[#15803d]', 'border', 'border-[#bbf7d0]'); caja.innerHTML = `<strong>Pista ${trackNumero}:</strong> Archivo WAV cargado correctamente (${file.name}).`; } } else { hiddenInput.value = `Pista ${trackNumero}: MP3 / Audio Estándar (${file.name})`;
+          hiddenInput.value = `Pista ${trackNumero}: WAV (${file.name})`;
+          caja.classList.add('bg-[#edfcf2]', 'text-[#15803d]', 'border', 'border-[#bbf7d0]');
+          caja.innerHTML = `<strong>Pista ${trackNumero}:</strong> Archivo WAV cargado correctamente (${file.name}).`;
+        }
+      } else {
+        hiddenInput.value = `Pista ${trackNumero}: MP3 / Audio Estándar (${file.name})`;
         caja.classList.add('bg-[#fffbeb]', 'text-[#b45309]', 'border', 'border-[#fef3c7]');
         caja.innerHTML = `<strong>Aviso Pista ${trackNumero}:</strong> Has cargado un archivo en MP3 (${file.name}). El sistema lo acepta para tu inscripción; si dispones del máster en WAV a 48 kHz podrás entregarlo en cabina.`;
       }
@@ -606,5 +615,112 @@
       document.getElementById('campoIdPase').value = idPase;
 
       // Código QR generado para escanear en puerta del teatro
-      const qrDataText = encodeURIComponent(`PASE:${idPase}\vert{}DELEGACION:${estado}|NINO:${nombre}\vert{}REP:${representante}|CI:${cedula}\vert{}TEL:${telefonoLimpio}`);
-      const qrImageUrl = `
+      const qrDataText = encodeURIComponent(`PASE:${idPase}|DELEGACION:${estado}|NINO:${nombre}|REP:${representante}|CI:${cedula}|TEL:${telefonoLimpio}`);
+      const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${qrDataText}&format=svg`;
+
+      const formData = new FormData(form);
+
+      // Objeto estructurado enviado a Google Sheets
+      const payloadBaseDatos = {
+        idPase: idPase,
+        fecha: new Date().toLocaleString("es-VE", { timeZone: "America/Caracas" }),
+        estado: estado,
+        participante: nombre,
+        edad: edad,
+        representante: representante,
+        cedula: cedula,
+        telefonoWhatsApp: telefonoLimpio,
+        linkMarketingWhatsApp: `https://wa.me/${telefonoLimpio}`,
+        tema1: tema1,
+        tema2: tema2 || "N/A",
+        tema3: tema3 || "N/A",
+        estatus: "Acreditado"
+      };
+
+      try {
+        // 1. Envío de archivos a Formspree
+        const formspreePromise = fetch(form.action, {
+          method: "POST",
+          body: formData,
+          headers: { 'Accept': 'application/json' }
+        });
+
+        // 2. Envío a Google Sheets (Apps Script Webhook)
+        const sheetsPromise = fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payloadBaseDatos)
+        }).catch(err => console.warn("Aviso de sincronización Sheets:", err));
+
+        // Respaldo de seguridad local
+        try {
+          const registrosLocales = JSON.parse(localStorage.getItem('fnns_expedientes') || "[]");
+          registrosLocales.push(payloadBaseDatos);
+          localStorage.setItem('fnns_expedientes', JSON.stringify(registrosLocales));
+        } catch(e) {}
+
+        const [response] = await Promise.all([formspreePromise, sheetsPromise]);
+
+        if (response.ok) {
+          document.getElementById('resumenCodigoPase').innerText = idPase;
+          document.getElementById('imagenQrPase').src = qrImageUrl;
+          document.getElementById('resumenEstado').innerText = estado;
+          document.getElementById('resumenParticipante').innerText = nombre;
+          document.getElementById('resumenRepresentante').innerText = representante;
+
+          const resumenTemas = document.getElementById('resumenTemas');
+          let temasHtml = `<div>1. ${tema1} (Principal)</div>`;
+          let textoWhatsAppPistas = `🎵 *Pista 1:* "${tema1}" (Principal)`;
+
+          if (tema2) {
+            temasHtml += `<div>2. ${tema2} (Alternativa)</div>`;
+            textoWhatsAppPistas += `\n🎵 *Pista 2:* "${tema2}" (Alternativa)`;
+          }
+          if (tema3) {
+            temasHtml += `<div>3. ${tema3} (Respaldo)</div>`;
+            textoWhatsAppPistas += `\n🎵 *Pista 3:* "${tema3}" (Respaldo)`;
+          }
+
+          resumenTemas.innerHTML = temasHtml;
+
+          const textoWhatsApp = `👋 ¡Hola! He completado la carga del expediente oficial para el *Festival de la Voz Niño Simón 2026*:\n\n` +
+            `🎟️ *Pase Oficial:* ${idPase}\n` +
+            `📍 *Delegación:* ${estado}\n` +
+            `👤 *Participante:* ${nombre} (${edad} años)\n` +
+            `${textoWhatsAppPistas}\n` +
+            `👨‍👦 *Representante:* ${representante} (CI: ${cedula})\n` +
+            `📞 *Contacto:* ${telefonoLimpio}\n\n` +
+            `✅ Documentos LOPNNA, constancia médica y pistas consignadas. Confirmado para el Teatro Juares.`;
+
+          enlaceWhatsAppFinal = `https://wa.me/${NUMERO_WHATSAPP_FESTIVAL}?text=${encodeURIComponent(textoWhatsApp)}`;
+
+          form.reset();
+          document.getElementById('cajaAudio1').classList.add('hidden');
+          document.getElementById('cajaAudio2').classList.add('hidden');
+          document.getElementById('cajaAudio3').classList.add('hidden');
+          document.getElementById('statusLopnna').classList.add('hidden');
+          document.getElementById('statusMedica').classList.add('hidden');
+          modal.classList.remove('hidden');
+        } else {
+          const data = await response.json();
+          throw new Error(data.error || "Ocurrió un error al procesar los archivos.");
+        }
+      } catch (err) {
+        cajaError.innerHTML = `<strong>Error en la entrega:</strong> ${err.message}. Por favor verifica tu red e inténtalo de nuevo.`;
+        cajaError.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+        btn.innerText = "Registrar Expediente & Generar Pase Oficial";
+      }
+    });
+
+    btnAceptarModal.addEventListener('click', function() {
+      modal.classList.add('hidden');
+      if (enlaceWhatsAppFinal) {
+        window.open(enlaceWhatsAppFinal, '_blank');
+      }
+    });
+  </script>
+</body>
+</html>
