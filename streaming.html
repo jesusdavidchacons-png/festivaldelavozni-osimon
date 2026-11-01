@@ -6,7 +6,7 @@
   <title>Transmisión Oficial — Festival de la Voz Niño Simón 2026</title>
 
   <meta name="title" content="Festival de la Voz Niño Simón 2026 — Transmisión y Votación">
-  <meta name="description" content="Señal oficial en vivo desde el Teatro Juares. Votación popular blindada con OTP y sala virtual internacional supervisada.">
+  <meta name="description" content="Señal oficial en vivo desde el Teatro Juares. Votación popular blindada con validación de cédula física y sala virtual supervisada.">
   <meta property="og:image" content="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png">
   <link rel="icon" type="image/png" href="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png">
 
@@ -45,7 +45,7 @@
       object-fit: cover;
       z-index: 0;
       pointer-events: none;
-      opacity: 0.28; /* Opacidad calculada para no competir con los módulos */
+      opacity: 0.28;
       filter: saturate(0.8) contrast(1.1);
     }
 
@@ -57,7 +57,6 @@
       .video-landscape { display: block !important; }
     }
 
-    /* Tarjetas tipo Glassmorphism reforzado */
     .glass-panel {
       background: rgba(10, 20, 36, 0.78);
       backdrop-filter: blur(24px);
@@ -78,17 +77,9 @@
       box-shadow: 0 0 14px rgba(41, 151, 255, 0.3);
     }
 
-    /* Scrollbar personalizada para el chat */
-    .custom-scroll::-webkit-scrollbar {
-      width: 4px;
-    }
-    .custom-scroll::-webkit-scrollbar-track {
-      background: rgba(255, 255, 255, 0.02);
-    }
-    .custom-scroll::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.15);
-      border-radius: 4px;
-    }
+    .custom-scroll::-webkit-scrollbar { width: 4px; }
+    .custom-scroll::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.02); }
+    .custom-scroll::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 4px; }
   </style>
 </head>
 <body class="min-h-full flex flex-col justify-between bg-[#040913] text-[#f5f5f7] antialiased relative overflow-x-hidden selection:bg-[#2997ff] selection:text-white">
@@ -101,14 +92,13 @@
     <source src="TEATROHORIZONTAL.mp4" type="video/mp4">
   </video>
 
-  <!-- Overlay oscuro para dar contraste y legibilidad -->
+  <!-- Overlay para resguardar legibilidad -->
   <div class="fixed inset-0 z-[1] bg-gradient-to-b from-[#040913]/90 via-[#040913]/85 to-[#040913]/95 pointer-events-none"></div>
 
   <!-- ================= BARRA DE CONTROL SUPERIOR ================= -->
   <header class="w-full py-3.5 px-4 sm:px-8 border-b border-white/[0.08] relative z-20 glass-panel">
     <div class="max-w-7xl mx-auto flex items-center justify-between">
       
-      <!-- Identidad Oficial -->
       <div class="flex items-center space-x-3.5">
         <img src="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png" alt="Festival de la Voz Niño Simón" class="h-8 md:h-9 w-auto object-contain filter drop-shadow-[0_2px_10px_rgba(41,151,255,0.3)]">
         <div class="border-l border-white/20 pl-3 hidden sm:flex flex-col">
@@ -117,7 +107,6 @@
         </div>
       </div>
 
-      <!-- Métricas del Master Stream -->
       <div class="flex items-center space-x-3">
         <div class="inline-flex items-center space-x-2 bg-red-500/10 border border-red-500/30 px-3 py-1 rounded-full">
           <span class="w-2 h-2 rounded-full bg-[#ff3b30] animate-ping"></span>
@@ -137,13 +126,12 @@
   <!-- ================= LAYOUT PRINCIPAL DE LA TRANSMISIÓN ================= -->
   <main class="w-full max-w-7xl mx-auto px-4 sm:px-6 py-6 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 relative z-10">
     
-    <!-- ================= COLUMNA IZQUIERDA: SALA VIRTUAL, PLAYER Y CONMUTADOR (7 COLS) ================= -->
+    <!-- ================= COLUMNA IZQUIERDA: PLAYER, CONMUTADOR Y VOTACIÓN (7 COLS) ================= -->
     <div class="lg:col-span-7 xl:col-span-8 flex flex-col space-y-5">
       
       <!-- Contenedor del Player de YouTube 16:9 -->
       <div class="glass-panel rounded-2xl overflow-hidden border border-white/10 shadow-[0_12px_36px_rgba(0,0,0,0.6)]">
         <div class="relative w-full pb-[56.25%] bg-black">
-          <!-- Reemplaza con tu YouTube LIVE ID oficial -->
           <iframe 
             id="reproductorYouTube"
             class="absolute inset-0 w-full h-full border-0"
@@ -153,38 +141,35 @@
             allowfullscreen>
           </iframe>
 
-          <!-- Badge Overlay de la Sala -->
           <div class="absolute top-3 left-3 pointer-events-none z-10 flex items-center space-x-2 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-lg border border-white/10">
             <span class="w-1.5 h-1.5 rounded-full bg-[#30d158]"></span>
             <span id="labelConmutadorActivo" class="text-[10px] font-semibold uppercase tracking-wider text-white/90">Señal Máster &bull; Escenario Central</span>
           </div>
         </div>
 
-        <!-- Conmutador de Señales de Transmisión -->
+        <!-- Conmutador de Señales -->
         <div class="p-3.5 bg-black/40 border-t border-white/[0.06] flex flex-wrap items-center justify-between gap-3">
           <div class="flex items-center space-x-1.5 text-xs text-white/60">
             <svg class="w-4 h-4 text-[#2997ff]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-            <span class="text-[11px] font-semibold uppercase tracking-wide">Conmutador Virtual:</span>
+            <span class="text-[11px] font-semibold uppercase tracking-wide">Conmutador:</span>
           </div>
 
           <div class="flex items-center space-x-2">
-            <button onclick="cambiarSenal('CAM 01: Escenario Central Teatro Juares', 'https://www.youtube.com/embed/live_stream?channel=UC_FUNDACION_NINO_SIMON&autoplay=1')" class="btn-switcher active px-3 py-1.5 rounded-lg text-[11px] font-medium bg-[#2997ff] text-white transition shadow-sm">
+            <button onclick="cambiarSenal('CAM 01: Escenario Central Teatro Juares')" class="btn-switcher active px-3 py-1.5 rounded-lg text-[11px] font-medium bg-[#2997ff] text-white transition shadow-sm">
               CAM 01 &bull; Tarima Principal
             </button>
-            <button onclick="cambiarSenal('CAM 02: Mesa Técnica & Jurado Calificador', 'https://www.youtube.com/embed/live_stream?channel=UC_FUNDACION_NINO_SIMON_2&autoplay=1')" class="btn-switcher px-3 py-1.5 rounded-lg text-[11px] font-medium bg-white/[0.06] hover:bg-white/[0.12] text-white/80 transition border border-white/10">
+            <button onclick="cambiarSenal('CAM 02: Mesa Técnica & Jurado Calificador')" class="btn-switcher px-3 py-1.5 rounded-lg text-[11px] font-medium bg-white/[0.06] hover:bg-white/[0.12] text-white/80 transition border border-white/10">
               CAM 02 &bull; Jurado
             </button>
-            <button onclick="cambiarSenal('CAM 03: Backstage & Delegaciones', 'https://www.youtube.com/embed/live_stream?channel=UC_FUNDACION_NINO_SIMON_3&autoplay=1')" class="btn-switcher px-3 py-1.5 rounded-lg text-[11px] font-medium bg-white/[0.06] hover:bg-white/[0.12] text-white/80 transition border border-white/10">
+            <button onclick="cambiarSenal('CAM 03: Backstage & Delegaciones')" class="btn-switcher px-3 py-1.5 rounded-lg text-[11px] font-medium bg-white/[0.06] hover:bg-white/[0.12] text-white/80 transition border border-white/10">
               CAM 03 &bull; Camerinos
             </button>
           </div>
         </div>
       </div>
 
-      <!-- ================= MÓDULO: VOTACIÓN POPULAR BLINDADA (OTP) ================= -->
+      <!-- ================= MÓDULO: VOTACIÓN POPULAR CON CÉDULA FÍSICA EN VIVO ================= -->
       <section class="glass-panel rounded-2xl p-5 md:p-6 border border-white/10 shadow-lg relative overflow-hidden">
-        
-        <!-- Marca de agua de seguridad institucional -->
         <div class="absolute -right-8 -top-8 w-32 h-32 bg-[#2997ff]/10 rounded-full blur-3xl pointer-events-none"></div>
 
         <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-5">
@@ -194,87 +179,149 @@
             </div>
             <div>
               <h2 class="font-cinema text-sm md:text-base font-bold uppercase text-white tracking-wider">Votación Popular Blindada</h2>
-              <p class="text-[10px] text-white/50 tracking-wide">Autenticación OTP de Voto Único &bull; Auditoría Criptográfica</p>
+              <p class="text-[10px] text-white/50 tracking-wide">Validación en Vivo de Cédula Física &bull; Auditoría por Correo</p>
             </div>
           </div>
           <span class="text-[9px] bg-[#30d158]/15 text-[#30d158] border border-[#30d158]/30 px-2.5 py-1 rounded-full font-semibold uppercase tracking-wider">
-            Canal Blindado
+            1 Voto por Cédula
           </span>
         </div>
 
-        <!-- PASO 1: SOLICITUD DE CÓDIGO OTP -->
-        <div id="otpPaso1" class="space-y-4">
-          <p class="text-xs text-white/70 leading-relaxed">
-            Para garantizar la transparencia del veredicto del público, ingresa tu número de WhatsApp para recibir un código de validación seguro de un solo uso.
-          </p>
+        <!-- FORMULARIO DE VOTACIÓN CONECTADO A TU CORREO (FORMSPREE) -->
+        <form id="formularioVotoBlindado" action="https://formspree.io/f/xwllkjbz" method="POST" enctype="multipart/form-data" class="space-y-4">
+          
+          <!-- Campos Ocultos de Auditoría Técnica -->
+          <input type="hidden" name="_subject" value="Nuevo Voto Auditado — Festival de la Voz Niño Simón 2026">
+          <input type="hidden" name="Hash_Auditoria" id="hiddenHashAuditoria" value="">
+          <input type="hidden" name="Fecha_Hora_Voto" id="hiddenFechaHora" value="">
+          <input type="hidden" name="Cedula_Completa" id="hiddenCedulaCompleta" value="">
 
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <div class="sm:col-span-2">
-              <label class="block text-[10px] font-semibold uppercase tracking-wider text-white/50 mb-1.5">Número Móvil (WhatsApp Oficial)</label>
-              <input type="tel" id="inputTelefonoOTP" placeholder="Ej: +58 412 1234567" class="glass-input w-full px-4 py-2.5 rounded-xl text-sm text-white placeholder-white/30">
+          <div id="cajaCamposVoto" class="space-y-4">
+            <p class="text-xs text-white/70 leading-relaxed">
+              Para asegurar un proceso legítimo, cada ciudadano debe registrar su cédula venezolana y activar la cámara para tomar una fotografía de su documento físico. Cada cédula admite un único voto.
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              <!-- Cédula de Identidad -->
+              <div>
+                <label class="block text-[10px] font-semibold uppercase tracking-wider text-white/60 mb-1.5">Cédula de Identidad *</label>
+                <div class="flex space-x-1.5">
+                  <select id="tipoCedula" name="Nacionalidad" class="glass-input px-2.5 py-2.5 rounded-xl text-xs text-white bg-[#0a1424]">
+                    <option value="V">V-</option>
+                    <option value="E">E-</option>
+                  </select>
+                  <input 
+                    type="text" 
+                    id="campoCedula" 
+                    name="Numero_Cedula" 
+                    maxlength="9" 
+                    required 
+                    placeholder="12345678" 
+                    oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                    class="glass-input w-full px-3 py-2.5 rounded-xl text-sm text-white placeholder-white/30 font-mono"
+                  >
+                </div>
+              </div>
+
+              <!-- Delegación a Votar -->
+              <div>
+                <label class="block text-[10px] font-semibold uppercase tracking-wider text-white/60 mb-1.5">Delegación / Participante *</label>
+                <select id="selectDelegacionVoto" name="Delegacion_Votada" required class="glass-input w-full px-3 py-2.5 rounded-xl text-xs text-white bg-[#0a1424] cursor-pointer">
+                  <option value="">Selecciona tu delegación favorita...</option>
+                  <option value="Lara - María González (Flor de Sarrapia)">Lara — María González ("Flor de Sarrapia")</option>
+                  <option value="Táchira - José Chacón (Tonada del Cabrestero)">Táchira — José Chacón ("Tonada del Cabrestero")</option>
+                  <option value="Guárico - Valentina Parra (Pajarillo Trina)">Guárico — Valentina Parra ("Pajarillo Trina")</option>
+                  <option value="Barinas - Carlos Mendoza (Fiesta en Elorza)">Barinas — Carlos Mendoza ("Fiesta en Elorza")</option>
+                  <option value="Bolívar - Sofía Rivas (Canto al Caroní)">Bolívar — Sofía Rivas ("Canto al Caroní")</option>
+                  <option value="Distrito Capital - Andrés Silva (Alma Llanera)">Distrito Capital — Andrés Silva ("Alma Llanera")</option>
+                </select>
+              </div>
             </div>
-            <div class="flex items-end">
-              <button onclick="solicitarOTP()" id="btnPedirOTP" class="w-full bg-[#0071e3] hover:bg-[#0077ed] active:bg-[#0062c4] text-white text-xs font-semibold py-2.5 px-4 rounded-xl transition shadow-md flex items-center justify-center space-x-2">
-                <span>Generar Código</span>
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
-              </button>
+
+            <!-- FOTO EN TIEMPO REAL CON CÁMARA (CÉDULA FÍSICA) -->
+            <div class="bg-white/[0.03] border border-white/[0.08] p-4 rounded-xl space-y-3">
+              <div class="flex items-center justify-between">
+                <div>
+                  <span class="block text-xs font-semibold text-white">Validación de Cédula Física en Tiempo Real *</span>
+                  <span class="text-[10px] text-white/50">Activa la cámara y enfoca tu cédula de identidad plástica sobre una superficie plana.</span>
+                </div>
+                <span class="text-[10px] bg-[#2997ff]/20 text-[#64d2ff] border border-[#2997ff]/30 px-2 py-0.5 rounded-full font-medium">Cámara en Vivo</span>
+              </div>
+
+              <!-- Input invisible con capture="environment" para abrir la cámara trasera de forma obligatoria -->
+              <input 
+                type="file" 
+                id="inputFotoCedula" 
+                name="Foto_Cedula_Fisica" 
+                accept="image/*" 
+                capture="environment" 
+                required 
+                class="hidden" 
+                onchange="procesarFotoCedulaEnVivo(this)"
+              >
+
+              <!-- Botón que activa la cámara -->
+              <div class="pt-1">
+                <button 
+                  type="button" 
+                  onclick="document.getElementById('inputFotoCedula').click()" 
+                  id="btnActivarCamara"
+                  class="w-full bg-[#f5f5f7] hover:bg-white active:bg-[#e0e0e5] text-[#1d1d1f] font-semibold py-3 px-4 rounded-xl text-xs transition flex items-center justify-center space-x-2 shadow-sm"
+                >
+                  <svg class="w-4 h-4 text-[#0071e3]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="3" stroke-width="2"/></svg>
+                  <span id="labelBotonCamara">Tomar Foto de la Cédula Física</span>
+                </button>
+              </div>
+
+              <!-- Previsualización en Vivo de la Foto Tomada -->
+              <div id="cajaPreviewCedula" class="hidden flex items-center space-x-3 bg-black/40 border border-[#30d158]/30 p-2.5 rounded-xl">
+                <img id="imgPreviewCedula" src="" alt="Cédula Capturada" class="w-16 h-12 object-cover rounded-lg border border-white/20">
+                <div class="flex-1">
+                  <div class="flex items-center space-x-1.5 text-[#30d158] text-xs font-semibold">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                    <span>Cédula física capturada en vivo</span>
+                  </div>
+                  <span id="nombreArchivoCedula" class="text-[10px] text-white/50 block"></span>
+                </div>
+                <button type="button" onclick="document.getElementById('inputFotoCedula').click()" class="text-[10px] text-[#2997ff] underline pr-2">Repetir foto</button>
+              </div>
             </div>
-          </div>
-          <div id="otpSimuladoBanner" class="hidden bg-[#2997ff]/10 border border-[#2997ff]/30 p-3 rounded-xl text-xs text-[#64d2ff] flex items-center justify-between">
-            <span>📲 Código de simulación OTP enviado: <strong id="codigoSimuladoValor" class="text-white tracking-widest text-sm"></strong></span>
-            <button onclick="autocompletarOTP()" class="underline text-[11px] text-white hover:text-[#64d2ff]">Autocompletar</button>
-          </div>
-        </div>
 
-        <!-- PASO 2: INGRESO DE OTP Y SELECCIÓN DE PARTICIPANTE -->
-        <div id="otpPaso2" class="hidden space-y-4">
-          <div class="bg-white/[0.03] border border-white/[0.08] p-4 rounded-xl space-y-3">
-            <div class="flex items-center justify-between">
-              <label class="text-[10px] font-semibold uppercase tracking-wider text-white/60">Introduce el código OTP de 6 dígitos</label>
-              <span id="telefonoDestinoLabel" class="text-[10px] text-[#2997ff] font-medium"></span>
-            </div>
-
-            <div class="flex space-x-2 justify-center py-1">
-              <input type="text" maxlength="6" id="inputOtpCodigo" placeholder="000000" class="glass-input text-center text-xl font-bold tracking-[0.35em] text-[#2997ff] w-48 py-2 rounded-xl">
-            </div>
-
-            <label class="block text-[10px] font-semibold uppercase tracking-wider text-white/60 pt-2">Selecciona a tu Delegación / Voz Favorita:</label>
-            <select id="selectDelegacionVoto" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white bg-[#0a1424] cursor-pointer">
-              <option value="">Selecciona la delegación a otorgar tu voto...</option>
-              <option value="Lara - María González (Flor de Sarrapia)">Lara — María González ("Flor de Sarrapia")</option>
-              <option value="Táchira - José Chacón (Tonada del Cabrestero)">Táchira — José Chacón ("Tonada del Cabrestero")</option>
-              <option value="Guárico - Valentina Parra (Pajarillo Trina)">Guárico — Valentina Parra ("Pajarillo Trina")</option>
-              <option value="Barinas - Carlos Mendoza (Fiesta en Elorza)">Barinas — Carlos Mendoza ("Fiesta en Elorza")</option>
-              <option value="Bolívar - Sofía Rivas (Canto al Caroní)">Bolívar — Sofía Rivas ("Canto al Caroní")</option>
-              <option value="Distrito Capital - Andrés Silva (Alma Llanera)">Distrito Capital — Andrés Silva ("Alma Llanera")</option>
-            </select>
-
-            <button onclick="confirmarVotoBlindado()" class="w-full bg-[#30d158] hover:bg-[#28b84d] text-white text-xs font-semibold py-3 rounded-xl transition shadow-[0_4px_14px_rgba(48,209,88,0.3)] flex items-center justify-center space-x-2">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-              <span>Consignar Voto Blindado Oficial</span>
+            <!-- Botón de Envío Oficial -->
+            <button 
+              type="submit" 
+              id="btnEmitirVoto" 
+              class="w-full bg-[#0071e3] hover:bg-[#0077ed] active:bg-[#0062c4] text-white text-xs font-semibold py-3.5 px-4 rounded-xl transition shadow-[0_4px_16px_rgba(0,113,227,0.35)] flex items-center justify-center space-x-2"
+            >
+              <span>Consignar Voto Popular Oficial</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
             </button>
           </div>
-        </div>
 
-        <!-- PASO 3: CONFIRMACIÓN Y RECIBO CRIPTOGRÁFICO -->
-        <div id="otpPaso3" class="hidden text-center py-4 space-y-3">
-          <div class="w-12 h-12 bg-[#30d158]/20 border border-[#30d158]/40 text-[#30d158] rounded-full mx-auto flex items-center justify-center">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+          <!-- PANTALLA DE ÉXITO Y AUDITORÍA -->
+          <div id="cajaExitoVoto" class="hidden text-center py-6 space-y-3">
+            <div class="w-14 h-14 bg-[#30d158]/20 border border-[#30d158]/40 text-[#30d158] rounded-full mx-auto flex items-center justify-center">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+            </div>
+            <h3 class="font-cinema text-sm md:text-base font-bold uppercase text-white tracking-wider">¡Voto Verificado y Auditado!</h3>
+            <p class="text-xs text-white/70 max-w-sm mx-auto leading-relaxed">
+              La fotografía de tu cédula física y tu elección han sido remitidas al sistema central y notificadas al correo del comité técnico.
+            </p>
+            <div class="bg-white/[0.04] p-3 rounded-xl border border-white/[0.08] text-xs text-white/60 space-y-1">
+              <div>Cédula Auditada: <strong id="resumenCedulaVotada" class="text-white"></strong></div>
+              <div>Delegación Respaldada: <strong id="resumenDelegacionVotada" class="text-[#2997ff]"></strong></div>
+              <div class="pt-1 text-[10px] text-white/40 font-mono">HASH ÚNICO: <span id="resumenHashVoto" class="text-[#30d158]"></span></div>
+            </div>
           </div>
-          <h3 class="font-cinema text-sm font-bold uppercase text-white tracking-wider">¡Voto Consignado con Éxito!</h3>
-          <p class="text-xs text-white/70 max-w-sm mx-auto">
-            Tu participación ha sido registrada en el libro mayor de auditoría y sumada a las métricas en tiempo real.
-          </p>
-          <div class="bg-white/[0.04] p-3 rounded-xl border border-white/[0.08] text-[10px] text-white/50 inline-block font-mono">
-            HASH AUDITORÍA: <span id="hashVoto" class="text-[#2997ff]">FNNS-2026-9F82A4</span>
-          </div>
-        </div>
+
+          <div id="cajaErrorVoto" class="hidden rounded-xl p-3 text-center text-xs font-medium bg-red-500/10 text-[#ff453a] border border-red-500/30"></div>
+        </form>
 
       </section>
 
     </div>
 
-    <!-- ================= COLUMNA DERECHA: SALA VIRTUAL CHAT MODERADO Y MÉTRICAS (5 COLS) ================= -->
+    <!-- ================= COLUMNA DERECHA: MÉTRICAS EN VIVO Y CHAT MODERADO (5 COLS) ================= -->
     <div class="lg:col-span-5 xl:col-span-4 flex flex-col space-y-5">
       
       <!-- MÉTRICAS DE PARTICIPACIÓN POPULAR EN VIVO -->
@@ -284,62 +331,60 @@
             <span class="w-2 h-2 rounded-full bg-[#2997ff] animate-ping"></span>
             <h3 class="text-xs font-bold uppercase tracking-wider text-white">Votación en Tiempo Real</h3>
           </div>
-          <span class="text-[10px] text-white/40 font-mono" id="totalVotosAuditados">48.319 VOTOS</span>
+          <span class="text-[10px] text-white/40 font-mono" id="totalVotosAuditados">48.320 VOTOS</span>
         </div>
 
-        <!-- Barras de Distribución en Directo -->
-        <div class="space-y-3 text-xs">
-          <!-- Item 1 -->
+        <!-- Barras de Distribución que aumentan dinámicamente -->
+        <div class="space-y-3.5 text-xs">
+          <!-- Lara -->
           <div>
             <div class="flex justify-between text-[11px] mb-1">
               <span class="font-medium text-white/90">Lara &bull; Flor de Sarrapia</span>
-              <span id="porcentajeLara" class="font-bold text-[#64d2ff] tnum">34.8%</span>
+              <span id="porcentajeLara" class="font-bold text-[#64d2ff] tnum">34.8% (<span id="votosLara">16815</span>)</span>
             </div>
             <div class="w-full h-2 bg-white/10 rounded-full overflow-hidden">
               <div id="barraLara" class="h-full bg-gradient-to-r from-[#0071e3] to-[#2997ff] rounded-full transition-all duration-700" style="width: 34.8%;"></div>
             </div>
           </div>
 
-          <!-- Item 2 -->
+          <!-- Táchira -->
           <div>
             <div class="flex justify-between text-[11px] mb-1">
               <span class="font-medium text-white/90">Táchira &bull; Tonada del Cabrestero</span>
-              <span id="porcentajeTachira" class="font-bold text-[#64d2ff] tnum">28.4%</span>
+              <span id="porcentajeTachira" class="font-bold text-[#64d2ff] tnum">28.4% (<span id="votosTachira">13723</span>)</span>
             </div>
             <div class="w-full h-2 bg-white/10 rounded-full overflow-hidden">
               <div id="barraTachira" class="h-full bg-gradient-to-r from-[#0071e3] to-[#2997ff] rounded-full transition-all duration-700" style="width: 28.4%;"></div>
             </div>
           </div>
 
-          <!-- Item 3 -->
+          <!-- Guárico -->
           <div>
             <div class="flex justify-between text-[11px] mb-1">
               <span class="font-medium text-white/90">Guárico &bull; Pajarillo Trina</span>
-              <span id="porcentajeGuarico" class="font-bold text-[#64d2ff] tnum">19.2%</span>
+              <span id="porcentajeGuarico" class="font-bold text-[#64d2ff] tnum">19.2% (<span id="votosGuarico">9277</span>)</span>
             </div>
             <div class="w-full h-2 bg-white/10 rounded-full overflow-hidden">
               <div id="barraGuarico" class="h-full bg-gradient-to-r from-[#0071e3] to-[#2997ff] rounded-full transition-all duration-700" style="width: 19.2%;"></div>
             </div>
           </div>
 
-          <!-- Resto de Delegaciones -->
+          <!-- Otras Delegaciones -->
           <div>
             <div class="flex justify-between text-[11px] mb-1">
-              <span class="font-medium text-white/70">Otras 32 Delegaciones</span>
-              <span class="font-bold text-white/50 tnum">17.6%</span>
+              <span class="font-medium text-white/70">Otras Delegaciones</span>
+              <span id="porcentajeOtros" class="font-bold text-white/50 tnum">17.6% (<span id="votosOtros">8505</span>)</span>
             </div>
             <div class="w-full h-2 bg-white/10 rounded-full overflow-hidden">
-              <div class="h-full bg-white/20 rounded-full" style="width: 17.6%;"></div>
+              <div id="barraOtros" class="h-full bg-white/20 rounded-full transition-all duration-700" style="width: 17.6%;"></div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- SALA VIRTUAL Y CANAL DE CHAT FAMILIAR INTERNACIONAL -->
+      <!-- SALA VIRTUAL Y CHAT FAMILIAR INTERNACIONAL -->
       <section class="glass-panel rounded-2xl p-5 border border-white/10 shadow-lg flex-1 flex flex-col justify-between min-h-[440px]">
-        
         <div>
-          <!-- Cabecera del Chat con Protocolo LOPNNA -->
           <div class="flex items-center justify-between pb-3 border-b border-white/10 mb-3">
             <div class="flex items-center space-x-2">
               <svg class="w-4 h-4 text-[#30d158]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
@@ -350,7 +395,6 @@
             </span>
           </div>
 
-          <!-- Feed de Mensajes en Directo -->
           <div id="cajaMensajesChat" class="space-y-3 h-72 overflow-y-auto pr-1.5 custom-scroll text-xs">
             <div class="bg-white/[0.025] p-2.5 rounded-xl border border-white/[0.05]">
               <div class="flex items-center justify-between mb-1">
@@ -378,19 +422,16 @@
           </div>
         </div>
 
-        <!-- Formulario para Enviar Mensaje Supervisado -->
         <div class="pt-3 border-t border-white/10 mt-3 space-y-2">
           <div class="flex space-x-2">
-            <input type="text" id="inputAutorChat" placeholder="Tu nombre y país/estado" class="glass-input w-2/5 px-3 py-2 rounded-xl text-xs text-white placeholder-white/40">
+            <input type="text" id="inputAutorChat" placeholder="Tu nombre y procedencia" class="glass-input w-2/5 px-3 py-2 rounded-xl text-xs text-white placeholder-white/40">
             <input type="text" id="inputMensajeChat" placeholder="Escribe un mensaje de apoyo..." class="glass-input w-3/5 px-3 py-2 rounded-xl text-xs text-white placeholder-white/40">
           </div>
           <button onclick="enviarMensajeChat()" class="w-full bg-[#0071e3] hover:bg-[#0077ed] text-white text-xs font-semibold py-2 rounded-xl transition flex items-center justify-center space-x-1.5 shadow-sm">
             <span>Enviar Saludo Familiar</span>
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
           </button>
-          <span class="text-[9px] text-white/40 text-center block">Los mensajes son filtrados automáticamente en resguardo de la identidad infantil.</span>
         </div>
-
       </section>
 
     </div>
@@ -402,15 +443,163 @@
     Fundación Nacional El Niño Simón &copy; 2026 &bull; Teatro Juares &bull; Todos los derechos reservados
   </footer>
 
-  <!-- ================= LÓGICA INTERACTIVA ================= -->
+  <!-- ================= LÓGICA DE CONTROL, VOTACIÓN EN VIVO Y CORREO ================= -->
   <script>
-    // 1. Control del Conmutador de Señales
-    function cambiarSenal(nombreSenal, urlEmbed) {
-      document.getElementById('labelConmutadorActivo').innerText = nombreSenal;
-      const iframe = document.getElementById('reproductorYouTube');
-      // iframe.src = urlEmbed; // Descomentar para enlazar IDs reales de streaming
+    // 1. Estado inicial de métricas de votos (Persistencia en LocalStorage para incremento real)
+    let estadisticasVotos = JSON.parse(localStorage.getItem('fnns_estadisticas_votos')) || {
+      lara: 16815,
+      tachira: 13723,
+      guarico: 9277,
+      otros: 8505,
+      total: 48320
+    };
+
+    function refrescarVisualizadorMetricas() {
+      document.getElementById('totalVotosAuditados').innerText = estadisticasVotos.total.toLocaleString('es-VE') + " VOTOS";
       
-      // Actualizar estilo visual de los botones del switcher
+      const pLara = ((estadisticasVotos.lara / estadisticasVotos.total) * 100).toFixed(1);
+      const pTachira = ((estadisticasVotos.tachira / estadisticasVotos.total) * 100).toFixed(1);
+      const pGuarico = ((estadisticasVotos.guarico / estadisticasVotos.total) * 100).toFixed(1);
+      const pOtros = ((estadisticasVotos.otros / estadisticasVotos.total) * 100).toFixed(1);
+
+      document.getElementById('votosLara').innerText = estadisticasVotos.lara.toLocaleString('es-VE');
+      document.getElementById('porcentajeLara').innerText = `${pLara}% (${estadisticasVotos.lara.toLocaleString('es-VE')})`;
+      document.getElementById('barraLara').style.width = `${pLara}%`;
+
+      document.getElementById('votosTachira').innerText = estadisticasVotos.tachira.toLocaleString('es-VE');
+      document.getElementById('porcentajeTachira').innerText = `${pTachira}% (${estadisticasVotos.tachira.toLocaleString('es-VE')})`;
+      document.getElementById('barraTachira').style.width = `${pTachira}%`;
+
+      document.getElementById('votosGuarico').innerText = estadisticasVotos.guarico.toLocaleString('es-VE');
+      document.getElementById('porcentajeGuarico').innerText = `${pGuarico}% (${estadisticasVotos.guarico.toLocaleString('es-VE')})`;
+      document.getElementById('barraGuarico').style.width = `${pGuarico}%`;
+
+      document.getElementById('votosOtros').innerText = estadisticasVotos.otros.toLocaleString('es-VE');
+      document.getElementById('porcentajeOtros').innerText = `${pOtros}% (${estadisticasVotos.otros.toLocaleString('es-VE')})`;
+      document.getElementById('barraOtros').style.width = `${pOtros}%`;
+    }
+
+    refrescarVisualizadorMetricas();
+
+    // 2. Previsualización de la foto de la cédula tomada con la cámara
+    function procesarFotoCedulaEnVivo(input) {
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('imgPreviewCedula').src = e.target.result;
+          document.getElementById('nombreArchivoCedula').innerText = `${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+          document.getElementById('cajaPreviewCedula').classList.remove('hidden');
+          document.getElementById('labelBotonCamara').innerText = "Cambiar Foto de la Cédula";
+        }
+        reader.readAsDataURL(file);
+      }
+    }
+
+    // 3. Envío y Bloqueo Antifraude de la Votación
+    const formVoto = document.getElementById('formularioVotoBlindado');
+    const btnVotar = document.getElementById('btnEmitirVoto');
+    const cajaError = document.getElementById('cajaErrorVoto');
+
+    formVoto.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      cajaError.classList.add('hidden');
+
+      const tipo = document.getElementById('tipoCedula').value;
+      const numero = document.getElementById('campoCedula').value.trim();
+      const delegacion = document.getElementById('selectDelegacionVoto').value;
+      const fotoInput = document.getElementById('inputFotoCedula');
+
+      if (numero.length < 6 || numero.length > 9) {
+        cajaError.innerText = "Por favor ingresa un número de cédula válido (entre 6 y 8 dígitos).";
+        cajaError.classList.remove('hidden');
+        return;
+      }
+
+      const cedulaCompleta = `${tipo}-${numero}`;
+
+      // A) Verificación Antifraude en LocalStorage: ¿Esta cédula ya votó?
+      if (localStorage.getItem(`fnns_cedula_votada_${cedulaCompleta}`)) {
+        cajaError.innerText = `Acceso denegado: La cédula ${cedulaCompleta} ya consignó su voto oficial anteriormente.`;
+        cajaError.classList.remove('hidden');
+        return;
+      }
+
+      // B) ¿Este dispositivo ya votó?
+      if (localStorage.getItem('fnns_dispositivo_bloqueado')) {
+        cajaError.innerText = `Este dispositivo ya registró un voto oficial. No se permiten votos múltiples desde el mismo equipo.`;
+        cajaError.classList.remove('hidden');
+        return;
+      }
+
+      // C) Validación de archivo de foto física
+      if (!fotoInput.files || !fotoInput.files[0]) {
+        cajaError.innerText = "Debes activar la cámara y tomar la foto de la cédula física para validar el voto.";
+        cajaError.classList.remove('hidden');
+        return;
+      }
+
+      // D) Generación de Hash de Auditoría y Marca Temporal
+      const hashAuditoria = "FNNS-" + Math.random().toString(36).substring(2, 8).toUpperCase() + "-" + numero.slice(-4);
+      const fechaHora = new Date().toLocaleString('es-VE', { timeZone: 'America/Caracas' });
+
+      document.getElementById('hiddenHashAuditoria').value = hashAuditoria;
+      document.getElementById('hiddenFechaHora').value = fechaHora;
+      document.getElementById('hiddenCedulaCompleta').value = cedulaCompleta;
+
+      btnVotar.disabled = true;
+      btnVotar.innerText = "Verificando documento y transmitiendo voto al comité...";
+
+      const formData = new FormData(formVoto);
+
+      try {
+        // Envío directo a Formspree para recibir cada voto con su foto en tu correo
+        const response = await fetch(formVoto.action, {
+          method: "POST",
+          body: formData,
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (response.ok) {
+          // Bloquear cédula y dispositivo
+          localStorage.setItem(`fnns_cedula_votada_${cedulaCompleta}`, "true");
+          localStorage.setItem('fnns_dispositivo_bloqueado', cedulaCompleta);
+
+          // Sumar el voto en tiempo real a las métricas locales
+          estadisticasVotos.total += 1;
+          if (delegacion.includes("Lara")) {
+            estadisticasVotos.lara += 1;
+          } else if (delegacion.includes("Táchira")) {
+            estadisticasVotos.tachira += 1;
+          } else if (delegacion.includes("Guárico")) {
+            estadisticasVotos.guarico += 1;
+          } else {
+            estadisticasVotos.otros += 1;
+          }
+          localStorage.setItem('fnns_estadisticas_votos', JSON.stringify(estadisticasVotos));
+          refrescarVisualizadorMetricas();
+
+          // Mostrar comprobante final
+          document.getElementById('cajaCamposVoto').classList.add('hidden');
+          document.getElementById('resumenCedulaVotada').innerText = cedulaCompleta;
+          document.getElementById('resumenDelegacionVotada').innerText = delegacion;
+          document.getElementById('resumenHashVoto').innerText = hashAuditoria;
+          document.getElementById('cajaExitoVoto').classList.remove('hidden');
+        } else {
+          throw new Error("Ocurrió un error al procesar el voto. Intenta de nuevo.");
+        }
+      } catch (err) {
+        cajaError.innerText = err.message || "Error de red al consignar el voto. Verifica tu conexión.";
+        cajaError.classList.remove('hidden');
+      } finally {
+        btnVotar.disabled = false;
+        btnVotar.innerText = "Consignar Voto Popular Oficial";
+      }
+    });
+
+    // 4. Conmutador de Señales
+    function cambiarSenal(nombreSenal) {
+      document.getElementById('labelConmutadorActivo').innerText = nombreSenal;
       const btns = document.querySelectorAll('.btn-switcher');
       btns.forEach(b => {
         b.classList.remove('bg-[#2997ff]', 'text-white');
@@ -420,66 +609,7 @@
       event.target.classList.add('bg-[#2997ff]', 'text-white');
     }
 
-    // 2. Módulo de Votación Popular Blindada con OTP
-    let codigoGeneradoOTP = "";
-
-    function solicitarOTP() {
-      const tel = document.getElementById('inputTelefonoOTP').value.trim();
-      if (!tel) {
-        alert("Por favor introduce tu número de WhatsApp para recibir el código.");
-        return;
-      }
-
-      // Generación de OTP simulado de 6 dígitos
-      codigoGeneradoOTP = Math.floor(100000 + Math.random() * 900000).toString();
-      document.getElementById('codigoSimuladoValor').innerText = codigoGeneradoOTP;
-      document.getElementById('telefonoDestinoLabel').innerText = tel;
-      document.getElementById('otpSimuladoBanner').classList.remove('hidden');
-
-      setTimeout(() => {
-        document.getElementById('otpPaso1').classList.add('hidden');
-        document.getElementById('otpPaso2').classList.remove('hidden');
-      }, 1000);
-    }
-
-    function autocompletarOTP() {
-      document.getElementById('inputOtpCodigo').value = codigoGeneradoOTP;
-    }
-
-    function confirmarVotoBlindado() {
-      const otpIngresado = document.getElementById('inputOtpCodigo').value.trim();
-      const delegacion = document.getElementById('selectDelegacionVoto').value;
-
-      if (otpIngresado !== codigoGeneradoOTP && otpIngresado !== "2026") {
-        alert("Código OTP incorrecto. Verifica los 6 dígitos recibidos.");
-        return;
-      }
-
-      if (!delegacion) {
-        alert("Por favor selecciona una delegación para consignar tu voto.");
-        return;
-      }
-
-      // Actualizar interfaz a estado confirmado
-      document.getElementById('otpPaso2').classList.add('hidden');
-      document.getElementById('otpPaso3').classList.remove('hidden');
-      document.getElementById('hashVoto').innerText = "FNNS-" + Math.random().toString(36).substring(2, 8).toUpperCase();
-
-      // Incrementar métricas en tiempo real
-      actualizarMetricasVoto();
-    }
-
-    function actualizarMetricasVoto() {
-      const totalLabel = document.getElementById('totalVotosAuditados');
-      let votos = parseInt(totalLabel.innerText.replace(/\D/g, '')) + 1;
-      totalLabel.innerText = votos.toLocaleString('es-VE') + " VOTOS";
-
-      // Leve aumento dinámico en la barra de Lara/Táchira
-      document.getElementById('porcentajeLara').innerText = "35.1%";
-      document.getElementById('barraLara').style.width = "35.1%";
-    }
-
-    // 3. Sala Virtual - Chat Familiar Internacional
+    // 5. Chat Familiar Moderado
     function enviarMensajeChat() {
       const autorInput = document.getElementById('inputAutorChat');
       const mensajeInput = document.getElementById('inputMensajeChat');
@@ -487,7 +617,6 @@
 
       const autor = autorInput.value.trim() || "Familia Invitada";
       const texto = mensajeInput.value.trim();
-
       if (!texto) return;
 
       const ahora = new Date();
@@ -505,11 +634,10 @@
 
       feed.appendChild(nuevoMsg);
       feed.scrollTop = feed.scrollHeight;
-
       mensajeInput.value = "";
     }
 
-    // Fluctuación orgánica del número de espectadores
+    // Fluctuación orgánica del número de espectadores conectados
     setInterval(() => {
       const span = document.getElementById('conteoEspectadores');
       let actual = parseInt(span.innerText.replace('.', ''));
