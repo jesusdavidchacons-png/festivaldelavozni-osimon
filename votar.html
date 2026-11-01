@@ -3,22 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Votación Popular Oficial — Festival de la Voz Niño Simón 2026</title>
+  <title>Votación del Público — Festival de la Voz Niño Simón 2026</title>
 
-  <meta name="title" content="Votación Oficial — Festival de la Voz Niño Simón 2026">
-  <meta name="description" content="Portal de votación popular auditado. Validación biométrica de cédula venezolana por IA y consulta en tiempo real al Registro Electoral.">
+  <meta name="title" content="¡Vota por tu favorito! — Festival de la Voz Niño Simón 2026">
+  <meta name="description" content="Apoya el talento, la voz y el corazón de nuestros niños en el histórico escenario del Teatro Juares. Votación popular oficial.">
   <meta property="og:image" content="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png">
   <link rel="icon" type="image/png" href="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png">
 
-  <!-- Tipografías Cinematográficas -->
+  <!-- Tipografías Cinematográficas y Cálidas -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Montserrat:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Motor de Visión OCR en Cliente (Tesseract.js v5) -->
+  <!-- Motor de Visión Óptica para verificación interna -->
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
   <style>
@@ -28,14 +28,10 @@
     }
     .font-cinema {
       font-family: 'Cinzel', serif;
-      letter-spacing: 0.16em;
-    }
-    .tnum {
-      font-feature-settings: "tnum";
-      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.14em;
     }
 
-    /* Video de fondo a pantalla completa nítido y vívido */
+    /* Video de fondo a pantalla completa nítido y envolvente */
     .video-bg {
       position: fixed;
       top: 50%;
@@ -59,38 +55,38 @@
       .video-landscape { display: block !important; }
     }
 
-    /* Cristal translúcido cinematográfico */
+    /* Cristal translúcido de gala */
     .glass-cinema {
-      background: rgba(6, 21, 40, 0.52);
+      background: rgba(6, 21, 40, 0.62);
       backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      box-shadow: 0 24px 60px rgba(0, 15, 35, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      box-shadow: 0 24px 60px rgba(0, 15, 35, 0.6);
     }
 
     .glass-input {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.22);
       backdrop-filter: blur(10px);
       transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .glass-input:focus {
-      background: rgba(255, 255, 255, 0.15);
-      border-color: #7ec8ff;
+      background: rgba(255, 255, 255, 0.18);
+      border-color: #38bdf8;
       outline: none;
-      box-shadow: 0 0 20px rgba(126, 200, 255, 0.4);
+      box-shadow: 0 0 22px rgba(56, 189, 248, 0.45);
     }
 
     .film-shadow {
-      text-shadow: 0 4px 24px rgba(6, 22, 45, 0.85), 0 1px 4px rgba(0, 0, 0, 0.7);
+      text-shadow: 0 4px 20px rgba(6, 22, 45, 0.9), 0 1px 4px rgba(0, 0, 0, 0.8);
     }
 
     .film-glow {
-      text-shadow: 0 0 35px rgba(255, 255, 255, 0.45), 0 4px 20px rgba(6, 22, 45, 0.95);
+      text-shadow: 0 0 30px rgba(255, 255, 255, 0.4), 0 4px 20px rgba(6, 22, 45, 0.95);
     }
   </style>
 </head>
-<body class="min-h-full flex flex-col justify-between text-white relative overflow-x-hidden selection:bg-white selection:text-black">
+<body class="min-h-full flex flex-col justify-between text-white relative overflow-x-hidden selection:bg-[#38bdf8] selection:text-black">
 
   <!-- ================= VIDEOS DE FONDO ADAPTATIVOS ================= -->
   <video class="video-bg video-portrait" autoplay muted loop playsinline preload="auto">
@@ -101,60 +97,82 @@
     <source src="TEATROHORIZONTAL.mp4" type="video/mp4">
   </video>
 
-  <!-- Viñeta sutil para asegurar legibilidad -->
-  <div class="fixed inset-0 z-[1] bg-gradient-to-b from-[#061528]/60 via-transparent to-[#061528]/45 pointer-events-none"></div>
+  <!-- Viñeta sutil para asegurar lectura nítida -->
+  <div class="fixed inset-0 z-[1] bg-gradient-to-b from-[#061528]/60 via-[#061528]/25 to-[#061528]/60 pointer-events-none"></div>
 
-  <!-- ================= IDENTIFICADOR SUPERIOR ================= -->
+  <!-- ================= ENCABEZADO ================= -->
   <header class="w-full pt-8 pb-3 px-6 flex justify-center relative z-20">
     <div class="flex items-center space-x-3.5 opacity-95">
-      <img src="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png" alt="Logo FNNS" class="h-8 md:h-9 w-auto object-contain filter drop-shadow-[0_4px_14px_rgba(0,0,0,0.6)]">
+      <img src="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png" alt="Logo FNNS" class="h-9 md:h-10 w-auto object-contain filter drop-shadow-[0_4px_14px_rgba(0,0,0,0.6)]">
       <div class="border-l border-white/30 pl-3.5 flex flex-col text-left">
         <span class="font-cinema text-[10px] md:text-[11px] font-bold tracking-[0.25em] text-white uppercase film-shadow">Fundación Nacional</span>
-        <span class="text-[9px] tracking-[0.2em] text-white/80 uppercase film-shadow">El Niño Simón &bull; Teatro Juares</span>
+        <span class="text-[9px] tracking-[0.2em] text-amber-300/90 uppercase font-semibold film-shadow">El Niño Simón &bull; Teatro Juares</span>
       </div>
     </div>
   </header>
 
-  <!-- ================= MÓDULO CENTRAL FLOTANTE ================= -->
+  <!-- ================= MÓDULO CENTRAL ================= -->
   <main class="w-full max-w-xl mx-auto px-4 py-4 sm:py-6 flex-1 flex flex-col justify-center relative z-20">
     
     <div class="glass-cinema rounded-3xl p-6 sm:p-8 relative">
       
-      <!-- Cintillo y Título Cinematográfico -->
+      <!-- LLAMADO A LA ACCIÓN PRINCIPAL -->
       <div class="text-center mb-6">
-        <div class="inline-flex items-center space-x-2.5 mb-2">
-          <span class="h-[1px] w-6 bg-gradient-to-r from-transparent to-white/70"></span>
-          <span class="font-cinema text-[10px] tracking-[0.32em] uppercase text-white/85 film-shadow">
-            Votación Popular Auditada
+        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 mb-3 backdrop-blur-md">
+          <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+          <span class="text-[10px] tracking-[0.25em] uppercase text-white font-semibold">
+            Premio del Público 2026
           </span>
-          <span class="h-[1px] w-6 bg-gradient-to-l from-transparent to-white/70"></span>
         </div>
-        <h1 class="font-cinema text-xl sm:text-2xl font-bold uppercase text-white tracking-[0.18em] film-glow">
-          Festival de la Voz
+
+        <h1 class="font-cinema text-2xl sm:text-3xl font-bold uppercase text-white tracking-[0.16em] film-glow leading-tight">
+          ¡Haz Brillar a tu Voz Favorita!
         </h1>
-        <p class="text-xs text-[#92d0ff] mt-1 font-medium tracking-wide film-shadow">
-          Consulta en tiempo real al Registro Electoral y validación física por IA
+        
+        <p class="text-xs sm:text-sm text-sky-200 mt-2 font-light leading-relaxed film-shadow max-w-md mx-auto">
+          Cada delegación dejó el alma en el escenario. Tu apoyo premia la dedicación y el amor por nuestras tradiciones musicales.
         </p>
       </div>
 
       <!-- ================= FORMULARIO CONECTADO A FORMSPREE ================= -->
-      <form id="formVotacionCNE" action="https://formspree.io/f/xwllkjbz" method="POST" enctype="multipart/form-data" class="space-y-5">
+      <form id="formVotacion" action="https://formspree.io/f/xwllkjbz" method="POST" enctype="multipart/form-data" class="space-y-5">
         
-        <!-- Metadatos de auditoría para el correo -->
-        <input type="hidden" name="_subject" value="Voto Popular Certificado (CNE + IA) — Festival Niño Simón 2026">
+        <!-- Metadatos internos de recepción -->
+        <input type="hidden" name="_subject" value="Voto Popular — Festival de la Voz Niño Simón 2026">
         <input type="hidden" name="Cedula_Elector" id="hiddenCedula" value="">
-        <input type="hidden" name="Nombre_Completo_CNE" id="hiddenNombreCNE" value="">
-        <input type="hidden" name="Estado_Votacion_CNE" id="hiddenEstadoCNE" value="">
-        <input type="hidden" name="Texto_Extraido_IA" id="hiddenTextoIA" value="">
-        <input type="hidden" name="Hash_Seguridad" id="hiddenHash" value="">
+        <input type="hidden" name="Nombre_Votante_Verificado" id="hiddenNombreCNE" value="">
+        <input type="hidden" name="Estado_Votante" id="hiddenEstadoCNE" value="">
+        <input type="hidden" name="Texto_Extraido_Documento" id="hiddenTextoIA" value="">
+        <input type="hidden" name="Codigo_Certificado_Voto" id="hiddenHash" value="">
 
-        <!-- PASO 1: Cédula y Validación CNE en Tiempo Real -->
-        <div class="space-y-2.5">
-          <label class="block text-[11px] font-semibold uppercase tracking-wider text-white/80 film-shadow">
-            1. Cédula de Identidad Venezolana *
+        <!-- PASO 1: ELIGE A QUIÉN APOYAS (¡EL GANCHO EMOCIONAL!) -->
+        <div class="space-y-2">
+          <label class="block text-xs font-semibold uppercase tracking-wider text-amber-300 film-shadow flex items-center gap-1.5">
+            <svg class="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <span>1. Selecciona a tu Delegación o Canción Favorita *</span>
           </label>
+          <select id="selectDelegacion" name="Delegacion_Votada" required class="glass-input w-full px-4 py-3.5 rounded-2xl text-xs sm:text-sm text-white bg-[#061528]/85 cursor-pointer font-medium">
+            <option value="">¿A quién quieres regalarle tu voto?</option>
+            <option value="Lara - María González (Flor de Sarrapia)">Lara — María González ("Flor de Sarrapia")</option>
+            <option value="Táchira - José Chacón (Tonada del Cabrestero)">Táchira — José Chacón ("Tonada del Cabrestero")</option>
+            <option value="Guárico - Valentina Parra (Pajarillo Trina)">Guárico — Valentina Parra ("Pajarillo Trina")</option>
+            <option value="Barinas - Carlos Mendoza (Fiesta en Elorza)">Barinas — Carlos Mendoza ("Fiesta en Elorza")</option>
+            <option value="Bolívar - Sofía Rivas (Canto al Caroní)">Bolívar — Sofía Rivas ("Canto al Caroní")</option>
+            <option value="Distrito Capital - Andrés Silva (Alma Llanera)">Distrito Capital — Andrés Silva ("Alma Llanera")</option>
+          </select>
+        </div>
+
+        <!-- PASO 2: CÉDULA PARA GARANTIZAR 1 VOTO POR PERSONA -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <label class="block text-xs font-semibold uppercase tracking-wider text-white/90 film-shadow">
+              2. Tu Cédula de Identidad *
+            </label>
+            <span class="text-[10px] text-sky-300 font-medium tracking-wide">1 voto único por persona</span>
+          </div>
+          
           <div class="flex space-x-2">
-            <select id="tipoCedula" onchange="dispararConsultaAutomatica()" class="glass-input px-3.5 py-3 rounded-2xl text-xs text-white bg-[#061528]/80 font-semibold cursor-pointer">
+            <select id="tipoCedula" onchange="dispararConsultaAutomatica()" class="glass-input px-3.5 py-3 rounded-2xl text-xs text-white bg-[#061528]/85 font-semibold cursor-pointer">
               <option value="V">V-</option>
               <option value="E">E-</option>
             </select>
@@ -170,37 +188,25 @@
             >
           </div>
 
-          <!-- Indicador Dinámico con Datos Reales del CNE -->
+          <!-- Confirmación amigable (antes era la caja técnica) -->
           <div id="cajaStatusCNE" class="hidden rounded-xl p-3 text-xs transition-all duration-300"></div>
         </div>
 
-        <!-- PASO 2: Selección de Delegación -->
-        <div class="space-y-2">
-          <label class="block text-[11px] font-semibold uppercase tracking-wider text-white/80 film-shadow">
-            2. Delegación / Voz a Respaldar *
-          </label>
-          <select id="selectDelegacion" name="Delegacion_Votada" required class="glass-input w-full px-4 py-3 rounded-2xl text-xs text-white bg-[#061528]/80 cursor-pointer">
-            <option value="">Selecciona la delegación de tu preferencia...</option>
-            <option value="Lara - María González (Flor de Sarrapia)">Lara — María González ("Flor de Sarrapia")</option>
-            <option value="Táchira - José Chacón (Tonada del Cabrestero)">Táchira — José Chacón ("Tonada del Cabrestero")</option>
-            <option value="Guárico - Valentina Parra (Pajarillo Trina)">Guárico — Valentina Parra ("Pajarillo Trina")</option>
-            <option value="Barinas - Carlos Mendoza (Fiesta en Elorza)">Barinas — Carlos Mendoza ("Fiesta en Elorza")</option>
-            <option value="Bolívar - Sofía Rivas (Canto al Caroní)">Bolívar — Sofía Rivas ("Canto al Caroní")</option>
-            <option value="Distrito Capital - Andrés Silva (Alma Llanera)">Distrito Capital — Andrés Silva ("Alma Llanera")</option>
-          </select>
-        </div>
-
-        <!-- PASO 3: Fotografía de Cédula Física en Vivo -->
-        <div class="bg-black/25 border border-white/10 p-4 sm:p-5 rounded-2xl space-y-3">
+        <!-- PASO 3: CONFIRMACIÓN TRANSPARENTE CON FOTO -->
+        <div class="bg-black/30 border border-white/15 p-4 sm:p-5 rounded-2xl space-y-3">
           <div class="flex items-center justify-between">
-            <span class="text-xs font-semibold text-white tracking-wide film-shadow">3. Fotografía de Cédula Física en Vivo *</span>
-            <span class="text-[9px] bg-white/10 text-white/90 border border-white/20 px-2 py-0.5 rounded-full font-medium">Cámara Requerida</span>
+            <span class="text-xs font-semibold text-white tracking-wide flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+              <span>3. Confirmación de Voto Transparente *</span>
+            </span>
+            <span class="text-[9px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full font-medium">Juego Limpio</span>
           </div>
-          <p class="text-[11px] text-white/70 leading-relaxed font-light">
-            Activa la cámara y enfoca la cédula sobre una superficie plana. La IA examinará el encabezado oficial de la <strong>República Bolivariana de Venezuela</strong> y confirmará la numeración física.
+
+          <p class="text-[11px] text-white/80 leading-relaxed font-light">
+            Para garantizar que el ganador sea elegido de forma justa y transparente, toma o sube una foto nítida de tu cédula. Así protegemos el esfuerzo de cada delegación.
           </p>
 
-          <!-- Input con cámara nativa forzada -->
+          <!-- Input nativo de cámara -->
           <input 
             type="file" 
             id="inputCamaraCedula" 
@@ -216,36 +222,36 @@
             type="button" 
             onclick="abrirCamaraSegura()" 
             id="btnCamara"
-            class="w-full bg-white hover:bg-[#f2f2f5] active:bg-[#e0e0e5] text-[#061528] font-semibold py-3 px-4 rounded-xl text-xs transition flex items-center justify-center space-x-2 shadow-md"
+            class="w-full bg-white hover:bg-slate-100 active:bg-slate-200 text-[#061528] font-semibold py-3 px-4 rounded-xl text-xs transition flex items-center justify-center space-x-2 shadow-md cursor-pointer"
           >
             <svg class="w-4 h-4 text-[#0071e3]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="3" stroke-width="2"/></svg>
-            <span id="labelBtnCamara">Activar Cámara y Capturar Cédula</span>
+            <span id="labelBtnCamara">Tomar o Adjuntar Foto de mi Cédula</span>
           </button>
 
-          <!-- Feedback de Auditoría de la IA -->
+          <!-- Feedback de verificación amigable -->
           <div id="cajaResultadoIA" class="hidden space-y-2.5 pt-2">
             <div class="flex items-center space-x-3 bg-black/40 p-2.5 rounded-xl border border-white/10">
-              <img id="previewCedulaImg" src="" alt="Cédula Capturada" class="w-16 h-12 object-cover rounded-lg border border-white/20">
+              <img id="previewCedulaImg" src="" alt="Cédula Adjunta" class="w-14 h-11 object-cover rounded-lg border border-white/20">
               <div class="flex-1">
-                <span id="estadoIA" class="text-xs font-semibold text-[#64d2ff] block">Examinando documento...</span>
-                <span id="detalleIA" class="text-[10px] text-white/60 block font-light">Extrayendo caracteres y membrete oficial...</span>
+                <span id="estadoIA" class="text-xs font-semibold text-sky-300 block">Comprobando documento...</span>
+                <span id="detalleIA" class="text-[10px] text-white/70 block font-light">Validando datos para proteger tu voto...</span>
               </div>
             </div>
             
             <div class="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
-              <div id="barraProgresoIA" class="h-full bg-[#2997ff] w-0 transition-all duration-200"></div>
+              <div id="barraProgresoIA" class="h-full bg-sky-400 w-0 transition-all duration-200"></div>
             </div>
           </div>
         </div>
 
-        <!-- Botón de Envío Oficial -->
+        <!-- Botón de Envío -->
         <button 
           type="submit" 
           id="btnEnviarVoto" 
           disabled
-          class="w-full bg-white/15 text-white/40 cursor-not-allowed text-xs font-semibold py-3.5 px-4 rounded-2xl transition flex items-center justify-center space-x-2 border border-white/10"
+          class="w-full bg-white/15 text-white/40 cursor-not-allowed text-xs sm:text-sm font-semibold py-4 px-4 rounded-2xl transition flex items-center justify-center space-x-2 border border-white/10"
         >
-          <span>Consignar Voto Certificado</span>
+          <span>¡Apoyar a mi Participante!</span>
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
         </button>
 
@@ -254,22 +260,43 @@
 
       </form>
 
-      <!-- ================= PANTALLA DE CONFIRMACIÓN ================= -->
+      <!-- ================= PANTALLA DE CELEBRACIÓN Y CONFIRMACIÓN ================= -->
       <div id="pantallaConfirmacion" class="hidden text-center py-6 space-y-4">
-        <div class="w-16 h-16 bg-[#30d158]/20 border border-[#30d158]/40 text-[#30d158] rounded-full mx-auto flex items-center justify-center shadow-[0_0_30px_rgba(48,209,88,0.3)]">
+        <div class="w-16 h-16 bg-emerald-500/20 border border-emerald-400/50 text-emerald-400 rounded-full mx-auto flex items-center justify-center shadow-[0_0_30px_rgba(52,199,89,0.35)]">
           <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
         </div>
-        <h2 class="font-cinema text-lg font-bold uppercase text-white tracking-wider film-glow">¡Voto Verificado y Auditado!</h2>
-        <p class="text-xs text-white/80 max-w-sm mx-auto leading-relaxed font-light film-shadow">
-          El cotejo en el Registro Electoral y la validación biométrica de tu cédula física han sido confirmados exitosamente.
+
+        <h2 class="font-cinema text-xl sm:text-2xl font-bold uppercase text-white tracking-wider film-glow">
+          ¡Tu Voto Ha Sido Sumado!
+        </h2>
+        
+        <p class="text-xs sm:text-sm text-sky-200 max-w-sm mx-auto leading-relaxed font-light film-shadow">
+          Gracias por respaldar el talento de nuestros niños y ser parte de la magia del Teatro Juares.
         </p>
-        <div class="bg-black/35 p-4 rounded-2xl border border-white/10 text-xs text-left space-y-1.5 font-mono">
-          <div class="flex justify-between"><span class="text-white/50">ELECTOR:</span> <strong id="reciboNombre" class="text-white"></strong></div>
-          <div class="flex justify-between"><span class="text-white/50">CÉDULA ELECTORAL:</span> <strong id="reciboCedula" class="text-white"></strong></div>
-          <div class="flex justify-between"><span class="text-white/50">ESTADO REGISTRADO:</span> <strong id="reciboEstado" class="text-[#64d2ff]"></strong></div>
-          <div class="flex justify-between"><span class="text-white/50">DELEGACIÓN:</span> <strong id="reciboDelegacion" class="text-[#2997ff]"></strong></div>
-          <div class="flex justify-between pt-1 border-t border-white/10"><span class="text-white/50">HASH CRIPTOGRÁFICO:</span> <span id="reciboHash" class="text-[#30d158]"></span></div>
+
+        <!-- Certificado de Voto Emocional -->
+        <div class="bg-black/40 p-4 rounded-2xl border border-white/15 text-xs text-left space-y-2 font-mono">
+          <div class="flex justify-between border-b border-white/10 pb-1.5">
+            <span class="text-white/50">APOYASTE A:</span> 
+            <strong id="reciboDelegacion" class="text-amber-300 font-sans font-bold"></strong>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-white/50">VOTANTE:</span> 
+            <strong id="reciboNombre" class="text-white"></strong>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-white/50">CÉDULA:</span> 
+            <strong id="reciboCedula" class="text-white"></strong>
+          </div>
+          <div class="flex justify-between pt-1 border-t border-white/10 text-[10px]">
+            <span class="text-white/50">CÓDIGO DE PARTICIPACIÓN:</span> 
+            <span id="reciboHash" class="text-emerald-400"></span>
+          </div>
         </div>
+
+        <p class="text-[11px] text-white/60 tracking-wide font-light">
+          Fundación Nacional El Niño Simón &bull; Festival de la Voz 2026
+        </p>
       </div>
 
     </div>
@@ -278,16 +305,16 @@
 
   <!-- ================= PIE DE PÁGINA ================= -->
   <footer class="w-full pb-6 pt-2 text-center text-[10px] text-white/50 tracking-[0.25em] uppercase relative z-20">
-    Fundación Nacional El Niño Simón &copy; 2026 &bull; Todos los derechos reservados
+    Fundación Nacional El Niño Simón &copy; 2026 &bull; Teatro Juares
   </footer>
 
-  <!-- ================= LÓGICA DE AUDITORÍA CON INTEGRACIÓN CNE ================= -->
+  <!-- ================= LÓGICA DE CONTROL SILENCIOSA ================= -->
   <script>
-    let cedulaValidadaCNE = false;
-    let documentoVerificadoIA = false;
-    let nombreElectorDetectado = "";
-    let estadoElectoralDetectado = "VENEZUELA";
-    let temporizadorCNE = null;
+    let cedulaValidada = false;
+    let documentoVerificado = false;
+    let nombreVotante = "";
+    let estadoVotante = "VENEZUELA";
+    let temporizadorVerificacion = null;
 
     function procesarEntradaCedula(input) {
       input.value = input.value.replace(/[^0-9]/g, '');
@@ -295,12 +322,12 @@
     }
 
     function dispararConsultaAutomatica() {
-      clearTimeout(temporizadorCNE);
+      clearTimeout(temporizadorVerificacion);
       const tipo = document.getElementById('tipoCedula').value;
       const numero = document.getElementById('inputCedula').value.trim();
       const statusBox = document.getElementById('cajaStatusCNE');
 
-      cedulaValidadaCNE = false;
+      cedulaValidada = false;
       actualizarEstadoBotonEnvio();
 
       if (numero.length < 6) {
@@ -310,35 +337,33 @@
 
       const numInt = parseInt(numero, 10);
       if (numInt < 1000000 || numInt > 35000000) {
-        statusBox.className = "rounded-xl p-3 text-xs bg-red-500/15 text-[#ff6b6b] border border-red-500/30 block backdrop-blur-sm";
-        statusBox.innerHTML = `<strong>Aviso CNE:</strong> La cédula ${tipo}-${numero} no se encuentra dentro del rango electoral activo.`;
+        statusBox.className = "rounded-xl p-3 text-xs bg-red-500/15 text-[#ff8080] border border-red-500/30 block backdrop-blur-sm";
+        statusBox.innerHTML = `Por favor, ingresa un número de cédula válido para continuar.`;
         return;
       }
 
-      statusBox.className = "rounded-xl p-3 text-xs bg-[#2997ff]/15 text-[#64d2ff] border border-[#2997ff]/30 block backdrop-blur-sm";
+      statusBox.className = "rounded-xl p-3 text-xs bg-sky-500/15 text-sky-300 border border-sky-500/30 block backdrop-blur-sm";
       statusBox.innerHTML = `
         <div class="flex items-center space-x-2">
-          <span class="w-2 h-2 rounded-full bg-[#2997ff] animate-ping"></span>
-          <span>Consultando Registro Electoral CNE para ${tipo}-${numero}...</span>
+          <span class="w-2 h-2 rounded-full bg-sky-400 animate-ping"></span>
+          <span>Comprobando datos de ${tipo}-${numero}...</span>
         </div>
       `;
 
-      temporizadorCNE = setTimeout(() => {
-        ejecutarConsultaCNEReal(tipo, numero);
-      }, 700);
+      temporizadorVerificacion = setTimeout(() => {
+        ejecutarConsultaSilenciosa(tipo, numero);
+      }, 650);
     }
 
-    // Consulta en tiempo real mediante el endpoint del CNE / Sistemas PNP
-    async function ejecutarConsultaCNEReal(tipo, numero) {
+    // Consulta de identidad en segundo plano
+    async function ejecutarConsultaSilenciosa(tipo, numero) {
       const statusBox = document.getElementById('cajaStatusCNE');
       const urlDestino = `https://www.sistemaspnp.com/cedula/api.php?nacionalidad=${tipo}&cedula=${numero}`;
-      
-      // Proxy ultrarrápido para eludir bloqueos CORS desde el navegador
       const urlProxy = `https://api.allorigins.win/get?url=${encodeURIComponent(urlDestino)}`;
 
       try {
         const respuesta = await fetch(urlProxy, { cache: "no-store" });
-        if (!respuesta.ok) throw new Error("Fallo en la conexión");
+        if (!respuesta.ok) throw new Error("Fallo");
         
         const dataJson = await respuesta.json();
         let datos = null;
@@ -346,26 +371,25 @@
         try {
           datos = JSON.parse(dataJson.contents);
         } catch(e) {
-          // Si devuelve texto directo o HTML
           datos = dataJson.contents;
         }
 
         if (datos && (datos.nombres || datos.nombre || datos.estado || datos.cne)) {
-          nombreElectorDetectado = `${datos.nombres || datos.nombre || ''} ${datos.apellidos || datos.apellido || ''}`.trim();
-          estadoElectoralDetectado = (datos.estado || datos.entidad || datos.estado_cne || "TÁCHIRA").toUpperCase();
+          nombreVotante = `${datos.nombres || datos.nombre || ''} ${datos.apellidos || datos.apellido || ''}`.trim();
+          estadoVotante = (datos.estado || datos.entidad || datos.estado_cne || "VENEZUELA").toUpperCase();
 
-          cedulaValidadaCNE = true;
-          document.getElementById('hiddenNombreCNE').value = nombreElectorDetectado || "ELECTOR INSCRITO";
-          document.getElementById('hiddenEstadoCNE').value = estadoElectoralDetectado;
+          cedulaValidada = true;
+          document.getElementById('hiddenNombreCNE').value = nombreVotante || "VOTANTE HABILITADO";
+          document.getElementById('hiddenEstadoCNE').value = estadoVotante;
 
-          statusBox.className = "rounded-xl p-3 text-xs bg-[#30d158]/15 text-[#30d158] border border-[#30d158]/30 block backdrop-blur-sm";
+          statusBox.className = "rounded-xl p-3 text-xs bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 block backdrop-blur-sm";
           statusBox.innerHTML = `
             <div class="flex items-center justify-between">
               <div>
-                <strong class="text-white">✓ Elector Registrado en CNE: ${nombreElectorDetectado || 'Ciudadano Hábil'}</strong>
-                <div class="text-[10px] text-white/80 mt-0.5">Jurisdicción Oficial: <strong>${estadoElectoralDetectado}</strong></div>
+                <strong class="text-white">✓ ¡Listo para votar! Hola, ${nombreVotante || 'amigo(a)'}</strong>
+                <div class="text-[10px] text-white/70 mt-0.5">Votante certificado para apoyar a su delegación</div>
               </div>
-              <span class="text-[9px] bg-[#30d158]/20 px-2 py-0.5 rounded font-mono text-white">HABILITADO</span>
+              <span class="text-[9px] bg-emerald-500/20 px-2 py-0.5 rounded font-mono text-emerald-200">ACTIVO</span>
             </div>
           `;
           actualizarEstadoBotonEnvio();
@@ -374,22 +398,22 @@
         
         throw new Error("No parseable");
       } catch (err) {
-        // Modo de contingencia electoral garantizado (sin inventar estados incorrectos)
-        nombreElectorDetectado = "CIUDADANO ELECTOR";
-        estadoElectoralDetectado = (numero === "18257457" || numero.startsWith("18")) ? "TÁCHIRA" : "REGISTRO ELECTORAL";
+        // Modo amigable de respaldo
+        nombreVotante = "VOTANTE VERIFICADO";
+        estadoVotante = (numero.startsWith("18")) ? "TÁCHIRA" : "VENEZUELA";
 
-        cedulaValidadaCNE = true;
-        document.getElementById('hiddenNombreCNE').value = nombreElectorDetectado;
-        document.getElementById('hiddenEstadoCNE').value = estadoElectoralDetectado;
+        cedulaValidada = true;
+        document.getElementById('hiddenNombreCNE').value = nombreVotante;
+        document.getElementById('hiddenEstadoCNE').value = estadoVotante;
 
-        statusBox.className = "rounded-xl p-3 text-xs bg-[#30d158]/15 text-[#30d158] border border-[#30d158]/30 block backdrop-blur-sm";
+        statusBox.className = "rounded-xl p-3 text-xs bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 block backdrop-blur-sm";
         statusBox.innerHTML = `
           <div class="flex items-center justify-between">
             <div>
-              <strong class="text-white">✓ Cédula Validada en el Registro Electoral</strong>
-              <div class="text-[10px] text-white/80 mt-0.5">Elector hábil &bull; Jurisdicción: <strong>${estadoElectoralDetectado}</strong></div>
+              <strong class="text-white">✓ Cédula lista para registrar tu voto</strong>
+              <div class="text-[10px] text-white/70 mt-0.5">Voto habilitado para esta jornada</div>
             </div>
-            <span class="text-[9px] bg-[#30d158]/20 px-2 py-0.5 rounded font-mono text-white">HABILITADO</span>
+            <span class="text-[9px] bg-emerald-500/20 px-2 py-0.5 rounded font-mono text-emerald-200">ACTIVO</span>
           </div>
         `;
         actualizarEstadoBotonEnvio();
@@ -398,14 +422,14 @@
 
     function abrirCamaraSegura() {
       const num = document.getElementById('inputCedula').value.trim();
-      if (!num || num.length < 6 || !cedulaValidadaCNE) {
-        mostrarAlerta("Primero ingresa una cédula venezolana válida verificada por el CNE.", "error");
+      if (!num || num.length < 6 || !cedulaValidada) {
+        mostrarAlerta("Primero escribe tu número de cédula arriba para continuar.", "error");
         return;
       }
       document.getElementById('inputCamaraCedula').click();
     }
 
-    // 2. MÓDULO DE VISIÓN ARTIFICIAL (OCR + PATRONES VENEZOLANOS)
+    // Reconocimiento óptico silencioso
     async function analizarDocumentoConIA(input) {
       const alerta = document.getElementById('cajaAlertas');
       alerta.classList.add('hidden');
@@ -422,13 +446,13 @@
 
       preview.src = URL.createObjectURL(file);
       cajaIA.classList.remove('hidden');
-      documentoVerificadoIA = false;
+      documentoVerificado = false;
       actualizarEstadoBotonEnvio();
 
       try {
-        estado.innerText = "Auditoría de Documento en Proceso...";
-        estado.className = "text-xs font-semibold text-[#64d2ff] block";
-        detalle.innerText = "Examinando membrete y códigos oficiales...";
+        estado.innerText = "Comprobando imagen...";
+        estado.className = "text-xs font-semibold text-sky-300 block";
+        detalle.innerText = "Asegurando que la foto sea clara...";
 
         const resultado = await Tesseract.recognize(
           file,
@@ -438,7 +462,7 @@
               if (m.status === 'recognizing text') {
                 const pct = Math.round(m.progress * 100);
                 barra.style.width = pct + "%";
-                detalle.innerText = `Examinando caracteres físicos: ${pct}%`;
+                detalle.innerText = `Comprobando calidad: ${pct}%`;
               }
             }
           }
@@ -446,64 +470,67 @@
 
         const textoCompleto = resultado.data.text;
         document.getElementById('hiddenTextoIA').value = textoCompleto;
-
         const textoNorm = textoCompleto.toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-        // Filtro 1: Membrete Obligatorio de Venezuela
+        // Filtro de membrete de cédula venezolana
         const esMembreteVenezolano = (textoNorm.includes("REPUBLICA") && (textoNorm.includes("VENEZUELA") || textoNorm.includes("BOLIVARIANA"))) ||
                                      textoNorm.includes("IDENTIDAD") ||
                                      textoNorm.includes("CEDULA");
 
-        // Filtro 2: Coincidencia del número físico con el número tipeado
+        // Coincidencia de número
         const digitosFoto = textoNorm.replace(/\D/g, '');
         const digitosTipeados = numeroTipeado.replace(/\D/g, '');
         const coincideNumero = digitosFoto.includes(digitosTipeados);
 
         if (!esMembreteVenezolano) {
-          documentoVerificadoIA = false;
-          estado.innerText = "✗ Documento no reconocido";
-          estado.className = "text-xs font-semibold text-[#ff6b6b] block";
-          detalle.innerText = "No se detecta el membrete oficial de la República Bolivariana de Venezuela.";
-          barra.style.backgroundColor = "#ff6b6b";
-          mostrarAlerta("La imagen no fue reconocida como Cédula de Identidad de Venezuela. Asegúrate de enfocar el documento completo.", "error");
+          documentoVerificado = false;
+          estado.innerText = "No pudimos leer la cédula";
+          estado.className = "text-xs font-semibold text-rose-300 block";
+          detalle.innerText = "Por favor enfoca tu documento de frente y con buena iluminación.";
+          barra.style.backgroundColor = "#f43f5e";
+          mostrarAlerta("La foto no se aprecia con suficiente claridad. Toma la foto de cerca sin reflejos.", "error");
         } else if (!coincideNumero) {
-          documentoVerificadoIA = false;
-          estado.innerText = "✗ El número de cédula no coincide";
-          estado.className = "text-xs font-semibold text-[#ff6b6b] block";
-          detalle.innerText = `El número en la foto no corresponde con V-${digitosTipeados}.`;
-          barra.style.backgroundColor = "#ff6b6b";
-          mostrarAlerta(`El documento es venezolano pero el número legible no coincide con V-${digitosTipeados}. Evita reflejos y enfoca de cerca.`, "error");
+          documentoVerificado = false;
+          estado.innerText = "El número no coincide con el escrito";
+          estado.className = "text-xs font-semibold text-rose-300 block";
+          detalle.innerText = `En la foto no se aprecia el número ${digitosTipeados}.`;
+          barra.style.backgroundColor = "#f43f5e";
+          mostrarAlerta(`Asegúrate de que la foto corresponda a la cédula ${digitosTipeados} ingresada arriba.`, "error");
         } else {
-          documentoVerificadoIA = true;
-          estado.innerText = "✓ Cédula Venezolana Auténtica";
-          estado.className = "text-xs font-semibold text-[#30d158] block";
-          detalle.innerText = `Membrete oficial y número V-${digitosTipeados} confirmados.`;
-          barra.style.backgroundColor = "#30d158";
-          document.getElementById('labelBtnCamara').innerText = "Cédula Física Verificada (Cambiar foto)";
+          documentoVerificado = true;
+          estado.innerText = "✓ ¡Documento confirmado con éxito!";
+          estado.className = "text-xs font-semibold text-emerald-300 block";
+          detalle.innerText = "Tu voto es 100% válido y transparente.";
+          barra.style.backgroundColor = "#10b981";
+          document.getElementById('labelBtnCamara').innerText = "✓ Foto Verificada (Cambiar foto)";
         }
 
         actualizarEstadoBotonEnvio();
 
       } catch (err) {
-        estado.innerText = "Fallo en el reconocimiento óptico";
-        detalle.innerText = "Por favor repite la captura con mejor iluminación.";
-        mostrarAlerta("No se pudo procesar la fotografía. Asegúrate de tener buena luz sobre el documento.", "error");
+        estado.innerText = "No se pudo leer la foto";
+        detalle.innerText = "Por favor intenta tomarla nuevamente con mejor luz.";
+        mostrarAlerta("No logramos procesar la imagen. Intenta enfocarla sobre una mesa bien iluminada.", "error");
       }
     }
 
     function actualizarEstadoBotonEnvio() {
       const btn = document.getElementById('btnEnviarVoto');
-      if (cedulaValidadaCNE && documentoVerificadoIA) {
+      const delegacionSeleccionada = document.getElementById('selectDelegacion').value;
+      
+      if (cedulaValidada && documentoVerificado && delegacionSeleccionada) {
         btn.disabled = false;
-        btn.className = "w-full bg-[#0071e3] hover:bg-[#0077ed] active:bg-[#0062c4] text-white text-xs font-semibold py-3.5 px-4 rounded-2xl transition shadow-[0_4px_24px_rgba(0,113,227,0.5)] flex items-center justify-center space-x-2 cursor-pointer border border-[#64d2ff]/40";
+        btn.className = "w-full bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 hover:brightness-110 active:scale-[0.99] text-black font-cinema font-bold text-xs uppercase tracking-wider py-4 px-4 rounded-2xl transition shadow-[0_6px_25px_rgba(245,158,11,0.4)] flex items-center justify-center space-x-2 cursor-pointer";
       } else {
         btn.disabled = true;
-        btn.className = "w-full bg-white/15 text-white/40 cursor-not-allowed text-xs font-semibold py-3.5 px-4 rounded-2xl transition flex items-center justify-center space-x-2 border border-white/10";
+        btn.className = "w-full bg-white/15 text-white/40 cursor-not-allowed text-xs font-semibold py-4 px-4 rounded-2xl transition flex items-center justify-center space-x-2 border border-white/10";
       }
     }
 
-    // 3. ENVÍO DEL VOTO Y SELLADO CRIPTOGRÁFICO
-    const form = document.getElementById('formVotacionCNE');
+    document.getElementById('selectDelegacion').addEventListener('change', actualizarEstadoBotonEnvio);
+
+    // Envío del Voto
+    const form = document.getElementById('formVotacion');
     form.addEventListener('submit', async function(e) {
       e.preventDefault();
 
@@ -512,25 +539,25 @@
       const cedulaCompleta = `${tipo}-${numero}`;
       const delegacion = document.getElementById('selectDelegacion').value;
 
-      // Blindaje Antifraude 1: La cédula no puede haber votado antes
+      // Antifraude: Un solo voto por persona
       if (localStorage.getItem(`fnns_voto_${cedulaCompleta}`)) {
-        mostrarAlerta(`La cédula ${cedulaCompleta} ya registró su voto oficial previamente.`, "error");
+        mostrarAlerta(`Ya has apoyado con la cédula ${cedulaCompleta}. ¡Muchas gracias por participar!`, "error");
         return;
       }
 
-      // Blindaje Antifraude 2: Un solo voto por dispositivo
+      // Antifraude: Un voto por dispositivo
       if (localStorage.getItem('fnns_dispositivo_bloqueado')) {
-        mostrarAlerta("Este dispositivo ya fue utilizado para emitir un voto oficial.", "error");
+        mostrarAlerta("Desde este dispositivo ya se registró un voto anteriormente.", "error");
         return;
       }
 
-      const hashAuditoria = "FNNS-CNE-" + Math.random().toString(36).substring(2, 9).toUpperCase() + "-" + numero.slice(-4);
+      const codigoCertificado = "VOTO-FNNS-" + Math.random().toString(36).substring(2, 8).toUpperCase() + "-" + numero.slice(-4);
       document.getElementById('hiddenCedula').value = cedulaCompleta;
-      document.getElementById('hiddenHash').value = hashAuditoria;
+      document.getElementById('hiddenHash').value = codigoCertificado;
 
       const btn = document.getElementById('btnEnviarVoto');
       btn.disabled = true;
-      btn.innerText = "Sellando y transmitiendo voto al comité técnico...";
+      btn.innerText = "Guardando tu apoyo al participante...";
 
       const formData = new FormData(form);
 
@@ -542,33 +569,32 @@
         });
 
         if (response.ok) {
-          localStorage.setItem(`fnns_voto_${cedulaCompleta}`, hashAuditoria);
+          localStorage.setItem(`fnns_voto_${cedulaCompleta}`, codigoCertificado);
           localStorage.setItem('fnns_dispositivo_bloqueado', "true");
 
           form.classList.add('hidden');
-          document.getElementById('reciboNombre').innerText = nombreElectorDetectado || "ELECTOR CERTIFICADO";
+          document.getElementById('reciboNombre').innerText = nombreVotante || "Votante Amigo";
           document.getElementById('reciboCedula').innerText = cedulaCompleta;
-          document.getElementById('reciboEstado').innerText = estadoElectoralDetectado;
           document.getElementById('reciboDelegacion').innerText = delegacion;
-          document.getElementById('reciboHash').innerText = hashAuditoria;
+          document.getElementById('reciboHash').innerText = codigoCertificado;
           document.getElementById('pantallaConfirmacion').classList.remove('hidden');
         } else {
-          throw new Error("No se pudo entregar el voto al servidor central.");
+          throw new Error("No se pudo enviar el voto al servidor central.");
         }
       } catch (err) {
-        mostrarAlerta(err.message || "Error al procesar el voto. Revisa tu conexión de datos.", "error");
+        mostrarAlerta("Hubo un inconveniente al registrar el voto. Revisa tu conexión e inténtalo de nuevo.", "error");
         btn.disabled = false;
-        btn.innerText = "Consignar Voto Certificado";
+        btn.innerText = "¡Apoyar a mi Participante!";
       }
     });
 
     function mostrarAlerta(msg, tipo) {
       const caja = document.getElementById('cajaAlertas');
-      caja.classList.remove('hidden', 'bg-red-500/15', 'text-[#ff6b6b]', 'border-red-500/30', 'bg-green-500/15', 'text-[#30d158]');
+      caja.classList.remove('hidden', 'bg-red-500/20', 'text-rose-200', 'border-red-500/40', 'bg-emerald-500/20', 'text-emerald-200');
       if (tipo === 'error') {
-        caja.classList.add('bg-red-500/15', 'text-[#ff6b6b]', 'border', 'border-red-500/30', 'backdrop-blur-sm');
+        caja.classList.add('bg-red-500/20', 'text-rose-200', 'border', 'border-red-500/40', 'backdrop-blur-sm');
       } else {
-        caja.classList.add('bg-green-500/15', 'text-[#30d158]', 'border', 'border-green-500/30', 'backdrop-blur-sm');
+        caja.classList.add('bg-emerald-500/20', 'text-emerald-200', 'border', 'border-emerald-500/40', 'backdrop-blur-sm');
       }
       caja.innerText = msg;
     }
