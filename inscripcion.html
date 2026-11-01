@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" class="h-full bg-[#fbfbfd]">
+<html lang="es" class="h-full">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,7 +29,6 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Animación de entrada del Logo */
     @keyframes logoReveal {
       0% {
         opacity: 0;
@@ -47,37 +46,19 @@
       }
     }
 
-    /* Movimiento de flotación continua */
     @keyframes logoFloating {
-      0%, 100% {
-        transform: translateY(0);
-      }
-      50% {
-        transform: translateY(-6px);
-      }
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
     }
 
-    /* Animación del texto y elementos de la portada */
     @keyframes contentFadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(16px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     @keyframes modalPop {
-      from {
-        opacity: 0;
-        transform: scale(0.96) translateY(8px);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-      }
+      from { opacity: 0; transform: scale(0.96) translateY(8px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
     }
 
     .logo-intro {
@@ -95,70 +76,82 @@
     }
   </style>
 </head>
-<body class="min-h-full flex flex-col justify-between text-[#1d1d1f] antialiased">
+<body class="min-h-full flex flex-col justify-between text-[#1d1d1f] antialiased relative selection:bg-[#0071e3] selection:text-white">
+
+  <!-- ================= FONDO DE VIDEO RESPONSIVE (TEATRO JUARES) ================= -->
+  <div class="fixed inset-0 w-full h-full -z-20 overflow-hidden pointer-events-none bg-[#0b0d12]">
+    <!-- Versión Vertical: Smartphones en vertical -->
+    <video autoplay muted loop playsinline class="block sm:hidden w-full h-full object-cover">
+      <source src="TEATRO.mp4" type="video/mp4">
+    </video>
+
+    <!-- Versión Horizontal: Pantallas de escritorio, laptops y tablets apaisadas -->
+    <video autoplay muted loop playsinline class="hidden sm:block w-full h-full object-cover">
+      <source src="TEATROHORIZONTAL.mp4" type="video/mp4">
+    </video>
+
+    <!-- Capa cinemática para alto contraste de lectura -->
+    <div class="absolute inset-0 bg-[#0b0d12]/75 backdrop-blur-[2px]"></div>
+  </div>
 
   <!-- ================= TAPA / PANTALLA DE INICIO (HERO) ================= -->
-  <section id="portadaInicio" class="fixed inset-0 z-50 bg-[#fbfbfd] flex flex-col items-center justify-between px-6 py-10 transition-all duration-700 overflow-y-auto">
+  <section id="portadaInicio" class="fixed inset-0 z-50 flex flex-col items-center justify-between px-6 py-10 transition-all duration-700 overflow-y-auto">
     <div></div>
 
     <div class="max-w-md w-full text-center flex flex-col items-center my-auto">
       
-      <!-- Logo institucional -->
+      <!-- Logo institucional con sombra flotante -->
       <div class="w-44 h-44 md:w-52 md:h-52 flex items-center justify-center mb-6 logo-intro">
-        <img src="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png" alt="Festival Niño Simón" class="w-full h-full object-contain filter drop-shadow-[0_12px_24px_rgba(0,0,0,0.06)]">
+        <img src="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png" alt="Festival Niño Simón" class="w-full h-full object-contain filter drop-shadow-[0_16px_32px_rgba(0,0,0,0.4)]">
       </div>
 
       <div class="content-intro flex flex-col items-center w-full">
-        <!-- Badge institucional -->
-        <div class="inline-flex items-center space-x-2 bg-white/90 border border-[#d2d2d7]/50 px-3.5 py-1 rounded-full shadow-sm mb-3">
+        <div class="inline-flex items-center space-x-2 bg-white/90 backdrop-blur-md border border-white/40 px-3.5 py-1 rounded-full shadow-lg mb-3">
           <span class="w-2 h-2 rounded-full bg-[#34c759] animate-pulse"></span>
-          <span class="text-[11px] font-medium tracking-wide uppercase text-[#86868b]">Fundación Nacional El Niño Simón</span>
+          <span class="text-[11px] font-medium tracking-wide uppercase text-[#515154]">Fundación Nacional El Niño Simón</span>
         </div>
 
-        <!-- Título Principal -->
-        <h1 class="text-3xl md:text-4xl font-semibold tracking-tight text-[#1d1d1f] mb-3 leading-tight">
-          Festival de la Voz<br><span class="text-[#0071e3]">Niño Simón 2026</span>
+        <h1 class="text-3xl md:text-4xl font-semibold tracking-tight text-white mb-3 leading-tight drop-shadow-md">
+          Festival de la Voz<br><span class="text-[#38a0ff]">Niño Simón 2026</span>
         </h1>
         
-        <!-- Reseña institucional -->
-        <div class="bg-white/70 border border-[#d2d2d7]/40 rounded-2xl p-5 mb-6 shadow-sm text-left space-y-2">
-          <p class="text-xs text-[#515154] leading-relaxed">
+        <div class="bg-white/85 backdrop-blur-xl border border-white/60 rounded-3xl p-6 mb-6 shadow-2xl text-left space-y-2.5">
+          <p class="text-xs text-[#333336] leading-relaxed">
             Iniciativa organizada por la <strong>Fundación Nacional El Niño Simón</strong> para celebrar y enaltecer el talento, la identidad folclórica y las raíces de nuestras niñas y niños de toda Venezuela.
           </p>
-          <p class="text-xs text-[#86868b] leading-relaxed">
+          <p class="text-xs text-[#636366] leading-relaxed">
             Cada delegación estadal subirá al emblemático escenario del <strong>Teatro Juares</strong> para compartir su voz, disciplina y alegría con todo el país.
           </p>
         </div>
 
-        <p class="text-xs text-[#86868b] leading-relaxed max-w-sm mb-6 font-normal">
-          Portal táctico de acreditación federativa, protección LOPNNA y control técnico de audio máster.
+        <p class="text-xs text-slate-200 leading-relaxed max-w-sm mb-6 font-normal drop-shadow">
+          Portal táctico de acreditación federativa, emisión de pases QR y control técnico de audio máster.
         </p>
 
-        <!-- Botón de apertura -->
-        <button onclick="entrarAlPortal()" class="group relative inline-flex items-center justify-center space-x-2 bg-[#0071e3] hover:bg-[#0077ed] active:bg-[#0062c4] text-white px-8 py-3.5 rounded-2xl text-sm font-medium transition duration-200 shadow-[0_4px_14px_rgba(0,113,227,0.3)]">
+        <button onclick="entrarAlPortal()" class="group relative inline-flex items-center justify-center space-x-2 bg-[#0071e3] hover:bg-[#0077ed] active:bg-[#0062c4] text-white px-8 py-3.5 rounded-2xl text-sm font-medium transition duration-200 shadow-[0_8px_25px_rgba(0,113,227,0.45)]">
           <span>Ingresar al Expediente</span>
           <svg class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
           </svg>
         </button>
 
-        <span class="text-[11px] text-[#a1a1a6] mt-3">Recepción abierta para las 35 delegaciones</span>
+        <span class="text-[11px] text-slate-300/80 mt-3">Recepción abierta para las 35 delegaciones</span>
       </div>
     </div>
 
-    <div class="text-[11px] text-[#86868b] tracking-wider uppercase mt-6 text-center">
+    <div class="text-[11px] text-slate-300/70 tracking-wider uppercase mt-6 text-center">
       Fundación Nacional El Niño Simón &copy; 2026
     </div>
   </section>
 
   <!-- ================= BARRA SUPERIOR FIJA ================= -->
-  <header class="w-full bg-white/80 backdrop-blur-md border-b border-[#d2d2d7]/40 sticky top-0 z-20">
+  <header class="w-full bg-white/80 backdrop-blur-xl border-b border-white/40 sticky top-0 z-20 shadow-sm">
     <div class="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
       <div class="flex items-center space-x-3">
         <img src="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png" alt="Festival Niño Simón" class="h-9 w-auto object-contain">
         <div class="border-l border-[#d2d2d7] pl-3 flex flex-col">
           <span class="text-xs uppercase tracking-widest text-[#1d1d1f] font-semibold">FNNS</span>
-          <span class="text-[10px] text-[#86868b]">Módulo 01: Acreditación</span>
+          <span class="text-[10px] text-[#86868b]">Módulo 01: Acreditación & QR</span>
         </div>
       </div>
       <span class="text-xs font-normal text-[#86868b] hidden sm:inline">Fundación Nacional El Niño Simón</span>
@@ -166,27 +159,31 @@
   </header>
 
   <!-- ================= FORMULARIO PRINCIPAL ================= -->
-  <main class="max-w-2xl w-full mx-auto px-6 py-10 flex-1">
+  <main class="max-w-2xl w-full mx-auto px-6 py-10 flex-1 relative z-10">
     
     <div class="text-center mb-8">
-      <h1 class="text-3xl font-semibold tracking-tight text-[#1d1d1f]">Carga de Expediente</h1>
-      <p class="text-xs md:text-sm text-[#86868b] mt-1 font-normal">
-        Recepción de recaudos oficiales para las 35 delegaciones federativas.
+      <span class="inline-block bg-white/20 backdrop-blur-md text-white border border-white/30 text-[11px] font-semibold uppercase px-3 py-1 rounded-full mb-2">Teatro Juares — Barquisimeto</span>
+      <h1 class="text-3xl font-semibold tracking-tight text-white drop-shadow">Carga de Expediente Oficial</h1>
+      <p class="text-xs md:text-sm text-slate-200 mt-1 font-normal drop-shadow">
+        Recepción de recaudos oficiales para delegaciones y participantes.
       </p>
     </div>
 
     <form id="formularioAcreditacion" action="https://formspree.io/f/xwllkjbz" method="POST" enctype="multipart/form-data" class="space-y-6">
       
+      <!-- Campo oculto para el Código Único de Acreditación -->
+      <input type="hidden" name="ID_Pase_Acreditacion" id="campoIdPase" value="">
+
       <!-- PASO 1: DELEGACIÓN -->
-      <section class="bg-white rounded-2xl p-6 md:p-7 border border-[#d2d2d7]/50 shadow-[0_2px_12px_rgba(0,0,0,0.03)] space-y-4">
-        <div class="border-b border-[#d2d2d7]/30 pb-3 flex items-center justify-between">
+      <section class="bg-white/90 backdrop-blur-xl rounded-3xl p-6 md:p-7 border border-white/70 shadow-[0_8px_30px_rgba(0,0,0,0.12)] space-y-4">
+        <div class="border-b border-[#d2d2d7]/40 pb-3 flex items-center justify-between">
           <span class="text-[11px] font-semibold uppercase tracking-wider text-[#0071e3]">Paso 01</span>
           <span class="text-[11px] text-[#86868b]">Sede & Región</span>
         </div>
 
         <div>
           <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Estado / Delegación Federativa *</label>
-          <select id="campoEstado" name="Estado" required class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm text-[#1d1d1f] focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition cursor-pointer">
+          <select id="campoEstado" name="Estado" required class="w-full bg-[#f5f5f7] border border-[#d2d2d7]/50 rounded-xl px-4 py-3 text-sm text-[#1d1d1f] focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition cursor-pointer">
             <option value="">Selecciona una delegación...</option>
             <option value="Amazonas">Amazonas</option>
             <option value="Anzoátegui">Anzoátegui</option>
@@ -218,43 +215,46 @@
       </section>
 
       <!-- PASO 2: DATOS DEL PARTICIPANTE Y REPRESENTANTE -->
-      <section class="bg-white rounded-2xl p-6 md:p-7 border border-[#d2d2d7]/50 shadow-[0_2px_12px_rgba(0,0,0,0.03)] space-y-4">
-        <div class="border-b border-[#d2d2d7]/30 pb-3 flex items-center justify-between">
+      <section class="bg-white/90 backdrop-blur-xl rounded-3xl p-6 md:p-7 border border-white/70 shadow-[0_8px_30px_rgba(0,0,0,0.12)] space-y-4">
+        <div class="border-b border-[#d2d2d7]/40 pb-3 flex items-center justify-between">
           <span class="text-[11px] font-semibold uppercase tracking-wider text-[#0071e3]">Paso 02</span>
-          <span class="text-[11px] text-[#86868b]">Ficha Personal</span>
+          <span class="text-[11px] text-[#86868b]">Ficha Personal & Contacto</span>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div class="md:col-span-2">
             <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Nombre Completo del Niño(a) *</label>
-            <input type="text" id="campoNombre" name="Nombre_Participante" required placeholder="Nombres y Apellidos" class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
+            <input type="text" id="campoNombre" name="Nombre_Participante" required placeholder="Nombres y Apellidos" class="w-full bg-[#f5f5f7] border border-[#d2d2d7]/50 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
           </div>
           <div>
             <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Edad *</label>
-            <input type="number" id="campoEdad" name="Edad" min="4" max="17" placeholder="Años" required class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
+            <input type="number" id="campoEdad" name="Edad" min="4" max="17" placeholder="Años" required class="w-full bg-[#f5f5f7] border border-[#d2d2d7]/50 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
           </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Nombre del Representante Legal *</label>
-            <input type="text" id="campoRepresentante" name="Representante_Legal" required placeholder="Familiar o tutor legal" class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
+            <input type="text" id="campoRepresentante" name="Representante_Legal" required placeholder="Familiar o tutor legal" class="w-full bg-[#f5f5f7] border border-[#d2d2d7]/50 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
           </div>
           <div>
             <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Cédula del Representante *</label>
-            <input type="text" id="campoCedula" name="Cedula_Representante" placeholder="V-12345678" required class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
+            <input type="text" id="campoCedula" name="Cedula_Representante" placeholder="V-12345678" required class="w-full bg-[#f5f5f7] border border-[#d2d2d7]/50 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
           </div>
         </div>
 
         <div>
-          <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Teléfono de Contacto (WhatsApp) *</label>
-          <input type="tel" id="campoTelefono" name="Telefono" placeholder="Ej: 04141234567" required class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
+          <div class="flex items-center justify-between mb-1.5">
+            <label class="block text-xs font-medium text-[#515154] uppercase tracking-wide">Teléfono de Contacto (WhatsApp) *</label>
+            <span class="text-[10px] text-[#0071e3] font-medium">Recepción de Pase Digital & Avisos</span>
+          </div>
+          <input type="tel" id="campoTelefono" name="Telefono" placeholder="Ej: 04141234567 o 04121234567" required class="w-full bg-[#f5f5f7] border border-[#d2d2d7]/50 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
         </div>
       </section>
 
-      <!-- PASO 3: PROTECCIÓN LOPNNA Y SALUD (SELECCIÓN DUAL: CÁMARA O ARCHIVO) -->
-      <section class="bg-white rounded-2xl p-6 md:p-7 border border-[#d2d2d7]/50 shadow-[0_2px_12px_rgba(0,0,0,0.03)] space-y-6">
-        <div class="border-b border-[#d2d2d7]/30 pb-3 flex items-center justify-between">
+      <!-- PASO 3: PROTECCIÓN LOPNNA Y SALUD -->
+      <section class="bg-white/90 backdrop-blur-xl rounded-3xl p-6 md:p-7 border border-white/70 shadow-[0_8px_30px_rgba(0,0,0,0.12)] space-y-6">
+        <div class="border-b border-[#d2d2d7]/40 pb-3 flex items-center justify-between">
           <span class="text-[11px] font-semibold uppercase tracking-wider text-[#0071e3]">Paso 03</span>
           <span class="text-[11px] text-[#86868b]">Permisos & Salud</span>
         </div>
@@ -265,18 +265,16 @@
             <label class="block text-xs font-medium text-[#515154] uppercase tracking-wide">Permiso LOPNNA Oficial *</label>
             <span class="text-[10px] bg-[#0071e3]/10 text-[#0071e3] px-2 py-0.5 rounded-full font-medium">Requerido</span>
           </div>
-          <p class="text-[11px] text-[#86868b]">Selecciona tomar una foto directa del documento físico o cargar el archivo PDF/imagen guardado.</p>
+          <p class="text-[11px] text-[#86868b]">Toma una foto directa del documento físico o sube el archivo PDF/imagen.</p>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-            <!-- Botón 1: Cámara -->
-            <label class="flex items-center justify-center gap-2 bg-[#f5f5f7] hover:bg-[#e8e8ed] active:bg-[#e0e0e5] text-[#1d1d1f] py-3.5 px-4 rounded-xl text-xs font-medium cursor-pointer transition border border-[#d2d2d7]/40 shadow-sm">
+            <label class="flex items-center justify-center gap-2 bg-[#f5f5f7] hover:bg-[#e8e8ed] text-[#1d1d1f] py-3.5 px-4 rounded-xl text-xs font-medium cursor-pointer transition border border-[#d2d2d7]/40 shadow-sm">
               <svg class="w-4 h-4 text-[#0071e3]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="3" stroke-width="2"/></svg>
               <span>Activar Cámara</span>
               <input type="file" id="lopnnaCamara" accept="image/*" capture="environment" class="hidden" onchange="gestionarCargaDocumento(this, 'lopnnaArchivo', 'statusLopnna')">
             </label>
 
-            <!-- Botón 2: Archivo / Galería / PDF -->
-            <label class="flex items-center justify-center gap-2 bg-[#f5f5f7] hover:bg-[#e8e8ed] active:bg-[#e0e0e5] text-[#1d1d1f] py-3.5 px-4 rounded-xl text-xs font-medium cursor-pointer transition border border-[#d2d2d7]/40 shadow-sm">
+            <label class="flex items-center justify-center gap-2 bg-[#f5f5f7] hover:bg-[#e8e8ed] text-[#1d1d1f] py-3.5 px-4 rounded-xl text-xs font-medium cursor-pointer transition border border-[#d2d2d7]/40 shadow-sm">
               <svg class="w-4 h-4 text-[#0071e3]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
               <span>Subir Archivo o Foto</span>
               <input type="file" id="lopnnaArchivo" name="Documento_LOPNNA" accept="image/*,application/pdf,.pdf" required class="hidden" onchange="gestionarCargaDocumento(this, null, 'statusLopnna')">
@@ -291,18 +289,16 @@
             <label class="block text-xs font-medium text-[#515154] uppercase tracking-wide">Ficha Médica / Certificado de Salud *</label>
             <span class="text-[10px] bg-[#0071e3]/10 text-[#0071e3] px-2 py-0.5 rounded-full font-medium">Requerido</span>
           </div>
-          <p class="text-[11px] text-[#86868b]">Foto visible de la constancia de salud emitida o archivo en formato PDF.</p>
+          <p class="text-[11px] text-[#86868b]">Foto nítida de la constancia de salud o archivo en formato PDF.</p>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-            <!-- Botón 1: Cámara -->
-            <label class="flex items-center justify-center gap-2 bg-[#f5f5f7] hover:bg-[#e8e8ed] active:bg-[#e0e0e5] text-[#1d1d1f] py-3.5 px-4 rounded-xl text-xs font-medium cursor-pointer transition border border-[#d2d2d7]/40 shadow-sm">
+            <label class="flex items-center justify-center gap-2 bg-[#f5f5f7] hover:bg-[#e8e8ed] text-[#1d1d1f] py-3.5 px-4 rounded-xl text-xs font-medium cursor-pointer transition border border-[#d2d2d7]/40 shadow-sm">
               <svg class="w-4 h-4 text-[#0071e3]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="3" stroke-width="2"/></svg>
               <span>Activar Cámara</span>
               <input type="file" id="medicaCamara" accept="image/*" capture="environment" class="hidden" onchange="gestionarCargaDocumento(this, 'medicaArchivo', 'statusMedica')">
             </label>
 
-            <!-- Botón 2: Archivo / Galería / PDF -->
-            <label class="flex items-center justify-center gap-2 bg-[#f5f5f7] hover:bg-[#e8e8ed] active:bg-[#e0e0e5] text-[#1d1d1f] py-3.5 px-4 rounded-xl text-xs font-medium cursor-pointer transition border border-[#d2d2d7]/40 shadow-sm">
+            <label class="flex items-center justify-center gap-2 bg-[#f5f5f7] hover:bg-[#e8e8ed] text-[#1d1d1f] py-3.5 px-4 rounded-xl text-xs font-medium cursor-pointer transition border border-[#d2d2d7]/40 shadow-sm">
               <svg class="w-4 h-4 text-[#0071e3]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
               <span>Subir Archivo o Foto</span>
               <input type="file" id="medicaArchivo" name="Ficha_Medica" accept="image/*,application/pdf,.pdf" required class="hidden" onchange="gestionarCargaDocumento(this, null, 'statusMedica')">
@@ -312,33 +308,33 @@
         </div>
       </section>
 
-      <!-- PASO 4: PISTAS MUSICALES (HASTA 3 PISTAS) -->
-      <section class="bg-white rounded-2xl p-6 md:p-7 border border-[#d2d2d7]/50 shadow-[0_2px_12px_rgba(0,0,0,0.03)] space-y-6">
-        <div class="border-b border-[#d2d2d7]/30 pb-3 flex items-center justify-between">
+      <!-- PASO 4: PISTAS MUSICALES -->
+      <section class="bg-white/90 backdrop-blur-xl rounded-3xl p-6 md:p-7 border border-white/70 shadow-[0_8px_30px_rgba(0,0,0,0.12)] space-y-6">
+        <div class="border-b border-[#d2d2d7]/40 pb-3 flex items-center justify-between">
           <span class="text-[11px] font-semibold uppercase tracking-wider text-[#0071e3]">Paso 04</span>
-          <span class="text-[11px] text-[#86868b]">Control Técnico de Audio (Hasta 3 pistas)</span>
+          <span class="text-[11px] text-[#86868b]">Control Técnico de Audio</span>
         </div>
 
         <p class="text-xs text-[#86868b] leading-relaxed">
-          Puedes registrar hasta tres (3) pistas por participante. La <strong>Pista 01</strong> es obligatoria (tema principal de concurso), mientras que las Pistas 02 y 03 son opcionales (alternativas o respaldo técnico).
+          Puedes registrar hasta tres (3) pistas por participante. La <strong>Pista 01</strong> es obligatoria (tema principal de concurso), mientras que las Pistas 02 y 03 son opcionales.
         </p>
 
-        <!-- PISTA 1 (OBLIGATORIA) -->
+        <!-- PISTA 1 -->
         <div class="bg-[#fbfbfd] p-4 md:p-5 rounded-2xl border border-[#d2d2d7]/40 space-y-4">
           <div class="flex items-center justify-between">
-            <span class="text-xs font-semibold uppercase tracking-wider text-[#0071e3]">Pista 01 — Principal (Obligatoria) *</span>
+            <span class="text-xs font-semibold uppercase tracking-wider text-[#0071e3]">Pista 01 — Principal *</span>
             <span class="text-[10px] bg-[#0071e3]/10 text-[#0071e3] px-2.5 py-0.5 rounded-full font-medium">Requerida</span>
           </div>
 
           <div>
             <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Título de la Canción 1 *</label>
-            <input type="text" id="campoTema1" name="Titulo_Pista_01" placeholder="Ej: Flor de Sarrapia" required class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
+            <input type="text" id="campoTema1" name="Titulo_Pista_01" placeholder="Ej: Flor de Sarrapia" required class="w-full bg-[#f5f5f7] border border-[#d2d2d7]/50 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
           </div>
 
           <div>
             <div class="flex items-center justify-between mb-1">
-              <label class="block text-xs font-medium text-[#515154] uppercase tracking-wide">Archivo de Audio de la Pista 1 *</label>
-              <span class="text-[11px] text-[#86868b]">Ideal: WAV a 48 kHz (Acepta MP3)</span>
+              <label class="block text-xs font-medium text-[#515154] uppercase tracking-wide">Archivo de Audio 1 *</label>
+              <span class="text-[11px] text-[#86868b]">WAV a 48 kHz o MP3</span>
             </div>
             <input type="file" id="campoAudio1" name="Pista_Audio_01" accept=".wav,.mp3,audio/*" required class="w-full text-xs text-[#86868b] file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#f5f5f7] file:text-[#1d1d1f] hover:file:bg-[#e8e8ed] transition cursor-pointer">
             <input type="hidden" name="Analisis_Tecnico_Audio_01" id="campoAnalisisAudio1" value="Pendiente de carga">
@@ -347,21 +343,21 @@
           <div id="cajaAudio1" class="hidden rounded-xl p-3.5 text-xs leading-relaxed transition-all duration-300"></div>
         </div>
 
-        <!-- PISTA 2 (OPCIONAL) -->
+        <!-- PISTA 2 -->
         <div class="bg-[#fbfbfd] p-4 md:p-5 rounded-2xl border border-[#d2d2d7]/40 space-y-4">
           <div class="flex items-center justify-between">
-            <span class="text-xs font-semibold uppercase tracking-wider text-[#515154]">Pista 02 — Alternativa o Suplente</span>
+            <span class="text-xs font-semibold uppercase tracking-wider text-[#515154]">Pista 02 — Alternativa</span>
             <span class="text-[10px] bg-[#f5f5f7] text-[#86868b] px-2.5 py-0.5 rounded-full font-medium border border-[#d2d2d7]/40">Opcional</span>
           </div>
 
           <div>
             <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Título de la Canción 2</label>
-            <input type="text" id="campoTema2" name="Titulo_Pista_02" placeholder="Ej: Pajarillo (Opcional)" class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
+            <input type="text" id="campoTema2" name="Titulo_Pista_02" placeholder="Ej: Pajarillo" class="w-full bg-[#f5f5f7] border border-[#d2d2d7]/50 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
           </div>
 
           <div>
             <div class="flex items-center justify-between mb-1">
-              <label class="block text-xs font-medium text-[#515154] uppercase tracking-wide">Archivo de Audio de la Pista 2</label>
+              <label class="block text-xs font-medium text-[#515154] uppercase tracking-wide">Archivo de Audio 2</label>
               <span class="text-[11px] text-[#86868b]">WAV o MP3</span>
             </div>
             <input type="file" id="campoAudio2" name="Pista_Audio_02" accept=".wav,.mp3,audio/*" class="w-full text-xs text-[#86868b] file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#f5f5f7] file:text-[#1d1d1f] hover:file:bg-[#e8e8ed] transition cursor-pointer">
@@ -371,21 +367,21 @@
           <div id="cajaAudio2" class="hidden rounded-xl p-3.5 text-xs leading-relaxed transition-all duration-300"></div>
         </div>
 
-        <!-- PISTA 3 (OPCIONAL) -->
+        <!-- PISTA 3 -->
         <div class="bg-[#fbfbfd] p-4 md:p-5 rounded-2xl border border-[#d2d2d7]/40 space-y-4">
           <div class="flex items-center justify-between">
-            <span class="text-xs font-semibold uppercase tracking-wider text-[#515154]">Pista 03 — Respaldo o Desempate</span>
+            <span class="text-xs font-semibold uppercase tracking-wider text-[#515154]">Pista 03 — Respaldo</span>
             <span class="text-[10px] bg-[#f5f5f7] text-[#86868b] px-2.5 py-0.5 rounded-full font-medium border border-[#d2d2d7]/40">Opcional</span>
           </div>
 
           <div>
             <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Título de la Canción 3</label>
-            <input type="text" id="campoTema3" name="Titulo_Pista_03" placeholder="Ej: Tonada del Cabrestero (Opcional)" class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
+            <input type="text" id="campoTema3" name="Titulo_Pista_03" placeholder="Ej: Tonada del Cabrestero" class="w-full bg-[#f5f5f7] border border-[#d2d2d7]/50 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
           </div>
 
           <div>
             <div class="flex items-center justify-between mb-1">
-              <label class="block text-xs font-medium text-[#515154] uppercase tracking-wide">Archivo de Audio de la Pista 3</label>
+              <label class="block text-xs font-medium text-[#515154] uppercase tracking-wide">Archivo de Audio 3</label>
               <span class="text-[11px] text-[#86868b]">WAV o MP3</span>
             </div>
             <input type="file" id="campoAudio3" name="Pista_Audio_03" accept=".wav,.mp3,audio/*" class="w-full text-xs text-[#86868b] file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#f5f5f7] file:text-[#1d1d1f] hover:file:bg-[#e8e8ed] transition cursor-pointer">
@@ -398,8 +394,8 @@
 
       <!-- BOTÓN DE ENVÍO -->
       <div class="pt-2">
-        <button type="submit" id="btnSubmit" class="w-full bg-[#0071e3] hover:bg-[#0077ed] active:bg-[#0062c4] text-white font-medium py-4 px-6 rounded-2xl transition duration-200 shadow-sm text-sm">
-          Registrar Expediente Oficial
+        <button type="submit" id="btnSubmit" class="w-full bg-[#0071e3] hover:bg-[#0077ed] active:bg-[#0062c4] text-white font-medium py-4 px-6 rounded-2xl transition duration-200 shadow-xl text-sm">
+          Registrar Expediente & Generar Pase Oficial
         </button>
       </div>
 
@@ -407,9 +403,9 @@
     </form>
   </main>
 
-  <!-- ================= VENTANA MODAL DE AGRADECIMIENTO FORMAL ================= -->
-  <div id="modalAgradecimiento" class="fixed inset-0 z-50 bg-[#1d1d1f]/40 backdrop-blur-md hidden flex items-center justify-center p-4">
-    <div class="bg-white max-w-md w-full rounded-3xl p-7 md:p-8 shadow-[0_20px_60px_rgba(0,0,0,0.15)] border border-[#d2d2d7]/50 text-center modal-animate space-y-6">
+  <!-- ================= VENTANA MODAL DE AGRADECIMIENTO Y PASE QR ================= -->
+  <div id="modalAgradecimiento" class="fixed inset-0 z-50 bg-[#0f1115]/60 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="bg-white max-w-md w-full rounded-3xl p-7 md:p-8 shadow-[0_25px_70px_rgba(0,0,0,0.3)] border border-[#d2d2d7]/50 text-center modal-animate space-y-6 max-h-[90vh] overflow-y-auto">
       
       <div class="w-16 h-16 bg-[#edfcf2] text-[#34c759] rounded-2xl mx-auto flex items-center justify-center shadow-sm">
         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -418,14 +414,29 @@
       </div>
 
       <div class="space-y-2">
-        <span class="text-[11px] font-semibold uppercase tracking-wider text-[#0071e3]">Registro Exitoso</span>
-        <h2 class="text-xl md:text-2xl font-semibold text-[#1d1d1f]">¡Gracias por ser parte del Festival!</h2>
+        <span class="text-[11px] font-semibold uppercase tracking-wider text-[#0071e3]">Expediente & Pase Procesado</span>
+        <h2 class="text-xl md:text-2xl font-semibold text-[#1d1d1f]">¡Registro Oficial Completado!</h2>
         <p class="text-xs text-[#515154] leading-relaxed">
-          La <strong>Fundación Nacional El Niño Simón</strong> agradece formalmente el compromiso y dedicación de su delegación. El expediente y los recaudos legales han sido consignados correctamente.
+          La <strong>Fundación Nacional El Niño Simón</strong> certifica la consignación del expediente. Se ha generado la credencial oficial de acceso para el Teatro Juares.
         </p>
       </div>
 
-      <div class="bg-[#f5f5f7] rounded-2xl p-4 text-left text-xs space-y-2 border border-[#d2d2d7]/40">
+      <!-- Tarjeta del Pase / Entrada QR para el Teatro -->
+      <div class="bg-[#f5f5f7] rounded-2xl p-5 text-left text-xs space-y-3 border border-[#d2d2d7]/50">
+        <div class="flex items-center justify-between border-b border-[#d2d2d7]/40 pb-2">
+          <div>
+            <span class="text-[10px] text-[#86868b] uppercase block">Código de Pase Oficial</span>
+            <span id="resumenCodigoPase" class="font-mono font-bold text-sm text-[#0071e3]"></span>
+          </div>
+          <span class="bg-[#34c759]/15 text-[#15803d] text-[10px] font-semibold px-2 py-0.5 rounded-full">Acreditado</span>
+        </div>
+
+        <!-- Renderizado dinámico del QR -->
+        <div class="flex flex-col items-center justify-center py-2 bg-white rounded-xl border border-[#d2d2d7]/40">
+          <img id="imagenQrPase" src="" alt="Pase QR Teatro Juares" class="w-36 h-36 object-contain">
+          <span class="text-[10px] text-[#86868b] mt-1 tracking-tight">Escanear en Puerta — Teatro Juares</span>
+        </div>
+
         <div class="flex justify-between">
           <span class="text-[#86868b]">Delegación:</span>
           <span id="resumenEstado" class="font-semibold text-[#1d1d1f]"></span>
@@ -434,19 +445,23 @@
           <span class="text-[#86868b]">Participante:</span>
           <span id="resumenParticipante" class="font-semibold text-[#1d1d1f]"></span>
         </div>
+        <div class="flex justify-between">
+          <span class="text-[#86868b]">Representante:</span>
+          <span id="resumenRepresentante" class="font-semibold text-[#1d1d1f]"></span>
+        </div>
         <div>
-          <span class="text-[#86868b] block mb-1">Pistas cargadas:</span>
+          <span class="text-[#86868b] block mb-1">Repertorio cargado:</span>
           <div id="resumenTemas" class="font-medium text-[#1d1d1f] space-y-0.5 pl-2 border-l-2 border-[#0071e3]"></div>
         </div>
       </div>
 
       <p class="text-[11px] text-[#86868b] leading-tight">
-        Presiona aceptar para abrir el canal de enlace directo por WhatsApp con la coordinación técnica del festival.
+        Presiona aceptar para abrir WhatsApp y notificar la confirmación técnica con la coordinación.
       </p>
 
       <div class="pt-1">
-        <button id="btnAceptarModal" class="w-full inline-flex items-center justify-center space-x-2 bg-[#25d366] hover:bg-[#20ba59] active:bg-[#1caa4f] text-white font-medium py-3.5 px-6 rounded-2xl text-xs transition duration-200 shadow-sm">
-          <span>Aceptar y Notificar por WhatsApp</span>
+        <button id="btnAceptarModal" class="w-full inline-flex items-center justify-center space-x-2 bg-[#25d366] hover:bg-[#20ba59] active:bg-[#1caa4f] text-white font-medium py-3.5 px-6 rounded-2xl text-xs transition duration-200 shadow-md">
+          <span>Notificar por WhatsApp</span>
           <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
         </button>
       </div>
@@ -454,12 +469,14 @@
     </div>
   </div>
 
-  <footer class="py-8 text-center text-xs text-[#86868b] border-t border-[#d2d2d7]/30">
+  <footer class="py-8 text-center text-xs text-slate-300 relative z-10">
     Fundación Nacional El Niño Simón &copy; 2026. Todos los derechos reservados.
   </footer>
 
   <script>
     const NUMERO_WHATSAPP_FESTIVAL = "584129315743";
+    const GOOGLE_SHEETS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyM1m_wkKUnC7uDDZyQMNQe9Xg7VtUyv8VPW-hMecfxLfYG_T_Q__HOBGktdSYgD-oc/exec";
+
     let enlaceWhatsAppFinal = "";
 
     function entrarAlPortal() {
@@ -471,23 +488,38 @@
       }, 600);
     }
 
-    // Función para gestionar la selección dual (Cámara vs Archivo)
+    // Código Único de Pase para Puerta y QR
+    function generarCodigoPase(estado) {
+      const prefijo = (estado || "VNZ").substring(0, 3).toUpperCase();
+      const numRandom = Math.floor(1000 + Math.random() * 9000);
+      return `FNNS-${prefijo}-${numRandom}`;
+    }
+
+    // Normalización de teléfono para enlace directo a WhatsApp (E.164)
+    function normalizarTelefono(tel) {
+      let limpio = tel.replace(/\D/g, '');
+      if (limpio.startsWith('0')) {
+        limpio = '58' + limpio.substring(1);
+      } else if (!limpio.startsWith('58') && limpio.length === 10) {
+        limpio = '58' + limpio;
+      }
+      return limpio;
+    }
+
+    // Control de carga dual (Cámara / Archivo)
     function gestionarCargaDocumento(inputActivo, idInputDestino, idEstado) {
       if (!inputActivo.files || !inputActivo.files[0]) return;
       
       const archivo = inputActivo.files[0];
       const statusDiv = document.getElementById(idEstado);
 
-      // Si se tomó con la cámara, transferir al input oficial del formulario
       if (idInputDestino) {
         const inputDestino = document.getElementById(idInputDestino);
         try {
           const dt = new DataTransfer();
           dt.items.add(archivo);
           inputDestino.files = dt.files;
-        } catch (e) {
-          // En navegadores que restrinjan DataTransfer, se asegura el nombre
-        }
+        } catch (e) {}
       }
 
       statusDiv.classList.remove('hidden');
@@ -498,7 +530,7 @@
       `;
     }
 
-    // Análisis de frecuencia y formato de hasta 3 archivos de audio
+    // Análisis de formato de audio
     async function analizarArchivoAudio(inputElement, cajaElementId, hiddenInputId, trackNumero) {
       const file = inputElement.files[0];
       const caja = document.getElementById(cajaElementId);
@@ -538,7 +570,6 @@
       }
     }
 
-    // Escuchas dinámicas para las 3 pistas
     document.getElementById('campoAudio1').addEventListener('change', function(e) {
       analizarArchivoAudio(e.target, 'cajaAudio1', 'campoAnalisisAudio1', 1);
     });
@@ -560,41 +591,88 @@
     form.addEventListener('submit', async function(e) {
       e.preventDefault();
       btn.disabled = true;
-      btn.innerText = "Transfiriendo expediente y documentos oficiales...";
+      btn.innerText = "Transfiriendo expediente y generando pase QR...";
       cajaError.classList.add('hidden');
 
       const estado = document.getElementById('campoEstado').value;
-      const nombre = document.getElementById('campoNombre').value;
-      const representante = document.getElementById('campoRepresentante').value;
-      const telefono = document.getElementById('campoTelefono').value;
+      const nombre = document.getElementById('campoNombre').value.trim();
+      const edad = document.getElementById('campoEdad').value;
+      const representante = document.getElementById('campoRepresentante').value.trim();
+      const cedula = document.getElementById('campoCedula').value.trim();
+      const telefonoRaw = document.getElementById('campoTelefono').value.trim();
+      const telefonoLimpio = normalizarTelefono(telefonoRaw);
       
-      const tema1 = document.getElementById('campoTema1').value;
-      const tema2 = document.getElementById('campoTema2').value;
-      const tema3 = document.getElementById('campoTema3').value;
+      const tema1 = document.getElementById('campoTema1').value.trim();
+      const tema2 = document.getElementById('campoTema2').value.trim();
+      const tema3 = document.getElementById('campoTema3').value.trim();
+
+      const idPase = generarCodigoPase(estado);
+      document.getElementById('campoIdPase').value = idPase;
+
+      // Código QR generado para escanear en puerta del teatro
+      const qrDataText = encodeURIComponent(`PASE:${idPase}|DELEGACION:${estado}|NINO:${nombre}|REP:${representante}|CI:${cedula}|TEL:${telefonoLimpio}`);
+      const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${qrDataText}&format=svg`;
 
       const formData = new FormData(form);
 
+      // Objeto estructurado enviado a Google Sheets (Excel en tiempo real)
+      const payloadBaseDatos = {
+        idPase: idPase,
+        fecha: new Date().toLocaleString("es-VE", { timeZone: "America/Caracas" }),
+        estado: estado,
+        participante: nombre,
+        edad: edad,
+        representante: representante,
+        cedula: cedula,
+        telefonoWhatsApp: telefonoLimpio,
+        linkMarketingWhatsApp: `https://wa.me/${telefonoLimpio}`,
+        tema1: tema1,
+        tema2: tema2 || "N/A",
+        tema3: tema3 || "N/A",
+        estatus: "Acreditado"
+      };
+
       try {
-        const response = await fetch(form.action, {
+        // 1. Envío de archivos pesados a Formspree
+        const formspreePromise = fetch(form.action, {
           method: "POST",
           body: formData,
           headers: { 'Accept': 'application/json' }
         });
 
+        // 2. Envío a Google Sheets (Apps Script Webhook)
+        const sheetsPromise = fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payloadBaseDatos)
+        }).catch(err => console.warn("Aviso de sincronización Sheets:", err));
+
+        // Respaldo de seguridad en almacenamiento local
+        try {
+          const registrosLocales = JSON.parse(localStorage.getItem('fnns_expedientes') || "[]");
+          registrosLocales.push(payloadBaseDatos);
+          localStorage.setItem('fnns_expedientes', JSON.stringify(registrosLocales));
+        } catch(e) {}
+
+        const [response] = await Promise.all([formspreePromise, sheetsPromise]);
+
         if (response.ok) {
+          document.getElementById('resumenCodigoPase').innerText = idPase;
+          document.getElementById('imagenQrPase').src = qrImageUrl;
           document.getElementById('resumenEstado').innerText = estado;
           document.getElementById('resumenParticipante').innerText = nombre;
+          document.getElementById('resumenRepresentante').innerText = representante;
 
-          // Construcción dinámica de la lista de pistas para el modal
           const resumenTemas = document.getElementById('resumenTemas');
           let temasHtml = `<div>1. ${tema1} (Principal)</div>`;
           let textoWhatsAppPistas = `🎵 *Pista 1:* "${tema1}" (Principal)`;
 
-          if (tema2.trim()) {
+          if (tema2) {
             temasHtml += `<div>2. ${tema2} (Alternativa)</div>`;
             textoWhatsAppPistas += `\n🎵 *Pista 2:* "${tema2}" (Alternativa)`;
           }
-          if (tema3.trim()) {
+          if (tema3) {
             temasHtml += `<div>3. ${tema3} (Respaldo)</div>`;
             textoWhatsAppPistas += `\n🎵 *Pista 3:* "${tema3}" (Respaldo)`;
           }
@@ -602,12 +680,13 @@
           resumenTemas.innerHTML = temasHtml;
 
           const textoWhatsApp = `👋 ¡Hola! He completado la carga del expediente oficial para el *Festival de la Voz Niño Simón 2026*:\n\n` +
+            `🎟️ *Pase Oficial:* ${idPase}\n` +
             `📍 *Delegación:* ${estado}\n` +
-            `👤 *Participante:* ${nombre}\n` +
+            `👤 *Participante:* ${nombre} (${edad} años)\n` +
             `${textoWhatsAppPistas}\n` +
-            `👨‍👦 *Representante:* ${representante}\n` +
-            `📞 *Contacto:* ${telefono}\n\n` +
-            `✅ Los documentos LOPNNA, ficha médica y las pistas de audio ya fueron cargados en el portal. Quedo atento a las indicaciones técnicas.`;
+            `👨‍👦 *Representante:* ${representante} (CI: ${cedula})\n` +
+            `📞 *Contacto:* ${telefonoLimpio}\n\n` +
+            `✅ Documentos LOPNNA, constancia médica y pistas consignadas. Confirmado para el Teatro Juares.`;
 
           enlaceWhatsAppFinal = `https://wa.me/${NUMERO_WHATSAPP_FESTIVAL}?text=${encodeURIComponent(textoWhatsApp)}`;
 
@@ -627,7 +706,7 @@
         cajaError.classList.remove('hidden');
       } finally {
         btn.disabled = false;
-        btn.innerText = "Registrar Expediente Oficial";
+        btn.innerText = "Registrar Expediente & Generar Pase Oficial";
       }
     });
 
