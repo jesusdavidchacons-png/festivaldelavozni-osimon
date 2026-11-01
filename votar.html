@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full bg-[#050b14]">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Votación Popular Oficial — Festival de la Voz Niño Simón 2026</title>
+
+  <meta name="title" content="Votación Oficial — Festival de la Voz Niño Simón 2026">
+  <meta name="description" content="Plataforma de votación popular auditada con verificación de cédula física por IA en tiempo real.">
+  <meta property="og:image" content="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png">
+  <link rel="icon" type="image/png" href="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png">
+
+  <!-- Fuentes Cinematográficas -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Motor de Visión OCR en Cliente (Tesseract.js v5) -->
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .font-cinema {
+      font-family: 'Cinzel', serif;
+      letter-spacing: 0.15em;
+    }
+    .tnum {
+      font-feature-settings: "tnum";
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Video de fondo a pantalla completa adaptativo */
+    .video-bg {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      transform: translate(-50%, -50%);
+      object-fit: cover;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.32;
+      filter: saturate(0.85) contrast(1.1);
+    }
+
+    .video-portrait { display: block; }
+    .video-landscape { display: none; }
+
+    @media (orientation: landscape) {
+      .video-portrait { display: none !important; }
+      .video-landscape { display: block !important; }
+    }
+
+    .glass-card {
+      background: rgba(10, 22, 40, 0.82);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    }
+    .glass-input {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      transition: all 0.25s ease;
+    }
+    .glass-input:focus {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: #2997ff;
+      outline: none;
+      box-shadow: 0 0 16px rgba(41, 151, 255, 0.35);
+    }
+  </style>
+</head>
+<body class="min-h-full flex flex-col justify-between bg-[#040913] text-[#f5f5f7] relative overflow-x-hidden selection:bg-[#2997ff] selection:text-white">
+
+  <!-- ================= VIDEOS DE FONDO ADAPTATIVOS ================= -->
+  <!-- 1. Video vertical para móviles y orientación portrait -->
+  <video class="video-bg video-portrait" autoplay muted loop playsinline preload="auto">
+    <source src="TEATRO.mp4" type="video/mp4">
+  </video>
+
+  <!-- 2. Video horizontal para laptops, PC y móviles girados -->
+  <video class="video-bg video-landscape" autoplay muted loop playsinline preload="auto">
+    <source src="TEATROHORIZONTAL.mp4" type="video/mp4">
+  </video>
+
+  <!-- Capa de oscurecimiento cinematográfico para contraste de lectura -->
+  <div class="fixed inset-0 z-[1] bg-gradient-to-b from-[#040913]/90 via-[#040913]/80 to-[#040913]/95 pointer-events-none"></div>
+
+  <!-- ================= ENCABEZADO SUPERIOR ================= -->
+  <header class="w-full py-5 px-6 border-b border-white/[0.08] relative z-20 glass-card">
+    <div class="max-w-4xl mx-auto flex items-center justify-between">
+      <div class="flex items-center space-x-3.5">
+        <img src="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png" alt="Festival de la Voz Niño Simón" class="h-9 w-auto object-contain">
+        <div class="border-l border-white/20 pl-3">
+          <span class="font-cinema text-xs font-bold tracking-widest text-white uppercase block">Fundación Nacional El Niño Simón</span>
+          <span class="text-[10px] text-white/50 tracking-wider uppercase">Portal Oficial de Votación Popular</span>
+        </div>
+      </div>
+      <span class="text-[10px] bg-[#30d158]/15 text-[#30d158] border border-[#30d158]/30 px-3 py-1 rounded-full font-semibold uppercase tracking-wider hidden sm:inline-block">
+        Verificación IA Activa
+      </span>
+    </div>
+  </header>
+
+  <!-- ================= CONTENEDOR CENTRAL ================= -->
+  <main class="w-full max-w-xl mx-auto px-4 py-8 flex-1 flex flex-col justify-center relative z-20">
+    
+    <div class="glass-card rounded-3xl p-6 sm:p-8 relative">
+
+      <!-- Título de Sección -->
+      <div class="text-center mb-6">
+        <span class="text-[11px] font-semibold tracking-[0.25em] uppercase text-[#2997ff] block mb-1">Elección del Público</span>
+        <h1 class="font-cinema text-xl sm:text-2xl font-bold text-white uppercase">Consignación de Voto</h1>
+        <p class="text-xs text-white/60 mt-1.5 leading-relaxed">
+          Verificación biométrica documental por visión artificial. El número escrito debe coincidir con la foto tomada a tu cédula física.
+        </p>
+      </div>
+
+      <!-- Formulario Principal -->
+      <form id="formVotacionIA" action="https://formspree.io/f/xwllkjbz" method="POST" enctype="multipart/form-data" class="space-y-5">
+        
+        <!-- Metadatos de Auditoría para el correo -->
+        <input type="hidden" name="_subject" value="Voto Auditado por IA — Festival Voz Niño Simón 2026">
+        <input type="hidden" name="Cedula_Oficial" id="hiddenCedula" value="">
+        <input type="hidden" name="Texto_Extraido_Por_IA" id="hiddenTextoIA" value="">
+        <input type="hidden" name="Hash_Auditoria" id="hiddenHash" value="">
+
+        <!-- PASO 1: Cédula y Delegación -->
+        <div class="space-y-4">
+          <div>
+            <label class="block text-[11px] font-semibold uppercase tracking-wider text-white/70 mb-1.5">1. Número de Cédula Venezolana *</label>
+            <div class="flex space-x-2">
+              <select id="tipoCedula" class="glass-input px-3 py-3 rounded-xl text-xs text-white bg-[#071324] font-semibold cursor-pointer">
+                <option value="V">V-</option>
+                <option value="E">E-</option>
+              </select>
+              <input 
+                type="text" 
+                id="numeroCedulaInput" 
+                maxlength="9" 
+                required 
+                placeholder="12345678" 
+                oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                class="glass-input w-full px-4 py-3 rounded-xl text-sm text-white placeholder-white/30 font-mono tracking-wider"
+              >
+            </div>
+            <span class="text-[10px] text-white/40 mt-1 block">Ingresa únicamente los dígitos, sin puntos ni guiones.</span>
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-semibold uppercase tracking-wider text-white/70 mb-1.5">2. Selecciona la Delegación a Apoyar *</label>
+            <select id="selectDelegacion" name="Delegacion_Votada" required class="glass-input w-full px-4 py-3 rounded-xl text-xs text-white bg-[#071324] cursor-pointer">
+              <option value="">Selecciona a tu participante favorito...</option>
+              <option value="Lara - María González (Flor de Sarrapia)">Lara — María González ("Flor de Sarrapia")</option>
+              <option value="Táchira - José Chacón (Tonada del Cabrestero)">Táchira — José Chacón ("Tonada del Cabrestero")</option>
+              <option value="Guárico - Valentina Parra (Pajarillo Trina)">Guárico — Valentina Parra ("Pajarillo Trina")</option>
+              <option value="Barinas - Carlos Mendoza (Fiesta en Elorza)">Barinas — Carlos Mendoza ("Fiesta en Elorza")</option>
+              <option value="Bolívar - Sofía Rivas (Canto al Caroní)">Bolívar — Sofía Rivas ("Canto al Caroní")</option>
+              <option value="Distrito Capital - Andrés Silva (Alma Llanera)">Distrito Capital — Andrés Silva ("Alma Llanera")</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- PASO 2: Captura en Vivo de la Cédula -->
+        <div class="bg-white/[0.03] border border-white/[0.08] p-4 rounded-2xl space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-white">3. Fotografía de Cédula Física en Vivo *</span>
+            <span class="text-[9px] bg-[#2997ff]/20 text-[#64d2ff] px-2 py-0.5 rounded-full font-medium">Cámara Obligatoria</span>
+          </div>
+          <p class="text-[11px] text-white/50 leading-relaxed">
+            Coloca tu cédula sobre un fondo oscuro o mesa con iluminación uniforme. Evita reflejos de bombillos sobre el plástico del documento.
+          </p>
+
+          <!-- Input con cámara forzada -->
+          <input 
+            type="file" 
+            id="fotoCedulaInput" 
+            name="Foto_Documento" 
+            accept="image/*" 
+            capture="environment" 
+            required 
+            class="hidden" 
+            onchange="cargarFotoParaAnalisis(this)"
+          >
+
+          <button 
+            type="button" 
+            onclick="document.getElementById('fotoCedulaInput').click()" 
+            id="btnDispararCamara"
+            class="w-full bg-[#f5f5f7] hover:bg-white text-[#040913] font-semibold py-3 px-4 rounded-xl text-xs transition flex items-center justify-center space-x-2"
+          >
+            <svg class="w-4 h-4 text-[#0071e3]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="3" stroke-width="2"/></svg>
+            <span id="labelBtnCamara">Abrir Cámara y Capturar Cédula</span>
+          </button>
+
+          <!-- Vista previa y Barra de Estado IA -->
+          <div id="cajaAnalisisIA" class="hidden space-y-3 pt-2">
+            <div class="flex items-center space-x-3 bg-black/40 p-2.5 rounded-xl border border-white/10">
+              <img id="previewFoto" src="" alt="Cédula" class="w-16 h-12 object-cover rounded-lg border border-white/20">
+              <div class="flex-1">
+                <span id="estadoTextoIA" class="text-xs font-semibold text-[#64d2ff] block">Iniciando escaneo...</span>
+                <span id="subTextoIA" class="text-[10px] text-white/50 block">Procesando caracteres con IA...</span>
+              </div>
+            </div>
+
+            <!-- Barra de Progreso de la IA -->
+            <div id="barraProgresoContenedor" class="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+              <div id="barraProgreso" class="h-full bg-[#2997ff] w-0 transition-all duration-200"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botón de Envío -->
+        <button 
+          type="submit" 
+          id="btnEnviarVoto" 
+          disabled
+          class="w-full bg-[#2997ff]/40 text-white/50 cursor-not-allowed text-xs font-semibold py-3.5 px-4 rounded-xl transition flex items-center justify-center space-x-2"
+        >
+          <span>Validar Cédula y Emitir Voto</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </button>
+
+        <!-- Mensajes de Error y Alertas -->
+        <div id="mensajeAlerta" class="hidden rounded-xl p-3 text-center text-xs font-medium"></div>
+
+      </form>
+
+      <!-- Pantalla de Éxito y Recibo -->
+      <div id="pantallaExito" class="hidden text-center py-6 space-y-4">
+        <div class="w-16 h-16 bg-[#30d158]/20 border border-[#30d158]/40 text-[#30d158] rounded-full mx-auto flex items-center justify-center">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+        </div>
+        <h2 class="font-cinema text-lg font-bold uppercase text-white tracking-wider">¡Voto Verificado y Auditado!</h2>
+        <p class="text-xs text-white/70 max-w-sm mx-auto leading-relaxed">
+          La inteligencia artificial ha confirmado la correspondencia de tu documento físico y tu voto ha sido consignado al comité del festival.
+        </p>
+        <div class="bg-white/[0.04] p-4 rounded-2xl border border-white/[0.08] text-xs text-left space-y-1.5 font-mono">
+          <div class="flex justify-between"><span class="text-white/50">CÉDULA VALIDADA:</span> <strong id="reciboCedula" class="text-white"></strong></div>
+          <div class="flex justify-between"><span class="text-white/50">VOTO ASIGNADO:</span> <strong id="reciboDelegacion" class="text-[#2997ff]"></strong></div>
+          <div class="flex justify-between pt-1 border-t border-white/10"><span class="text-white/50">HASH CRIPTOGRÁFICO:</span> <span id="reciboHash" class="text-[#30d158]"></span></div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ================= PIE DE PÁGINA ================= -->
+  <footer class="w-full py-4 text-center text-[10px] text-white/40 tracking-[0.2em] uppercase border-t border-white/[0.06] relative z-20 glass-card">
+    Fundación Nacional El Niño Simón &copy; 2026 &bull; Teatro Juares &bull; Todos los derechos reservados
+  </footer>
+
+  <!-- ================= SCRIPT DE VALIDACIÓN POR IA Y CONTROL ================= -->
+  <script>
+    let cedulaValidadaPorIA = false;
+    let textoLeidoDeLaFoto = "";
+
+    // 1. Cargar imagen y ejecutar OCR con Tesseract.js
+    async function cargarFotoParaAnalisis(input) {
+      const alerta = document.getElementById('mensajeAlerta');
+      alerta.classList.add('hidden');
+      
+      const numeroTipeado = document.getElementById('numeroCedulaInput').value.trim();
+      if (!numeroTipeado || numeroTipeado.length < 6) {
+        mostrarAlerta("Primero escribe tu número de cédula en el campo superior antes de tomar la foto.", "error");
+        input.value = "";
+        return;
+      }
+
+      if (!input.files || !input.files[0]) return;
+
+      const file = input.files[0];
+      const preview = document.getElementById('previewFoto');
+      const cajaIA = document.getElementById('cajaAnalisisIA');
+      const estadoTexto = document.getElementById('estadoTextoIA');
+      const subTexto = document.getElementById('subTextoIA');
+      const barra = document.getElementById('barraProgreso');
+      const btnEnviar = document.getElementById('btnEnviarVoto');
+
+      preview.src = URL.createObjectURL(file);
+      cajaIA.classList.remove('hidden');
+      cedulaValidadaPorIA = false;
+
+      btnEnviar.disabled = true;
+      btnEnviar.className = "w-full bg-[#2997ff]/40 text-white/50 cursor-not-allowed text-xs font-semibold py-3.5 px-4 rounded-xl transition flex items-center justify-center space-x-2";
+
+      try {
+        estadoTexto.innerText = "Analizando documento físico...";
+        subTexto.innerText = "Buscando números de identificación en la foto...";
+
+        const resultado = await Tesseract.recognize(
+          file,
+          'spa',
+          {
+            logger: m => {
+              if (m.status === 'recognizing text') {
+                const pct = Math.round(m.progress * 100);
+                barra.style.width = pct + "%";
+                subTexto.innerText = `Reconociendo caracteres: ${pct}%`;
+              }
+            }
+          }
+        );
+
+        textoLeidoDeLaFoto = resultado.data.text;
+        document.getElementById('hiddenTextoIA').value = textoLeidoDeLaFoto;
+
+        // Limpieza de caracteres para aislar bloques de números
+        const soloDigitosLeidos = textoLeidoDeLaFoto.replace(/\D/g, '');
+        const digitosTipeados = numeroTipeado.replace(/\D/g, '');
+
+        // 2. Comparación de coincidencia
+        if (soloDigitosLeidos.includes(digitosTipeados)) {
+          cedulaValidadaPorIA = true;
+          estadoTexto.innerText = "✓ Cédula Verificada con Éxito";
+          estadoTexto.className = "text-xs font-semibold text-[#30d158] block";
+          subTexto.innerText = `Número legible detectado: ${digitosTipeados}`;
+          barra.style.backgroundColor = "#30d158";
+
+          btnEnviar.disabled = false;
+          btnEnviar.className = "w-full bg-[#0071e3] hover:bg-[#0077ed] active:bg-[#0062c4] text-white text-xs font-semibold py-3.5 px-4 rounded-xl transition shadow-[0_4px_16px_rgba(0,113,227,0.4)] flex items-center justify-center space-x-2 cursor-pointer";
+        } else {
+          cedulaValidadaPorIA = false;
+          estadoTexto.innerText = "✗ El número no coincide o no es legible";
+          estadoTexto.className = "text-xs font-semibold text-[#ff453a] block";
+          subTexto.innerText = "Asegúrate de enfocar bien los números sin reflejos sobre el plástico.";
+          barra.style.backgroundColor = "#ff453a";
+          mostrarAlerta("La IA no pudo leer con claridad el número " + digitosTipeados + " en la foto. Repite la foto con mejor iluminación.", "error");
+        }
+
+      } catch (err) {
+        estadoTexto.innerText = "Error en el reconocimiento";
+        subTexto.innerText = "Por favor repite la fotografía.";
+        mostrarAlerta("Hubo un fallo al analizar la imagen. Inténtalo de nuevo.", "error");
+      }
+    }
+
+    // 3. Envío y Bloqueo de Voto Único
+    const form = document.getElementById('formVotacionIA');
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      if (!cedulaValidadaPorIA) {
+        mostrarAlerta("Debes tomar una foto legible de tu cédula para que la IA la verifique.", "error");
+        return;
+      }
+
+      const tipo = document.getElementById('tipoCedula').value;
+      const numero = document.getElementById('numeroCedulaInput').value.trim();
+      const cedulaCompleta = `${tipo}-${numero}`;
+      const delegacion = document.getElementById('selectDelegacion').value;
+
+      // Bloqueo antifraude local por cédula
+      if (localStorage.getItem(`fnns_voto_${cedulaCompleta}`)) {
+        mostrarAlerta(`La cédula ${cedulaCompleta} ya emitió su voto oficial previamente.`, "error");
+        return;
+      }
+
+      // Bloqueo antifraude por dispositivo
+      if (localStorage.getItem('fnns_dispositivo_bloqueado')) {
+        mostrarAlerta(`Este dispositivo ya fue utilizado para registrar un voto oficial.`, "error");
+        return;
+      }
+
+      const hash = "FNNS-" + Math.random().toString(36).substring(2, 9).toUpperCase() + "-" + numero.slice(-4);
+      document.getElementById('hiddenCedula').value = cedulaCompleta;
+      document.getElementById('hiddenHash').value = hash;
+
+      const btn = document.getElementById('btnEnviarVoto');
+      btn.disabled = true;
+      btn.innerText = "Consignando y sellando voto...";
+
+      const formData = new FormData(form);
+
+      try {
+        const response = await fetch(form.action, {
+          method: "POST",
+          body: formData,
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (response.ok) {
+          localStorage.setItem(`fnns_voto_${cedulaCompleta}`, hash);
+          localStorage.setItem('fnns_dispositivo_bloqueado', "true");
+
+          form.classList.add('hidden');
+          document.getElementById('reciboCedula').innerText = cedulaCompleta;
+          document.getElementById('reciboDelegacion').innerText = delegacion;
+          document.getElementById('reciboHash').innerText = hash;
+          document.getElementById('pantallaExito').classList.remove('hidden');
+        } else {
+          throw new Error("No se pudo entregar el voto al servidor central.");
+        }
+      } catch (err) {
+        mostrarAlerta(err.message || "Error al registrar el voto. Revisa tu conexión.", "error");
+        btn.disabled = false;
+        btn.innerText = "Validar Cédula y Emitir Voto";
+      }
+    });
+
+    function mostrarAlerta(msg, tipo) {
+      const caja = document.getElementById('mensajeAlerta');
+      caja.classList.remove('hidden', 'bg-red-500/10', 'text-[#ff453a]', 'border-red-500/30', 'bg-green-500/10', 'text-[#30d158]');
+      if (tipo === 'error') {
+        caja.classList.add('bg-red-500/10', 'text-[#ff453a]', 'border', 'border-red-500/30');
+      } else {
+        caja.classList.add('bg-green-500/10', 'text-[#30d158]', 'border', 'border-green-500/30');
+      }
+      caja.innerText = msg;
+    }
+  </script>
+</body>
+</html>
