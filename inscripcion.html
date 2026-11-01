@@ -1,171 +1,642 @@
 <!DOCTYPE html>
-<html lang="es" class="h-full">
+<html lang="es" class="h-full bg-[#fbfbfd]">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Festival de la Voz Niño Simón 2026 — Teatro Juares</title>
+  <title>Festival de la Voz Niño Simón 2026 — Fundación Nacional El Niño Simón</title>
 
-  <!-- Metadatos de previsualización -->
-  <meta name="title" content="Festival de la Voz Niño Simón 2026 — Teatro Juares">
-  <meta name="description" content="Cuenta regresiva oficial en el cielo del histórico Teatro Juares. Fundación Nacional El Niño Simón.">
+  <!-- ================= METADATOS PARA REDES Y WHATSAPP ================= -->
+  <meta name="title" content="Festival de la Voz Niño Simón 2026 — FNNS">
+  <meta name="description" content="Organizado por la Fundación Nacional El Niño Simón. Celebramos el talento, la identidad y las tradiciones de nuestros niños en el histórico Teatro Juares. Acreditación oficial abierta.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://xn--festivaldelavozniosimon-8hc.com/">
+  <meta property="og:title" content="Festival de la Voz Niño Simón 2026 — Fundación Nacional El Niño Simón">
+  <meta property="og:description" content="Organizado por la Fundación Nacional El Niño Simón. Celebramos el talento, la identidad y las tradiciones de nuestros niños en el histórico Teatro Juares. Acreditación oficial abierta.">
   <meta property="og:image" content="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Festival de la Voz Niño Simón 2026 — Fundación Nacional El Niño Simón">
+  <meta name="twitter:description" content="Organizado por la Fundación Nacional El Niño Simón. Celebramos el talento, la identidad y las tradiciones de nuestros niños en el histórico Teatro Juares. Acreditación oficial abierta.">
+  <meta name="twitter:image" content="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png">
   <link rel="icon" type="image/png" href="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png">
 
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", sans-serif;
       letter-spacing: -0.015em;
       -webkit-font-smoothing: antialiased;
     }
 
-    .tnum {
-      font-feature-settings: "tnum";
-      font-variant-numeric: tabular-nums;
+    /* Animación de entrada del Logo */
+    @keyframes logoReveal {
+      0% {
+        opacity: 0;
+        transform: translateY(22px) scale(0.88);
+        filter: blur(10px);
+      }
+      70% {
+        transform: translateY(-3px) scale(1.02);
+        filter: blur(0px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0px);
+      }
     }
 
-    /* Efecto Glassmorphism optimizado para contraste sobre el cielo */
-    .sky-glass {
-      background: rgba(255, 255, 255, 0.18);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.35);
-      box-shadow: 0 10px 30px rgba(0, 20, 50, 0.12);
+    /* Movimiento de flotación continua */
+    @keyframes logoFloating {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-6px);
+      }
     }
 
-    @keyframes skyFloat {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-6px); }
+    /* Animación del texto y elementos de la portada */
+    @keyframes contentFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
-    .floating-sky {
-      animation: skyFloat 5s ease-in-out infinite;
+    @keyframes modalPop {
+      from {
+        opacity: 0;
+        transform: scale(0.96) translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    .logo-intro {
+      animation: logoReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+                 logoFloating 4.5s ease-in-out 1.2s infinite;
+    }
+
+    .content-intro {
+      animation: contentFadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.25s forwards;
+      opacity: 0;
+    }
+
+    .modal-animate {
+      animation: modalPop 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
   </style>
 </head>
-<body class="min-h-full flex flex-col justify-between bg-[#1a2d42] text-white antialiased relative overflow-x-hidden selection:bg-white selection:text-[#0071e3]">
+<body class="min-h-full flex flex-col justify-between text-[#1d1d1f] antialiased">
 
-  <!-- ================= CAPA DE FONDO: FOTOGRAFÍA TEATRO JUARES ================= -->
-  <div class="fixed inset-0 z-0 bg-cover bg-bottom bg-no-repeat pointer-events-none" style="background-image: url('TEATRO JUAREZ.jpg');">
-    <!-- Viñeta degradada sutil superior para garantizar legibilidad del texto en el cielo sin oscurecer el edificio -->
-    <div class="absolute inset-0 bg-gradient-to-b from-[#0a1e38]/45 via-transparent to-transparent"></div>
-  </div>
+  <!-- ================= TAPA / PANTALLA DE INICIO (HERO) ================= -->
+  <section id="portadaInicio" class="fixed inset-0 z-50 bg-[#fbfbfd] flex flex-col items-center justify-between px-6 py-10 transition-all duration-700 overflow-y-auto">
+    <div></div>
 
-  <!-- ================= BARRA SUPERIOR FLOTANTE ================= -->
-  <header class="w-full py-5 px-6 md:px-10 flex justify-between items-center relative z-20">
-    <div class="flex items-center space-x-3 sky-glass px-4 py-2 rounded-full">
-      <img src="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png" alt="Logo Festival" class="h-7 w-auto object-contain">
-      <div class="border-l border-white/30 pl-3 flex flex-col">
-        <span class="text-[11px] font-semibold tracking-widest uppercase text-white drop-shadow-sm">FNNS</span>
-        <span class="text-[9px] text-white/80 font-medium">Edición 2026</span>
+    <div class="max-w-md w-full text-center flex flex-col items-center my-auto">
+      
+      <!-- Logo institucional -->
+      <div class="w-44 h-44 md:w-52 md:h-52 flex items-center justify-center mb-6 logo-intro">
+        <img src="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png" alt="Festival Niño Simón" class="w-full h-full object-contain filter drop-shadow-[0_12px_24px_rgba(0,0,0,0.06)]">
+      </div>
+
+      <div class="content-intro flex flex-col items-center w-full">
+        <!-- Badge institucional -->
+        <div class="inline-flex items-center space-x-2 bg-white/90 border border-[#d2d2d7]/50 px-3.5 py-1 rounded-full shadow-sm mb-3">
+          <span class="w-2 h-2 rounded-full bg-[#34c759] animate-pulse"></span>
+          <span class="text-[11px] font-medium tracking-wide uppercase text-[#86868b]">Fundación Nacional El Niño Simón</span>
+        </div>
+
+        <!-- Título Principal -->
+        <h1 class="text-3xl md:text-4xl font-semibold tracking-tight text-[#1d1d1f] mb-3 leading-tight">
+          Festival de la Voz<br><span class="text-[#0071e3]">Niño Simón 2026</span>
+        </h1>
+        
+        <!-- Reseña institucional -->
+        <div class="bg-white/70 border border-[#d2d2d7]/40 rounded-2xl p-5 mb-6 shadow-sm text-left space-y-2">
+          <p class="text-xs text-[#515154] leading-relaxed">
+            Iniciativa organizada por la <strong>Fundación Nacional El Niño Simón</strong> para celebrar y enaltecer el talento, la identidad folclórica y las raíces de nuestras niñas y niños de toda Venezuela.
+          </p>
+          <p class="text-xs text-[#86868b] leading-relaxed">
+            Cada delegación estadal subirá al emblemático escenario del <strong>Teatro Juares</strong> para compartir su voz, disciplina y alegría con todo el país.
+          </p>
+        </div>
+
+        <p class="text-xs text-[#86868b] leading-relaxed max-w-sm mb-6 font-normal">
+          Portal táctico de acreditación federativa, protección LOPNNA y control técnico de audio máster.
+        </p>
+
+        <!-- Botón de apertura -->
+        <button onclick="entrarAlPortal()" class="group relative inline-flex items-center justify-center space-x-2 bg-[#0071e3] hover:bg-[#0077ed] active:bg-[#0062c4] text-white px-8 py-3.5 rounded-2xl text-sm font-medium transition duration-200 shadow-[0_4px_14px_rgba(0,113,227,0.3)]">
+          <span>Ingresar al Expediente</span>
+          <svg class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </button>
+
+        <span class="text-[11px] text-[#a1a1a6] mt-3">Recepción abierta para las 35 delegaciones</span>
       </div>
     </div>
-    
-    <div class="hidden sm:inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full sky-glass">
-      <span class="w-2 h-2 rounded-full bg-[#30d158] shadow-[0_0_8px_#30d158] animate-pulse"></span>
-      <span class="text-[11px] text-white/90 tracking-wider uppercase font-semibold">22 Noviembre 2026</span>
+
+    <div class="text-[11px] text-[#86868b] tracking-wider uppercase mt-6 text-center">
+      Fundación Nacional El Niño Simón &copy; 2026
+    </div>
+  </section>
+
+  <!-- ================= BARRA SUPERIOR FIJA ================= -->
+  <header class="w-full bg-white/80 backdrop-blur-md border-b border-[#d2d2d7]/40 sticky top-0 z-20">
+    <div class="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <img src="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png" alt="Festival Niño Simón" class="h-9 w-auto object-contain">
+        <div class="border-l border-[#d2d2d7] pl-3 flex flex-col">
+          <span class="text-xs uppercase tracking-widest text-[#1d1d1f] font-semibold">FNNS</span>
+          <span class="text-[10px] text-[#86868b]">Módulo 01: Acreditación</span>
+        </div>
+      </div>
+      <span class="text-xs font-normal text-[#86868b] hidden sm:inline">Fundación Nacional El Niño Simón</span>
     </div>
   </header>
 
-  <!-- ================= ZONA DEL CIELO: LOGO, TÍTULOS Y CONTADOR ================= -->
-  <main class="w-full max-w-4xl mx-auto px-6 pt-4 pb-48 md:pb-64 flex flex-col items-center text-center my-auto relative z-10">
+  <!-- ================= FORMULARIO PRINCIPAL ================= -->
+  <main class="max-w-2xl w-full mx-auto px-6 py-10 flex-1">
     
-    <!-- Logo central en el cielo con halo de elevación -->
-    <div class="w-28 h-28 md:w-36 md:h-36 mb-4 flex items-center justify-center floating-sky">
-      <img src="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png" alt="Festival de la Voz Niño Simón 2026" class="w-full h-full object-contain filter drop-shadow-[0_12px_28px_rgba(0,30,70,0.35)]">
+    <div class="text-center mb-8">
+      <h1 class="text-3xl font-semibold tracking-tight text-[#1d1d1f]">Carga de Expediente</h1>
+      <p class="text-xs md:text-sm text-[#86868b] mt-1 font-normal">
+        Recepción de recaudos oficiales para las 35 delegaciones federativas.
+      </p>
     </div>
 
-    <!-- Badge institucional en el cielo -->
-    <div class="inline-flex items-center space-x-2 sky-glass px-4 py-1.5 rounded-full mb-3 shadow-sm">
-      <span class="text-[11px] font-semibold tracking-wider uppercase text-white drop-shadow-sm">Fundación Nacional El Niño Simón</span>
-    </div>
-
-    <!-- Título con sombra de proyección limpia sobre el cielo azul -->
-    <h1 class="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-white leading-tight mb-2 drop-shadow-[0_3px_12px_rgba(0,20,50,0.4)]">
-      Festival de la Voz<br>
-      <span class="text-[#e2f1ff] font-bold">Niño Simón 2026</span>
-    </h1>
-
-    <p class="text-xs sm:text-sm text-white/90 max-w-md mb-8 font-medium leading-relaxed drop-shadow-[0_2px_8px_rgba(0,20,50,0.35)]">
-      Gran Gala Nacional de Folclore Infantil &bull; Teatro Juares, Barquisimeto
-    </p>
-
-    <!-- ================= CONTADOR REGRESIVO (INTEGRADO AL CIELO) ================= -->
-    <div id="countdownContainer" class="grid grid-cols-4 gap-2.5 sm:gap-4 w-full max-w-xl mb-6">
+    <form id="formularioAcreditacion" action="https://formspree.io/f/xwllkjbz" method="POST" enctype="multipart/form-data" class="space-y-6">
       
-      <!-- Días -->
-      <div class="sky-glass rounded-2xl p-3 sm:p-5 flex flex-col items-center hover:bg-white/25 transition duration-300">
-        <span id="dias" class="tnum text-3xl sm:text-5xl md:text-6xl font-bold text-white tracking-tight drop-shadow-[0_2px_8px_rgba(0,20,50,0.3)]">00</span>
-        <span class="text-[9px] sm:text-[11px] uppercase tracking-widest text-white/80 font-semibold mt-1">Días</span>
+      <!-- PASO 1: DELEGACIÓN -->
+      <section class="bg-white rounded-2xl p-6 md:p-7 border border-[#d2d2d7]/50 shadow-[0_2px_12px_rgba(0,0,0,0.03)] space-y-4">
+        <div class="border-b border-[#d2d2d7]/30 pb-3 flex items-center justify-between">
+          <span class="text-[11px] font-semibold uppercase tracking-wider text-[#0071e3]">Paso 01</span>
+          <span class="text-[11px] text-[#86868b]">Sede & Región</span>
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Estado / Delegación Federativa *</label>
+          <select id="campoEstado" name="Estado" required class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm text-[#1d1d1f] focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition cursor-pointer">
+            <option value="">Selecciona una delegación...</option>
+            <option value="Amazonas">Amazonas</option>
+            <option value="Anzoátegui">Anzoátegui</option>
+            <option value="Apure">Apure</option>
+            <option value="Aragua">Aragua</option>
+            <option value="Barinas">Barinas</option>
+            <option value="Bolívar">Bolívar</option>
+            <option value="Carabobo">Carabobo</option>
+            <option value="Cojedes">Cojedes</option>
+            <option value="Delta Amacuro">Delta Amacuro</option>
+            <option value="Distrito Capital">Distrito Capital</option>
+            <option value="Falcón">Falcón</option>
+            <option value="Guárico">Guárico</option>
+            <option value="La Guaira">La Guaira</option>
+            <option value="Lara">Lara (Sede)</option>
+            <option value="Mérida">Mérida</option>
+            <option value="Miranda">Miranda</option>
+            <option value="Monagas">Monagas</option>
+            <option value="Nueva Esparta">Nueva Esparta</option>
+            <option value="Portuguesa">Portuguesa</option>
+            <option value="Sucre">Sucre</option>
+            <option value="Táchira">Táchira</option>
+            <option value="Trujillo">Trujillo</option>
+            <option value="Yaracuy">Yaracuy</option>
+            <option value="Zulia">Zulia</option>
+            <option value="Dependencias Federales">Dependencias Federales</option>
+          </select>
+        </div>
+      </section>
+
+      <!-- PASO 2: DATOS DEL PARTICIPANTE Y REPRESENTANTE -->
+      <section class="bg-white rounded-2xl p-6 md:p-7 border border-[#d2d2d7]/50 shadow-[0_2px_12px_rgba(0,0,0,0.03)] space-y-4">
+        <div class="border-b border-[#d2d2d7]/30 pb-3 flex items-center justify-between">
+          <span class="text-[11px] font-semibold uppercase tracking-wider text-[#0071e3]">Paso 02</span>
+          <span class="text-[11px] text-[#86868b]">Ficha Personal</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="md:col-span-2">
+            <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Nombre Completo del Niño(a) *</label>
+            <input type="text" id="campoNombre" name="Nombre_Participante" required placeholder="Nombres y Apellidos" class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Edad *</label>
+            <input type="number" id="campoEdad" name="Edad" min="4" max="17" placeholder="Años" required class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Nombre del Representante Legal *</label>
+            <input type="text" id="campoRepresentante" name="Representante_Legal" required placeholder="Familiar o tutor legal" class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Cédula del Representante *</label>
+            <input type="text" id="campoCedula" name="Cedula_Representante" placeholder="V-12345678" required class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Teléfono de Contacto (WhatsApp) *</label>
+          <input type="tel" id="campoTelefono" name="Telefono" placeholder="Ej: 04141234567" required class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
+        </div>
+      </section>
+
+      <!-- PASO 3: PROTECCIÓN LOPNNA Y SALUD (SELECCIÓN DUAL: CÁMARA O ARCHIVO) -->
+      <section class="bg-white rounded-2xl p-6 md:p-7 border border-[#d2d2d7]/50 shadow-[0_2px_12px_rgba(0,0,0,0.03)] space-y-6">
+        <div class="border-b border-[#d2d2d7]/30 pb-3 flex items-center justify-between">
+          <span class="text-[11px] font-semibold uppercase tracking-wider text-[#0071e3]">Paso 03</span>
+          <span class="text-[11px] text-[#86868b]">Permisos & Salud</span>
+        </div>
+
+        <!-- RECAUDO 1: LOPNNA -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <label class="block text-xs font-medium text-[#515154] uppercase tracking-wide">Permiso LOPNNA Oficial *</label>
+            <span class="text-[10px] bg-[#0071e3]/10 text-[#0071e3] px-2 py-0.5 rounded-full font-medium">Requerido</span>
+          </div>
+          <p class="text-[11px] text-[#86868b]">Selecciona tomar una foto directa del documento físico o cargar el archivo PDF/imagen guardado.</p>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+            <!-- Botón 1: Cámara -->
+            <label class="flex items-center justify-center gap-2 bg-[#f5f5f7] hover:bg-[#e8e8ed] active:bg-[#e0e0e5] text-[#1d1d1f] py-3.5 px-4 rounded-xl text-xs font-medium cursor-pointer transition border border-[#d2d2d7]/40 shadow-sm">
+              <svg class="w-4 h-4 text-[#0071e3]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="3" stroke-width="2"/></svg>
+              <span>Activar Cámara</span>
+              <input type="file" id="lopnnaCamara" accept="image/*" capture="environment" class="hidden" onchange="gestionarCargaDocumento(this, 'lopnnaArchivo', 'statusLopnna')">
+            </label>
+
+            <!-- Botón 2: Archivo / Galería / PDF -->
+            <label class="flex items-center justify-center gap-2 bg-[#f5f5f7] hover:bg-[#e8e8ed] active:bg-[#e0e0e5] text-[#1d1d1f] py-3.5 px-4 rounded-xl text-xs font-medium cursor-pointer transition border border-[#d2d2d7]/40 shadow-sm">
+              <svg class="w-4 h-4 text-[#0071e3]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+              <span>Subir Archivo o Foto</span>
+              <input type="file" id="lopnnaArchivo" name="Documento_LOPNNA" accept="image/*,application/pdf,.pdf" required class="hidden" onchange="gestionarCargaDocumento(this, null, 'statusLopnna')">
+            </label>
+          </div>
+          <div id="statusLopnna" class="text-xs text-[#15803d] font-medium hidden pt-1 flex items-center gap-1.5 bg-[#edfcf2] p-2.5 rounded-xl border border-[#bbf7d0]"></div>
+        </div>
+
+        <!-- RECAUDO 2: FICHA MÉDICA -->
+        <div class="space-y-2 pt-3 border-t border-[#d2d2d7]/30">
+          <div class="flex items-center justify-between">
+            <label class="block text-xs font-medium text-[#515154] uppercase tracking-wide">Ficha Médica / Certificado de Salud *</label>
+            <span class="text-[10px] bg-[#0071e3]/10 text-[#0071e3] px-2 py-0.5 rounded-full font-medium">Requerido</span>
+          </div>
+          <p class="text-[11px] text-[#86868b]">Foto visible de la constancia de salud emitida o archivo en formato PDF.</p>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+            <!-- Botón 1: Cámara -->
+            <label class="flex items-center justify-center gap-2 bg-[#f5f5f7] hover:bg-[#e8e8ed] active:bg-[#e0e0e5] text-[#1d1d1f] py-3.5 px-4 rounded-xl text-xs font-medium cursor-pointer transition border border-[#d2d2d7]/40 shadow-sm">
+              <svg class="w-4 h-4 text-[#0071e3]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="3" stroke-width="2"/></svg>
+              <span>Activar Cámara</span>
+              <input type="file" id="medicaCamara" accept="image/*" capture="environment" class="hidden" onchange="gestionarCargaDocumento(this, 'medicaArchivo', 'statusMedica')">
+            </label>
+
+            <!-- Botón 2: Archivo / Galería / PDF -->
+            <label class="flex items-center justify-center gap-2 bg-[#f5f5f7] hover:bg-[#e8e8ed] active:bg-[#e0e0e5] text-[#1d1d1f] py-3.5 px-4 rounded-xl text-xs font-medium cursor-pointer transition border border-[#d2d2d7]/40 shadow-sm">
+              <svg class="w-4 h-4 text-[#0071e3]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+              <span>Subir Archivo o Foto</span>
+              <input type="file" id="medicaArchivo" name="Ficha_Medica" accept="image/*,application/pdf,.pdf" required class="hidden" onchange="gestionarCargaDocumento(this, null, 'statusMedica')">
+            </label>
+          </div>
+          <div id="statusMedica" class="text-xs text-[#15803d] font-medium hidden pt-1 flex items-center gap-1.5 bg-[#edfcf2] p-2.5 rounded-xl border border-[#bbf7d0]"></div>
+        </div>
+      </section>
+
+      <!-- PASO 4: PISTAS MUSICALES (HASTA 3 PISTAS) -->
+      <section class="bg-white rounded-2xl p-6 md:p-7 border border-[#d2d2d7]/50 shadow-[0_2px_12px_rgba(0,0,0,0.03)] space-y-6">
+        <div class="border-b border-[#d2d2d7]/30 pb-3 flex items-center justify-between">
+          <span class="text-[11px] font-semibold uppercase tracking-wider text-[#0071e3]">Paso 04</span>
+          <span class="text-[11px] text-[#86868b]">Control Técnico de Audio (Hasta 3 pistas)</span>
+        </div>
+
+        <p class="text-xs text-[#86868b] leading-relaxed">
+          Puedes registrar hasta tres (3) pistas por participante. La <strong>Pista 01</strong> es obligatoria (tema principal de concurso), mientras que las Pistas 02 y 03 son opcionales (alternativas o respaldo técnico).
+        </p>
+
+        <!-- PISTA 1 (OBLIGATORIA) -->
+        <div class="bg-[#fbfbfd] p-4 md:p-5 rounded-2xl border border-[#d2d2d7]/40 space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold uppercase tracking-wider text-[#0071e3]">Pista 01 — Principal (Obligatoria) *</span>
+            <span class="text-[10px] bg-[#0071e3]/10 text-[#0071e3] px-2.5 py-0.5 rounded-full font-medium">Requerida</span>
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Título de la Canción 1 *</label>
+            <input type="text" id="campoTema1" name="Titulo_Pista_01" placeholder="Ej: Flor de Sarrapia" required class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <label class="block text-xs font-medium text-[#515154] uppercase tracking-wide">Archivo de Audio de la Pista 1 *</label>
+              <span class="text-[11px] text-[#86868b]">Ideal: WAV a 48 kHz (Acepta MP3)</span>
+            </div>
+            <input type="file" id="campoAudio1" name="Pista_Audio_01" accept=".wav,.mp3,audio/*" required class="w-full text-xs text-[#86868b] file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#f5f5f7] file:text-[#1d1d1f] hover:file:bg-[#e8e8ed] transition cursor-pointer">
+            <input type="hidden" name="Analisis_Tecnico_Audio_01" id="campoAnalisisAudio1" value="Pendiente de carga">
+          </div>
+
+          <div id="cajaAudio1" class="hidden rounded-xl p-3.5 text-xs leading-relaxed transition-all duration-300"></div>
+        </div>
+
+        <!-- PISTA 2 (OPCIONAL) -->
+        <div class="bg-[#fbfbfd] p-4 md:p-5 rounded-2xl border border-[#d2d2d7]/40 space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold uppercase tracking-wider text-[#515154]">Pista 02 — Alternativa o Suplente</span>
+            <span class="text-[10px] bg-[#f5f5f7] text-[#86868b] px-2.5 py-0.5 rounded-full font-medium border border-[#d2d2d7]/40">Opcional</span>
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Título de la Canción 2</label>
+            <input type="text" id="campoTema2" name="Titulo_Pista_02" placeholder="Ej: Pajarillo (Opcional)" class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <label class="block text-xs font-medium text-[#515154] uppercase tracking-wide">Archivo de Audio de la Pista 2</label>
+              <span class="text-[11px] text-[#86868b]">WAV o MP3</span>
+            </div>
+            <input type="file" id="campoAudio2" name="Pista_Audio_02" accept=".wav,.mp3,audio/*" class="w-full text-xs text-[#86868b] file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#f5f5f7] file:text-[#1d1d1f] hover:file:bg-[#e8e8ed] transition cursor-pointer">
+            <input type="hidden" name="Analisis_Tecnico_Audio_02" id="campoAnalisisAudio2" value="No adjunta">
+          </div>
+
+          <div id="cajaAudio2" class="hidden rounded-xl p-3.5 text-xs leading-relaxed transition-all duration-300"></div>
+        </div>
+
+        <!-- PISTA 3 (OPCIONAL) -->
+        <div class="bg-[#fbfbfd] p-4 md:p-5 rounded-2xl border border-[#d2d2d7]/40 space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold uppercase tracking-wider text-[#515154]">Pista 03 — Respaldo o Desempate</span>
+            <span class="text-[10px] bg-[#f5f5f7] text-[#86868b] px-2.5 py-0.5 rounded-full font-medium border border-[#d2d2d7]/40">Opcional</span>
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Título de la Canción 3</label>
+            <input type="text" id="campoTema3" name="Titulo_Pista_03" placeholder="Ej: Tonada del Cabrestero (Opcional)" class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <label class="block text-xs font-medium text-[#515154] uppercase tracking-wide">Archivo de Audio de la Pista 3</label>
+              <span class="text-[11px] text-[#86868b]">WAV o MP3</span>
+            </div>
+            <input type="file" id="campoAudio3" name="Pista_Audio_03" accept=".wav,.mp3,audio/*" class="w-full text-xs text-[#86868b] file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#f5f5f7] file:text-[#1d1d1f] hover:file:bg-[#e8e8ed] transition cursor-pointer">
+            <input type="hidden" name="Analisis_Tecnico_Audio_03" id="campoAnalisisAudio3" value="No adjunta">
+          </div>
+
+          <div id="cajaAudio3" class="hidden rounded-xl p-3.5 text-xs leading-relaxed transition-all duration-300"></div>
+        </div>
+      </section>
+
+      <!-- BOTÓN DE ENVÍO -->
+      <div class="pt-2">
+        <button type="submit" id="btnSubmit" class="w-full bg-[#0071e3] hover:bg-[#0077ed] active:bg-[#0062c4] text-white font-medium py-4 px-6 rounded-2xl transition duration-200 shadow-sm text-sm">
+          Registrar Expediente Oficial
+        </button>
       </div>
 
-      <!-- Horas -->
-      <div class="sky-glass rounded-2xl p-3 sm:p-5 flex flex-col items-center hover:bg-white/25 transition duration-300">
-        <span id="horas" class="tnum text-3xl sm:text-5xl md:text-6xl font-bold text-white tracking-tight drop-shadow-[0_2px_8px_rgba(0,20,50,0.3)]">00</span>
-        <span class="text-[9px] sm:text-[11px] uppercase tracking-widest text-white/80 font-semibold mt-1">Horas</span>
-      </div>
-
-      <!-- Minutos -->
-      <div class="sky-glass rounded-2xl p-3 sm:p-5 flex flex-col items-center hover:bg-white/25 transition duration-300">
-        <span id="minutos" class="tnum text-3xl sm:text-5xl md:text-6xl font-bold text-white tracking-tight drop-shadow-[0_2px_8px_rgba(0,20,50,0.3)]">00</span>
-        <span class="text-[9px] sm:text-[11px] uppercase tracking-widest text-white/80 font-semibold mt-1">Minutos</span>
-      </div>
-
-      <!-- Segundos -->
-      <div class="sky-glass rounded-2xl p-3 sm:p-5 flex flex-col items-center hover:bg-white/25 transition duration-300 border-white/50">
-        <span id="segundos" class="tnum text-3xl sm:text-5xl md:text-6xl font-bold text-[#bfe1ff] tracking-tight drop-shadow-[0_0_12px_rgba(191,225,255,0.6)]">00</span>
-        <span class="text-[9px] sm:text-[11px] uppercase tracking-widest text-[#bfe1ff] font-semibold mt-1">Segundos</span>
-      </div>
-    </div>
-
-    <!-- Mensaje cuando culmine el contador -->
-    <div id="festivalIniciado" class="hidden sky-glass text-white border-[#30d158]/60 bg-[#30d158]/20 rounded-2xl p-5 text-sm font-semibold max-w-md w-full mb-6 shadow-lg">
-      🎉 ¡El Festival de la Voz Niño Simón 2026 ha comenzado en el Teatro Juares!
-    </div>
-
+      <div id="cajaError" class="hidden rounded-2xl p-4 text-center text-xs font-medium bg-[#fff5f5] text-[#b91c1c] border border-[#fecaca]"></div>
+    </form>
   </main>
 
-  <!-- ================= PIE DE PÁGINA (TRANSLÚCIDO SOBRE LA BASE) ================= -->
-  <footer class="w-full py-4 text-center text-[11px] text-white/80 tracking-wider uppercase relative z-20 bg-black/20 backdrop-blur-sm border-t border-white/10">
-    Fundación Nacional El Niño Simón &copy; 2026 &bull; Todos los derechos reservados
+  <!-- ================= VENTANA MODAL DE AGRADECIMIENTO FORMAL ================= -->
+  <div id="modalAgradecimiento" class="fixed inset-0 z-50 bg-[#1d1d1f]/40 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="bg-white max-w-md w-full rounded-3xl p-7 md:p-8 shadow-[0_20px_60px_rgba(0,0,0,0.15)] border border-[#d2d2d7]/50 text-center modal-animate space-y-6">
+      
+      <div class="w-16 h-16 bg-[#edfcf2] text-[#34c759] rounded-2xl mx-auto flex items-center justify-center shadow-sm">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+        </svg>
+      </div>
+
+      <div class="space-y-2">
+        <span class="text-[11px] font-semibold uppercase tracking-wider text-[#0071e3]">Registro Exitoso</span>
+        <h2 class="text-xl md:text-2xl font-semibold text-[#1d1d1f]">¡Gracias por ser parte del Festival!</h2>
+        <p class="text-xs text-[#515154] leading-relaxed">
+          La <strong>Fundación Nacional El Niño Simón</strong> agradece formalmente el compromiso y dedicación de su delegación. El expediente y los recaudos legales han sido consignados correctamente.
+        </p>
+      </div>
+
+      <div class="bg-[#f5f5f7] rounded-2xl p-4 text-left text-xs space-y-2 border border-[#d2d2d7]/40">
+        <div class="flex justify-between">
+          <span class="text-[#86868b]">Delegación:</span>
+          <span id="resumenEstado" class="font-semibold text-[#1d1d1f]"></span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-[#86868b]">Participante:</span>
+          <span id="resumenParticipante" class="font-semibold text-[#1d1d1f]"></span>
+        </div>
+        <div>
+          <span class="text-[#86868b] block mb-1">Pistas cargadas:</span>
+          <div id="resumenTemas" class="font-medium text-[#1d1d1f] space-y-0.5 pl-2 border-l-2 border-[#0071e3]"></div>
+        </div>
+      </div>
+
+      <p class="text-[11px] text-[#86868b] leading-tight">
+        Presiona aceptar para abrir el canal de enlace directo por WhatsApp con la coordinación técnica del festival.
+      </p>
+
+      <div class="pt-1">
+        <button id="btnAceptarModal" class="w-full inline-flex items-center justify-center space-x-2 bg-[#25d366] hover:bg-[#20ba59] active:bg-[#1caa4f] text-white font-medium py-3.5 px-6 rounded-2xl text-xs transition duration-200 shadow-sm">
+          <span>Aceptar y Notificar por WhatsApp</span>
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="py-8 text-center text-xs text-[#86868b] border-t border-[#d2d2d7]/30">
+    Fundación Nacional El Niño Simón &copy; 2026. Todos los derechos reservados.
   </footer>
 
-  <!-- ================= LÓGICA DEL CONTADOR REGRESIVO ================= -->
   <script>
-    // Fecha inaugural: 22 de Noviembre de 2026 a las 08:00 AM (Hora de Venezuela UTC-4)
-    const fechaFestival = new Date("2026-11-22T08:00:00-04:00").getTime();
+    const NUMERO_WHATSAPP_FESTIVAL = "584129315743";
+    let enlaceWhatsAppFinal = "";
 
-    const spanDias = document.getElementById("dias");
-    const spanHoras = document.getElementById("horas");
-    const spanMinutos = document.getElementById("minutos");
-    const spanSegundos = document.getElementById("segundos");
-    const container = document.getElementById("countdownContainer");
-    const mensajeIniciado = document.getElementById("festivalIniciado");
+    function entrarAlPortal() {
+      const portada = document.getElementById('portadaInicio');
+      portada.style.opacity = '0';
+      portada.style.transform = 'translateY(-12px)';
+      setTimeout(() => {
+        portada.style.display = 'none';
+      }, 600);
+    }
 
-    function actualizarContador() {
-      const ahora = new Date().getTime();
-      const distancia = fechaFestival - ahora;
+    // Función para gestionar la selección dual (Cámara vs Archivo)
+    function gestionarCargaDocumento(inputActivo, idInputDestino, idEstado) {
+      if (!inputActivo.files || !inputActivo.files[0]) return;
+      
+      const archivo = inputActivo.files[0];
+      const statusDiv = document.getElementById(idEstado);
 
-      if (distancia <= 0) {
-        container.classList.add("hidden");
-        mensajeIniciado.classList.remove("hidden");
-        clearInterval(intervalo);
+      // Si se tomó con la cámara, transferir al input oficial del formulario
+      if (idInputDestino) {
+        const inputDestino = document.getElementById(idInputDestino);
+        try {
+          const dt = new DataTransfer();
+          dt.items.add(archivo);
+          inputDestino.files = dt.files;
+        } catch (e) {
+          // En navegadores que restrinjan DataTransfer, se asegura el nombre
+        }
+      }
+
+      statusDiv.classList.remove('hidden');
+      const mb = (archivo.size / (1024 * 1024)).toFixed(2);
+      statusDiv.innerHTML = `
+        <svg class="w-4 h-4 text-[#15803d] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+        <span class="truncate">Adjunto: <strong>${archivo.name}</strong> (${mb} MB)</span>
+      `;
+    }
+
+    // Análisis de frecuencia y formato de hasta 3 archivos de audio
+    async function analizarArchivoAudio(inputElement, cajaElementId, hiddenInputId, trackNumero) {
+      const file = inputElement.files[0];
+      const caja = document.getElementById(cajaElementId);
+      const hiddenInput = document.getElementById(hiddenInputId);
+      if (!file) {
+        caja.classList.add('hidden');
+        hiddenInput.value = trackNumero === 1 ? "Pendiente" : "No adjunta";
         return;
       }
 
-      const dias = Math.floor(distancia / (1000 * 60 * 60 * 24));
-      const horas = Math.floor((distancia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutos = Math.floor((distancia % (1000 * 60 * 60)) / (1000 * 60));
-      const segundos = Math.floor((distancia % (1000 * 60)) / 1000);
+      caja.classList.remove('hidden', 'bg-[#edfcf2]', 'text-[#15803d]', 'border', 'border-[#bbf7d0]', 'bg-[#fffbeb]', 'text-[#b45309]', 'border-[#fef3c7]');
 
-      spanDias.innerText = String(dias).padStart(2, "0");
-      spanHoras.innerText = String(horas).padStart(2, "0");
-      spanMinutos.innerText = String(minutos).padStart(2, "0");
-      spanSegundos.innerText = String(segundos).padStart(2, "0");
+      if (file.name.toLowerCase().endsWith('.wav')) {
+        try {
+          const buffer = await file.slice(0, 44).arrayBuffer();
+          const view = new DataView(buffer);
+          const sampleRate = view.getUint32(24, true);
+
+          if (sampleRate === 48000) {
+            hiddenInput.value = `Pista ${trackNumero}: ÓPTIMO WAV 48 kHz (${file.name})`;
+            caja.classList.add('bg-[#edfcf2]', 'text-[#15803d]', 'border', 'border-[#bbf7d0]');
+            caja.innerHTML = `<strong>Pista ${trackNumero} Óptima:</strong> Archivo WAV a 48.000 Hz detectado (${file.name}). Cumple con los requerimientos técnicos de la consola de sala.`;
+          } else {
+            hiddenInput.value = `Pista ${trackNumero}: WAV a ${sampleRate} Hz (${file.name})`;
+            caja.classList.add('bg-[#fffbeb]', 'text-[#b45309]', 'border', 'border-[#fef3c7]');
+            caja.innerHTML = `<strong>Aviso Pista ${trackNumero}:</strong> Archivo WAV a ${sampleRate} Hz detectado. Se acepta para el registro, pero el equipo técnico coordinará contigo para optimizarlo.`;
+          }
+        } catch (err) {
+          hiddenInput.value = `Pista ${trackNumero}: WAV (${file.name})`;
+          caja.classList.add('bg-[#edfcf2]', 'text-[#15803d]', 'border', 'border-[#bbf7d0]');
+          caja.innerHTML = `<strong>Pista ${trackNumero}:</strong> Archivo WAV cargado correctamente (${file.name}).`;
+        }
+      } else {
+        hiddenInput.value = `Pista ${trackNumero}: MP3 / Audio Estándar (${file.name})`;
+        caja.classList.add('bg-[#fffbeb]', 'text-[#b45309]', 'border', 'border-[#fef3c7]');
+        caja.innerHTML = `<strong>Aviso Pista ${trackNumero}:</strong> Has cargado un archivo en MP3 (${file.name}). El sistema lo acepta para tu inscripción; si dispones del máster en WAV a 48 kHz podrás entregarlo en cabina.`;
+      }
     }
 
-    actualizarContador();
-    const intervalo = setInterval(actualizarContador, 1000);
+    // Escuchas dinámicas para las 3 pistas
+    document.getElementById('campoAudio1').addEventListener('change', function(e) {
+      analizarArchivoAudio(e.target, 'cajaAudio1', 'campoAnalisisAudio1', 1);
+    });
+
+    document.getElementById('campoAudio2').addEventListener('change', function(e) {
+      analizarArchivoAudio(e.target, 'cajaAudio2', 'campoAnalisisAudio2', 2);
+    });
+
+    document.getElementById('campoAudio3').addEventListener('change', function(e) {
+      analizarArchivoAudio(e.target, 'cajaAudio3', 'campoAnalisisAudio3', 3);
+    });
+
+    const form = document.getElementById('formularioAcreditacion');
+    const btn = document.getElementById('btnSubmit');
+    const modal = document.getElementById('modalAgradecimiento');
+    const btnAceptarModal = document.getElementById('btnAceptarModal');
+    const cajaError = document.getElementById('cajaError');
+
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      btn.disabled = true;
+      btn.innerText = "Transfiriendo expediente y documentos oficiales...";
+      cajaError.classList.add('hidden');
+
+      const estado = document.getElementById('campoEstado').value;
+      const nombre = document.getElementById('campoNombre').value;
+      const representante = document.getElementById('campoRepresentante').value;
+      const telefono = document.getElementById('campoTelefono').value;
+      
+      const tema1 = document.getElementById('campoTema1').value;
+      const tema2 = document.getElementById('campoTema2').value;
+      const tema3 = document.getElementById('campoTema3').value;
+
+      const formData = new FormData(form);
+
+      try {
+        const response = await fetch(form.action, {
+          method: "POST",
+          body: formData,
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (response.ok) {
+          document.getElementById('resumenEstado').innerText = estado;
+          document.getElementById('resumenParticipante').innerText = nombre;
+
+          // Construcción dinámica de la lista de pistas para el modal
+          const resumenTemas = document.getElementById('resumenTemas');
+          let temasHtml = `<div>1. ${tema1} (Principal)</div>`;
+          let textoWhatsAppPistas = `🎵 *Pista 1:* "${tema1}" (Principal)`;
+
+          if (tema2.trim()) {
+            temasHtml += `<div>2. ${tema2} (Alternativa)</div>`;
+            textoWhatsAppPistas += `\n🎵 *Pista 2:* "${tema2}" (Alternativa)`;
+          }
+          if (tema3.trim()) {
+            temasHtml += `<div>3. ${tema3} (Respaldo)</div>`;
+            textoWhatsAppPistas += `\n🎵 *Pista 3:* "${tema3}" (Respaldo)`;
+          }
+
+          resumenTemas.innerHTML = temasHtml;
+
+          const textoWhatsApp = `👋 ¡Hola! He completado la carga del expediente oficial para el *Festival de la Voz Niño Simón 2026*:\n\n` +
+            `📍 *Delegación:* ${estado}\n` +
+            `👤 *Participante:* ${nombre}\n` +
+            `${textoWhatsAppPistas}\n` +
+            `👨‍👦 *Representante:* ${representante}\n` +
+            `📞 *Contacto:* ${telefono}\n\n` +
+            `✅ Los documentos LOPNNA, ficha médica y las pistas de audio ya fueron cargados en el portal. Quedo atento a las indicaciones técnicas.`;
+
+          enlaceWhatsAppFinal = `https://wa.me/${NUMERO_WHATSAPP_FESTIVAL}?text=${encodeURIComponent(textoWhatsApp)}`;
+
+          form.reset();
+          document.getElementById('cajaAudio1').classList.add('hidden');
+          document.getElementById('cajaAudio2').classList.add('hidden');
+          document.getElementById('cajaAudio3').classList.add('hidden');
+          document.getElementById('statusLopnna').classList.add('hidden');
+          document.getElementById('statusMedica').classList.add('hidden');
+          modal.classList.remove('hidden');
+        } else {
+          const data = await response.json();
+          throw new Error(data.error || "Ocurrió un error al procesar los archivos.");
+        }
+      } catch (err) {
+        cajaError.innerHTML = `<strong>Error en la entrega:</strong> ${err.message}. Por favor verifica tu red e inténtalo de nuevo.`;
+        cajaError.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+        btn.innerText = "Registrar Expediente Oficial";
+      }
+    });
+
+    btnAceptarModal.addEventListener('click', function() {
+      modal.classList.add('hidden');
+      if (enlaceWhatsAppFinal) {
+        window.open(enlaceWhatsAppFinal, '_blank');
+      }
+    });
   </script>
 </body>
 </html>
