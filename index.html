@@ -263,50 +263,111 @@
           <div class="flex items-center justify-between mb-1">
             <label class="block text-xs font-medium text-[#515154] uppercase tracking-wide">Permiso LOPNNA Oficial *</label>
             <span class="text-[11px] text-[#0071e3] font-medium flex items-center gap-1">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="3" stroke-width="2"/></svg>
-              Cámara o Archivo
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+              Foto, Galería o PDF
             </span>
           </div>
-          <p class="text-[11px] text-[#86868b] mb-2">Adjunta el archivo en PDF o toma una foto clara del documento con la cámara del teléfono.</p>
-          <input type="file" name="Documento_LOPNNA" accept="image/*,.pdf" capture="environment" required class="w-full text-xs text-[#86868b] file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#f5f5f7] file:text-[#1d1d1f] hover:file:bg-[#e8e8ed] transition cursor-pointer">
+          <p class="text-[11px] text-[#86868b] mb-2">Selecciona un archivo PDF, imagen de tu galería o toma una foto clara del documento.</p>
+          <!-- Se eliminó capture="environment" para permitir abrir galería o explorador de archivos -->
+          <input type="file" name="Documento_LOPNNA" accept="image/*,application/pdf,.pdf" required class="w-full text-xs text-[#86868b] file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#f5f5f7] file:text-[#1d1d1f] hover:file:bg-[#e8e8ed] transition cursor-pointer">
         </div>
 
         <div class="pt-2">
           <div class="flex items-center justify-between mb-1">
             <label class="block text-xs font-medium text-[#515154] uppercase tracking-wide">Ficha Médica / Certificado de Salud *</label>
             <span class="text-[11px] text-[#0071e3] font-medium flex items-center gap-1">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="3" stroke-width="2"/></svg>
-              Cámara o Archivo
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+              Foto, Galería o PDF
             </span>
           </div>
           <p class="text-[11px] text-[#86868b] mb-2">Foto visible del informe médico o constancia de salud emitida.</p>
-          <input type="file" name="Ficha_Medica" accept="image/*,.pdf" capture="environment" required class="w-full text-xs text-[#86868b] file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#f5f5f7] file:text-[#1d1d1f] hover:file:bg-[#e8e8ed] transition cursor-pointer">
+          <!-- Se eliminó capture="environment" para permitir abrir galería o explorador de archivos -->
+          <input type="file" name="Ficha_Medica" accept="image/*,application/pdf,.pdf" required class="w-full text-xs text-[#86868b] file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#f5f5f7] file:text-[#1d1d1f] hover:file:bg-[#e8e8ed] transition cursor-pointer">
         </div>
       </section>
 
-      <!-- PASO 4: PISTA MUSICAL Y CONTROL TÉCNICO -->
-      <section class="bg-white rounded-2xl p-6 md:p-7 border border-[#d2d2d7]/50 shadow-[0_2px_12px_rgba(0,0,0,0.03)] space-y-4">
+      <!-- PASO 4: PISTAS MUSICALES Y CONTROL TÉCNICO (HASTA 3 PISTAS) -->
+      <section class="bg-white rounded-2xl p-6 md:p-7 border border-[#d2d2d7]/50 shadow-[0_2px_12px_rgba(0,0,0,0.03)] space-y-6">
         <div class="border-b border-[#d2d2d7]/30 pb-3 flex items-center justify-between">
           <span class="text-[11px] font-semibold uppercase tracking-wider text-[#0071e3]">Paso 04</span>
-          <span class="text-[11px] text-[#86868b]">Control Técnico de Audio</span>
+          <span class="text-[11px] text-[#86868b]">Control Técnico de Audio (Hasta 3 pistas)</span>
         </div>
 
-        <div>
-          <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Título de la Canción *</label>
-          <input type="text" id="campoTema" name="Titulo_Tema" placeholder="Ej: Flor de Sarrapia" required class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
-        </div>
+        <p class="text-xs text-[#86868b] leading-relaxed">
+          Puedes registrar hasta tres (3) pistas por participante. La <strong>Pista 01</strong> es obligatoria (tema principal de concurso), mientras que las Pistas 02 y 03 son opcionales (alternativas, desempate o respaldo).
+        </p>
 
-        <div>
-          <div class="flex items-center justify-between mb-1">
-            <label class="block text-xs font-medium text-[#515154] uppercase tracking-wide">Archivo de Audio de la Pista *</label>
-            <span class="text-[11px] text-[#86868b]">Ideal: WAV a 48 kHz (Acepta MP3)</span>
+        <!-- PISTA 1 (OBLIGATORIA) -->
+        <div class="bg-[#fbfbfd] p-4 md:p-5 rounded-2xl border border-[#d2d2d7]/40 space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold uppercase tracking-wider text-[#0071e3]">Pista 01 — Principal (Obligatoria) *</span>
+            <span class="text-[10px] bg-[#0071e3]/10 text-[#0071e3] px-2.5 py-0.5 rounded-full font-medium">Requerida</span>
           </div>
-          <input type="file" id="campoAudio" name="Pista_Audio" accept=".wav,.mp3,audio/*" required class="w-full text-xs text-[#86868b] file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#f5f5f7] file:text-[#1d1d1f] hover:file:bg-[#e8e8ed] transition cursor-pointer">
-          <input type="hidden" name="Analisis_Tecnico_Audio" id="campoAnalisisAudio" value="Pendiente de carga">
+
+          <div>
+            <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Título de la Canción 1 *</label>
+            <input type="text" id="campoTema1" name="Titulo_Pista_01" placeholder="Ej: Flor de Sarrapia" required class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <label class="block text-xs font-medium text-[#515154] uppercase tracking-wide">Archivo de Audio de la Pista 1 *</label>
+              <span class="text-[11px] text-[#86868b]">Ideal: WAV a 48 kHz (Acepta MP3)</span>
+            </div>
+            <input type="file" id="campoAudio1" name="Pista_Audio_01" accept=".wav,.mp3,audio/*" required class="w-full text-xs text-[#86868b] file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#f5f5f7] file:text-[#1d1d1f] hover:file:bg-[#e8e8ed] transition cursor-pointer">
+            <input type="hidden" name="Analisis_Tecnico_Audio_01" id="campoAnalisisAudio1" value="Pendiente de carga">
+          </div>
+
+          <div id="cajaAudio1" class="hidden rounded-xl p-3.5 text-xs leading-relaxed transition-all duration-300"></div>
         </div>
 
-        <!-- Mensaje de estado dinámico del audio -->
-        <div id="cajaAudio" class="hidden rounded-xl p-4 text-xs leading-relaxed transition-all duration-300"></div>
+        <!-- PISTA 2 (OPCIONAL) -->
+        <div class="bg-[#fbfbfd] p-4 md:p-5 rounded-2xl border border-[#d2d2d7]/40 space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold uppercase tracking-wider text-[#515154]">Pista 02 — Alternativa o Suplente</span>
+            <span class="text-[10px] bg-[#f5f5f7] text-[#86868b] px-2.5 py-0.5 rounded-full font-medium border border-[#d2d2d7]/40">Opcional</span>
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Título de la Canción 2</label>
+            <input type="text" id="campoTema2" name="Titulo_Pista_02" placeholder="Ej: Pajarillo (Opcional)" class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <label class="block text-xs font-medium text-[#515154] uppercase tracking-wide">Archivo de Audio de la Pista 2</label>
+              <span class="text-[11px] text-[#86868b]">WAV o MP3</span>
+            </div>
+            <input type="file" id="campoAudio2" name="Pista_Audio_02" accept=".wav,.mp3,audio/*" class="w-full text-xs text-[#86868b] file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#f5f5f7] file:text-[#1d1d1f] hover:file:bg-[#e8e8ed] transition cursor-pointer">
+            <input type="hidden" name="Analisis_Tecnico_Audio_02" id="campoAnalisisAudio2" value="No adjunta">
+          </div>
+
+          <div id="cajaAudio2" class="hidden rounded-xl p-3.5 text-xs leading-relaxed transition-all duration-300"></div>
+        </div>
+
+        <!-- PISTA 3 (OPCIONAL) -->
+        <div class="bg-[#fbfbfd] p-4 md:p-5 rounded-2xl border border-[#d2d2d7]/40 space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold uppercase tracking-wider text-[#515154]">Pista 03 — Respaldo o Desempate</span>
+            <span class="text-[10px] bg-[#f5f5f7] text-[#86868b] px-2.5 py-0.5 rounded-full font-medium border border-[#d2d2d7]/40">Opcional</span>
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Título de la Canción 3</label>
+            <input type="text" id="campoTema3" name="Titulo_Pista_03" placeholder="Ej: Tonada del Cabrestero (Opcional)" class="w-full bg-[#f5f5f7] border-0 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <label class="block text-xs font-medium text-[#515154] uppercase tracking-wide">Archivo de Audio de la Pista 3</label>
+              <span class="text-[11px] text-[#86868b]">WAV o MP3</span>
+            </div>
+            <input type="file" id="campoAudio3" name="Pista_Audio_03" accept=".wav,.mp3,audio/*" class="w-full text-xs text-[#86868b] file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#f5f5f7] file:text-[#1d1d1f] hover:file:bg-[#e8e8ed] transition cursor-pointer">
+            <input type="hidden" name="Analisis_Tecnico_Audio_03" id="campoAnalisisAudio3" value="No adjunta">
+          </div>
+
+          <div id="cajaAudio3" class="hidden rounded-xl p-3.5 text-xs leading-relaxed transition-all duration-300"></div>
+        </div>
       </section>
 
       <!-- BOTÓN DE ENVÍO -->
@@ -338,7 +399,7 @@
         </p>
       </div>
 
-      <div class="bg-[#f5f5f7] rounded-2xl p-4 text-left text-xs space-y-1.5 border border-[#d2d2d7]/40">
+      <div class="bg-[#f5f5f7] rounded-2xl p-4 text-left text-xs space-y-2 border border-[#d2d2d7]/40">
         <div class="flex justify-between">
           <span class="text-[#86868b]">Delegación:</span>
           <span id="resumenEstado" class="font-semibold text-[#1d1d1f]"></span>
@@ -347,9 +408,9 @@
           <span class="text-[#86868b]">Participante:</span>
           <span id="resumenParticipante" class="font-semibold text-[#1d1d1f]"></span>
         </div>
-        <div class="flex justify-between">
-          <span class="text-[#86868b]">Tema musical:</span>
-          <span id="resumenTema" class="font-semibold text-[#1d1d1f]"></span>
+        <div>
+          <span class="text-[#86868b] block mb-1">Pistas cargadas:</span>
+          <div id="resumenTemas" class="font-medium text-[#1d1d1f] space-y-0.5 pl-2 border-l-2 border-[#0071e3]"></div>
         </div>
       </div>
 
@@ -384,11 +445,16 @@
       }, 600);
     }
 
-    document.getElementById('campoAudio').addEventListener('change', async function(e) {
-      const file = e.target.files[0];
-      const caja = document.getElementById('cajaAudio');
-      const hiddenInput = document.getElementById('campoAnalisisAudio');
-      if (!file) return;
+    // Función genérica para análisis técnico de hasta 3 pistas
+    async function analizarArchivoAudio(inputElement, cajaElementId, hiddenInputId, trackNumero) {
+      const file = inputElement.files[0];
+      const caja = document.getElementById(cajaElementId);
+      const hiddenInput = document.getElementById(hiddenInputId);
+      if (!file) {
+        caja.classList.add('hidden');
+        hiddenInput.value = trackNumero === 1 ? "Pendiente" : "No adjunta";
+        return;
+      }
 
       caja.classList.remove('hidden', 'bg-[#edfcf2]', 'text-[#15803d]', 'border', 'border-[#bbf7d0]', 'bg-[#fffbeb]', 'text-[#b45309]', 'border-[#fef3c7]');
 
@@ -399,24 +465,37 @@
           const sampleRate = view.getUint32(24, true);
 
           if (sampleRate === 48000) {
-            hiddenInput.value = "ÓPTIMO: WAV 48 kHz";
+            hiddenInput.value = `Pista ${trackNumero}: ÓPTIMO WAV 48 kHz (${file.name})`;
             caja.classList.add('bg-[#edfcf2]', 'text-[#15803d]', 'border', 'border-[#bbf7d0]');
-            caja.innerHTML = "<strong>Pista Óptima:</strong> Archivo WAV a 48.000 Hz detectado. Cumple con los requerimientos técnicos de la consola de sala.";
+            caja.innerHTML = `<strong>Pista ${trackNumero} Óptima:</strong> Archivo WAV a 48.000 Hz detectado (${file.name}). Cumple con los requerimientos técnicos de la consola de sala.`;
           } else {
-            hiddenInput.value = `WAV a ${sampleRate} Hz`;
+            hiddenInput.value = `Pista ${trackNumero}: WAV a ${sampleRate} Hz (${file.name})`;
             caja.classList.add('bg-[#fffbeb]', 'text-[#b45309]', 'border', 'border-[#fef3c7]');
-            caja.innerHTML = `<strong>Aviso:</strong> El archivo es WAV a ${sampleRate} Hz. Se acepta para el registro, pero el equipo técnico coordinará contigo para optimizarlo.`;
+            caja.innerHTML = `<strong>Aviso Pista ${trackNumero}:</strong> Archivo WAV a ${sampleRate} Hz detectado. Se acepta para el registro, pero el equipo técnico coordinará contigo para optimizarlo.`;
           }
         } catch (err) {
-          hiddenInput.value = "WAV cargado";
+          hiddenInput.value = `Pista ${trackNumero}: WAV (${file.name})`;
           caja.classList.add('bg-[#edfcf2]', 'text-[#15803d]', 'border', 'border-[#bbf7d0]');
-          caja.innerHTML = "Archivo WAV cargado correctamente.";
+          caja.innerHTML = `<strong>Pista ${trackNumero}:</strong> Archivo WAV cargado correctamente (${file.name}).`;
         }
       } else {
-        hiddenInput.value = "MP3 / Audio Estándar";
+        hiddenInput.value = `Pista ${trackNumero}: MP3 / Audio Estándar (${file.name})`;
         caja.classList.add('bg-[#fffbeb]', 'text-[#b45309]', 'border', 'border-[#fef3c7]');
-        caja.innerHTML = "<strong>Aviso de Audio:</strong> Has cargado un archivo en MP3. El sistema lo acepta para tu inscripción oficial, pero si tienes el máster original en WAV a 48 kHz, te recomendamos coordinarlo antes de la prueba de sonido.";
+        caja.innerHTML = `<strong>Aviso Pista ${trackNumero}:</strong> Has cargado un archivo en MP3 (${file.name}). El sistema lo acepta para tu inscripción; si dispones del máster en WAV a 48 kHz podrás entregarlo en cabina.`;
       }
+    }
+
+    // Escuchas dinámicas para las 3 pistas
+    document.getElementById('campoAudio1').addEventListener('change', function(e) {
+      analizarArchivoAudio(e.target, 'cajaAudio1', 'campoAnalisisAudio1', 1);
+    });
+
+    document.getElementById('campoAudio2').addEventListener('change', function(e) {
+      analizarArchivoAudio(e.target, 'cajaAudio2', 'campoAnalisisAudio2', 2);
+    });
+
+    document.getElementById('campoAudio3').addEventListener('change', function(e) {
+      analizarArchivoAudio(e.target, 'cajaAudio3', 'campoAnalisisAudio3', 3);
     });
 
     const form = document.getElementById('formularioAcreditacion');
@@ -435,7 +514,10 @@
       const nombre = document.getElementById('campoNombre').value;
       const representante = document.getElementById('campoRepresentante').value;
       const telefono = document.getElementById('campoTelefono').value;
-      const tema = document.getElementById('campoTema').value;
+      
+      const tema1 = document.getElementById('campoTema1').value;
+      const tema2 = document.getElementById('campoTema2').value;
+      const tema3 = document.getElementById('campoTema3').value;
 
       const formData = new FormData(form);
 
@@ -449,20 +531,37 @@
         if (response.ok) {
           document.getElementById('resumenEstado').innerText = estado;
           document.getElementById('resumenParticipante').innerText = nombre;
-          document.getElementById('resumenTema').innerText = `"${tema}"`;
+
+          // Renderizar lista de pistas cargadas en el modal
+          const resumenTemas = document.getElementById('resumenTemas');
+          let temasHtml = `<div>1. ${tema1} (Principal)</div>`;
+          let textoWhatsAppPistas = `🎵 *Pista 1:* "${tema1}" (Principal)`;
+
+          if (tema2.trim()) {
+            temasHtml += `<div>2. ${tema2} (Alternativa)</div>`;
+            textoWhatsAppPistas += `\n🎵 *Pista 2:* "${tema2}" (Alternativa)`;
+          }
+          if (tema3.trim()) {
+            temasHtml += `<div>3. ${tema3} (Respaldo)</div>`;
+            textoWhatsAppPistas += `\n🎵 *Pista 3:* "${tema3}" (Respaldo)`;
+          }
+
+          resumenTemas.innerHTML = temasHtml;
 
           const textoWhatsApp = `👋 ¡Hola! He completado la carga del expediente oficial para el *Festival de la Voz Niño Simón 2026*:\n\n` +
             `📍 *Delegación:* ${estado}\n` +
             `👤 *Participante:* ${nombre}\n` +
-            `🎵 *Tema Musical:* "${tema}"\n` +
+            `${textoWhatsAppPistas}\n` +
             `👨‍👦 *Representante:* ${representante}\n` +
             `📞 *Contacto:* ${telefono}\n\n` +
-            `✅ Los documentos LOPNNA, ficha médica y la pista de audio ya fueron cargados en el portal. Quedo atento a las indicaciones técnicas.`;
+            `✅ Los documentos LOPNNA, ficha médica y las pistas de audio ya fueron cargados en el portal. Quedo atento a las indicaciones técnicas.`;
 
           enlaceWhatsAppFinal = `https://wa.me/${NUMERO_WHATSAPP_FESTIVAL}?text=${encodeURIComponent(textoWhatsApp)}`;
 
           form.reset();
-          document.getElementById('cajaAudio').classList.add('hidden');
+          document.getElementById('cajaAudio1').classList.add('hidden');
+          document.getElementById('cajaAudio2').classList.add('hidden');
+          document.getElementById('cajaAudio3').classList.add('hidden');
           modal.classList.remove('hidden');
         } else {
           const data = await response.json();
