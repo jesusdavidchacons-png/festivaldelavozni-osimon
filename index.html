@@ -47,7 +47,7 @@
       }
     }
 
-    /* Movimiento sutil de flotación continua */
+    /* Movimiento de flotación continua */
     @keyframes logoFloating {
       0%, 100% {
         transform: translateY(0);
@@ -103,7 +103,7 @@
 
     <div class="max-w-md w-full text-center flex flex-col items-center my-auto">
       
-      <!-- Logo sin marcos ni fondos cuadrados, con animación de entrada orgánica -->
+      <!-- Logo institucional -->
       <div class="w-44 h-44 md:w-52 md:h-52 flex items-center justify-center mb-6 logo-intro">
         <img src="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png" alt="Festival Niño Simón" class="w-full h-full object-contain filter drop-shadow-[0_12px_24px_rgba(0,0,0,0.06)]">
       </div>
@@ -120,7 +120,7 @@
           Festival de la Voz<br><span class="text-[#0071e3]">Niño Simón 2026</span>
         </h1>
         
-        <!-- Reseña emocional e institucional -->
+        <!-- Reseña institucional -->
         <div class="bg-white/70 border border-[#d2d2d7]/40 rounded-2xl p-5 mb-6 shadow-sm text-left space-y-2">
           <p class="text-xs text-[#515154] leading-relaxed">
             Iniciativa organizada por la <strong>Fundación Nacional El Niño Simón</strong> para celebrar y enaltecer el talento, la identidad folclórica y las raíces de nuestras niñas y niños de toda Venezuela.
@@ -134,7 +134,7 @@
           Portal táctico de acreditación federativa, protección LOPNNA y control técnico de audio máster.
         </p>
 
-        <!-- Botón de apertura al formulario -->
+        <!-- Botón de apertura -->
         <button onclick="entrarAlPortal()" class="group relative inline-flex items-center justify-center space-x-2 bg-[#0071e3] hover:bg-[#0077ed] active:bg-[#0062c4] text-white px-8 py-3.5 rounded-2xl text-sm font-medium transition duration-200 shadow-[0_4px_14px_rgba(0,113,227,0.3)]">
           <span>Ingresar al Expediente</span>
           <svg class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -252,41 +252,67 @@
         </div>
       </section>
 
-      <!-- PASO 3: PROTECCIÓN LOPNNA Y SALUD -->
-      <section class="bg-white rounded-2xl p-6 md:p-7 border border-[#d2d2d7]/50 shadow-[0_2px_12px_rgba(0,0,0,0.03)] space-y-4">
+      <!-- PASO 3: PROTECCIÓN LOPNNA Y SALUD (SELECCIÓN DUAL: CÁMARA O ARCHIVO) -->
+      <section class="bg-white rounded-2xl p-6 md:p-7 border border-[#d2d2d7]/50 shadow-[0_2px_12px_rgba(0,0,0,0.03)] space-y-6">
         <div class="border-b border-[#d2d2d7]/30 pb-3 flex items-center justify-between">
           <span class="text-[11px] font-semibold uppercase tracking-wider text-[#0071e3]">Paso 03</span>
           <span class="text-[11px] text-[#86868b]">Permisos & Salud</span>
         </div>
 
-        <div>
-          <div class="flex items-center justify-between mb-1">
+        <!-- RECAUDO 1: LOPNNA -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
             <label class="block text-xs font-medium text-[#515154] uppercase tracking-wide">Permiso LOPNNA Oficial *</label>
-            <span class="text-[11px] text-[#0071e3] font-medium flex items-center gap-1">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-              Foto, Galería o PDF
-            </span>
+            <span class="text-[10px] bg-[#0071e3]/10 text-[#0071e3] px-2 py-0.5 rounded-full font-medium">Requerido</span>
           </div>
-          <p class="text-[11px] text-[#86868b] mb-2">Selecciona un archivo PDF, imagen de tu galería o toma una foto clara del documento.</p>
-          <!-- Se eliminó capture="environment" para permitir abrir galería o explorador de archivos -->
-          <input type="file" name="Documento_LOPNNA" accept="image/*,application/pdf,.pdf" required class="w-full text-xs text-[#86868b] file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#f5f5f7] file:text-[#1d1d1f] hover:file:bg-[#e8e8ed] transition cursor-pointer">
+          <p class="text-[11px] text-[#86868b]">Selecciona tomar una foto directa del documento físico o cargar el archivo PDF/imagen guardado.</p>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+            <!-- Botón 1: Cámara -->
+            <label class="flex items-center justify-center gap-2 bg-[#f5f5f7] hover:bg-[#e8e8ed] active:bg-[#e0e0e5] text-[#1d1d1f] py-3.5 px-4 rounded-xl text-xs font-medium cursor-pointer transition border border-[#d2d2d7]/40 shadow-sm">
+              <svg class="w-4 h-4 text-[#0071e3]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="3" stroke-width="2"/></svg>
+              <span>Activar Cámara</span>
+              <input type="file" id="lopnnaCamara" accept="image/*" capture="environment" class="hidden" onchange="gestionarCargaDocumento(this, 'lopnnaArchivo', 'statusLopnna')">
+            </label>
+
+            <!-- Botón 2: Archivo / Galería / PDF -->
+            <label class="flex items-center justify-center gap-2 bg-[#f5f5f7] hover:bg-[#e8e8ed] active:bg-[#e0e0e5] text-[#1d1d1f] py-3.5 px-4 rounded-xl text-xs font-medium cursor-pointer transition border border-[#d2d2d7]/40 shadow-sm">
+              <svg class="w-4 h-4 text-[#0071e3]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+              <span>Subir Archivo o Foto</span>
+              <input type="file" id="lopnnaArchivo" name="Documento_LOPNNA" accept="image/*,application/pdf,.pdf" required class="hidden" onchange="gestionarCargaDocumento(this, null, 'statusLopnna')">
+            </label>
+          </div>
+          <div id="statusLopnna" class="text-xs text-[#15803d] font-medium hidden pt-1 flex items-center gap-1.5 bg-[#edfcf2] p-2.5 rounded-xl border border-[#bbf7d0]"></div>
         </div>
 
-        <div class="pt-2">
-          <div class="flex items-center justify-between mb-1">
+        <!-- RECAUDO 2: FICHA MÉDICA -->
+        <div class="space-y-2 pt-3 border-t border-[#d2d2d7]/30">
+          <div class="flex items-center justify-between">
             <label class="block text-xs font-medium text-[#515154] uppercase tracking-wide">Ficha Médica / Certificado de Salud *</label>
-            <span class="text-[11px] text-[#0071e3] font-medium flex items-center gap-1">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-              Foto, Galería o PDF
-            </span>
+            <span class="text-[10px] bg-[#0071e3]/10 text-[#0071e3] px-2 py-0.5 rounded-full font-medium">Requerido</span>
           </div>
-          <p class="text-[11px] text-[#86868b] mb-2">Foto visible del informe médico o constancia de salud emitida.</p>
-          <!-- Se eliminó capture="environment" para permitir abrir galería o explorador de archivos -->
-          <input type="file" name="Ficha_Medica" accept="image/*,application/pdf,.pdf" required class="w-full text-xs text-[#86868b] file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#f5f5f7] file:text-[#1d1d1f] hover:file:bg-[#e8e8ed] transition cursor-pointer">
+          <p class="text-[11px] text-[#86868b]">Foto visible de la constancia de salud emitida o archivo en formato PDF.</p>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+            <!-- Botón 1: Cámara -->
+            <label class="flex items-center justify-center gap-2 bg-[#f5f5f7] hover:bg-[#e8e8ed] active:bg-[#e0e0e5] text-[#1d1d1f] py-3.5 px-4 rounded-xl text-xs font-medium cursor-pointer transition border border-[#d2d2d7]/40 shadow-sm">
+              <svg class="w-4 h-4 text-[#0071e3]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="3" stroke-width="2"/></svg>
+              <span>Activar Cámara</span>
+              <input type="file" id="medicaCamara" accept="image/*" capture="environment" class="hidden" onchange="gestionarCargaDocumento(this, 'medicaArchivo', 'statusMedica')">
+            </label>
+
+            <!-- Botón 2: Archivo / Galería / PDF -->
+            <label class="flex items-center justify-center gap-2 bg-[#f5f5f7] hover:bg-[#e8e8ed] active:bg-[#e0e0e5] text-[#1d1d1f] py-3.5 px-4 rounded-xl text-xs font-medium cursor-pointer transition border border-[#d2d2d7]/40 shadow-sm">
+              <svg class="w-4 h-4 text-[#0071e3]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+              <span>Subir Archivo o Foto</span>
+              <input type="file" id="medicaArchivo" name="Ficha_Medica" accept="image/*,application/pdf,.pdf" required class="hidden" onchange="gestionarCargaDocumento(this, null, 'statusMedica')">
+            </label>
+          </div>
+          <div id="statusMedica" class="text-xs text-[#15803d] font-medium hidden pt-1 flex items-center gap-1.5 bg-[#edfcf2] p-2.5 rounded-xl border border-[#bbf7d0]"></div>
         </div>
       </section>
 
-      <!-- PASO 4: PISTAS MUSICALES Y CONTROL TÉCNICO (HASTA 3 PISTAS) -->
+      <!-- PASO 4: PISTAS MUSICALES (HASTA 3 PISTAS) -->
       <section class="bg-white rounded-2xl p-6 md:p-7 border border-[#d2d2d7]/50 shadow-[0_2px_12px_rgba(0,0,0,0.03)] space-y-6">
         <div class="border-b border-[#d2d2d7]/30 pb-3 flex items-center justify-between">
           <span class="text-[11px] font-semibold uppercase tracking-wider text-[#0071e3]">Paso 04</span>
@@ -294,7 +320,7 @@
         </div>
 
         <p class="text-xs text-[#86868b] leading-relaxed">
-          Puedes registrar hasta tres (3) pistas por participante. La <strong>Pista 01</strong> es obligatoria (tema principal de concurso), mientras que las Pistas 02 y 03 son opcionales (alternativas, desempate o respaldo).
+          Puedes registrar hasta tres (3) pistas por participante. La <strong>Pista 01</strong> es obligatoria (tema principal de concurso), mientras que las Pistas 02 y 03 son opcionales (alternativas o respaldo técnico).
         </p>
 
         <!-- PISTA 1 (OBLIGATORIA) -->
@@ -445,7 +471,34 @@
       }, 600);
     }
 
-    // Función genérica para análisis técnico de hasta 3 pistas
+    // Función para gestionar la selección dual (Cámara vs Archivo)
+    function gestionarCargaDocumento(inputActivo, idInputDestino, idEstado) {
+      if (!inputActivo.files || !inputActivo.files[0]) return;
+      
+      const archivo = inputActivo.files[0];
+      const statusDiv = document.getElementById(idEstado);
+
+      // Si se tomó con la cámara, transferir al input oficial del formulario
+      if (idInputDestino) {
+        const inputDestino = document.getElementById(idInputDestino);
+        try {
+          const dt = new DataTransfer();
+          dt.items.add(archivo);
+          inputDestino.files = dt.files;
+        } catch (e) {
+          // En navegadores que restrinjan DataTransfer, se asegura el nombre
+        }
+      }
+
+      statusDiv.classList.remove('hidden');
+      const mb = (archivo.size / (1024 * 1024)).toFixed(2);
+      statusDiv.innerHTML = `
+        <svg class="w-4 h-4 text-[#15803d] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+        <span class="truncate">Adjunto: <strong>${archivo.name}</strong> (${mb} MB)</span>
+      `;
+    }
+
+    // Análisis de frecuencia y formato de hasta 3 archivos de audio
     async function analizarArchivoAudio(inputElement, cajaElementId, hiddenInputId, trackNumero) {
       const file = inputElement.files[0];
       const caja = document.getElementById(cajaElementId);
@@ -532,7 +585,7 @@
           document.getElementById('resumenEstado').innerText = estado;
           document.getElementById('resumenParticipante').innerText = nombre;
 
-          // Renderizar lista de pistas cargadas en el modal
+          // Construcción dinámica de la lista de pistas para el modal
           const resumenTemas = document.getElementById('resumenTemas');
           let temasHtml = `<div>1. ${tema1} (Principal)</div>`;
           let textoWhatsAppPistas = `🎵 *Pista 1:* "${tema1}" (Principal)`;
@@ -562,6 +615,8 @@
           document.getElementById('cajaAudio1').classList.add('hidden');
           document.getElementById('cajaAudio2').classList.add('hidden');
           document.getElementById('cajaAudio3').classList.add('hidden');
+          document.getElementById('statusLopnna').classList.add('hidden');
+          document.getElementById('statusMedica').classList.add('hidden');
           modal.classList.remove('hidden');
         } else {
           const data = await response.json();
