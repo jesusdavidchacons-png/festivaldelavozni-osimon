@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Master Console Admin — Festival de la Voz Niño Simón 2026</title>
+
+  <!-- Metadatos de Control Interno -->
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/png" href="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Tipografía del Sistema -->
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", sans-serif;
+      letter-spacing: -0.015em;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    @keyframes fadeInModal {
+      from { opacity: 0; transform: scale(0.98) translateY(10px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal-enter {
+      animation: fadeInModal 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+  </style>
+</head>
+<body class="min-h-full flex flex-col justify-between text-[#1d1d1f] antialiased relative selection:bg-[#0071e3] selection:text-white bg-[#0b0d12]">
+
+  <!-- ================= FONDO DE VIDEO RESPONSIVE (TEATRO JUARES) ================= -->
+  <div class="fixed inset-0 w-full h-full -z-20 overflow-hidden pointer-events-none bg-[#0b0d12]">
+    <!-- Versión Vertical: Smartphones en vertical -->
+    <video autoplay muted loop playsinline class="block sm:hidden w-full h-full object-cover">
+      <source src="TEATRO.mp4" type="video/mp4">
+    </video>
+
+    <!-- Versión Horizontal: Laptops, computadoras y monitores amplios -->
+    <video autoplay muted loop playsinline class="hidden sm:block w-full h-full object-cover">
+      <source src="TEATROHORIZONTAL.mp4" type="video/mp4">
+    </video>
+
+    <!-- Capa cinemática para alto contraste -->
+    <div class="absolute inset-0 bg-[#0b0d12]/75 backdrop-blur-[2px]"></div>
+  </div>
+
+  <!-- ================= BARRA SUPERIOR INSTITUCIONAL ================= -->
+  <header class="w-full bg-white/85 backdrop-blur-xl border-b border-white/30 sticky top-0 z-30 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-8 h-16 flex items-center justify-between">
+      
+      <div class="flex items-center space-x-3.5">
+        <img src="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png" alt="Logo FNNS" class="h-9 w-auto object-contain">
+        <div class="border-l border-[#d2d2d7] pl-3.5 flex flex-col">
+          <div class="flex items-center gap-2">
+            <span class="text-xs uppercase tracking-widest text-[#1d1d1f] font-bold">FNNS ADMIN</span>
+            <span class="bg-[#34c759]/15 text-[#15803d] text-[9px] font-bold px-2 py-0.5 rounded-full border border-[#34c759]/30">LIVE 2026</span>
+          </div>
+          <span class="text-[10px] text-[#86868b]">Panel Central de Supervisión & Módulos</span>
+        </div>
+      </div>
+
+      <!-- Reloj en Vivo / Indicador de Conexión -->
+      <div class="flex items-center gap-4 text-xs font-mono">
+        <div class="hidden md:flex items-center gap-2 text-[#86868b] bg-[#f5f5f7] px-3 py-1 rounded-full border border-[#d2d2d7]/50">
+          <span class="w-2 h-2 rounded-full bg-[#34c759] animate-pulse"></span>
+          <span id="relojServidor">--:--:--</span>
+        </div>
+        <a href="https://fvns.org" target="_blank" class="text-[#0071e3] hover:underline font-sans text-xs font-medium">
+          fvns.org ↗
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ================= CONTENEDOR PRINCIPAL ================= -->
+  <main class="max-w-7xl w-full mx-auto px-4 sm:px-8 py-10 flex-1 relative z-10">
+
+    <!-- Encabezado de la Consola -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+      <div>
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-white border border-white/30 text-[10px] font-bold uppercase tracking-wider mb-2">
+          Teatro Juares • Barquisimeto
+        </span>
+        <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-white drop-shadow-md">
+          Ecosistema Digital del Festival
+        </h1>
+        <p class="text-xs sm:text-sm text-slate-300 mt-1 font-light max-w-2xl drop-shadow">
+          Inspección unificada de las 5 páginas activas del sistema. Puedes abrir cada landing page en una nueva pestaña o previsualizarla directamente en el simulador integrado.
+        </p>
+      </div>
+
+      <!-- Métricas del Sistema -->
+      <div class="flex flex-wrap items-center gap-2 font-mono text-[11px]">
+        <div class="bg-white/85 backdrop-blur-md px-3 py-2 rounded-xl border border-white/40 shadow-sm">
+          <span class="text-[#86868b] block text-[9px] uppercase">Módulos</span>
+          <span class="font-bold text-[#1d1d1f]">5 Desplegados</span>
+        </div>
+        <div class="bg-white/85 backdrop-blur-md px-3 py-2 rounded-xl border border-white/40 shadow-sm">
+          <span class="text-[#86868b] block text-[9px] uppercase">Protocolo</span>
+          <span class="font-bold text-[#15803d]">HTTPS / SSL OK</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= GRID DE LAS 5 LANDING PAGES ================= -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <!-- TARJETA 1: INDEX.HTML (PORTAL PÚBLICO & CONTADOR) -->
+      <article class="bg-white/90 backdrop-blur-xl rounded-3xl p-6 border border-white/70 shadow-[0_10px_35px_rgba(0,0,0,0.18)] flex flex-col justify-between hover:border-[#0071e3]/60 transition-all duration-200">
+        <div>
+          <div class="flex items-center justify-between pb-3 mb-4 border-b border-[#d2d2d7]/50">
+            <span class="text-[10px] font-bold font-mono text-[#0071e3] uppercase tracking-wider">01 // Entrada General</span>
+            <span class="bg-[#34c759]/15 text-[#15803d] text-[10px] font-bold px-2 py-0.5 rounded-full">Todo Público</span>
+          </div>
+
+          <h2 class="text-lg font-bold text-[#1d1d1f] mb-1">
+            Portal Principal & Cuenta Regresiva
+          </h2>
+          <p class="text-xs font-mono text-[#86868b] mb-3">index.html</p>
+
+          <p class="text-xs text-[#515154] leading-relaxed mb-6">
+            Landing page oficial de bienvenida para el público general, cronómetro en cuenta regresiva hacia la inauguración en el Teatro Juares y canal de información institucional.
+          </p>
+        </div>
+
+        <div class="space-y-2 pt-4 border-t border-[#d2d2d7]/40">
+          <div class="flex items-center gap-2">
+            <a 
+              href="index.html" 
+              target="_blank" 
+              class="flex-1 text-center bg-[#1d1d1f] hover:bg-black text-white text-xs font-semibold py-2.5 px-3 rounded-xl transition duration-150 shadow-sm"
+            >
+              Abrir Página ↗
+            </a>
+            <button 
+              onclick="abrirVisorEnModal('index.html', 'Portal Público & Contador')"
+              class="bg-[#f5f5f7] hover:bg-[#e8e8ed] text-[#1d1d1f] text-xs font-semibold py-2.5 px-3 rounded-xl border border-[#d2d2d7]/60 transition"
+              title="Previsualizar en simulador"
+            >
+              Simular
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- TARJETA 2: INSCRIPCION.HTML (EXPEDIENTES & LOPNNA) -->
+      <article class="bg-white/90 backdrop-blur-xl rounded-3xl p-6 border border-white/70 shadow-[0_10px_35px_rgba(0,0,0,0.18)] flex flex-col justify-between hover:border-[#0071e3]/60 transition-all duration-200">
+        <div>
+          <div class="flex items-center justify-between pb-3 mb-4 border-b border-[#d2d2d7]/50">
+            <span class="text-[10px] font-bold font-mono text-[#0071e3] uppercase tracking-wider">02 // Acreditación</span>
+            <span class="bg-[#0071e3]/10 text-[#0071e3] text-[10px] font-bold px-2 py-0.5 rounded-full">35 Delegaciones</span>
+          </div>
+
+          <h2 class="text-lg font-bold text-[#1d1d1f] mb-1">
+            Carga de Expediente & Pases QR
+          </h2>
+          <p class="text-xs font-mono text-[#86868b] mb-3">inscripcion.html</p>
+
+          <p class="text-xs text-[#515154] leading-relaxed mb-6">
+            Módulo de recepción de permisos LOPNNA, ficha médica, subida de pistas máster (WAV/MP3), emisión del código de acreditación único y sincronización con Google Sheets.
+          </p>
+        </div>
+
+        <div class="space-y-2 pt-4 border-t border-[#d2d2d7]/40">
+          <div class="flex items-center gap-2">
+            <a 
+              href="inscripcion.html" 
+              target="_blank" 
+              class="flex-1 text-center bg-[#0071e3] hover:bg-[#0077ed] text-white text-xs font-semibold py-2.5 px-3 rounded-xl transition duration-150 shadow-sm"
+            >
+              Abrir Página ↗
+            </a>
+            <button 
+              onclick="abrirVisorEnModal('inscripcion.html', 'Módulo de Inscripción & Pase QR')"
+              class="bg-[#f5f5f7] hover:bg-[#e8e8ed] text-[#1d1d1f] text-xs font-semibold py-2.5 px-3 rounded-xl border border-[#d2d2d7]/60 transition"
+              title="Previsualizar en simulador"
+            >
+              Simular
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- TARJETA 3: REVISION.HTML (MESA TÉCNICA & JURADO) -->
+      <article class="bg-white/90 backdrop-blur-xl rounded-3xl p-6 border border-white/70 shadow-[0_10px_35px_rgba(0,0,0,0.18)] flex flex-col justify-between hover:border-[#0071e3]/60 transition-all duration-200">
+        <div>
+          <div class="flex items-center justify-between pb-3 mb-4 border-b border-[#d2d2d7]/50">
+            <span class="text-[10px] font-bold font-mono text-[#0071e3] uppercase tracking-wider">03 // Mesa Técnica</span>
+            <span class="bg-amber-500/15 text-amber-700 text-[10px] font-bold px-2 py-0.5 rounded-full">Cabina / Jurado</span>
+          </div>
+
+          <h2 class="text-lg font-bold text-[#1d1d1f] mb-1">
+            Revisión de Recaudos & Audio
+          </h2>
+          <p class="text-xs font-mono text-[#86868b] mb-3">revision.html</p>
+
+          <p class="text-xs text-[#515154] leading-relaxed mb-6">
+            Panel de consulta interna para el jurado calificador y los operadores de sala: verificación de documentos consignados, estatus legal y pre-escucha de las pistas musicales.
+          </p>
+        </div>
+
+        <div class="space-y-2 pt-4 border-t border-[#d2d2d7]/40">
+          <div class="flex items-center gap-2">
+            <a 
+              href="revision.html" 
+              target="_blank" 
+              class="flex-1 text-center bg-[#1d1d1f] hover:bg-black text-white text-xs font-semibold py-2.5 px-3 rounded-xl transition duration-150 shadow-sm"
+            >
+              Abrir Página ↗
+            </a>
+            <button 
+              onclick="abrirVisorEnModal('revision.html', 'Revisión Técnica & Jurado')"
+              class="bg-[#f5f5f7] hover:bg-[#e8e8ed] text-[#1d1d1f] text-xs font-semibold py-2.5 px-3 rounded-xl border border-[#d2d2d7]/60 transition"
+              title="Previsualizar en simulador"
+            >
+              Simular
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- TARJETA 4: STREAMING.HTML (TRANSMISIÓN EN VIVO) -->
+      <article class="bg-white/90 backdrop-blur-xl rounded-3xl p-6 border border-white/70 shadow-[0_10px_35px_rgba(0,0,0,0.18)] flex flex-col justify-between hover:border-[#0071e3]/60 transition-all duration-200">
+        <div>
+          <div class="flex items-center justify-between pb-3 mb-4 border-b border-[#d2d2d7]/50">
+            <span class="text-[10px] font-bold font-mono text-[#0071e3] uppercase tracking-wider">04 // En Vivo</span>
+            <span class="bg-red-500/15 text-red-600 text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse"></span> Broadcast
+            </span>
+          </div>
+
+          <h2 class="text-lg font-bold text-[#1d1d1f] mb-1">
+            Transmisión en Vivo Oficial
+          </h2>
+          <p class="text-xs font-mono text-[#86868b] mb-3">streaming.html</p>
+
+          <p class="text-xs text-[#515154] leading-relaxed mb-6">
+            Página de transmisión de video en alta definición con el reproductor máster del evento, chat de interacción nacional y visualización directa de las presentaciones de gala.
+          </p>
+        </div>
+
+        <div class="space-y-2 pt-4 border-t border-[#d2d2d7]/40">
+          <div class="flex items-center gap-2">
+            <a 
+              href="streaming.html" 
+              target="_blank" 
+              class="flex-1 text-center bg-[#1d1d1f] hover:bg-black text-white text-xs font-semibold py-2.5 px-3 rounded-xl transition duration-150 shadow-sm"
+            >
+              Abrir Página ↗
+            </a>
+            <button 
+              onclick="abrirVisorEnModal('streaming.html', 'Transmisión en Vivo')"
+              class="bg-[#f5f5f7] hover:bg-[#e8e8ed] text-[#1d1d1f] text-xs font-semibold py-2.5 px-3 rounded-xl border border-[#d2d2d7]/60 transition"
+              title="Previsualizar en simulador"
+            >
+              Simular
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- TARJETA 5: VOTAR.HTML (VOTACIÓN POPULAR) -->
+      <article class="bg-white/90 backdrop-blur-xl rounded-3xl p-6 border border-white/70 shadow-[0_10px_35px_rgba(0,0,0,0.18)] flex flex-col justify-between hover:border-[#0071e3]/60 transition-all duration-200">
+        <div>
+          <div class="flex items-center justify-between pb-3 mb-4 border-b border-[#d2d2d7]/50">
+            <span class="text-[10px] font-bold font-mono text-[#0071e3] uppercase tracking-wider">05 // Participación</span>
+            <span class="bg-purple-500/15 text-purple-700 text-[10px] font-bold px-2 py-0.5 rounded-full">Voto Público</span>
+          </div>
+
+          <h2 class="text-lg font-bold text-[#1d1d1f] mb-1">
+            Sistema de Votación Popular
+          </h2>
+          <p class="text-xs font-mono text-[#86868b] mb-3">votar.html</p>
+
+          <p class="text-xs text-[#515154] leading-relaxed mb-6">
+            Módulo para que la audiencia nacional vote por su delegado o canción folclórica favorita en tiempo real, con cómputo seguro y visualización de barras de preferencia.
+          </p>
+        </div>
+
+        <div class="space-y-2 pt-4 border-t border-[#d2d2d7]/40">
+          <div class="flex items-center gap-2">
+            <a 
+              href="votar.html" 
+              target="_blank" 
+              class="flex-1 text-center bg-[#1d1d1f] hover:bg-black text-white text-xs font-semibold py-2.5 px-3 rounded-xl transition duration-150 shadow-sm"
+            >
+              Abrir Página ↗
+            </a>
+            <button 
+              onclick="abrirVisorEnModal('votar.html', 'Votación del Público')"
+              class="bg-[#f5f5f7] hover:bg-[#e8e8ed] text-[#1d1d1f] text-xs font-semibold py-2.5 px-3 rounded-xl border border-[#d2d2d7]/60 transition"
+              title="Previsualizar en simulador"
+            >
+              Simular
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- TARJETA 6: INFORMACIÓN DE INFRAESTRUCTURA -->
+      <article class="bg-white/75 backdrop-blur-xl rounded-3xl p-6 border border-white/50 shadow-[0_10px_35px_rgba(0,0,0,0.12)] flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between pb-3 mb-4 border-b border-[#d2d2d7]/50">
+            <span class="text-[10px] font-bold font-mono text-[#86868b] uppercase tracking-wider">06 // Diagnóstico</span>
+            <span class="text-[10px] text-[#86868b] font-mono">Infraestructura</span>
+          </div>
+
+          <h2 class="text-lg font-bold text-[#1d1d1f] mb-1">
+            Puntos de Integración
+          </h2>
+          <p class="text-xs font-mono text-[#86868b] mb-3">Estado de Enlaces</p>
+
+          <div class="space-y-2 text-xs font-mono text-[#515154]">
+            <div class="flex justify-between p-2 rounded-xl bg-black/5">
+              <span>Formspree (Archivos)</span>
+              <span class="text-[#15803d] font-bold">xwllkjbz</span>
+            </div>
+            <div class="flex justify-between p-2 rounded-xl bg-black/5">
+              <span>Google Sheets (BD)</span>
+              <span class="text-[#15803d] font-bold">Webhook OK</span>
+            </div>
+            <div class="flex justify-between p-2 rounded-xl bg-black/5">
+              <span>Pases QR (Teatro)</span>
+              <span class="text-[#0071e3] font-bold">SVG 250px</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-4 mt-6 border-t border-[#d2d2d7]/40 text-center">
+          <span class="text-[10px] text-[#86868b] font-mono uppercase">
+            Fundación Nacional El Niño Simón • 2026
+          </span>
+        </div>
+      </article>
+
+    </div>
+
+  </main>
+
+  <!-- ================= MODAL VISOR SIMULADOR RESPONSIVE ================= -->
+  <div id="modalVisor" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden items-center justify-center p-3 sm:p-6">
+    <div class="bg-[#0b0d12] w-full max-w-5xl h-[92vh] rounded-3xl border border-white/20 shadow-[0_25px_80px_rgba(0,0,0,0.6)] flex flex-col overflow-hidden modal-enter">
+      
+      <!-- Barra del Simulador -->
+      <div class="px-5 py-3.5 bg-white/10 backdrop-blur-md border-b border-white/10 flex items-center justify-between">
+        
+        <div class="flex items-center gap-3">
+          <div class="flex gap-1.5">
+            <span onclick="cerrarVisorModal()" class="w-3 h-3 rounded-full bg-[#ff5f56] hover:brightness-110 cursor-pointer inline-block"></span>
+            <span class="w-3 h-3 rounded-full bg-[#ffbd2e] inline-block"></span>
+            <span class="w-3 h-3 rounded-full bg-[#27c93f] inline-block"></span>
+          </div>
+          <span id="tituloModalVisor" class="text-xs font-bold text-white tracking-wide ml-2">Simulador de Módulo</span>
+          <span id="urlModalVisor" class="text-[10px] font-mono text-slate-400 bg-black/40 px-2 py-0.5 rounded border border-white/10">archivo.html</span>
+        </div>
+
+        <!-- Controles de Modo Pantalla -->
+        <div class="flex items-center gap-2">
+          <button onclick="cambiarResolucionSimulador('movil')" id="btnModoMovil" class="px-3 py-1 rounded-lg text-xs font-mono text-slate-300 hover:text-white hover:bg-white/10 transition">
+            📱 Móvil (390px)
+          </button>
+          <button onclick="cambiarResolucionSimulador('desktop')" id="btnModoDesktop" class="px-3 py-1 rounded-lg text-xs font-mono text-white bg-white/15 border border-white/20 transition">
+            💻 Completo (100%)
+          </button>
+          <a id="btnEnlaceExternoModal" href="#" target="_blank" class="text-[#38a0ff] hover:text-white text-xs font-mono px-2 py-1 transition ml-2">
+            Abrir pestaña ↗
+          </a>
+        </div>
+
+      </div>
+
+      <!-- Área de Iframe para probar la página seleccionada -->
+      <div class="flex-1 bg-[#1a1c22] p-2 flex items-center justify-center overflow-hidden">
+        <iframe 
+          id="iframeVisor" 
+          src="" 
+          class="w-full h-full rounded-2xl border-0 bg-white transition-all duration-300 shadow-2xl"
+          title="Vista Previa">
+        </iframe>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= PIE DE PÁGINA ================= -->
+  <footer class="py-6 px-6 border-t border-white/10 text-center font-mono text-xs text-slate-400 relative z-10">
+    <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+      <span>Consola Administrativa • Festival de la Voz Niño Simón 2026</span>
+      <span class="text-slate-500">fvns.org/admin.html</span>
+    </div>
+  </footer>
+
+  <!-- ================= LÓGICA DE CONTROL DE LA CONSOLA ================= -->
+  <script>
+    // Reloj en vivo de Caracas
+    function actualizarReloj() {
+      const opciones = { timeZone: 'America/Caracas', hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' };
+      const ahora = new Intl.DateTimeFormat('es-VE', opciones).format(new Date());
+      const relojEl = document.getElementById('relojServidor');
+      if (relojEl) relojEl.textContent = `${ahora} VET`;
+    }
+    setInterval(actualizarReloj, 1000);
+    actualizarReloj();
+
+    // Control del visor de simulación integrado
+    const modalVisor = document.getElementById('modalVisor');
+    const iframeVisor = document.getElementById('iframeVisor');
+    const tituloModal = document.getElementById('tituloModalVisor');
+    const urlModal = document.getElementById('urlModalVisor');
+    const btnEnlaceExterno = document.getElementById('btnEnlaceExternoModal');
+
+    function abrirVisorEnModal(archivoUrl, tituloAmigable) {
+      tituloModal.textContent = tituloAmigable;
+      urlModal.textContent = archivoUrl;
+      btnEnlaceExterno.href = archivoUrl;
+      iframeVisor.src = archivoUrl;
+
+      // Restablecer por defecto a desktop
+      cambiarResolucionSimulador('desktop');
+
+      modalVisor.classList.remove('hidden');
+      modalVisor.classList.add('flex');
+    }
+
+    function cerrarVisorModal() {
+      modalVisor.classList.add('hidden');
+      modalVisor.classList.remove('flex');
+      iframeVisor.src = ""; // Liberar memoria del iframe
+    }
+
+    function cambiarResolucionSimulador(modo) {
+      const btnMovil = document.getElementById('btnModoMovil');
+      const btnDesktop = document.getElementById('btnModoDesktop');
+
+      if (modo === 'movil') {
+        iframeVisor.style.maxWidth = '390px';
+        iframeVisor.style.height = '780px';
+        btnMovil.className = "px-3 py-1 rounded-lg text-xs font-mono text-white bg-white/15 border border-white/20 transition";
+        btnDesktop.className = "px-3 py-1 rounded-lg text-xs font-mono text-slate-300 hover:text-white hover:bg-white/10 transition";
+      } else {
+        iframeVisor.style.maxWidth = '100%';
+        iframeVisor.style.height = '100%';
+        btnDesktop.className = "px-3 py-1 rounded-lg text-xs font-mono text-white bg-white/15 border border-white/20 transition";
+        btnMovil.className = "px-3 py-1 rounded-lg text-xs font-mono text-slate-300 hover:text-white hover:bg-white/10 transition";
+      }
+    }
+
+    // Cerrar modal al presionar la tecla Escape
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modalVisor.classList.contains('hidden')) {
+        cerrarVisorModal();
+      }
+    });
+  </script>
+
+</body>
+</html>
