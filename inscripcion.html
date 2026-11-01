@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html lang="es" class="h-full bg-[#ffffff]">
+<html lang="es" class="h-full bg-[#050507]">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cuenta Regresiva — Festival de la Voz Niño Simón 2026</title>
 
-  <!-- Metadatos de previsualización -->
   <meta name="title" content="Festival de la Voz Niño Simón 2026 — Teatro Juares">
   <meta name="description" content="Cuenta regresiva oficial para el Festival de la Voz Niño Simón 2026 en el Teatro Juares. Fundación Nacional El Niño Simón.">
   <meta property="og:image" content="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png">
@@ -24,115 +23,152 @@
       font-variant-numeric: tabular-nums;
     }
 
-    @keyframes subtleFloat {
+    @keyframes glowPulse {
+      0%, 100% {
+        opacity: 0.35;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.65;
+        transform: scale(1.08);
+      }
+    }
+
+    @keyframes floatSlow {
       0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-5px); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .ambient-glow {
+      animation: glowPulse 7s ease-in-out infinite;
     }
 
     .floating-logo {
-      animation: subtleFloat 5s ease-in-out infinite;
+      animation: floatSlow 5s ease-in-out infinite;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
     }
   </style>
 </head>
-<body class="min-h-full flex flex-col justify-between bg-[#ffffff] text-[#1d1d1f] antialiased">
+<body class="min-h-full flex flex-col justify-between bg-[#050507] text-[#f5f5f7] antialiased relative overflow-x-hidden selection:bg-[#2997ff] selection:text-white">
 
-  <!-- ================= ENCABEZADO MINIMALISTA ================= -->
-  <header class="w-full py-6 px-8 flex justify-center md:justify-between items-center border-b border-[#f5f5f7]">
-    <div class="flex items-center space-x-3">
+  <!-- Luces ambientales de fondo -->
+  <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+    <div class="absolute -top-36 left-1/2 -translate-x-1/2 w-[720px] h-[450px] bg-[#0071e3]/20 rounded-full blur-[140px] ambient-glow"></div>
+    <div class="absolute bottom-10 left-1/4 w-[400px] h-[300px] bg-[#2997ff]/10 rounded-full blur-[120px] ambient-glow" style="animation-delay: -3s;"></div>
+  </div>
+
+  <!-- ================= BARRA SUPERIOR ================= -->
+  <header class="w-full py-6 px-8 flex justify-center md:justify-between items-center border-b border-white/[0.06] relative z-10 backdrop-blur-md bg-[#050507]/40">
+    <div class="flex items-center space-x-3.5">
       <img src="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png" alt="Logo Festival" class="h-8 w-auto object-contain">
-      <span class="text-xs font-semibold uppercase tracking-widest text-[#1d1d1f] border-l border-[#e5e5ea] pl-3">FNNS</span>
+      <div class="border-l border-white/10 pl-3.5 flex flex-col">
+        <span class="text-xs font-semibold tracking-widest uppercase text-white/90">FNNS</span>
+        <span class="text-[10px] text-white/40 tracking-wide">Edición 2026</span>
+      </div>
     </div>
-    <div class="hidden md:inline-flex items-center space-x-2 text-[11px] text-[#86868b] tracking-wide uppercase font-medium">
-      <span class="w-2 h-2 rounded-full bg-[#34c759] animate-pulse"></span>
-      <span>Teatro Juares &bull; Noviembre 2026</span>
+    
+    <div class="hidden md:inline-flex items-center space-x-2.5 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08]">
+      <span class="w-2 h-2 rounded-full bg-[#30d158] shadow-[0_0_10px_#30d158] animate-pulse"></span>
+      <span class="text-[11px] text-white/70 tracking-wider uppercase font-medium">Teatro Juares &bull; Lara</span>
     </div>
   </header>
 
   <!-- ================= CONTENIDO CENTRAL ================= -->
-  <main class="w-full max-w-4xl mx-auto px-6 py-12 md:py-16 flex flex-col items-center text-center my-auto">
+  <main class="w-full max-w-4xl mx-auto px-6 py-12 md:py-16 flex flex-col items-center text-center my-auto relative z-10">
     
-    <!-- Logo Central -->
-    <div class="w-36 h-36 md:w-44 md:h-44 mb-6 floating-logo flex items-center justify-center">
-      <img src="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png" alt="Festival de la Voz Niño Simón 2026" class="w-full h-full object-contain filter drop-shadow-[0_10px_20px_rgba(0,0,0,0.05)]">
+    <!-- Logo Flotante con halo de iluminación -->
+    <div class="relative w-36 h-36 md:w-44 md:h-44 mb-8 flex items-center justify-center floating-logo">
+      <div class="absolute inset-0 bg-[#2997ff]/20 rounded-full blur-2xl"></div>
+      <img src="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png" alt="Festival de la Voz Niño Simón 2026" class="w-full h-full object-contain relative z-10 filter drop-shadow-[0_16px_32px_rgba(0,0,0,0.6)]">
     </div>
 
-    <!-- Badge Institucional -->
-    <div class="inline-flex items-center space-x-2 bg-[#f5f5f7] border border-[#e5e5ea] px-3.5 py-1 rounded-full mb-4">
-      <span class="text-[11px] font-medium tracking-wide uppercase text-[#86868b]">Fundación Nacional El Niño Simón</span>
+    <!-- Badge Tecnológico -->
+    <div class="inline-flex items-center space-x-2 bg-white/[0.04] border border-white/[0.1] px-4 py-1.5 rounded-full mb-5 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]">
+      <span class="text-[11px] font-semibold tracking-widest uppercase text-[#2997ff]">Acreditación Oficial Activa</span>
     </div>
 
-    <!-- Título -->
-    <h1 class="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-[#1d1d1f] leading-tight mb-3">
-      Festival de la Voz<br><span class="text-[#0071e3]">Niño Simón 2026</span>
+    <!-- Título Principal -->
+    <h1 class="text-3xl sm:text-5xl md:text-6xl font-semibold tracking-tight text-white leading-[1.1] mb-4">
+      Festival de la Voz<br>
+      <span class="bg-clip-text text-transparent bg-gradient-to-r from-[#2997ff] via-[#64d2ff] to-[#a0e9ff]">
+        Niño Simón 2026
+      </span>
     </h1>
 
-    <p class="text-sm md:text-base text-[#86868b] font-normal max-w-lg mb-10 leading-relaxed">
-      Todo listo para recibir a las 35 delegaciones de Venezuela en el emblemático escenario del Teatro Juares.
+    <p class="text-sm md:text-base text-white/50 max-w-lg mb-12 font-normal leading-relaxed">
+      El escenario histórico del <strong>Teatro Juares</strong> recibe la voz, el orgullo y la identidad tradicional de nuestras 35 delegaciones.
     </p>
 
-    <!-- ================= CONTADOR REGRESIVO ================= -->
-    <div id="countdownContainer" class="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4 w-full max-w-2xl mb-12">
+    <!-- ================= CONTADOR REGRESIVO (GRID MODERNO) ================= -->
+    <div id="countdownContainer" class="grid grid-cols-2 sm:grid-cols-4 gap-3.5 md:gap-5 w-full max-w-2xl mb-12">
+      
       <!-- Días -->
-      <div class="bg-[#ffffff] border border-[#e5e5ea] rounded-2xl p-5 md:p-6 shadow-[0_2px_12px_rgba(0,0,0,0.02)] flex flex-col items-center">
-        <span id="dias" class="tnum text-4xl sm:text-5xl md:text-6xl font-semibold text-[#1d1d1f] tracking-tight">00</span>
-        <span class="text-[11px] uppercase tracking-wider text-[#86868b] font-medium mt-1">Días</span>
+      <div class="glass-card rounded-2xl p-5 md:p-6 flex flex-col items-center hover:border-white/20 transition-all duration-300 group shadow-[0_8px_30px_rgba(0,0,0,0.5)]">
+        <span id="dias" class="tnum text-4xl sm:text-5xl md:text-6xl font-semibold text-white tracking-tight group-hover:scale-105 transition-transform duration-300">00</span>
+        <span class="text-[10px] md:text-[11px] uppercase tracking-widest text-white/40 font-medium mt-2">Días</span>
       </div>
 
       <!-- Horas -->
-      <div class="bg-[#ffffff] border border-[#e5e5ea] rounded-2xl p-5 md:p-6 shadow-[0_2px_12px_rgba(0,0,0,0.02)] flex flex-col items-center">
-        <span id="horas" class="tnum text-4xl sm:text-5xl md:text-6xl font-semibold text-[#1d1d1f] tracking-tight">00</span>
-        <span class="text-[11px] uppercase tracking-wider text-[#86868b] font-medium mt-1">Horas</span>
+      <div class="glass-card rounded-2xl p-5 md:p-6 flex flex-col items-center hover:border-white/20 transition-all duration-300 group shadow-[0_8px_30px_rgba(0,0,0,0.5)]">
+        <span id="horas" class="tnum text-4xl sm:text-5xl md:text-6xl font-semibold text-white tracking-tight group-hover:scale-105 transition-transform duration-300">00</span>
+        <span class="text-[10px] md:text-[11px] uppercase tracking-widest text-white/40 font-medium mt-2">Horas</span>
       </div>
 
       <!-- Minutos -->
-      <div class="bg-[#ffffff] border border-[#e5e5ea] rounded-2xl p-5 md:p-6 shadow-[0_2px_12px_rgba(0,0,0,0.02)] flex flex-col items-center">
-        <span id="minutos" class="tnum text-4xl sm:text-5xl md:text-6xl font-semibold text-[#1d1d1f] tracking-tight">00</span>
-        <span class="text-[11px] uppercase tracking-wider text-[#86868b] font-medium mt-1">Minutos</span>
+      <div class="glass-card rounded-2xl p-5 md:p-6 flex flex-col items-center hover:border-white/20 transition-all duration-300 group shadow-[0_8px_30px_rgba(0,0,0,0.5)]">
+        <span id="minutos" class="tnum text-4xl sm:text-5xl md:text-6xl font-semibold text-white tracking-tight group-hover:scale-105 transition-transform duration-300">00</span>
+        <span class="text-[10px] md:text-[11px] uppercase tracking-widest text-white/40 font-medium mt-2">Minutos</span>
       </div>
 
-      <!-- Segundos -->
-      <div class="bg-[#ffffff] border border-[#e5e5ea] rounded-2xl p-5 md:p-6 shadow-[0_2px_12px_rgba(0,0,0,0.02)] flex flex-col items-center">
-        <span id="segundos" class="tnum text-4xl sm:text-5xl md:text-6xl font-semibold text-[#0071e3] tracking-tight">00</span>
-        <span class="text-[11px] uppercase tracking-wider text-[#86868b] font-medium mt-1">Segundos</span>
+      <!-- Segundos con Glow dinámico -->
+      <div class="glass-card rounded-2xl p-5 md:p-6 flex flex-col items-center border-[#2997ff]/40 bg-[#2997ff]/[0.03] shadow-[0_0_30px_rgba(41,151,255,0.12)] group">
+        <span id="segundos" class="tnum text-4xl sm:text-5xl md:text-6xl font-semibold text-[#2997ff] tracking-tight drop-shadow-[0_0_16px_rgba(41,151,255,0.45)] group-hover:scale-105 transition-transform duration-300">00</span>
+        <span class="text-[10px] md:text-[11px] uppercase tracking-widest text-[#2997ff]/80 font-medium mt-2">Segundos</span>
       </div>
     </div>
 
-    <!-- Mensaje cuando culmine el contador -->
-    <div id="festivalIniciado" class="hidden bg-[#edfcf2] text-[#15803d] border border-[#bbf7d0] rounded-2xl p-6 text-sm font-medium max-w-md w-full mb-10 shadow-sm">
+    <!-- Mensaje cuando culmina el contador -->
+    <div id="festivalIniciado" class="hidden glass-card border-[#30d158]/50 bg-[#30d158]/10 text-[#30d158] rounded-2xl p-6 text-sm font-medium max-w-md w-full mb-12 shadow-[0_0_30px_rgba(48,209,88,0.2)]">
       🎉 ¡El Festival de la Voz Niño Simón 2026 ha comenzado!
     </div>
 
-    <!-- ================= TARJETAS DE INFORMACIÓN DEL FESTIVAL ================= -->
+    <!-- ================= TARJETAS DE INFORMACIÓN TÉCNICA ================= -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 w-full max-w-2xl text-left">
-      <div class="bg-[#fbfbfd] border border-[#e5e5ea]/80 rounded-xl p-4">
-        <span class="text-[10px] uppercase font-semibold text-[#0071e3] tracking-wider block mb-1">Fecha Oficial</span>
-        <p class="text-xs font-semibold text-[#1d1d1f]">22 de Noviembre, 2026</p>
-        <p class="text-[11px] text-[#86868b] mt-0.5">Apertura e inauguración</p>
+      <div class="glass-card rounded-2xl p-4 md:p-5 hover:bg-white/[0.04] transition">
+        <span class="text-[10px] uppercase font-semibold text-[#2997ff] tracking-wider block mb-1">Fecha Oficial</span>
+        <p class="text-sm font-medium text-white">22 Noviembre 2026</p>
+        <p class="text-[11px] text-white/40 mt-0.5">Gala Inaugural y Concurso</p>
       </div>
 
-      <div class="bg-[#fbfbfd] border border-[#e5e5ea]/80 rounded-xl p-4">
-        <span class="text-[10px] uppercase font-semibold text-[#0071e3] tracking-wider block mb-1">Escenario & Sede</span>
-        <p class="text-xs font-semibold text-[#1d1d1f]">Teatro Juares</p>
-        <p class="text-[11px] text-[#86868b] mt-0.5">Barquisimeto, Estado Lara</p>
+      <div class="glass-card rounded-2xl p-4 md:p-5 hover:bg-white/[0.04] transition">
+        <span class="text-[10px] uppercase font-semibold text-[#2997ff] tracking-wider block mb-1">Sede del Evento</span>
+        <p class="text-sm font-medium text-white">Teatro Juares</p>
+        <p class="text-[11px] text-white/40 mt-0.5">Barquisimeto, Edo. Lara</p>
       </div>
 
-      <div class="bg-[#fbfbfd] border border-[#e5e5ea]/80 rounded-xl p-4">
-        <span class="text-[10px] uppercase font-semibold text-[#0071e3] tracking-wider block mb-1">Participación</span>
-        <p class="text-xs font-semibold text-[#1d1d1f]">35 Delegaciones</p>
-        <p class="text-[11px] text-[#86868b] mt-0.5">Niñas y niños de toda Venezuela</p>
+      <div class="glass-card rounded-2xl p-4 md:p-5 hover:bg-white/[0.04] transition">
+        <span class="text-[10px] uppercase font-semibold text-[#2997ff] tracking-wider block mb-1">Alcance Nacional</span>
+        <p class="text-sm font-medium text-white">35 Delegaciones</p>
+        <p class="text-[11px] text-white/40 mt-0.5">Talento Infantil Federado</p>
       </div>
     </div>
 
   </main>
 
   <!-- ================= PIE DE PÁGINA ================= -->
-  <footer class="w-full py-6 text-center text-[11px] text-[#86868b] tracking-wider uppercase border-t border-[#f5f5f7]">
+  <footer class="w-full py-6 text-center text-[11px] text-white/30 tracking-wider uppercase border-t border-white/[0.06] relative z-10 bg-[#050507]/60 backdrop-blur-md">
     Fundación Nacional El Niño Simón &copy; 2026 &bull; Todos los derechos reservados
   </footer>
 
-  <!-- ================= LÓGICA DEL CONTADOR ================= -->
+  <!-- ================= SCRIPT DEL CONTADOR ================= -->
   <script>
-    // Fecha de inicio: 22 de Noviembre de 2026 a las 08:00 AM (Hora de Venezuela UTC-4)
+    // Fecha del festival: 22 de Noviembre de 2026 a las 08:00 AM (Zona horaria VET UTC-4)
     const fechaFestival = new Date("2026-11-22T08:00:00-04:00").getTime();
 
     const spanDias = document.getElementById("dias");
