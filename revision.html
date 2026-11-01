@@ -1,1 +1,454 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Centro de Mando y Acreditación — FNNS 2026</title>
 
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", sans-serif;
+      letter-spacing: -0.015em;
+      -webkit-font-smoothing: antialiased;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      height: 8px;
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.25);
+      border-radius: 9999px;
+    }
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #modalCredencialImprimible, #modalCredencialImprimible * {
+        visibility: visible;
+      }
+      #modalCredencialImprimible {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        background: white !important;
+        color: black !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-full flex flex-col justify-between text-[#1d1d1f] antialiased relative selection:bg-[#0071e3] selection:text-white">
+
+  <!-- ================= FONDO DE VIDEO RESPONSIVE (TEATRO JUARES) ================= -->
+  <div class="fixed inset-0 w-full h-full -z-20 overflow-hidden pointer-events-none bg-[#0b0d12]">
+    <video autoplay muted loop playsinline class="block sm:hidden w-full h-full object-cover">
+      <source src="TEATRO.mp4" type="video/mp4">
+    </video>
+    <video autoplay muted loop playsinline class="hidden sm:block w-full h-full object-cover">
+      <source src="TEATROHORIZONTAL.mp4" type="video/mp4">
+    </video>
+    <div class="absolute inset-0 bg-[#0b0d12]/80 backdrop-blur-[3px]"></div>
+  </div>
+
+  <!-- ================= NAVEGACIÓN SUPERIOR ================= -->
+  <header class="w-full bg-white/85 backdrop-blur-xl border-b border-white/40 sticky top-0 z-30 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <img src="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png" alt="Festival Niño Simón" class="h-9 w-auto object-contain">
+        <div class="border-l border-[#d2d2d7] pl-3 flex flex-col">
+          <span class="text-xs uppercase tracking-widest text-[#1d1d1f] font-bold">FNNS 2026</span>
+          <span class="text-[10px] text-[#86868b]">Control Operativo & Marketing</span>
+        </div>
+      </div>
+      
+      <div class="flex items-center gap-2.5">
+        <button onclick="abrirModalMarketing()" class="inline-flex items-center gap-1.5 bg-[#25d366] hover:bg-[#20ba59] active:bg-[#1caa4f] text-white px-3.5 py-2 rounded-xl text-xs font-medium transition shadow-sm">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+          <span class="hidden sm:inline">Difusión WhatsApp</span>
+        </button>
+        <button onclick="cargarDatos(true)" id="btnRecargar" class="inline-flex items-center gap-1.5 bg-[#0071e3] hover:bg-[#0077ed] text-white px-3.5 py-2 rounded-xl text-xs font-medium transition shadow-sm">
+          <svg id="iconoRefresh" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+          <span>Sincronizar</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= CONTENIDO PRINCIPAL ================= -->
+  <main class="max-w-7xl w-full mx-auto px-4 sm:px-6 py-8 flex-1 relative z-10 space-y-6">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+      <div>
+        <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md text-white border border-white/30 text-[10px] font-semibold uppercase px-3 py-1 rounded-full mb-2">
+          <span class="w-2 h-2 rounded-full bg-[#34c759] animate-pulse"></span>
+          Base de Datos Centralizada — Teatro Juares
+        </div>
+        <h1 class="text-2xl md:text-3xl font-semibold tracking-tight text-white drop-shadow">Visor General de Acreditaciones</h1>
+        <p class="text-xs md:text-sm text-slate-200 font-normal drop-shadow">Monitoreo de delegaciones, validación de QR y acciones de comunicación directa.</p>
+      </div>
+      <div id="indicadorSincronizacion" class="text-xs text-slate-300 font-normal bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10 self-start md:self-auto">
+        Conectando con Google Sheets...
+      </div>
+    </div>
+
+    <!-- TARJETAS DE MÉTRICAS (KPIs) -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+      <div class="bg-white/90 backdrop-blur-xl p-4 md:p-5 rounded-2xl border border-white/60 shadow-lg">
+        <span class="text-[10px] uppercase tracking-wider font-semibold text-[#86868b]">Total Registros</span>
+        <div id="kpiTotal" class="text-2xl md:text-3xl font-bold text-[#1d1d1f] mt-1">--</div>
+        <span class="text-[10px] text-[#0071e3] font-medium">Expedientes recibidos</span>
+      </div>
+      <div class="bg-white/90 backdrop-blur-xl p-4 md:p-5 rounded-2xl border border-white/60 shadow-lg">
+        <span class="text-[10px] uppercase tracking-wider font-semibold text-[#86868b]">Delegaciones</span>
+        <div id="kpiEstados" class="text-2xl md:text-3xl font-bold text-[#1d1d1f] mt-1">--</div>
+        <span class="text-[10px] text-[#15803d] font-medium">Estados presentes</span>
+      </div>
+      <div class="bg-white/90 backdrop-blur-xl p-4 md:p-5 rounded-2xl border border-white/60 shadow-lg">
+        <span class="text-[10px] uppercase tracking-wider font-semibold text-[#86868b]">En Espera</span>
+        <div id="kpiEspera" class="text-2xl md:text-3xl font-bold text-[#b45309] mt-1">--</div>
+        <span class="text-[10px] text-[#86868b] font-medium">Listos para control</span>
+      </div>
+      <div class="bg-white/90 backdrop-blur-xl p-4 md:p-5 rounded-2xl border border-white/60 shadow-lg">
+        <span class="text-[10px] uppercase tracking-wider font-semibold text-[#86868b]">Ingresaron al Teatro</span>
+        <div id="kpiIngresados" class="text-2xl md:text-3xl font-bold text-[#34c759] mt-1">--</div>
+        <span class="text-[10px] text-[#15803d] font-medium">Validados en sala</span>
+      </div>
+    </div>
+
+    <!-- BARRA DE BÚSQUEDA Y FILTRADO -->
+    <div class="bg-white/90 backdrop-blur-xl p-4 rounded-2xl border border-white/60 shadow-lg flex flex-col md:flex-row gap-3 items-center justify-between">
+      <div class="relative w-full md:w-80">
+        <svg class="w-4 h-4 absolute left-3.5 top-3.5 text-[#86868b]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        <input type="text" id="inputBusqueda" onkeyup="filtrarTabla()" placeholder="Buscar por niño, representante, CI o pase..." class="w-full bg-[#f5f5f7] border-0 rounded-xl pl-9 pr-4 py-2.5 text-xs text-[#1d1d1f] focus:ring-2 focus:ring-[#0071e3] transition">
+      </div>
+      <div class="flex items-center gap-2 w-full md:w-auto">
+        <select id="selectFiltroEstado" onchange="filtrarTabla()" class="bg-[#f5f5f7] border-0 rounded-xl px-3 py-2.5 text-xs text-[#1d1d1f] focus:ring-2 focus:ring-[#0071e3] transition cursor-pointer w-full md:w-48">
+          <option value="">Todas las delegaciones</option>
+        </select>
+        <button onclick="copiarTelefonosFiltrados()" class="inline-flex items-center gap-1.5 bg-[#f5f5f7] hover:bg-[#e8e8ed] text-[#1d1d1f] border border-[#d2d2d7]/50 px-3.5 py-2.5 rounded-xl text-xs font-medium transition shrink-0">
+          <svg class="w-4 h-4 text-[#0071e3]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+          <span class="hidden sm:inline">Copiar Teléfonos</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- TABLA DE DATOS -->
+    <div class="bg-white/95 backdrop-blur-xl rounded-3xl border border-white/70 shadow-2xl overflow-hidden">
+      <div class="overflow-x-auto custom-scrollbar">
+        <table class="w-full text-left text-xs whitespace-nowrap">
+          <thead class="bg-[#f5f5f7]/90 border-b border-[#d2d2d7]/50 text-[#86868b] uppercase text-[10px] tracking-wider">
+            <tr>
+              <th class="py-3.5 px-4 font-semibold text-center">Pase QR</th>
+              <th class="py-3.5 px-4 font-semibold">Participante</th>
+              <th class="py-3.5 px-4 font-semibold">Delegación</th>
+              <th class="py-3.5 px-4 font-semibold">Representante</th>
+              <th class="py-3.5 px-4 font-semibold">Cédula</th>
+              <th class="py-3.5 px-4 font-semibold">Repertorio (Pistas)</th>
+              <th class="py-3.5 px-4 font-semibold text-center">Estatus Puerta</th>
+              <th class="py-3.5 px-4 font-semibold text-center">Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="cuerpoTabla" class="divide-y divide-[#d2d2d7]/30 text-[#1d1d1f]">
+            <tr>
+              <td colspan="8" class="text-center py-12 text-[#86868b]">
+                Cargando registros oficiales...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- ================= MODAL: CREDENCIAL Y QR INDIVIDUAL ================= -->
+  <div id="modalCredencial" class="fixed inset-0 z-50 bg-[#0f1115]/70 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div id="modalCredencialImprimible" class="bg-white max-w-sm w-full rounded-3xl p-6 shadow-2xl border border-[#d2d2d7]/50 text-center space-y-4">
+      <div class="flex items-center justify-between border-b border-[#d2d2d7]/40 pb-3">
+        <div class="text-left">
+          <span class="text-[10px] uppercase font-bold text-[#0071e3] tracking-widest block">Credencial Oficial</span>
+          <span id="modPaseId" class="text-sm font-bold font-mono text-[#1d1d1f]"></span>
+        </div>
+        <span class="bg-[#34c759]/15 text-[#15803d] text-[10px] font-semibold px-2 py-0.5 rounded-full">Acreditado</span>
+      </div>
+
+      <div class="bg-[#f5f5f7] p-3 rounded-2xl flex flex-col items-center justify-center border border-[#d2d2d7]/40">
+        <img id="modQrImg" src="" alt="Código QR" class="w-44 h-44 object-contain">
+        <span class="text-[10px] text-[#86868b] mt-1.5">Teatro Juares — Acceso en Puerta</span>
+      </div>
+
+      <div class="text-left text-xs space-y-1.5 bg-[#f5f5f7] p-3.5 rounded-2xl border border-[#d2d2d7]/40">
+        <p><strong class="text-[#86868b]">Niño(a):</strong> <span id="modNombre" class="font-semibold text-[#1d1d1f]"></span></p>
+        <p><strong class="text-[#86868b]">Delegación:</strong> <span id="modEstado" class="font-semibold text-[#1d1d1f]"></span></p>
+        <p><strong class="text-[#86868b]">Representante:</strong> <span id="modRepresentante" class="font-semibold text-[#1d1d1f]"></span></p>
+        <p><strong class="text-[#86868b]">Cédula:</strong> <span id="modCedula" class="font-mono text-[#1d1d1f]"></span></p>
+        <p><strong class="text-[#86868b]">Pista 1:</strong> <span id="modPista1" class="font-medium text-[#1d1d1f]"></span></p>
+      </div>
+
+      <div class="flex gap-2 pt-2 no-print">
+        <button onclick="window.print()" class="flex-1 bg-[#1d1d1f] hover:bg-[#2d2d2f] text-white py-2.5 rounded-xl text-xs font-medium transition">
+          Imprimir Pase
+        </button>
+        <button onclick="cerrarModalCredencial()" class="flex-1 bg-[#f5f5f7] hover:bg-[#e8e8ed] text-[#1d1d1f] py-2.5 rounded-xl text-xs font-medium transition">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: MARKETING Y DIFUSIÓN (WHATSAPP) ================= -->
+  <div id="modalMarketing" class="fixed inset-0 z-50 bg-[#0f1115]/70 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="bg-white max-w-xl w-full rounded-3xl p-6 md:p-7 shadow-2xl border border-[#d2d2d7]/50 space-y-5">
+      <div class="flex items-center justify-between border-b border-[#d2d2d7]/40 pb-3">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-[#25d366]/20 text-[#15803d] flex items-center justify-center">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+          </div>
+          <h3 class="text-sm font-bold text-[#1d1d1f]">Herramientas de Difusión & Recordatorios</h3>
+        </div>
+        <button onclick="cerrarModalMarketing()" class="text-[#86868b] hover:text-[#1d1d1f] text-sm">✕</button>
+      </div>
+
+      <div class="space-y-4 text-xs">
+        <div>
+          <label class="block font-medium text-[#515154] mb-1 uppercase tracking-wider text-[10px]">Plantilla de Mensaje para Representantes:</label>
+          <textarea id="textoPlantillaMarketing" rows="4" class="w-full bg-[#f5f5f7] border border-[#d2d2d7]/60 rounded-xl p-3 text-xs focus:ring-2 focus:ring-[#0071e3] focus:bg-white transition">¡Saludos fraternales de la Fundación Nacional El Niño Simón! Nos preparamos para el gran día en el histórico Teatro Juares. Le recordamos tener a mano la credencial QR del participante en digital o impresa para el ingreso sin demoras. ¡Nos vemos en el escenario!</textarea>
+        </div>
+
+        <div class="p-3.5 bg-[#edfcf2] rounded-2xl border border-[#bbf7d0] space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="font-semibold text-[#15803d]">Lista de contactos para difusión:</span>
+            <span id="conteoContactosDifusion" class="font-bold text-[#15803d]">0 números</span>
+          </div>
+          <p class="text-[11px] text-[#166534]">
+            Puedes copiar la lista de números filtrados en un solo clic para pegarla en tu lista de difusión de WhatsApp Web o tu plataforma de mensajería masiva.
+          </p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-2">
+          <button onclick="copiarNumerosParaDifusion()" class="flex-1 bg-[#25d366] hover:bg-[#20ba59] active:bg-[#1caa4f] text-white py-3 rounded-xl font-medium transition flex items-center justify-center gap-1.5 shadow-sm">
+            <span>Copiar Números Separados por Comas</span>
+          </button>
+          <button onclick="copiarMensajePlantilla()" class="flex-1 bg-[#0071e3] hover:bg-[#0077ed] text-white py-3 rounded-xl font-medium transition flex items-center justify-center gap-1.5 shadow-sm">
+            <span>Copiar Texto de Mensaje</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="py-6 text-center text-xs text-slate-300 relative z-10 border-t border-white/10">
+    Fundación Nacional El Niño Simón &copy; 2026. Panel de Gestión Institucional.
+  </footer>
+
+  <script>
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyM1m_wkKUnC7uDDZyQMNQe9Xg7VtUyv8VPW-hMecfxLfYG_T_Q__HOBGktdSYgD-oc/exec";
+
+    let datosAcreditaciones = [];
+    let datosFiltrados = [];
+
+    async function cargarDatos(forzar = false) {
+      const indicador = document.getElementById('indicadorSincronizacion');
+      const iconoRefresh = document.getElementById('iconoRefresh');
+      indicador.innerText = "Sincronizando con Google Sheets...";
+      iconoRefresh.classList.add('animate-spin');
+
+      try {
+        const respuesta = await fetch(APPS_SCRIPT_URL, { method: "GET" });
+        const resultado = await respuesta.json();
+
+        if (resultado.status === "success" && Array.isArray(resultado.data)) {
+          datosAcreditaciones = resultado.data;
+          indicador.innerText = `Sincronizado: ${new Date().toLocaleTimeString()}`;
+        } else {
+          throw new Error("Formato inválido");
+        }
+      } catch (err) {
+        console.warn("Cargando respaldo local...", err);
+        const locales = JSON.parse(localStorage.getItem('fnns_expedientes') || "[]");
+        if (locales.length > 0) {
+          datosAcreditaciones = locales.map(item => ({
+            idPase: item.idPase || "FNNS-VNZ-0000",
+            fecha: item.fecha || "",
+            estado: item.estado || "",
+            participante: item.participante || "",
+            edad: item.edad || "",
+            representante: item.representante || "",
+            cedula: item.cedula || "",
+            telefono: item.telefonoWhatsApp || item.telefonoOriginal || "",
+            pista1: item.tema1 || "",
+            pista2: item.tema2 || "",
+            pista3: item.tema3 || "",
+            estatus: item.estatus || "Acreditado",
+            acceso: "En Espera"
+          }));
+          indicador.innerText = "Mostrando datos del caché local";
+        } else {
+          datosAcreditaciones = [
+            { idPase: "FNNS-LAR-1042", fecha: "2026-11-01", estado: "Lara", participante: "Sebastián Morales", edad: "11", representante: "Carmen Morales", cedula: "V-18452109", telefono: "584121234567", pista1: "Flor de Sarrapia", pista2: "Pajarillo", pista3: "", estatus: "Acreditado", acceso: "Ingresó al Teatro" },
+            { idPase: "FNNS-TAC-2108", fecha: "2026-11-01", estado: "Táchira", participante: "Valeria Chacón", edad: "9", representante: "Greizon Chacón", cedula: "V-16982341", telefono: "584149876543", pista1: "Brisas del Torbes", pista2: "", pista3: "", estatus: "Acreditado", acceso: "En Espera" },
+            { idPase: "FNNS-CAP-3055", fecha: "2026-11-01", estado: "Distrito Capital", participante: "Diego Alejandro Ruiz", edad: "12", representante: "Mariana Ruiz", cedula: "V-14223980", telefono: "584165551234", pista1: "Alma Llanera", pista2: "", pista3: "", estatus: "Acreditado", acceso: "En Espera" }
+          ];
+          indicador.innerText = "Cargados datos de ejemplo iniciales";
+        }
+      } finally {
+        iconoRefresh.classList.remove('animate-spin');
+        poblarSelectorEstados();
+        filtrarTabla();
+      }
+    }
+
+    function poblarSelectorEstados() {
+      const select = document.getElementById('selectFiltroEstado');
+      const seleccionActual = select.value;
+      const estados = [...new Set(datosAcreditaciones.map(item => item.estado).filter(Boolean))].sort();
+      
+      select.innerHTML = '<option value="">Todas las delegaciones</option>';
+      estados.forEach(est => {
+        const opt = document.createElement('option');
+        opt.value = est;
+        opt.textContent = est;
+        select.appendChild(opt);
+      });
+      select.value = seleccionActual;
+    }
+
+    function filtrarTabla() {
+      const query = document.getElementById('inputBusqueda').value.toLowerCase().trim();
+      const estadoFiltro = document.getElementById('selectFiltroEstado').value;
+
+      datosFiltrados = datosAcreditaciones.filter(item => {
+        const coincideQuery = 
+          (item.participante || "").toLowerCase().includes(query) ||
+          (item.representante || "").toLowerCase().includes(query) ||
+          (item.cedula || "").toLowerCase().includes(query) ||
+          (item.idPase || "").toLowerCase().includes(query);
+
+        const coincideEstado = !estadoFiltro || item.estado === estadoFiltro;
+
+        return coincideQuery && coincideEstado;
+      });
+
+      actualizarKPIs();
+      renderizarTabla();
+    }
+
+    function actualizarKPIs() {
+      document.getElementById('kpiTotal').innerText = datosAcreditaciones.length;
+      const totalEstados = new Set(datosAcreditaciones.map(i => i.estado).filter(Boolean)).size;
+      document.getElementById('kpiEstados').innerText = totalEstados;
+
+      const espera = datosAcreditaciones.filter(i => (i.acceso || "En Espera") === "En Espera").length;
+      const ingresados = datosAcreditaciones.filter(i => (i.acceso || "") === "Ingresó al Teatro").length;
+
+      document.getElementById('kpiEspera').innerText = espera;
+      document.getElementById('kpiIngresados').innerText = ingresados;
+      document.getElementById('conteoContactosDifusion').innerText = `${datosFiltrados.length} números`;
+    }
+
+    function renderizarTabla() {
+      const cuerpo = document.getElementById('cuerpoTabla');
+      if (datosFiltrados.length === 0) {
+        cuerpo.innerHTML = `<tr><td colspan="8" class="text-center py-10 text-[#86868b]">No se encontraron participantes con el criterio especificado.</td></tr>`;
+        return;
+      }
+
+      cuerpo.innerHTML = datosFiltrados.map((item) => {
+        const telefonoLimpio = (item.telefono || "").replace(/\D/g, '');
+        const mensajeWa = encodeURIComponent(`Hola ${item.representante}, te escribimos de la Fundación Nacional El Niño Simón sobre el participante ${item.participante} (Pase: ${item.idPase}). Teatro Juares 2026.`);
+        const urlWa = `https://wa.me/${telefonoLimpio}?text=${mensajeWa}`;
+
+        const badgeAcceso = item.acceso === "Ingresó al Teatro"
+          ? `<span class="bg-[#34c759]/15 text-[#15803d] px-2.5 py-1 rounded-full text-[10px] font-semibold">En Sala</span>`
+          : `<span class="bg-[#f5f5f7] text-[#86868b] border border-[#d2d2d7]/50 px-2.5 py-1 rounded-full text-[10px] font-semibold">En Espera</span>`;
+
+        return `
+          <tr class="hover:bg-[#f5f5f7]/60 transition">
+            <td class="py-3 px-4 text-center font-mono font-bold text-[#0071e3]">
+              <button onclick='abrirModalCredencial(${JSON.stringify(item)})' class="hover:underline flex items-center justify-center gap-1 mx-auto" title="Ver Pase QR">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/></svg>
+                ${item.idPase}
+              </button>
+            </td>
+            <td class="py-3 px-4 font-semibold text-[#1d1d1f]">
+              <div>${item.participante}</div>
+              <span class="text-[10px] text-[#86868b] font-normal">${item.edad} años</span>
+            </td>
+            <td class="py-3 px-4 font-medium text-[#515154]">${item.estado}</td>
+            <td class="py-3 px-4 text-[#515154]">${item.representante}</td>
+            <td class="py-3 px-4 font-mono text-[11px] text-[#86868b]">${item.cedula}</td>
+            <td class="py-3 px-4 text-[#1d1d1f]">
+              <div class="font-medium text-xs">1. ${item.pista1 || "No indicada"}</div>
+              ${item.pista2 && item.pista2 !== "N/A" ? `<div class="text-[10px] text-[#86868b]">2. ${item.pista2}</div>` : ''}
+            </td>
+            <td class="py-3 px-4 text-center">${badgeAcceso}</td>
+            <td class="py-3 px-4 text-center">
+              <div class="flex items-center justify-center gap-1.5">
+                <a href="${urlWa}" target="_blank" class="p-1.5 bg-[#25d366]/10 hover:bg-[#25d366] text-[#15803d] hover:text-white rounded-lg transition" title="Enviar WhatsApp Directo">
+                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                </a>
+                <button onclick='abrirModalCredencial(${JSON.stringify(item)})' class="p-1.5 bg-[#0071e3]/10 hover:bg-[#0071e3] text-[#0071e3] hover:text-white rounded-lg transition" title="Ver Pase">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function abrirModalCredencial(item) {
+      document.getElementById('modPaseId').innerText = item.idPase;
+      document.getElementById('modNombre').innerText = item.participante;
+      document.getElementById('modEstado').innerText = item.estado;
+      document.getElementById('modRepresentante').innerText = item.representante;
+      document.getElementById('modCedula').innerText = item.cedula;
+      document.getElementById('modPista1').innerText = item.pista1 || "No asignada";
+
+      const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(item.idPase)}&format=svg`;
+      document.getElementById('modQrImg').src = qrUrl;
+
+      document.getElementById('modalCredencial').classList.remove('hidden');
+    }
+
+    function cerrarModalCredencial() {
+      document.getElementById('modalCredencial').classList.add('hidden');
+    }
+
+    function abrirModalMarketing() {
+      document.getElementById('modalMarketing').classList.remove('hidden');
+    }
+
+    function cerrarModalMarketing() {
+      document.getElementById('modalMarketing').classList.add('hidden');
+    }
+
+    function copiarNumerosParaDifusion() {
+      const telefonos = datosFiltrados
+        .map(i => (i.telefono || "").replace(/\D/g, ''))
+        .filter(t => t.length >= 10);
+
+      const lista = telefonos.join(', ');
+      navigator.clipboard.writeText(lista);
+      alert(`¡Copiados ${telefonos.length} números al portapapeles listos para WhatsApp!`);
+    }
+
+    function copiarTelefonosFiltrados() {
+      copiarNumerosParaDifusion();
+    }
+
+    function copiarMensajePlantilla() {
+      const texto = document.getElementById('textoPlantillaMarketing').value;
+      navigator.clipboard.writeText(texto);
+      alert("¡Texto de mensaje copiado al portapapeles!");
+    }
+
+    document.addEventListener('DOMContentLoaded', () => cargarDatos());
+  </script>
+</body>
+</html>
