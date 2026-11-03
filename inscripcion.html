@@ -79,7 +79,6 @@
 <body class="min-h-full flex flex-col justify-between text-[#1d1d1f] antialiased relative selection:bg-[#0071e3] selection:text-white bg-[#0b0d12]">
 
   <!-- ================= FONDO DE VIDEO RESPONSIVE (TEATRO JUARES) ================= -->
-  <!-- Permanece detrás de la web y se revela al entrar al portal -->
   <div class="fixed inset-0 w-full h-full -z-20 overflow-hidden pointer-events-none bg-[#0b0d12]">
     <!-- Versión Vertical: Smartphones en posición vertical -->
     <video autoplay muted loop playsinline class="block sm:hidden w-full h-full object-cover">
@@ -161,7 +160,7 @@
     </div>
   </header>
 
-  <!-- ================= FORMULARIO PRINCIPAL (SOBRE EL VIDEO DEL TEATRO) ================= -->
+  <!-- ================= FORMULARIO PRINCIPAL ================= -->
   <main class="max-w-2xl w-full mx-auto px-6 py-10 flex-1 relative z-10">
     
     <div class="text-center mb-8">
@@ -174,8 +173,11 @@
 
     <form id="formularioAcreditacion" action="https://formspree.io/f/xwllkjbz" method="POST" enctype="multipart/form-data" class="space-y-6">
       
-      <!-- Campo oculto para el Código Único de Acreditación -->
+      <!-- Campos ocultos de trazabilidad y respuesta oficial -->
       <input type="hidden" name="ID_Pase_Acreditacion" id="campoIdPase" value="">
+      <input type="hidden" name="_replyto" id="hiddenReplyTo" value="">
+      <input type="hidden" name="Remitente_Oficial" value="admin@fvns.org">
+      <input type="hidden" name="Mensaje_Bienvenida_Oficial" id="hiddenMensajeBienvenida" value="¡Bienvenidos al Festival de la Voz El Niño Simón y muchas felicidades por clasificar!&#10;&#10;Nos alegra muchísimo que formen parte de esta gran fiesta de talento y música. Su voz es única y cada nota que cantan llena de orgullo y alegría a cada región y corazón del país.&#10;&#10;Ustedes son el reflejo vivo de que cuando se sueña en grande y con fuerza, no hay meta que no se pueda alcanzar.&#10;&#10;Es por eso que, desde la Fundación Nacional El Niño Simón, estaremos a su lado para que juntos sembremos amor hoy y cosechemos los sueños del mañana.&#10;&#10;¡Estamos contando los días para este encuentro tan especial en el estado Lara y sobre todo, aplaudirlos de pie!">
 
       <!-- PASO 1: DELEGACIÓN -->
       <section class="bg-white/90 backdrop-blur-xl rounded-3xl p-6 md:p-7 border border-white/70 shadow-[0_8px_30px_rgba(0,0,0,0.12)] space-y-4">
@@ -246,12 +248,22 @@
           </div>
         </div>
 
-        <div>
-          <div class="flex items-center justify-between mb-1.5">
-            <label class="block text-xs font-medium text-[#515154] uppercase tracking-wide">Teléfono de Contacto (WhatsApp) *</label>
-            <span class="text-[10px] text-[#0071e3] font-medium">Recepción de Pase Digital & Avisos</span>
+        <!-- Teléfono y Correo Electrónico del Representante -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <label class="block text-xs font-medium text-[#515154] uppercase tracking-wide">Teléfono de Contacto (WhatsApp) *</label>
+              <span class="text-[10px] text-[#0071e3] font-medium">Pase Digital</span>
+            </div>
+            <input type="tel" id="campoTelefono" name="Telefono" placeholder="Ej: 04141234567 o 04121234567" required class="w-full bg-[#f5f5f7] border border-[#d2d2d7]/50 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
           </div>
-          <input type="tel" id="campoTelefono" name="Telefono" placeholder="Ej: 04141234567 o 04121234567" required class="w-full bg-[#f5f5f7] border border-[#d2d2d7]/50 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <label class="block text-xs font-medium text-[#515154] uppercase tracking-wide">Correo del Representante *</label>
+              <span class="text-[10px] text-[#34c759] font-medium">Recepción admin@fvns.org</span>
+            </div>
+            <input type="email" id="campoEmail" name="email" placeholder="representante@correo.com" required class="w-full bg-[#f5f5f7] border border-[#d2d2d7]/50 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
+          </div>
         </div>
       </section>
 
@@ -452,10 +464,18 @@
           <span class="text-[#86868b]">Representante:</span>
           <span id="resumenRepresentante" class="font-semibold text-[#1d1d1f]"></span>
         </div>
+        <div class="flex justify-between">
+          <span class="text-[#86868b]">Correo:</span>
+          <span id="resumenCorreo" class="font-semibold text-[#1d1d1f] truncate max-w-[200px]"></span>
+        </div>
         <div>
           <span class="text-[#86868b] block mb-1">Repertorio cargado:</span>
           <div id="resumenTemas" class="font-medium text-[#1d1d1f] space-y-0.5 pl-2 border-l-2 border-[#0071e3]"></div>
         </div>
+      </div>
+
+      <div class="p-3 bg-sky-50 rounded-xl border border-sky-100 text-[11px] text-sky-800 leading-relaxed text-center">
+        ✉️ Hemos despachado la bienvenida oficial y constancia a tu correo electrónico desde <strong>admin@fvns.org</strong>.
       </div>
 
       <p class="text-[11px] text-[#86868b] leading-tight">
@@ -484,7 +504,6 @@
 
     function entrarAlPortal() {
       const portada = document.getElementById('portadaInicio');
-      // Desvanece la portada blanca suavemente revelando el video del teatro
       portada.style.opacity = '0';
       portada.style.transform = 'translateY(-16px) scale(0.99)';
       portada.style.pointerEvents = 'none';
@@ -596,7 +615,7 @@
     form.addEventListener('submit', async function(e) {
       e.preventDefault();
       btn.disabled = true;
-      btn.innerText = "Transfiriendo expediente y generando pase QR...";
+      btn.innerText = "Transfiriendo expediente y despachando bienvenida...";
       cajaError.classList.add('hidden');
 
       const estado = document.getElementById('campoEstado').value;
@@ -606,6 +625,7 @@
       const cedula = document.getElementById('campoCedula').value.trim();
       const telefonoRaw = document.getElementById('campoTelefono').value.trim();
       const telefonoLimpio = normalizarTelefono(telefonoRaw);
+      const email = document.getElementById('campoEmail').value.trim();
       
       const tema1 = document.getElementById('campoTema1').value.trim();
       const tema2 = document.getElementById('campoTema2').value.trim();
@@ -613,14 +633,31 @@
 
       const idPase = generarCodigoPase(estado);
       document.getElementById('campoIdPase').value = idPase;
+      document.getElementById('hiddenReplyTo').value = email;
 
       // Código QR generado para escanear en puerta del teatro
-      const qrDataText = encodeURIComponent(`PASE:${idPase}|DELEGACION:${estado}|NINO:${nombre}|REP:${representante}|CI:${cedula}|TEL:${telefonoLimpio}`);
+      const qrDataText = encodeURIComponent(`PASE:${idPase}|DELEGACION:${estado}|NINO:${nombre}|REP:${representante}|CI:${cedula}|TEL:${telefonoLimpio}|EMAIL:${email}`);
       const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${qrDataText}&format=svg`;
 
       const formData = new FormData(form);
 
-      // Objeto estructurado enviado a Google Sheets
+      // Objeto estructurado para Google Sheets y servidor de correo oficial admin@fvns.org
+      const mensajeBienvenidaOficial = `¡Bienvenidos al Festival de la Voz El Niño Simón y muchas felicidades por clasificar!\n\n` +
+        `Nos alegra muchísimo que formen parte de esta gran fiesta de talento y música. Su voz es única y cada nota que cantan llena de orgullo y alegría a cada región y corazón del país.\n\n` +
+        `Ustedes son el reflejo vivo de que cuando se sueña en grande y con fuerza, no hay meta que no se pueda alcanzar.\n\n` +
+        `Es por eso que, desde la Fundación Nacional El Niño Simón, estaremos a su lado para que juntos sembremos amor hoy y cosechemos los sueños del mañana.\n\n` +
+        `¡Estamos contando los días para este encuentro tan especial en el estado Lara y sobre todo, aplaudirlos de pie!\n\n` +
+        `--------------------------------------------------\n` +
+        `EXPEDIENTE OFICIAL DE ACREDITACIÓN:\n` +
+        `• Código de Pase: ${idPase}\n` +
+        `• Delegación: ${estado}\n` +
+        `• Participante: ${nombre} (${edad} años)\n` +
+        `• Representante: ${representante} (C.I. ${cedula})\n` +
+        `• Pista Principal: "${tema1}"\n` +
+        `• Sede: Teatro Juares, Barquisimeto - Estado Lara\n` +
+        `--------------------------------------------------\n` +
+        `Fundación Nacional El Niño Simón © 2026`;
+
       const payloadBaseDatos = {
         idPase: idPase,
         fecha: new Date().toLocaleString("es-VE", { timeZone: "America/Caracas" }),
@@ -630,6 +667,11 @@
         representante: representante,
         cedula: cedula,
         telefonoWhatsApp: telefonoLimpio,
+        email: email,
+        correoRepresentante: email,
+        remitenteOficial: "admin@fvns.org",
+        asuntoCorreo: `¡Bienvenidos al Festival de la Voz El Niño Simón 2026! — Pase Oficial ${idPase}`,
+        cuerpoCorreo: mensajeBienvenidaOficial,
         linkMarketingWhatsApp: `https://wa.me/${telefonoLimpio}`,
         tema1: tema1,
         tema2: tema2 || "N/A",
@@ -638,14 +680,14 @@
       };
 
       try {
-        // 1. Envío de archivos a Formspree
+        // 1. Envío de archivos y campos Formspree
         const formspreePromise = fetch(form.action, {
           method: "POST",
           body: formData,
           headers: { 'Accept': 'application/json' }
         });
 
-        // 2. Envío a Google Sheets (Apps Script Webhook)
+        // 2. Envío a Google Sheets / Apps Script (para guardado y disparo de correo desde admin@fvns.org)
         const sheetsPromise = fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
           method: "POST",
           mode: "no-cors",
@@ -668,6 +710,7 @@
           document.getElementById('resumenEstado').innerText = estado;
           document.getElementById('resumenParticipante').innerText = nombre;
           document.getElementById('resumenRepresentante').innerText = representante;
+          document.getElementById('resumenCorreo').innerText = email;
 
           const resumenTemas = document.getElementById('resumenTemas');
           let temasHtml = `<div>1. ${tema1} (Principal)</div>`;
@@ -690,6 +733,7 @@
             `👤 *Participante:* ${nombre} (${edad} años)\n` +
             `${textoWhatsAppPistas}\n` +
             `👨‍👦 *Representante:* ${representante} (CI: ${cedula})\n` +
+            `📧 *Correo:* ${email}\n` +
             `📞 *Contacto:* ${telefonoLimpio}\n\n` +
             `✅ Documentos LOPNNA, constancia médica y pistas consignadas. Confirmado para el Teatro Juares.`;
 
