@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Festival Nacional de la Voz Niño Simón 2026 — Teatro Juares</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- Google Fonts: Plus Jakarta Sans & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              blue: '#0071e3',
+              gold: '#eab308',
+              green: '#25d366',
+              dark: '#0a0c10',
+              card: 'rgba(255, 255, 255, 0.08)',
+              border: 'rgba(255, 255, 255, 0.15)'
+            }
+          },
+          fontFamily: {
+            heading: ['Outfit', 'sans-serif'],
+            body: ['"Plus Jakarta Sans"', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #0b0d12;
+      color: #f3f4f6;
+      overflow-x: hidden;
+    }
+    h1, h2, h3, h4, .font-heading {
+      font-family: 'Outfit', sans-serif;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      height: 6px;
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.4);
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 9999px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #0071e3;
+    }
+    .glass-panel {
+      background: rgba(18, 21, 30, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px border rgba(255, 255, 255, 0.12);
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(0, 113, 227, 0.5);
+      box-shadow: 0 12px 30px -10px rgba(0, 113, 227, 0.3);
+    }
+  </style>
+</head>
+<body class="min-h-full flex flex-col justify-between selection:bg-[#0071e3] selection:text-white">
+
+  <!-- ================= FONDO DE VIDEO RESPONSIVE (TEATRO JUARES) ================= -->
+  <div class="fixed inset-0 w-full h-full -z-20 overflow-hidden pointer-events-none bg-[#0b0d12]">
+    <video autoplay muted loop playsinline class="block sm:hidden w-full h-full object-cover">
+      <source src="TEATRO.mp4" type="video/mp4">
+    </video>
+    <video autoplay muted loop playsinline class="hidden sm:block w-full h-full object-cover">
+      <source src="TEATROHORIZONTAL.mp4" type="video/mp4">
+    </video>
+    <div class="absolute inset-0 bg-[#07090e]/85 backdrop-blur-[3px]"></div>
+  </div>
+
+  <!-- ================= NAVEGACIÓN SUPERIOR ================= -->
+  <header class="sticky top-0 z-40 bg-[#0b0d12]/80 backdrop-blur-xl border-b border-white/10 transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Logotipo Institucional -->
+      <a href="#hero" class="flex items-center gap-3 group">
+        <img src="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png" alt="Fundación Nacional Niño Simón" class="h-10 sm:h-12 w-auto object-contain transition-transform group-hover:scale-105" onerror="this.src='LOGO HAARU BLANCO.png'">
+        <div class="border-l border-white/20 pl-3 flex flex-col">
+          <span class="text-xs sm:text-sm font-black uppercase tracking-wider text-white font-heading">Voz Niño Simón</span>
+          <span class="text-[9px] sm:text-[10px] text-zinc-400 uppercase tracking-widest font-semibold">Teatro Juares 2026</span>
+        </div>
+      </a>
+
+      <!-- Menú de Enlaces Rápidos -->
+      <nav class="hidden md:flex items-center gap-2 bg-white/5 p-1.5 rounded-full border border-white/10 text-xs">
+        <a href="#spot" class="px-4 py-2 rounded-full font-bold text-zinc-300 hover:text-white hover:bg-white/10 transition flex items-center gap-1.5">
+          <i class="fa-solid fa-play text-red-500"></i> Spot Oficial
+        </a>
+        <a href="#reels" class="px-4 py-2 rounded-full font-bold text-zinc-300 hover:text-white hover:bg-white/10 transition flex items-center gap-1.5">
+          <i class="fa-solid fa-microphone-lines text-amber-400"></i> Participantes (33)
+        </a>
+        <a href="#calendario" class="px-4 py-2 rounded-full font-bold text-zinc-300 hover:text-white hover:bg-white/10 transition flex items-center gap-1.5">
+          <i class="fa-solid fa-calendar-days text-[#0071e3]"></i> Calendario
+        </a>
+      </nav>
+
+      <!-- Acción Rápida -->
+      <div class="flex items-center gap-3">
+        <a href="#reels" class="bg-[#0071e3] hover:bg-[#0077ed] text-white text-xs font-bold px-4 sm:px-5 py-2.5 rounded-xl shadow-lg shadow-[#0071e3]/30 transition active:scale-95 flex items-center gap-2 cursor-pointer">
+          <i class="fa-solid fa-clapperboard"></i>
+          <span class="hidden sm:inline">Ver Campaña</span>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ================= HERO & BOTONES PRINCIPALES ================= -->
+  <section id="hero" class="relative pt-12 pb-16 sm:pt-20 sm:pb-24 border-b border-white/10">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 text-center space-y-6">
+      
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-bold text-amber-300 uppercase tracking-widest shadow-sm">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        Gala Nacional en el Teatro Juares
+      </div>
+
+      <h1 class="text-3xl sm:text-5xl md:text-6xl font-black text-white font-heading tracking-tight leading-tight drop-shadow-md">
+        Festival Nacional de la Voz <br>
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-amber-300 to-red-400">
+          Niño Simón 2026
+        </span>
+      </h1>
+
+      <p class="max-w-2xl mx-auto text-sm sm:text-base text-zinc-300 leading-relaxed font-light">
+        33 voces infantiles de todo el país se encuentran en el emblemático Teatro Juares. Explora el spot promocional, conoce a cada participante con sus presentaciones orgánicas y sigue el cronograma diario de estrenos.
+      </p>
+
+      <!-- BOTONES DE ACCIÓN PRINCIPALES -->
+      <div class="pt-4 flex flex-wrap items-center justify-center gap-3 sm:gap-4 max-w-3xl mx-auto">
+        
+        <!-- Botón 1: Spot Oficial -->
+        <a href="#spot" class="flex-1 min-w-[200px] bg-gradient-to-r from-red-600 to-rose-700 hover:from-red-500 hover:to-rose-600 text-white p-4 rounded-2xl shadow-xl shadow-red-600/30 border border-red-400/30 flex items-center gap-3 transition active:scale-95 group">
+          <div class="w-12 h-12 rounded-xl bg-white/15 flex items-center justify-center text-lg text-white group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-circle-play"></i>
+          </div>
+          <div class="text-left">
+            <span class="text-[10px] uppercase font-bold text-red-200 tracking-wider block">Lanzamiento 6 Nov</span>
+            <span class="text-sm font-black font-heading text-white">Spot Promocional</span>
+          </div>
+        </a>
+
+        <!-- Botón 2: Reels Participantes -->
+        <a href="#reels" class="flex-1 min-w-[200px] bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white p-4 rounded-2xl shadow-xl shadow-amber-600/30 border border-amber-400/30 flex items-center gap-3 transition active:scale-95 group">
+          <div class="w-12 h-12 rounded-xl bg-white/15 flex items-center justify-center text-lg text-white group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-microphone-lines"></i>
+          </div>
+          <div class="text-left">
+            <span class="text-[10px] uppercase font-bold text-amber-200 tracking-wider block">33 Participantes</span>
+            <span class="text-sm font-black font-heading text-white">Reels Orgánicos</span>
+          </div>
+        </a>
+
+        <!-- Botón 3: Calendario -->
+        <a href="#calendario" class="flex-1 min-w-[200px] bg-gradient-to-r from-[#0071e3] to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white p-4 rounded-2xl shadow-xl shadow-blue-600/30 border border-blue-400/30 flex items-center gap-3 transition active:scale-95 group">
+          <div class="w-12 h-12 rounded-xl bg-white/15 flex items-center justify-center text-lg text-white group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-table-list"></i>
+          </div>
+          <div class="text-left">
+            <span class="text-[10px] uppercase font-bold text-blue-200 tracking-wider block">3 Publicaciones/Día</span>
+            <span class="text-sm font-black font-heading text-white">Ver Calendario</span>
+          </div>
+        </a>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= SECCIÓN 1: SPOT PROMOCIONAL OFICIAL ================= -->
+  <section id="spot" class="py-16 sm:py-20 border-b border-white/10 relative">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6">
+      
+      <div class="flex items-center justify-between border-b border-white/10 pb-4 mb-8">
+        <div>
+          <span class="text-xs uppercase font-bold text-red-400 tracking-widest flex items-center gap-2">
+            <i class="fa-solid fa-film"></i> Producción Oficial Máster
+          </span>
+          <h2 class="text-2xl sm:text-3xl font-black text-white font-heading mt-1">Spot Promocional del Festival</h2>
+        </div>
+        <span class="bg-red-500/20 text-red-300 border border-red-500/30 text-[11px] font-bold px-3 py-1 rounded-full hidden sm:inline">
+          Estreno: Viernes 6 de Noviembre • 09:00 AM
+        </span>
+      </div>
+
+      <div class="relative overflow-hidden rounded-3xl glass-panel p-4 sm:p-8 shadow-2xl border border-white/15">
+        <div class="relative aspect-video w-full rounded-2xl overflow-hidden bg-black/80 border border-white/10 shadow-inner group flex items-center justify-center">
+          
+          <!-- Reproductor de Video Spot Oficial -->
+          <video id="videoSpot" controls playsinline preload="metadata" class="w-full h-full object-cover">
+            <source src="SPOT_MASTER.mp4" type="video/mp4">
+            <source src="TEATROHORIZONTAL.mp4" type="video/mp4">
+            Tu navegador no soporta reproducción de video.
+          </video>
+
+          <div id="overlayPlaySpot" onclick="reproducirSpot()" class="absolute inset-0 bg-black/50 backdrop-blur-[2px] flex flex-col items-center justify-center gap-3 cursor-pointer group-hover:bg-black/40 transition">
+            <div class="w-20 h-20 rounded-full bg-red-600 hover:bg-red-500 text-white flex items-center justify-center text-3xl pl-1 shadow-2xl shadow-red-600/50 transition-transform group-hover:scale-110">
+              <i class="fa-solid fa-play"></i>
+            </div>
+            <span class="text-xs sm:text-sm font-bold text-white tracking-wider uppercase font-heading">Reproducir Spot Promocional</span>
+          </div>
+
+        </div>
+
+        <div class="mt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs text-zinc-300 pt-2 border-t border-white/10">
+          <div>
+            <h4 class="text-sm font-bold text-white font-heading">Gran Apertura Oficial de Campaña</h4>
+            <p class="text-zinc-400 mt-0.5">Organizado por la Fundación Nacional El Niño Simón en el Teatro Juares de Barquisimeto.</p>
+          </div>
+          <div class="flex items-center gap-2 shrink-0">
+            <button onclick="compartirSpot()" class="bg-white/10 hover:bg-white/20 text-white font-semibold px-4 py-2 rounded-xl transition flex items-center gap-1.5 cursor-pointer">
+              <i class="fa-solid fa-share-nodes text-[#0071e3]"></i> Compartir
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= SECCIÓN 2: REELS DE LOS PARTICIPANTES ================= -->
+  <section id="reels" class="py-16 sm:py-20 border-b border-white/10 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+      
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/10 pb-5">
+        <div>
+          <span class="text-xs uppercase font-bold text-amber-400 tracking-widest flex items-center gap-2">
+            <i class="fa-solid fa-microphone"></i> 33 Delegaciones Nacionales
+          </span>
+          <h2 class="text-2xl sm:text-3xl font-black text-white font-heading mt-1">Reels de los Participantes</h2>
+          <p class="text-xs sm:text-sm text-zinc-400 mt-1">Presentaciones orgánicas grabadas por cada uno de los niños y niñas representantes de los estados.</p>
+        </div>
+
+        <!-- Buscador de Participantes -->
+        <div class="w-full md:w-72 relative">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-xs text-zinc-400"></i>
+          <input type="text" id="filtroReelsInput" onkeyup="filtrarReels()" placeholder="Buscar por estado o participante..." class="w-full bg-black/60 border border-white/20 rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder-zinc-500 focus:ring-1 focus:ring-amber-400 transition">
+        </div>
+      </div>
+
+      <!-- Cuadrícula de los 33 Reels -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 sm:gap-4" id="gridReels">
+        <!-- Generado automáticamente por JavaScript -->
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= SECCIÓN 3: TABLA ORGANIZADA DEL CALENDARIO ================= -->
+  <section id="calendario" class="py-16 sm:py-20 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+      
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/10 pb-5">
+        <div>
+          <span class="text-xs uppercase font-bold text-[#0071e3] tracking-widest flex items-center gap-2">
+            <i class="fa-solid fa-calendar-check"></i> Cronograma Oficial de Redes
+          </span>
+          <h2 class="text-2xl sm:text-3xl font-black text-white font-heading mt-1">Calendario de Publicaciones</h2>
+          <p class="text-xs sm:text-sm text-zinc-400 mt-1">3 publicaciones diarias a partir del 6 de noviembre hasta completar los 33 reels (16 de noviembre).</p>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button onclick="filtrarDiaCalendario('todos')" class="btn-dia active px-3 py-1.5 rounded-xl text-xs font-bold bg-[#0071e3] text-white transition cursor-pointer">
+            Todos los Días
+          </button>
+          <button onclick="filtrarDiaCalendario('hoy')" class="btn-dia px-3 py-1.5 rounded-xl text-xs font-semibold bg-white/10 text-zinc-300 hover:text-white transition cursor-pointer">
+            Hoy
+          </button>
+        </div>
+      </div>
+
+      <!-- Tarjeta Tabla Calendario -->
+      <div class="glass-panel rounded-3xl overflow-hidden border border-white/15 shadow-2xl">
+        <div class="overflow-x-auto custom-scrollbar">
+          <table class="w-full text-left text-xs whitespace-nowrap">
+            <thead class="bg-black/60 border-b border-white/10 text-zinc-400 uppercase text-[10px] tracking-wider">
+              <tr>
+                <th class="py-4 px-4 font-bold text-center">Día / Fecha</th>
+                <th class="py-4 px-4 font-bold">Hora</th>
+                <th class="py-4 px-4 font-bold">Tipo de Publicación</th>
+                <th class="py-4 px-4 font-bold">Participante / Delegación</th>
+                <th class="py-4 px-4 font-bold text-center">Formato</th>
+                <th class="py-4 px-4 font-bold text-center">Estatus</th>
+              </tr>
+            </thead>
+            <tbody id="cuerpoTablaCalendario" class="divide-y divide-white/5 text-zinc-200">
+              <!-- Inyectado por JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= MODAL VISOR DE REEL VERTICAL (9:16) ================= -->
+  <div id="modalReel" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="relative max-w-sm w-full bg-[#121420] border border-white/20 rounded-3xl overflow-hidden shadow-2xl flex flex-col">
+      
+      <div class="p-4 border-b border-white/10 flex items-center justify-between bg-black/40">
+        <div>
+          <span id="modalReelBadge" class="text-[10px] uppercase font-bold text-amber-400 bg-amber-500/20 px-2 py-0.5 rounded-full"></span>
+          <h4 id="modalReelTitulo" class="text-sm font-bold text-white font-heading mt-1"></h4>
+        </div>
+        <button onclick="cerrarModalReel()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition cursor-pointer">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+      </div>
+
+      <div class="relative aspect-[9/16] w-full bg-black flex items-center justify-center overflow-hidden">
+        <video id="videoModalPlayer" controls playsinline class="w-full h-full object-cover">
+          <source src="TEATRO.mp4" type="video/mp4">
+        </video>
+      </div>
+
+      <div class="p-4 text-xs text-zinc-300 bg-black/40 border-t border-white/10 flex items-center justify-between">
+        <span class="text-zinc-400">Presentación Orgánica Oficial</span>
+        <button onclick="compartirReelActivo()" class="text-amber-400 hover:text-amber-300 font-bold flex items-center gap-1 cursor-pointer">
+          <i class="fa-solid fa-share"></i> Compartir
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= PIE DE PÁGINA ================= -->
+  <footer class="mt-20 border-t border-white/10 bg-[#07090e]/90 py-10 text-center text-xs text-zinc-400 space-y-3">
+    <div class="flex justify-center items-center gap-3">
+      <img src="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png" alt="FNNS" class="h-8 w-auto opacity-80" onerror="this.style.display='none'">
+      <span class="font-bold text-white uppercase tracking-wider font-heading">Fundación Nacional El Niño Simón</span>
+    </div>
+    <p class="max-w-md mx-auto text-[11px] text-zinc-400">
+      Campaña Oficial de Difusión Digital • Festival de la Voz Niño Simón 2026. Teatro Juares, Barquisimeto, Estado Lara.
+    </p>
+    <div class="text-[10px] text-zinc-400 pt-2 border-t border-white/5">
+      &copy; 2026 FNNS. Todos los derechos reservados.
+    </div>
+  </footer>
+
+  <!-- ================= SCRIPT DE DATOS Y COMPORTAMIENTO ================= -->
+  <script>
+    // LISTA DE DELEGACIONES / ESTADOS OFICIALES
+    const ESTADOS_VENEZUELA = [
+      "Amazonas", "Anzoátegui", "Apure", "Aragua", "Barinas", 
+      "Bolívar", "Carabobo", "Cojedes", "Delta Amacuro", "Distrito Capital", 
+      "Falcón", "Guárico", "La Guaira", "Lara", "Mérida", 
+      "Miranda", "Monagas", "Nueva Esparta", "Portuguesa", "Sucre", 
+      "Táchira", "Trujillo", "Yaracuy", "Zulia"
+    ];
+
+    // GENERADOR DE DATOS DE LOS 33 REELS
+    const TOTAL_REELS = 33;
+    const reelsData = [];
+
+    for (let i = 1; i <= TOTAL_REELS; i++) {
+      const estado = ESTADOS_VENEZUELA[(i - 1) % ESTADOS_VENEZUELA.length];
+      reelsData.push({
+        numero: i,
+        participante: `Participante ${i}`,
+        estado: estado,
+        video: "TEATRO.mp4"
+      });
+    }
+
+    // GENERADOR DEL CALENDARIO COMPLETO (Del 6 de noviembre al 16 de noviembre)
+    // 3 reels diarios + Lanzamiento Master el 6 de noviembre a las 9 AM
+    const calendarioData = [
+      // Día 1: 6 de Noviembre
+      { dia: "Día 1", fecha: "2026-11-06", fechaDisplay: "Viernes 06 Nov", hora: "09:00 AM", tipo: "Estreno Máster", titulo: "Spot Promocional Oficial del Festival", formato: "Video Máster 16:9", estatus: "Lanzamiento" },
+      { dia: "Día 1", fecha: "2026-11-06", fechaDisplay: "Viernes 06 Nov", hora: "11:30 AM", tipo: "Reel 01/33", titulo: `${reelsData[0].participante} (${reelsData[0].estado})`, formato: "Reel 9:16", estatus: "Programado" },
+      { dia: "Día 1", fecha: "2026-11-06", fechaDisplay: "Viernes 06 Nov", hora: "03:30 PM", tipo: "Reel 02/33", titulo: `${reelsData[1].participante} (${reelsData[1].estado})`, formato: "Reel 9:16", estatus: "Programado" },
+      { dia: "Día 1", fecha: "2026-11-06", fechaDisplay: "Viernes 06 Nov", hora: "07:00 PM", tipo: "Reel 03/33", titulo: `${reelsData[2].participante} (${reelsData[2].estado})`, formato: "Reel 9:16", estatus: "Programado" },
+
+      // Día 2: 7 de Noviembre
+      { dia: "Día 2", fecha: "2026-11-07", fechaDisplay: "Sábado 07 Nov", hora: "11:30 AM", tipo: "Reel 04/33", titulo: `${reelsData[3].participante} (${reelsData[3].estado})`, formato: "Reel 9:16", estatus: "Programado" },
+      { dia: "Día 2", fecha: "2026-11-07", fechaDisplay: "Sábado 07 Nov", hora: "03:30 PM", tipo: "Reel 05/33", titulo: `${reelsData[4].participante} (${reelsData[4].estado})`, formato: "Reel 9:16", estatus: "Programado" },
+      { dia: "Día 2", fecha: "2026-11-07", fechaDisplay: "Sábado 07 Nov", hora: "07:00 PM", tipo: "Reel 06/33", titulo: `${reelsData[5].participante} (${reelsData[5].estado})`, formato: "Reel 9:16", estatus: "Programado" },
+
+      // Día 3: 8 de Noviembre
+      { dia: "Día 3", fecha: "2026-11-08", fechaDisplay: "Domingo 08 Nov", hora: "11:30 AM", tipo: "Reel 07/33", titulo: `${reelsData[6].participante} (${reelsData[6].estado})`, formato: "Reel 9:16", estatus: "Programado" },
+      { dia: "Día 3", fecha: "2026-11-08", fechaDisplay: "Domingo 08 Nov", hora: "03:30 PM", tipo: "Reel 08/33", titulo: `${reelsData[7].participante} (${reelsData[7].estado})`, formato: "Reel 9:16", estatus: "Programado" },
+      { dia: "Día 3", fecha: "2026-11-08", fechaDisplay: "Domingo 08 Nov", hora: "07:00 PM", tipo: "Reel 09/33", titulo: `${reelsData[8].participante} (${reelsData[8].estado})`, formato: "Reel 9:16", estatus: "Programado" },
+
+      // Día 4: 9 de Noviembre
+      { dia: "Día 4", fecha: "2026-11-09", fechaDisplay: "Lunes 09 Nov", hora: "11:30 AM", tipo: "Reel 10/33", titulo: `${reelsData[9].participante} (${reelsData[9].estado})`, formato: "Reel 9:16", estatus: "Programado" },
+      { dia: "Día 4", fecha: "2026-11-09", fechaDisplay: "Lunes 09 Nov", hora: "03:30 PM", tipo: "Reel 11/33", titulo: `${reelsData[10].participante} (${reelsData[10].estado})`, formato: "Reel 9:16", estatus: "Programado" },
+      { dia: "Día 4", fecha: "2026-11-09", fechaDisplay: "Lunes 09 Nov", hora: "07:00 PM", tipo: "Reel 12/33", titulo: `${reelsData[11].participante} (${reelsData[11].estado})`, formato: "Reel 9:16", estatus: "Programado" },
+
+      // Día 5: 10 de Noviembre
+      { dia: "Día 5", fecha: "2026-11-10", fechaDisplay: "Martes 10 Nov", hora: "11:30 AM", tipo: "Reel 13/33", titulo: `${reelsData[12].participante} (${reelsData[12].estado})`, formato: "Reel 9:16", estatus: "Programado" },
+      { dia: "Día 5", fecha: "2026-11-10", fechaDisplay: "Martes 10 Nov", hora: "03:30 PM", tipo: "Reel 14/33", titulo: `${reelsData[13].participante} (${reelsData[13].estado})`, formato: "Reel 9:16", estatus: "Programado" },
+      { dia: "Día 5", fecha: "2026-11-10", fechaDisplay: "Martes 10 Nov", hora: "07:00 PM", tipo: "Reel 15/33", titulo: `${reelsData[14].participante} (${reelsData[14].estado})`, formato: "Reel 9:16", estatus: "Programado" },
+
+      // Día 6: 11 de Noviembre
+      { dia: "Día 6", fecha: "2026-11-11", fechaDisplay: "Miércoles 11 Nov", hora: "11:30 AM", tipo: "Reel 16/33", titulo: `${reelsData[15].participante} (${reelsData[15].estado})`, formato: "Reel 9:16", estatus: "Programado" },
+      { dia: "Día 6", fecha: "2026-11-11", fechaDisplay: "Miércoles 11 Nov", hora: "03:30 PM", tipo: "Reel 17/33", titulo: `${reelsData[16].participante} (${reelsData[16].estado})`, formato: "Reel 9:16", estatus: "Programado" },
+      { dia: "Día 6", fecha: "2026-11-11", fechaDisplay: "Miércoles 11 Nov", hora: "07:00 PM", tipo: "Reel 18/33", titulo: `${reelsData[17].participante} (${reelsData[17].estado})`, formato: "Reel 9:16", estatus: "Programado" },
+
+      // Día 7: 12 de Noviembre
+      { dia: "Día 7", fecha: "2026-11-12", fechaDisplay: "Jueves 12 Nov", hora: "11:30 AM", tipo: "Reel 19/33", titulo: `${reelsData[18].participante} (${reelsData[18].estado})`, formato: "Reel 9:16", estatus: "Programado" },
+      { dia: "Día 7", fecha: "2026-11-12", fechaDisplay: "Jueves 12 Nov", hora: "03:30 PM", tipo: "Reel 20/33", titulo: `${reelsData[19].participante} (${reelsData[19].estado})`, formato: "Reel 9:16", estatus: "Programado" },
+      { dia: "Día 7", fecha: "2026-11-12", fechaDisplay: "Jueves 12 Nov", hora: "07:00 PM", tipo: "Reel 21/33", titulo: `${reelsData[20].participante} (${reelsData[20].estado})`, formato: "Reel 9:16", estatus: "Programado" },
+
+      // Día 8: 13 de Noviembre
+      { dia: "Día 8", fecha: "2026-11-13", fechaDisplay: "Viernes 13 Nov", hora: "11:30 AM", tipo: "Reel 22/33", titulo: `${reelsData[21].participante} (${reelsData[21].estado})`, formato: "Reel 9:16", estatus: "Programado" },
+      { dia: "Día 8", fecha: "2026-11-13", fechaDisplay: "Viernes 13 Nov", hora: "03:30 PM", tipo: "Reel 23/33", titulo: `${reelsData[22].participante} (${reelsData[22].estado})`, formato: "Reel 9:16", estatus: "Programado" },
+      { dia: "Día 8", fecha: "2026-11-13", fechaDisplay: "Viernes 13 Nov", hora: "07:00 PM", tipo: "Reel 24/33", titulo: `${reelsData[23].participante} (${reelsData[23].estado})`, formato: "Reel 9:16", estatus: "Programado" },
+
+      // Día 9: 14 de Noviembre
+      { dia: "Día 9", fecha: "2026-11-14", fechaDisplay: "Sábado 14 Nov", hora: "11:30 AM", tipo: "Reel 25/33", titulo: `${reelsData[24].participante} (${reelsData[24].estado})`, formato: "Reel 9:16", estatus: "Programado" },
+      { dia: "Día 9", fecha: "2026-11-14", fechaDisplay: "Sábado 14 Nov", hora: "03:30 PM", tipo: "Reel 26/33", titulo: `${reelsData[25].participante} (${reelsData[25].estado})`, formato: "Reel 9:16", estatus: "Programado" },
+      { dia: "Día 9", fecha: "2026-11-14", fechaDisplay: "Sábado 14 Nov", hora: "07:00 PM", tipo: "Reel 27/33", titulo: `${reelsData[26].participante} (${reelsData[26].estado})`, formato: "Reel 9:16", estatus: "Programado" },
+
+      // Día 10: 15 de Noviembre
+      { dia: "Día 10", fecha: "2026-11-15", fechaDisplay: "Domingo 15 Nov", hora: "11:30 AM", tipo: "Reel 28/33", titulo: `${reelsData[27].participante} (${reelsData[27].estado})`, formato: "Reel 9:16", estatus: "Programado" },
+      { dia: "Día 10", fecha: "2026-11-15", fechaDisplay: "Domingo 15 Nov", hora: "03:30 PM", tipo: "Reel 29/33", titulo: `${reelsData[28].participante} (${reelsData[28].estado})`, formato: "Reel 9:16", estatus: "Programado" },
+      { dia: "Día 10", fecha: "2026-11-15", fechaDisplay: "Domingo 15 Nov", hora: "07:00 PM", tipo: "Reel 30/33", titulo: `${reelsData[29].participante} (${reelsData[29].estado})`, formato: "Reel 9:16", estatus: "Programado" },
+
+      // Día 11: 16 de Noviembre (Final de Campaña)
+      { dia: "Día 11", fecha: "2026-11-16", fechaDisplay: "Lunes 16 Nov", hora: "11:30 AM", tipo: "Reel 31/33", titulo: `${reelsData[30].participante} (${reelsData[30].estado})`, formato: "Reel 9:16", estatus: "Programado" },
+      { dia: "Día 11", fecha: "2026-11-16", fechaDisplay: "Lunes 16 Nov", hora: "03:30 PM", tipo: "Reel 32/33", titulo: `${reelsData[31].participante} (${reelsData[31].estado})`, formato: "Reel 9:16", estatus: "Programado" },
+      { dia: "Día 11", fecha: "2026-11-16", fechaDisplay: "Lunes 16 Nov", hora: "07:00 PM", tipo: "Reel 33/33", titulo: `${reelsData[32].participante} (${reelsData[32].estado})`, formato: "Reel 9:16", estatus: "Cierre de Campaña" }
+    ];
+
+    let reelActivo = null;
+
+    // ================= RENDERIZADO DE REELS =================
+    function renderReels(data) {
+      const grid = document.getElementById('gridReels');
+      if (!grid) return;
+
+      grid.innerHTML = data.map(r => `
+        <div class="glass-card rounded-2xl p-3 flex flex-col justify-between space-y-3 relative group overflow-hidden">
+          <div class="relative aspect-[9/14] w-full rounded-xl overflow-hidden bg-black/60 flex items-center justify-center border border-white/10">
+            <video muted loop playsinline class="w-full h-full object-cover opacity-75 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500">
+              <source src="${r.video}" type="video/mp4">
+            </video>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40"></div>
+            
+            <span class="absolute top-2 left-2 text-[10px] font-black uppercase tracking-wider bg-amber-500/80 text-black px-2 py-0.5 rounded-md font-heading">
+              #${r.numero}
+            </span>
+
+            <button onclick="abrirModalReel(${r.numero})" class="absolute inset-0 flex items-center justify-center cursor-pointer">
+              <div class="w-10 h-10 rounded-full bg-white/20 group-hover:bg-[#0071e3] text-white flex items-center justify-center text-sm pl-0.5 transition-all shadow-lg">
+                <i class="fa-solid fa-play"></i>
+              </div>
+            </button>
+          </div>
+
+          <div>
+            <span class="text-[10px] font-bold text-amber-400 uppercase tracking-widest block">${r.estado}</span>
+            <h4 class="text-xs font-bold text-white font-heading truncate">${r.participante}</h4>
+            <p class="text-[9px] text-zinc-400 mt-0.5">Presentación Orgánica</p>
+          </div>
+
+          <button onclick="abrirModalReel(${r.numero})" class="w-full bg-white/10 hover:bg-[#0071e3] text-white text-[11px] font-semibold py-1.5 rounded-xl transition flex items-center justify-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-eye text-[10px]"></i> Ver Reel
+          </button>
+        </div>
+      `).join('');
+    }
+
+    function filtrarReels() {
+      const q = document.getElementById('filtroReelsInput').value.toLowerCase().trim();
+      const filtrados = reelsData.filter(r => 
+        r.participante.toLowerCase().includes(q) || 
+        r.estado.toLowerCase().includes(q) || 
+        r.numero.toString().includes(q)
+      );
+      renderReels(filtrados);
+    }
+
+    // ================= RENDERIZADO DE TABLA CALENDARIO =================
+    function renderCalendario(lista) {
+      const tbody = document.getElementById('cuerpoTablaCalendario');
+      if (!tbody) return;
+
+      tbody.innerHTML = lista.map((item, idx) => {
+        const esMaster = item.tipo.includes('Máster');
+        const badgeColor = esMaster 
+          ? 'bg-red-500/20 text-red-300 border-red-500/30' 
+          : 'bg-blue-500/20 text-blue-300 border-blue-500/30';
+
+        const estatusBadge = item.estatus === 'Lanzamiento'
+          ? '<span class="bg-red-500/20 text-red-400 border border-red-500/30 px-2 py-0.5 rounded-full text-[10px] font-bold">Lanzamiento</span>'
+          : item.estatus === 'Cierre de Campaña'
+            ? '<span class="bg-amber-500/20 text-amber-300 border border-amber-500/30 px-2 py-0.5 rounded-full text-[10px] font-bold">Cierre Campaña</span>'
+            : '<span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-full text-[10px] font-semibold">Programado</span>';
+
+        return `
+          <tr class="hover:bg-white/5 transition">
+            <td class="py-3.5 px-4 text-center font-bold text-white font-heading">
+              <div>${item.dia}</div>
+              <span class="text-[10px] font-mono text-zinc-400 font-normal">${item.fechaDisplay}</span>
+            </td>
+            <td class="py-3.5 px-4 font-mono font-bold text-amber-400">${item.hora}</td>
+            <td class="py-3.5 px-4">
+              <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded border ${badgeColor}">
+                ${item.tipo}
+              </span>
+            </td>
+            <td class="py-3.5 px-4 font-semibold text-white">
+              ${item.titulo}
+            </td>
+            <td class="py-3.5 px-4 text-center text-zinc-400 font-mono text-[11px]">
+              ${item.formato}
+            </td>
+            <td class="py-3.5 px-4 text-center">
+              ${estatusBadge}
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function filtrarDiaCalendario(filtro) {
+      document.querySelectorAll('.btn-dia').forEach(b => {
+        b.classList.remove('active', 'bg-[#0071e3]', 'text-white');
+        b.classList.add('bg-white/10', 'text-zinc-300');
+      });
+      event.target.classList.add('active', 'bg-[#0071e3]', 'text-white');
+      event.target.classList.remove('bg-white/10', 'text-zinc-300');
+
+      if (filtro === 'todos') {
+        renderCalendario(calendarioData);
+      } else if (filtro === 'hoy') {
+        const hoyIso = new Date().toISOString().split('T')[0];
+        const hoyFiltrado = calendarioData.filter(c => c.fecha === hoyIso);
+        if (hoyFiltrado.length > 0) {
+          renderCalendario(hoyFiltrado);
+        } else {
+          // Si la fecha actual no está en el rango, muestra el día 1 (Lanzamiento)
+          renderCalendario(calendarioData.filter(c => c.dia === 'Día 1'));
+        }
+      }
+    }
+
+    // ================= COMPORTAMIENTO DE VIDEO & MODAL =================
+    function reproducirSpot() {
+      const vid = document.getElementById('videoSpot');
+      const overlay = document.getElementById('overlayPlaySpot');
+      overlay.classList.add('opacity-0', 'pointer-events-none');
+      vid.play();
+    }
+
+    function compartirSpot() {
+      const shareData = {
+        title: 'Spot Promocional — Festival Niño Simón 2026',
+        text: '¡Disfruta el spot promocional del Festival Nacional de la Voz Niño Simón en el Teatro Juares!',
+        url: window.location.href.split('#')[0] + '#spot'
+      };
+      if (navigator.share) {
+        navigator.share(shareData).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(shareData.url);
+        alert('Enlace del Spot copiado al portapapeles.');
+      }
+    }
+
+    function abrirModalReel(numero) {
+      const r = reelsData.find(x => x.numero === numero);
+      if (!r) return;
+      reelActivo = r;
+
+      document.getElementById('modalReelBadge').innerText = `Reel #${r.numero} • ${r.estado}`;
+      document.getElementById('modalReelTitulo').innerText = `${r.participante} — Delegación ${r.estado}`;
+      
+      const modal = document.getElementById('modalReel');
+      const player = document.getElementById('videoModalPlayer');
+      modal.classList.remove('hidden');
+      player.play().catch(() => {});
+    }
+
+    function cerrarModalReel() {
+      const modal = document.getElementById('modalReel');
+      const player = document.getElementById('videoModalPlayer');
+      player.pause();
+      player.currentTime = 0;
+      modal.classList.add('hidden');
+    }
+
+    function compartirReelActivo() {
+      if (!reelActivo) return;
+      const url = window.location.href.split('#')[0] + `#reels`;
+      const texto = `¡Mira la presentación de ${reelActivo.participante} representando a ${reelActivo.estado} en el Festival de la Voz Niño Simón 2026! 🌟\n${url}`;
+      
+      if (navigator.share) {
+        navigator.share({ title: 'Festival Niño Simón 2026', text: texto, url: url }).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(texto);
+        alert('Enlace del participante copiado al portapapeles.');
+      }
+    }
+
+    // INICIALIZACIÓN
+    window.addEventListener('DOMContentLoaded', () => {
+      renderReels(reelsData);
+      renderCalendario(calendarioData);
+    });
+  </script>
+</body>
+</html>
