@@ -47,25 +47,13 @@
       color: #f3f4f6;
       overflow-x: hidden;
     }
-    h1, h2, h3, h4, .font-heading {
-      font-family: 'Outfit', sans-serif;
-    }
-    .custom-scrollbar::-webkit-scrollbar {
-      height: 6px;
-      width: 6px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-track {
-      background: rgba(0, 0, 0, 0.4);
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 9999px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-      background: #0071e3;
-    }
+    h1, h2, h3, h4, .font-heading { font-family: 'Outfit', sans-serif; }
+    .custom-scrollbar::-webkit-scrollbar { height: 6px; width: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.4); }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 9999px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #0071e3; }
     .glass-panel {
-      background: rgba(18, 21, 30, 0.8);
+      background: rgba(18, 21, 30, 0.85);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.12);
@@ -79,8 +67,8 @@
     }
     .glass-card:hover {
       transform: translateY(-4px);
-      border-color: rgba(0, 113, 227, 0.5);
-      box-shadow: 0 12px 30px -10px rgba(0, 113, 227, 0.3);
+      border-color: rgba(37, 211, 102, 0.5);
+      box-shadow: 0 12px 30px -10px rgba(37, 211, 102, 0.25);
     }
   </style>
 </head>
@@ -123,15 +111,11 @@
         </a>
       </nav>
 
-      <!-- Enlaces Externos -->
+      <!-- Botón de Descargas Maestras en Drive -->
       <div class="flex items-center gap-2">
-        <a href="https://drive.google.com/drive/folders/1V5JGYWqYJ0-fyIJgWTkAfvX3kgPnuQEU?usp=drive_link" target="_blank" class="hidden sm:flex items-center gap-1.5 bg-white/10 hover:bg-white/20 text-white text-xs font-semibold px-3 py-2 rounded-xl transition border border-white/15">
-          <i class="fa-brands fa-google-drive text-amber-400"></i>
-          <span>Drive Master</span>
-        </a>
-        <a href="https://youtu.be/xnoRGX5Nka0" target="_blank" class="bg-red-600 hover:bg-red-500 text-white text-xs font-bold px-4 py-2 rounded-xl shadow-lg shadow-red-600/30 transition active:scale-95 flex items-center gap-1.5">
-          <i class="fa-brands fa-youtube text-white"></i>
-          <span>YouTube Spot</span>
+        <a href="https://drive.google.com/drive/folders/1V5JGYWqYJ0-fyIJgWTkAfvX3kgPnuQEU?usp=drive_link" target="_blank" class="bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white text-xs font-black px-4 py-2.5 rounded-xl shadow-lg shadow-green-600/25 transition active:scale-95 flex items-center gap-2 cursor-pointer">
+          <i class="fa-brands fa-google-drive text-sm"></i>
+          <span>Descargar Recursos en Drive</span>
         </a>
       </div>
 
@@ -155,7 +139,7 @@
       </h1>
 
       <p class="max-w-2xl mx-auto text-sm sm:text-base text-zinc-300 leading-relaxed font-light">
-        33 voces infantiles de todo el país se encuentran en el emblemático Teatro Juares. Mira el spot promocional oficial en YouTube, reproduce los primeros reels orgánicos y sigue el calendario diario de publicaciones.
+        33 voces infantiles de todo el país se encuentran en el emblemático Teatro Juares. Previsualiza el contenido, descarga los archivos de video en alta resolución desde Google Drive y copia los copies listos para publicar.
       </p>
 
       <!-- BOTONES DE ACCIÓN PRINCIPALES -->
@@ -164,10 +148,10 @@
         <!-- Botón 1: Spot Oficial -->
         <a href="#spot" class="flex-1 min-w-[220px] bg-gradient-to-r from-red-600 to-rose-700 hover:from-red-500 hover:to-rose-600 text-white p-4 rounded-2xl shadow-xl shadow-red-600/30 border border-red-400/30 flex items-center gap-3 transition active:scale-95 group">
           <div class="w-12 h-12 rounded-xl bg-white/15 flex items-center justify-center text-lg text-white group-hover:scale-110 transition-transform">
-            <i class="fa-solid fa-circle-play"></i>
+            <i class="fa-solid fa-play"></i>
           </div>
           <div class="text-left">
-            <span class="text-[10px] uppercase font-bold text-red-200 tracking-wider block">Estreno en YouTube</span>
+            <span class="text-[10px] uppercase font-bold text-red-200 tracking-wider block">Video Máster</span>
             <span class="text-sm font-black font-heading text-white">Spot Promocional</span>
           </div>
         </a>
@@ -215,39 +199,40 @@
         </span>
       </div>
 
-      <div class="relative overflow-hidden rounded-3xl glass-panel p-4 sm:p-8 shadow-2xl border border-white/15">
+      <div class="relative overflow-hidden rounded-3xl glass-panel p-4 sm:p-8 shadow-2xl border border-white/15 space-y-6">
         
-        <!-- Contenedor Embebido Responsivo de YouTube (16:9) -->
+        <!-- Reproductor de Video Integrado (16:9) -->
         <div class="relative aspect-video w-full rounded-2xl overflow-hidden bg-black shadow-inner border border-white/10">
           <iframe 
             id="iframeSpotYoutube"
             class="w-full h-full object-cover"
-            src="https://www.youtube.com/embed/xnoRGX5Nka0?rel=0&modestbranding=1" 
+            src="https://www.youtube.com/embed/xnoRGX5Nka0?rel=0&modestbranding=1&controls=1" 
             title="Spot Promocional — Festival Nacional de la Voz Niño Simón 2026"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
             allowfullscreen>
           </iframe>
         </div>
 
-        <div class="mt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs text-zinc-300 pt-3 border-t border-white/10">
+        <!-- Barra de Acciones: Descarga en Drive y Copiado de Copy -->
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs text-zinc-300 pt-3 border-t border-white/10">
           <div>
             <h4 class="text-sm font-bold text-white font-heading">Gran Apertura Oficial de Campaña</h4>
-            <p class="text-zinc-400 mt-0.5">Spot máster promocional para redes sociales y medios televisivos nacionales.</p>
+            <p class="text-zinc-400 mt-0.5">Archivo de video original disponible en Drive para su difusión en medios y redes.</p>
           </div>
-          <div class="flex items-center gap-2 shrink-0">
-            <a href="https://youtu.be/xnoRGX5Nka0" target="_blank" class="bg-red-600 hover:bg-red-500 text-white font-bold px-4 py-2.5 rounded-xl transition flex items-center gap-2 shadow-lg shadow-red-600/25 cursor-pointer">
-              <i class="fa-brands fa-youtube text-sm"></i>
-              <span>Ver en YouTube</span>
+          <div class="flex flex-wrap items-center gap-2 shrink-0">
+            <!-- Botón Principal: Descargar Spot en Drive -->
+            <a href="https://drive.google.com/drive/folders/1xo8_c4lb8aPpWwPs_oAjEo7Drkpg7FUy?usp=drive_link" target="_blank" class="bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white font-black px-5 py-2.5 rounded-xl transition flex items-center gap-2 shadow-lg shadow-green-600/30 cursor-pointer">
+              <i class="fa-brands fa-google-drive text-base"></i>
+              <span>Descargar Spot en Google Drive</span>
             </a>
-            <a href="https://drive.google.com/drive/folders/1xo8_c4lb8aPpWwPs_oAjEo7Drkpg7FUy?usp=drive_link" target="_blank" class="bg-white/10 hover:bg-white/20 text-white font-semibold px-3.5 py-2.5 rounded-xl transition flex items-center gap-1.5 cursor-pointer" title="Descargar en Drive">
-              <i class="fa-brands fa-google-drive text-amber-400"></i>
-              <span class="hidden sm:inline">Drive</span>
-            </a>
-            <button onclick="compartirSpot()" class="bg-white/10 hover:bg-white/20 text-white font-semibold px-3 py-2.5 rounded-xl transition flex items-center gap-1.5 cursor-pointer" title="Compartir enlace">
-              <i class="fa-solid fa-share-nodes text-[#0071e3]"></i>
+            <!-- Botón Copiar Copy de Lanzamiento -->
+            <button onclick="copiarCopyLanzamientoSpot()" class="bg-white/10 hover:bg-white/20 text-white font-bold px-3.5 py-2.5 rounded-xl transition flex items-center gap-1.5 border border-white/15 cursor-pointer" title="Copiar copy de lanzamiento para redes">
+              <i class="fa-solid fa-copy text-amber-400"></i>
+              <span>Copiar Copy</span>
             </button>
           </div>
         </div>
+
       </div>
 
     </div>
@@ -263,13 +248,14 @@
             <i class="fa-solid fa-microphone"></i> 33 Delegaciones Nacionales
           </span>
           <h2 class="text-2xl sm:text-3xl font-black text-white font-heading mt-1">Reels de los Participantes</h2>
-          <p class="text-xs sm:text-sm text-zinc-400 mt-1">Presentaciones orgánicas de cada participante con enlaces directos a YouTube Shorts.</p>
+          <p class="text-xs sm:text-sm text-zinc-400 mt-1">Presentaciones orgánicas de los 33 niños y niñas. Reproduce en pantalla y descarga el video original en Google Drive.</p>
         </div>
 
         <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-          <a href="https://drive.google.com/drive/folders/1V5JGYWqYJ0-fyIJgWTkAfvX3kgPnuQEU?usp=drive_link" target="_blank" class="bg-amber-500 hover:bg-amber-400 text-black font-extrabold px-4 py-2 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 transition cursor-pointer">
-            <i class="fa-brands fa-google-drive text-sm"></i>
-            <span>Carpeta Drive (33 Reels)</span>
+          <!-- Botón de Descarga Carpeta Completa Drive -->
+          <a href="https://drive.google.com/drive/folders/1V5JGYWqYJ0-fyIJgWTkAfvX3kgPnuQEU?usp=drive_link" target="_blank" class="bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white font-black px-4 py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-green-600/25 transition cursor-pointer">
+            <i class="fa-brands fa-google-drive text-base"></i>
+            <span>Descargar Carpeta de 33 Reels</span>
           </a>
 
           <!-- Buscador -->
@@ -322,7 +308,7 @@
                 <th class="py-4 px-4 font-bold">Tipo de Publicación</th>
                 <th class="py-4 px-4 font-bold">Participante / Delegación</th>
                 <th class="py-4 px-4 font-bold text-center">Formato</th>
-                <th class="py-4 px-4 font-bold text-center">Enlace de Reproducción</th>
+                <th class="py-4 px-4 font-bold text-center">Descarga Oficial</th>
               </tr>
             </thead>
             <tbody id="cuerpoTablaCalendario" class="divide-y divide-white/5 text-zinc-200">
@@ -335,7 +321,7 @@
     </div>
   </section>
 
-  <!-- ================= MODAL VISOR DE REEL (YOUTUBE SHORTS 9:16) ================= -->
+  <!-- ================= MODAL VISOR DE REEL VERTICAL (9:16) ================= -->
   <div id="modalReel" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4">
     <div class="relative max-w-sm w-full bg-[#121420] border border-white/20 rounded-3xl overflow-hidden shadow-2xl flex flex-col">
       
@@ -349,8 +335,8 @@
         </button>
       </div>
 
+      <!-- Pantalla de Reproducción 9:16 -->
       <div class="relative aspect-[9/16] w-full bg-black flex items-center justify-center overflow-hidden">
-        <!-- Iframe Embebido para YouTube Shorts -->
         <iframe 
           id="iframeModalReel" 
           class="w-full h-full border-0" 
@@ -361,13 +347,20 @@
         </iframe>
       </div>
 
-      <div class="p-4 text-xs text-zinc-300 bg-black/40 border-t border-white/10 flex items-center justify-between">
-        <a id="btnModalYoutubeLink" href="" target="_blank" class="text-red-400 hover:text-red-300 font-bold flex items-center gap-1.5 cursor-pointer">
-          <i class="fa-brands fa-youtube text-sm"></i> Ver en YouTube Shorts
-        </a>
-        <button onclick="compartirReelActivo()" class="text-zinc-400 hover:text-white font-semibold flex items-center gap-1 cursor-pointer">
-          <i class="fa-solid fa-share-nodes"></i> Compartir
-        </button>
+      <!-- Barra de Acciones: Descarga en Drive y Copiado de Copy con Datos -->
+      <div class="p-4 text-xs text-zinc-300 bg-black/50 border-t border-white/10 flex flex-col gap-2.5">
+        <div class="flex items-center gap-2">
+          <!-- Botón de Descarga en Drive -->
+          <a id="btnModalDriveLink" href="https://drive.google.com/drive/folders/1V5JGYWqYJ0-fyIJgWTkAfvX3kgPnuQEU?usp=drive_link" target="_blank" class="flex-1 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white font-black py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 shadow-md shadow-green-600/30 transition cursor-pointer">
+            <i class="fa-brands fa-google-drive text-sm"></i>
+            <span>Descargar en Drive</span>
+          </a>
+          <!-- Botón Copiar Copy con datos del participante -->
+          <button onclick="copiarCopyParticipanteActivo()" class="bg-white/10 hover:bg-white/20 text-white font-bold py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 border border-white/15 transition cursor-pointer" title="Copiar texto de publicación ya completado">
+            <i class="fa-solid fa-copy text-amber-400"></i>
+            <span>Copiar Copy</span>
+          </button>
+        </div>
       </div>
 
     </div>
@@ -389,18 +382,16 @@
 
   <!-- ================= SCRIPT DE INTEGRACIÓN ================= -->
   <script>
-    const YOUTUBE_SPOT_URL = "https://youtu.be/xnoRGX5Nka0";
     const YOUTUBE_SPOT_ID = "xnoRGX5Nka0";
-
     const DRIVE_FOLDER_REELS = "https://drive.google.com/drive/folders/1V5JGYWqYJ0-fyIJgWTkAfvX3kgPnuQEU?usp=drive_link";
     const DRIVE_FOLDER_SPOT = "https://drive.google.com/drive/folders/1xo8_c4lb8aPpWwPs_oAjEo7Drkpg7FUy?usp=drive_link";
 
-    // ENLACES OFICIALES DE YOUTUBE PARA LOS PRIMEROS 4 REELS
+    // Enlaces de YouTube Shorts para los primeros 4 videos cargados
     const YOUTUBE_SHORTS = {
-      1: { id: "56yfDinYrWM", url: "https://youtube.com/shorts/56yfDinYrWM" },
-      2: { id: "Qp0w4LPM3Z8", url: "https://youtube.com/shorts/Qp0w4LPM3Z8" },
-      3: { id: "eXotg8fb5jk", url: "https://youtube.com/shorts/eXotg8fb5jk" },
-      4: { id: "jrlaZvP7Oak", url: "https://youtube.com/shorts/jrlaZvP7Oak" }
+      1: { id: "56yfDinYrWM" },
+      2: { id: "Qp0w4LPM3Z8" },
+      3: { id: "eXotg8fb5jk" },
+      4: { id: "jrlaZvP7Oak" }
     };
 
     const ESTADOS_VENEZUELA = [
@@ -432,68 +423,56 @@
         participante: nombre,
         estado: estado,
         youtubeId: yt ? yt.id : null,
-        youtubeUrl: yt ? yt.url : null,
         driveLink: DRIVE_FOLDER_REELS
       });
     }
 
-    // CALENDARIO CON ENLACES A YOUTUBE Y DRIVE
+    // CALENDARIO DE PUBLICACIONES
     const calendarioData = [
-      // Día 1: 6 de Noviembre (Estreno Máster Spot + Reels 1, 2, 3)
-      { dia: "Día 1", fecha: "2026-11-06", fechaDisplay: "Viernes 06 Nov", hora: "09:00 AM", tipo: "Estreno Máster", titulo: "Spot Promocional Oficial del Festival", formato: "Video Máster 16:9", url: YOUTUBE_SPOT_URL, esYoutube: true, estatus: "Lanzamiento" },
-      { dia: "Día 1", fecha: "2026-11-06", fechaDisplay: "Viernes 06 Nov", hora: "11:30 AM", tipo: "Reel 01/33", titulo: `${reelsData[0].participante} (${reelsData[0].estado})`, formato: "Reel 9:16", url: reelsData[0].youtubeUrl, esYoutube: true, estatus: "Programado" },
-      { dia: "Día 1", fecha: "2026-11-06", fechaDisplay: "Viernes 06 Nov", hora: "03:30 PM", tipo: "Reel 02/33", titulo: `${reelsData[1].participante} (${reelsData[1].estado})`, formato: "Reel 9:16", url: reelsData[1].youtubeUrl, esYoutube: true, estatus: "Programado" },
-      { dia: "Día 1", fecha: "2026-11-06", fechaDisplay: "Viernes 06 Nov", hora: "07:00 PM", tipo: "Reel 03/33", titulo: `${reelsData[2].participante} (${reelsData[2].estado})`, formato: "Reel 9:16", url: reelsData[2].youtubeUrl, esYoutube: true, estatus: "Programado" },
+      { dia: "Día 1", fecha: "2026-11-06", fechaDisplay: "Viernes 06 Nov", hora: "09:00 AM", tipo: "Estreno Máster", titulo: "Spot Promocional Oficial del Festival", formato: "Video Máster 16:9", urlDrive: DRIVE_FOLDER_SPOT, estatus: "Lanzamiento" },
+      { dia: "Día 1", fecha: "2026-11-06", fechaDisplay: "Viernes 06 Nov", hora: "11:30 AM", tipo: "Reel 01/33", titulo: `${reelsData[0].participante} (${reelsData[0].estado})`, formato: "Reel 9:16", urlDrive: DRIVE_FOLDER_REELS, estatus: "Programado" },
+      { dia: "Día 1", fecha: "2026-11-06", fechaDisplay: "Viernes 06 Nov", hora: "03:30 PM", tipo: "Reel 02/33", titulo: `${reelsData[1].participante} (${reelsData[1].estado})`, formato: "Reel 9:16", urlDrive: DRIVE_FOLDER_REELS, estatus: "Programado" },
+      { dia: "Día 1", fecha: "2026-11-06", fechaDisplay: "Viernes 06 Nov", hora: "07:00 PM", tipo: "Reel 03/33", titulo: `${reelsData[2].participante} (${reelsData[2].estado})`, formato: "Reel 9:16", urlDrive: DRIVE_FOLDER_REELS, estatus: "Programado" },
 
-      // Día 2: 7 de Noviembre
-      { dia: "Día 2", fecha: "2026-11-07", fechaDisplay: "Sábado 07 Nov", hora: "11:30 AM", tipo: "Reel 04/33", titulo: `${reelsData[3].participante} (${reelsData[3].estado})`, formato: "Reel 9:16", url: reelsData[3].youtubeUrl, esYoutube: true, estatus: "Programado" },
-      { dia: "Día 2", fecha: "2026-11-07", fechaDisplay: "Sábado 07 Nov", hora: "03:30 PM", tipo: "Reel 05/33", titulo: `${reelsData[4].participante} (${reelsData[4].estado})`, formato: "Reel 9:16", url: DRIVE_FOLDER_REELS, esYoutube: false, estatus: "Programado" },
-      { dia: "Día 2", fecha: "2026-11-07", fechaDisplay: "Sábado 07 Nov", hora: "07:00 PM", tipo: "Reel 06/33", titulo: `${reelsData[5].participante} (${reelsData[5].estado})`, formato: "Reel 9:16", url: DRIVE_FOLDER_REELS, esYoutube: false, estatus: "Programado" },
+      { dia: "Día 2", fecha: "2026-11-07", fechaDisplay: "Sábado 07 Nov", hora: "11:30 AM", tipo: "Reel 04/33", titulo: `${reelsData[3].participante} (${reelsData[3].estado})`, formato: "Reel 9:16", urlDrive: DRIVE_FOLDER_REELS, estatus: "Programado" },
+      { dia: "Día 2", fecha: "2026-11-07", fechaDisplay: "Sábado 07 Nov", hora: "03:30 PM", tipo: "Reel 05/33", titulo: `${reelsData[4].participante} (${reelsData[4].estado})`, formato: "Reel 9:16", urlDrive: DRIVE_FOLDER_REELS, estatus: "Programado" },
+      { dia: "Día 2", fecha: "2026-11-07", fechaDisplay: "Sábado 07 Nov", hora: "07:00 PM", tipo: "Reel 06/33", titulo: `${reelsData[5].participante} (${reelsData[5].estado})`, formato: "Reel 9:16", urlDrive: DRIVE_FOLDER_REELS, estatus: "Programado" },
 
-      // Día 3: 8 de Noviembre
-      { dia: "Día 3", fecha: "2026-11-08", fechaDisplay: "Domingo 08 Nov", hora: "11:30 AM", tipo: "Reel 07/33", titulo: `${reelsData[6].participante} (${reelsData[6].estado})`, formato: "Reel 9:16", url: DRIVE_FOLDER_REELS, esYoutube: false, estatus: "Programado" },
-      { dia: "Día 3", fecha: "2026-11-08", fechaDisplay: "Domingo 08 Nov", hora: "03:30 PM", tipo: "Reel 08/33", titulo: `${reelsData[7].participante} (${reelsData[7].estado})`, formato: "Reel 9:16", url: DRIVE_FOLDER_REELS, esYoutube: false, estatus: "Programado" },
-      { dia: "Día 3", fecha: "2026-11-08", fechaDisplay: "Domingo 08 Nov", hora: "07:00 PM", tipo: "Reel 09/33", titulo: `${reelsData[8].participante} (${reelsData[8].estado})`, formato: "Reel 9:16", url: DRIVE_FOLDER_REELS, esYoutube: false, estatus: "Programado" },
+      { dia: "Día 3", fecha: "2026-11-08", fechaDisplay: "Domingo 08 Nov", hora: "11:30 AM", tipo: "Reel 07/33", titulo: `${reelsData[6].participante} (${reelsData[6].estado})`, formato: "Reel 9:16", urlDrive: DRIVE_FOLDER_REELS, estatus: "Programado" },
+      { dia: "Día 3", fecha: "2026-11-08", fechaDisplay: "Domingo 08 Nov", hora: "03:30 PM", tipo: "Reel 08/33", titulo: `${reelsData[7].participante} (${reelsData[7].estado})`, formato: "Reel 9:16", urlDrive: DRIVE_FOLDER_REELS, estatus: "Programado" },
+      { dia: "Día 3", fecha: "2026-11-08", fechaDisplay: "Domingo 08 Nov", hora: "07:00 PM", tipo: "Reel 09/33", titulo: `${reelsData[8].participante} (${reelsData[8].estado})`, formato: "Reel 9:16", urlDrive: DRIVE_FOLDER_REELS, estatus: "Programado" },
 
-      // Día 4: 9 de Noviembre
-      { dia: "Día 4", fecha: "2026-11-09", fechaDisplay: "Lunes 09 Nov", hora: "11:30 AM", tipo: "Reel 10/33", titulo: `${reelsData[9].participante} (${reelsData[9].estado})`, formato: "Reel 9:16", url: DRIVE_FOLDER_REELS, esYoutube: false, estatus: "Programado" },
-      { dia: "Día 4", fecha: "2026-11-09", fechaDisplay: "Lunes 09 Nov", hora: "03:30 PM", tipo: "Reel 11/33", titulo: `${reelsData[10].participante} (${reelsData[10].estado})`, formato: "Reel 9:16", url: DRIVE_FOLDER_REELS, esYoutube: false, estatus: "Programado" },
-      { dia: "Día 4", fecha: "2026-11-09", fechaDisplay: "Lunes 09 Nov", hora: "07:00 PM", tipo: "Reel 12/33", titulo: `${reelsData[11].participante} (${reelsData[11].estado})`, formato: "Reel 9:16", url: DRIVE_FOLDER_REELS, esYoutube: false, estatus: "Programado" },
+      { dia: "Día 4", fecha: "2026-11-09", fechaDisplay: "Lunes 09 Nov", hora: "11:30 AM", tipo: "Reel 10/33", titulo: `${reelsData[9].participante} (${reelsData[9].estado})`, formato: "Reel 9:16", urlDrive: DRIVE_FOLDER_REELS, estatus: "Programado" },
+      { dia: "Día 4", fecha: "2026-11-09", fechaDisplay: "Lunes 09 Nov", hora: "03:30 PM", tipo: "Reel 11/33", titulo: `${reelsData[10].participante} (${reelsData[10].estado})`, formato: "Reel 9:16", urlDrive: DRIVE_FOLDER_REELS, estatus: "Programado" },
+      { dia: "Día 4", fecha: "2026-11-09", fechaDisplay: "Lunes 09 Nov", hora: "07:00 PM", tipo: "Reel 12/33", titulo: `${reelsData[11].participante} (${reelsData[11].estado})`, formato: "Reel 9:16", urlDrive: DRIVE_FOLDER_REELS, estatus: "Programado" },
 
-      // Día 5: 10 de Noviembre
-      { dia: "Día 5", fecha: "2026-11-10", fechaDisplay: "Martes 10 Nov", hora: "11:30 AM", tipo: "Reel 13/33", titulo: `${reelsData[12].participante} (${reelsData[12].estado})`, formato: "Reel 9:16", url: DRIVE_FOLDER_REELS, esYoutube: false, estatus: "Programado" },
-      { dia: "Día 5", fecha: "2026-11-10", fechaDisplay: "Martes 10 Nov", hora: "03:30 PM", tipo: "Reel 14/33", titulo: `${reelsData[13].participante} (${reelsData[13].estado})`, formato: "Reel 9:16", url: DRIVE_FOLDER_REELS, esYoutube: false, estatus: "Programado" },
-      { dia: "Día 5", fecha: "2026-11-10", fechaDisplay: "Martes 10 Nov", hora: "07:00 PM", tipo: "Reel 15/33", titulo: `${reelsData[14].participante} (${reelsData[14].estado})`, formato: "Reel 9:16", url: DRIVE_FOLDER_REELS, esYoutube: false, estatus: "Programado" },
+      { dia: "Día 5", fecha: "2026-11-10", fechaDisplay: "Martes 10 Nov", hora: "11:30 AM", tipo: "Reel 13/33", titulo: `${reelsData[12].participante} (${reelsData[12].estado})`, formato: "Reel 9:16", urlDrive: DRIVE_FOLDER_REELS, estatus: "Programado" },
+      { dia: "Día 5", fecha: "2026-11-10", fechaDisplay: "Martes 10 Nov", hora: "03:30 PM", tipo: "Reel 14/33", titulo: `${reelsData[13].participante} (${reelsData[13].estado})`, formato: "Reel 9:16", urlDrive: DRIVE_FOLDER_REELS, estatus: "Programado" },
+      { dia: "Día 5", fecha: "2026-11-10", fechaDisplay: "Martes 10 Nov", hora: "07:00 PM", tipo: "Reel 15/33", titulo: `${reelsData[14].participante} (${reelsData[14].estado})`, formato: "Reel 9:16", urlDrive: DRIVE_FOLDER_REELS, estatus: "Programado" },
 
-      // Día 6: 11 de Noviembre
-      { dia: "Día 6", fecha: "2026-11-11", fechaDisplay: "Miércoles 11 Nov", hora: "11:30 AM", tipo: "Reel 16/33", titulo: `${reelsData[15].participante} (${reelsData[15].estado})`, formato: "Reel 9:16", url: DRIVE_FOLDER_REELS, esYoutube: false, estatus: "Programado" },
-      { dia: "Día 6", fecha: "2026-11-11", fechaDisplay: "Miércoles 11 Nov", hora: "03:30 PM", tipo: "Reel 17/33", titulo: `${reelsData[16].participante} (${reelsData[16].estado})`, formato: "Reel 9:16", url: DRIVE_FOLDER_REELS, esYoutube: false, estatus: "Programado" },
-      { dia: "Día 6", fecha: "2026-11-11", fechaDisplay: "Miércoles 11 Nov", hora: "07:00 PM", tipo: "Reel 18/33", titulo: `${reelsData[17].participante} (${reelsData[17].estado})`, formato: "Reel 9:16", url: DRIVE_FOLDER_REELS, esYoutube: false, estatus: "Programado" },
+      { dia: "Día 6", fecha: "2026-11-11", fechaDisplay: "Miércoles 11 Nov", hora: "11:30 AM", tipo: "Reel 16/33", titulo: `${reelsData[15].participante} (${reelsData[15].estado})`, formato: "Reel 9:16", urlDrive: DRIVE_FOLDER_REELS, estatus: "Programado" },
+      { dia: "Día 6", fecha: "2026-11-11", fechaDisplay: "Miércoles 11 Nov", hora: "03:30 PM", tipo: "Reel 17/33", titulo: `${reelsData[16].participante} (${reelsData[16].estado})`, formato: "Reel 9:16", urlDrive: DRIVE_FOLDER_REELS, estatus: "Programado" },
+      { dia: "Día 6", fecha: "2026-11-11", fechaDisplay: "Miércoles 11 Nov", hora: "07:00 PM", tipo: "Reel 18/33", titulo: `${reelsData[17].participante} (${reelsData[17].estado})`, formato: "Reel 9:16", urlDrive: DRIVE_FOLDER_REELS, estatus: "Programado" },
 
-      // Día 7: 12 de Noviembre
-      { dia: "Día 7", fecha: "2026-11-12", fechaDisplay: "Jueves 12 Nov", hora: "11:30 AM", tipo: "Reel 19/33", titulo: `${reelsData[18].participante} (${reelsData[18].estado})`, formato: "Reel 9:16", url: DRIVE_FOLDER_REELS, esYoutube: false, estatus: "Programado" },
-      { dia: "Día 7", fecha: "2026-11-12", fechaDisplay: "Jueves 12 Nov", hora: "03:30 PM", tipo: "Reel 20/33", titulo: `${reelsData[19].participante} (${reelsData[19].estado})`, formato: "Reel 9:16", url: DRIVE_FOLDER_REELS, esYoutube: false, estatus: "Programado" },
-      { dia: "Día 7", fecha: "2026-11-12", fechaDisplay: "Jueves 12 Nov", hora: "07:00 PM", tipo: "Reel 21/33", titulo: `${reelsData[20].participante} (${reelsData[20].estado})`, formato: "Reel 9:16", url: DRIVE_FOLDER_REELS, esYoutube: false, estatus: "Programado" },
+      { dia: "Día 7", fecha: "2026-11-12", fechaDisplay: "Jueves 12 Nov", hora: "11:30 AM", tipo: "Reel 19/33", titulo: `${reelsData[18].participante} (${reelsData[18].estado})`, formato: "Reel 9:16", urlDrive: DRIVE_FOLDER_REELS, estatus: "Programado" },
+      { dia: "Día 7", fecha: "2026-11-12", fechaDisplay: "Jueves 12 Nov", hora: "03:30 PM", tipo: "Reel 20/33", titulo: `${reelsData[19].participante} (${reelsData[19].estado})`, formato: "Reel 9:16", urlDrive: DRIVE_FOLDER_REELS, estatus: "Programado" },
+      { dia: "Día 7", fecha: "2026-11-12", fechaDisplay: "Jueves 12 Nov", hora: "07:00 PM", tipo: "Reel 21/33", titulo: `${reelsData[20].participante} (${reelsData[20].estado})`, formato: "Reel 9:16", urlDrive: DRIVE_FOLDER_REELS, estatus: "Programado" },
 
-      // Día 8: 13 de Noviembre
-      { dia: "Día 8", fecha: "2026-11-13", fechaDisplay: "Viernes 13 Nov", hora: "11:30 AM", tipo: "Reel 22/33", titulo: `${reelsData[21].participante} (${reelsData[21].estado})`, formato: "Reel 9:16", url: DRIVE_FOLDER_REELS, esYoutube: false, estatus: "Programado" },
-      { dia: "Día 8", fecha: "2026-11-13", fechaDisplay: "Viernes 13 Nov", hora: "03:30 PM", tipo: "Reel 23/33", titulo: `${reelsData[22].participante} (${reelsData[22].estado})`, formato: "Reel 9:16", url: DRIVE_FOLDER_REELS, esYoutube: false, estatus: "Programado" },
-      { dia: "Día 8", fecha: "2026-11-13", fechaDisplay: "Viernes 13 Nov", hora: "07:00 PM", tipo: "Reel 24/33", titulo: `${reelsData[23].participante} (${reelsData[23].estado})`, formato: "Reel 9:16", url: DRIVE_FOLDER_REELS, esYoutube: false, estatus: "Programado" },
+      { dia: "Día 8", fecha: "2026-11-13", fechaDisplay: "Viernes 13 Nov", hora: "11:30 AM", tipo: "Reel 22/33", titulo: `${reelsData[21].participante} (${reelsData[21].estado})`, formato: "Reel 9:16", urlDrive: DRIVE_FOLDER_REELS, estatus: "Programado" },
+      { dia: "Día 8", fecha: "2026-11-13", fechaDisplay: "Viernes 13 Nov", hora: "03:30 PM", tipo: "Reel 23/33", titulo: `${reelsData[22].participante} (${reelsData[22].estado})`, formato: "Reel 9:16", urlDrive: DRIVE_FOLDER_REELS, estatus: "Programado" },
+      { dia: "Día 8", fecha: "2026-11-13", fechaDisplay: "Viernes 13 Nov", hora: "07:00 PM", tipo: "Reel 24/33", titulo: `${reelsData[23].participante} (${reelsData[23].estado})`, formato: "Reel 9:16", urlDrive: DRIVE_FOLDER_REELS, estatus: "Programado" },
 
-      // Día 9: 14 de Noviembre
-      { dia: "Día 9", fecha: "2026-11-14", fechaDisplay: "Sábado 14 Nov", hora: "11:30 AM", tipo: "Reel 25/33", titulo: `${reelsData[24].participante} (${reelsData[24].estado})`, formato: "Reel 9:16", url: DRIVE_FOLDER_REELS, esYoutube: false, estatus: "Programado" },
-      { dia: "Día 9", fecha: "2026-11-14", fechaDisplay: "Sábado 14 Nov", hora: "03:30 PM", tipo: "Reel 26/33", titulo: `${reelsData[25].participante} (${reelsData[25].estado})`, formato: "Reel 9:16", url: DRIVE_FOLDER_REELS, esYoutube: false, estatus: "Programado" },
-      { dia: "Día 9", fecha: "2026-11-14", fechaDisplay: "Sábado 14 Nov", hora: "07:00 PM", tipo: "Reel 27/33", titulo: `${reelsData[26].participante} (${reelsData[26].estado})`, formato: "Reel 9:16", url: DRIVE_FOLDER_REELS, esYoutube: false, estatus: "Programado" },
+      { dia: "Día 9", fecha: "2026-11-14", fechaDisplay: "Sábado 14 Nov", hora: "11:30 AM", tipo: "Reel 25/33", titulo: `${reelsData[24].participante} (${reelsData[24].estado})`, formato: "Reel 9:16", urlDrive: DRIVE_FOLDER_REELS, estatus: "Programado" },
+      { dia: "Día 9", fecha: "2026-11-14", fechaDisplay: "Sábado 14 Nov", hora: "03:30 PM", tipo: "Reel 26/33", titulo: `${reelsData[25].participante} (${reelsData[25].estado})`, formato: "Reel 9:16", urlDrive: DRIVE_FOLDER_REELS, estatus: "Programado" },
+      { dia: "Día 9", fecha: "2026-11-14", fechaDisplay: "Sábado 14 Nov", hora: "07:00 PM", tipo: "Reel 27/33", titulo: `${reelsData[26].participante} (${reelsData[26].estado})`, formato: "Reel 9:16", urlDrive: DRIVE_FOLDER_REELS, estatus: "Programado" },
 
-      // Día 10: 15 de Noviembre
-      { dia: "Día 10", fecha: "2026-11-15", fechaDisplay: "Domingo 15 Nov", hora: "11:30 AM", tipo: "Reel 28/33", titulo: `${reelsData[27].participante} (${reelsData[27].estado})`, formato: "Reel 9:16", url: DRIVE_FOLDER_REELS, esYoutube: false, estatus: "Programado" },
-      { dia: "Día 10", fecha: "2026-11-15", fechaDisplay: "Domingo 15 Nov", hora: "03:30 PM", tipo: "Reel 29/33", titulo: `${reelsData[28].participante} (${reelsData[28].estado})`, formato: "Reel 9:16", url: DRIVE_FOLDER_REELS, esYoutube: false, estatus: "Programado" },
-      { dia: "Día 10", fecha: "2026-11-15", fechaDisplay: "Domingo 15 Nov", hora: "07:00 PM", tipo: "Reel 30/33", titulo: `${reelsData[29].participante} (${reelsData[29].estado})`, formato: "Reel 9:16", url: DRIVE_FOLDER_REELS, esYoutube: false, estatus: "Programado" },
+      { dia: "Día 10", fecha: "2026-11-15", fechaDisplay: "Domingo 15 Nov", hora: "11:30 AM", tipo: "Reel 28/33", titulo: `${reelsData[27].participante} (${reelsData[27].estado})`, formato: "Reel 9:16", urlDrive: DRIVE_FOLDER_REELS, estatus: "Programado" },
+      { dia: "Día 10", fecha: "2026-11-15", fechaDisplay: "Domingo 15 Nov", hora: "03:30 PM", tipo: "Reel 29/33", titulo: `${reelsData[28].participante} (${reelsData[28].estado})`, formato: "Reel 9:16", urlDrive: DRIVE_FOLDER_REELS, estatus: "Programado" },
+      { dia: "Día 10", fecha: "2026-11-15", fechaDisplay: "Domingo 15 Nov", hora: "07:00 PM", tipo: "Reel 30/33", titulo: `${reelsData[29].participante} (${reelsData[29].estado})`, formato: "Reel 9:16", urlDrive: DRIVE_FOLDER_REELS, estatus: "Programado" },
 
-      // Día 11: 16 de Noviembre (Cierre de Campaña)
-      { dia: "Día 11", fecha: "2026-11-16", fechaDisplay: "Lunes 16 Nov", hora: "11:30 AM", tipo: "Reel 31/33", titulo: `${reelsData[30].participante} (${reelsData[30].estado})`, formato: "Reel 9:16", url: DRIVE_FOLDER_REELS, esYoutube: false, estatus: "Programado" },
-      { dia: "Día 11", fecha: "2026-11-16", fechaDisplay: "Lunes 16 Nov", hora: "03:30 PM", tipo: "Reel 32/33", titulo: `${reelsData[31].participante} (${reelsData[31].estado})`, formato: "Reel 9:16", url: DRIVE_FOLDER_REELS, esYoutube: false, estatus: "Programado" },
-      { dia: "Día 11", fecha: "2026-11-16", fechaDisplay: "Lunes 16 Nov", hora: "07:00 PM", tipo: "Reel 33/33", titulo: `${reelsData[32].participante} (${reelsData[32].estado})`, formato: "Reel 9:16", url: DRIVE_FOLDER_REELS, esYoutube: false, estatus: "Cierre de Campaña" }
+      { dia: "Día 11", fecha: "2026-11-16", fechaDisplay: "Lunes 16 Nov", hora: "11:30 AM", tipo: "Reel 31/33", titulo: `${reelsData[30].participante} (${reelsData[30].estado})`, formato: "Reel 9:16", urlDrive: DRIVE_FOLDER_REELS, estatus: "Programado" },
+      { dia: "Día 11", fecha: "2026-11-16", fechaDisplay: "Lunes 16 Nov", hora: "03:30 PM", tipo: "Reel 32/33", titulo: `${reelsData[31].participante} (${reelsData[31].estado})`, formato: "Reel 9:16", urlDrive: DRIVE_FOLDER_REELS, estatus: "Programado" },
+      { dia: "Día 11", fecha: "2026-11-16", fechaDisplay: "Lunes 16 Nov", hora: "07:00 PM", tipo: "Reel 33/33", titulo: `${reelsData[32].participante} (${reelsData[32].estado})`, formato: "Reel 9:16", urlDrive: DRIVE_FOLDER_REELS, estatus: "Cierre de Campaña" }
     ];
 
     let reelActivo = null;
@@ -519,14 +498,9 @@
                 #${r.numero}
               </span>
 
-              ${tieneYoutube ? `
-                <span class="absolute top-2 right-2 text-[9px] font-bold bg-red-600 text-white px-1.5 py-0.5 rounded">
-                  <i class="fa-brands fa-youtube"></i>
-                </span>
-              ` : ''}
-
+              <!-- Botón Reproducir -->
               <button onclick="abrirModalReel(${r.numero})" class="absolute inset-0 flex items-center justify-center cursor-pointer">
-                <div class="w-10 h-10 rounded-full ${tieneYoutube ? 'bg-red-600' : 'bg-white/20'} group-hover:scale-110 text-white flex items-center justify-center text-sm pl-0.5 transition-all shadow-lg">
+                <div class="w-11 h-11 rounded-full bg-black/60 border border-white/30 text-white flex items-center justify-center text-sm pl-0.5 group-hover:scale-110 group-hover:bg-[#0071e3] transition-all shadow-lg">
                   <i class="fa-solid fa-play"></i>
                 </div>
               </button>
@@ -535,22 +509,17 @@
             <div>
               <span class="text-[10px] font-bold text-amber-400 uppercase tracking-widest block">${r.estado}</span>
               <h4 class="text-xs font-bold text-white font-heading truncate">${r.participante}</h4>
-              <p class="text-[9px] text-zinc-400 mt-0.5">${tieneYoutube ? 'Reel Oficial YouTube' : 'Presentación Orgánica'}</p>
+              <p class="text-[9px] text-zinc-400 mt-0.5">Presentación Orgánica</p>
             </div>
 
+            <!-- Botones: Ver y Descargar en Drive -->
             <div class="flex items-center gap-1.5 pt-1">
-              <button onclick="abrirModalReel(${r.numero})" class="flex-1 bg-white/10 hover:bg-[#0071e3] text-white text-[11px] font-semibold py-1.5 rounded-xl transition flex items-center justify-center gap-1 cursor-pointer">
+              <button onclick="abrirModalReel(${r.numero})" class="flex-1 bg-white/10 hover:bg-[#0071e3] text-white text-[11px] font-semibold py-2 rounded-xl transition flex items-center justify-center gap-1 cursor-pointer">
                 <i class="fa-solid fa-play text-[9px]"></i> Ver
               </button>
-              ${tieneYoutube ? `
-                <a href="${r.youtubeUrl}" target="_blank" class="w-8 h-8 rounded-xl bg-red-600/20 hover:bg-red-600 text-red-400 hover:text-white flex items-center justify-center text-xs transition" title="Ver en YouTube Shorts">
-                  <i class="fa-brands fa-youtube"></i>
-                </a>
-              ` : `
-                <a href="${r.driveLink}" target="_blank" class="w-8 h-8 rounded-xl bg-white/10 hover:bg-amber-500 hover:text-black text-amber-400 flex items-center justify-center text-xs transition" title="Ver en Drive">
-                  <i class="fa-brands fa-google-drive"></i>
-                </a>
-              `}
+              <a href="${r.driveLink}" target="_blank" class="flex-1 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white text-[11px] font-bold py-2 rounded-xl transition flex items-center justify-center gap-1 shadow cursor-pointer" title="Descargar video original en Google Drive">
+                <i class="fa-brands fa-google-drive"></i> Drive
+              </a>
             </div>
           </div>
         `;
@@ -578,13 +547,6 @@
           ? 'bg-red-500/20 text-red-300 border-red-500/30' 
           : 'bg-blue-500/20 text-blue-300 border-blue-500/30';
 
-        const btnClass = item.esYoutube 
-          ? 'bg-red-600/20 hover:bg-red-600 text-red-300 hover:text-white border-red-500/30' 
-          : 'bg-white/10 hover:bg-[#0071e3] text-zinc-200 hover:text-white border-white/15';
-
-        const iconClass = item.esYoutube ? 'fa-brands fa-youtube text-red-400' : 'fa-brands fa-google-drive text-amber-400';
-        const labelText = item.esYoutube ? 'YouTube' : 'Drive';
-
         return `
           <tr class="hover:bg-white/5 transition">
             <td class="py-3.5 px-4 text-center font-bold text-white font-heading">
@@ -604,9 +566,9 @@
               ${item.formato}
             </td>
             <td class="py-3.5 px-4 text-center">
-              <a href="${item.url}" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-[11px] font-semibold transition border ${btnClass}">
-                <i class="${iconClass}"></i>
-                <span>Ver en ${labelText}</span>
+              <a href="${item.urlDrive}" target="_blank" class="inline-flex items-center gap-1.5 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white px-3.5 py-1.5 rounded-xl text-[11px] font-bold transition shadow-sm cursor-pointer">
+                <i class="fa-brands fa-google-drive"></i>
+                <span>Descargar en Drive</span>
               </a>
             </td>
           </tr>
@@ -635,19 +597,39 @@
       }
     }
 
-    // ================= CONTROL DEL SPOT =================
-    function compartirSpot() {
-      const shareData = {
-        title: 'Spot Oficial — Festival Niño Simón 2026',
-        text: 'Mira el spot promocional del Festival Nacional de la Voz Niño Simón en el Teatro Juares.',
-        url: YOUTUBE_SPOT_URL
-      };
-      if (navigator.share) {
-        navigator.share(shareData).catch(() => {});
-      } else {
-        navigator.clipboard.writeText(shareData.url);
-        alert('Enlace del Spot copiado al portapapeles.');
-      }
+    // ================= FUNCIONES DE COPIADO DE COPIES =================
+    function copiarCopyLanzamientoSpot() {
+      const copySpot = `🎶 ¡VENEZUELA VIBRA EN UNA SOLA VOZ! 🇻🇪✨
+
+Hoy se abren las puertas del histórico Teatro Juares de Barquisimeto para presentar oficialmente el Spot Promocional del Festival Nacional de la Voz Niño Simón 2026.
+
+Desde cada rincón de nuestra patria, 33 niños y niñas unen sus talentos, sus raíces y su amor por la música en un evento que exalta la pureza y la identidad cultural venezolana. 
+
+Acompáñanos a partir de hoy a descubrir las presentaciones orgánicas de cada delegación estadal y sé testigo del nacimiento de las nuevas voces de la patria. 🌟
+
+📍 Sede Oficial: Teatro Juares, Barquisimeto, Estado Lara.
+🏛️ Organiza: Fundación Nacional El Niño Simón.
+
+👇 ¡Mira el video completo, compártelo y deja tu mensaje de apoyo a la juventud musical de Venezuela!
+
+#VozNiñoSimón2026 #FestivalDeLaVoz #NiñoSimón #SpotOficial #TeatroJuares #MúsicaVenezolana #TalentoInfantil #Venezuela`;
+
+      navigator.clipboard.writeText(copySpot);
+      alert("¡Copy de lanzamiento del Spot Promocional copiado al portapapeles!");
+    }
+
+    function copiarCopyParticipanteActivo() {
+      if (!reelActivo) return;
+
+      const copyParticipante = `✨ ¡El talento de nuestra patria brilla en una sola voz! 🇻🇪 Conoce a ${reelActivo.participante}, quien nos comparte su presentación orgánica representando con orgullo al estado ${reelActivo.estado} en el Festival Nacional de la Voz Niño Simón 2026.
+
+📍 Sede: Teatro Juares, Barquisimeto.
+👇 ¡Deja tus palabras de aliento para este gran talento en los comentarios!
+
+Etiquetas Oficiales: #VozNiñoSimón2026 #FestivalDeLaVoz #NiñoSimón #TalentoInfantil #MúsicaVenezolana #TeatroJuares`;
+
+      navigator.clipboard.writeText(copyParticipante);
+      alert(`¡Copy oficial de ${reelActivo.participante} (${reelActivo.estado}) copiado al portapapeles!`);
     }
 
     // ================= MODAL REEL (REPRODUCTOR VERTICAL) =================
@@ -658,18 +640,13 @@
 
       document.getElementById('modalReelBadge').innerText = `Reel #${r.numero} • ${r.estado}`;
       document.getElementById('modalReelTitulo').innerText = `${r.participante} (${r.estado})`;
+      document.getElementById('btnModalDriveLink').href = r.driveLink;
 
       const iframe = document.getElementById('iframeModalReel');
-      const btnYt = document.getElementById('btnModalYoutubeLink');
-
       if (r.youtubeId) {
-        iframe.src = `https://www.youtube.com/embed/${r.youtubeId}?autoplay=1&rel=0`;
-        btnYt.href = r.youtubeUrl;
-        btnYt.classList.remove('hidden');
+        iframe.src = `https://www.youtube.com/embed/${r.youtubeId}?autoplay=1&rel=0&modestbranding=1`;
       } else {
         iframe.src = '';
-        btnYt.href = r.driveLink;
-        btnYt.innerHTML = `<i class="fa-brands fa-google-drive text-sm"></i> Ver en Drive`;
       }
       
       document.getElementById('modalReel').classList.remove('hidden');
@@ -680,19 +657,6 @@
       const iframe = document.getElementById('iframeModalReel');
       iframe.src = '';
       modal.classList.add('hidden');
-    }
-
-    function compartirReelActivo() {
-      if (!reelActivo) return;
-      const url = reelActivo.youtubeUrl || window.location.href.split('#')[0] + `#reels`;
-      const texto = `¡Mira la presentación de ${reelActivo.participante} representando a ${reelActivo.estado} en el Festival de la Voz Niño Simón 2026! 🌟\n${url}`;
-      
-      if (navigator.share) {
-        navigator.share({ title: 'Festival Niño Simón 2026', text: texto, url: url }).catch(() => {});
-      } else {
-        navigator.clipboard.writeText(texto);
-        alert('Enlace del participante copiado al portapapeles.');
-      }
     }
 
     // INICIALIZACIÓN
