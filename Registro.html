@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Entradas Espectadores — Festival de la Voz Niño Simón 2026</title>
+
+  <!-- ================= METADATOS PARA REDES Y WHATSAPP ================= -->
+  <meta name="title" content="Festival de la Voz Niño Simón 2026 — Entrada de Espectador">
+  <meta name="description" content="Asegura tu entrada de espectador para el Festival Nacional de la Voz Niño Simón 2026 en el emblemático Teatro Juares. Registro oficial en línea.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Festival de la Voz Niño Simón 2026 — Entrada de Espectador">
+  <meta property="og:description" content="Acompaña a las delegaciones de todo el país en el Teatro Juares. Descarga tu pase digital de acceso.">
+  <meta property="og:image" content="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/png" href="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", sans-serif;
+      letter-spacing: -0.015em;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    @keyframes logoReveal {
+      0% {
+        opacity: 0;
+        transform: translateY(22px) scale(0.88);
+        filter: blur(10px);
+      }
+      70% {
+        transform: translateY(-3px) scale(1.02);
+        filter: blur(0px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0px);
+      }
+    }
+
+    @keyframes logoFloating {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    @keyframes contentFadeIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes modalPop {
+      from { opacity: 0; transform: scale(0.96) translateY(8px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .logo-intro {
+      animation: logoReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+                 logoFloating 4.5s ease-in-out 1.2s infinite;
+    }
+
+    .content-intro {
+      animation: contentFadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.25s forwards;
+      opacity: 0;
+    }
+
+    .modal-animate {
+      animation: modalPop 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+  </style>
+</head>
+<body class="min-h-full flex flex-col justify-between text-[#1d1d1f] antialiased relative selection:bg-[#0071e3] selection:text-white bg-[#0b0d12]">
+
+  <!-- ================= FONDO DE VIDEO RESPONSIVE (TEATRO JUARES) ================= -->
+  <div class="fixed inset-0 w-full h-full -z-20 overflow-hidden pointer-events-none bg-[#0b0d12]">
+    <video autoplay muted loop playsinline class="block sm:hidden w-full h-full object-cover">
+      <source src="TEATRO.mp4" type="video/mp4">
+    </video>
+    <video autoplay muted loop playsinline class="hidden sm:block w-full h-full object-cover">
+      <source src="TEATROHORIZONTAL.mp4" type="video/mp4">
+    </video>
+    <div class="absolute inset-0 bg-[#0b0d12]/65 backdrop-blur-[1px]"></div>
+  </div>
+
+  <!-- ================= PORTADA DE BIENVENIDA EN FONDO BLANCO ================= -->
+  <section id="portadaInicio" class="fixed inset-0 z-50 flex flex-col items-center justify-between px-6 py-10 transition-all duration-700 ease-out overflow-y-auto bg-[#fbfbfd]">
+    <div></div>
+
+    <div class="max-w-md w-full text-center flex flex-col items-center my-auto">
+      
+      <!-- Logo institucional -->
+      <div class="w-44 h-44 md:w-52 md:h-52 flex items-center justify-center mb-6 logo-intro">
+        <img src="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png" alt="Festival Niño Simón" class="w-full h-full object-contain filter drop-shadow-[0_16px_32px_rgba(0,0,0,0.14)]">
+      </div>
+
+      <div class="content-intro flex flex-col items-center w-full">
+        <div class="inline-flex items-center space-x-2 bg-white border border-[#d2d2d7]/70 px-3.5 py-1 rounded-full shadow-sm mb-3">
+          <span class="w-2 h-2 rounded-full bg-[#34c759] animate-pulse"></span>
+          <span class="text-[11px] font-semibold tracking-wide uppercase text-[#515154]">Fundación Nacional El Niño Simón</span>
+        </div>
+
+        <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-[#1d1d1f] mb-3 leading-tight">
+          Festival de la Voz<br><span class="text-[#0071e3]">Niño Simón 2026</span>
+        </h1>
+        
+        <!-- Tarjeta de bienvenida -->
+        <div class="bg-white border border-[#d2d2d7]/60 rounded-3xl p-6 mb-6 shadow-xl text-left space-y-2.5">
+          <p class="text-xs text-[#333336] leading-relaxed">
+            Te damos la bienvenida al gran encuentro cultural organizado por la <strong>Fundación Nacional El Niño Simón</strong>.
+          </p>
+          <p class="text-xs text-[#636366] leading-relaxed">
+            Ven a apoyar a las delegaciones infantiles de todo el país en el histórico escenario del <strong>Teatro Juares</strong>. Completa tus datos para emitir tu credencial digital de acceso.
+          </p>
+        </div>
+
+        <p class="text-xs text-[#6e6e73] leading-relaxed max-w-sm mb-6 font-normal">
+          Entrada libre para público espectador hasta completar el aforo disponible.
+        </p>
+
+        <!-- Botón de Entrada: Oculta la portada blanca y revela el formulario -->
+        <button onclick="entrarAlPortal()" class="group relative inline-flex items-center justify-center space-x-2 bg-[#0071e3] hover:bg-[#0077ed] active:bg-[#0062c4] text-white px-8 py-3.5 rounded-2xl text-sm font-semibold transition duration-200 shadow-[0_8px_25px_rgba(0,113,227,0.35)] cursor-pointer">
+          <span>Ingresar y Dejar Datos</span>
+          <svg class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </button>
+
+        <span class="text-[11px] text-[#86868b] mt-3">Recepción de datos abierta</span>
+      </div>
+    </div>
+
+    <div class="text-[11px] text-[#86868b] tracking-wider uppercase mt-6 text-center">
+      Fundación Nacional El Niño Simón &copy; 2026
+    </div>
+  </section>
+
+  <!-- ================= BARRA SUPERIOR FIJA ================= -->
+  <header class="w-full bg-white/85 backdrop-blur-xl border-b border-white/40 sticky top-0 z-20 shadow-sm">
+    <div class="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <img src="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png" alt="Festival Niño Simón" class="h-9 w-auto object-contain">
+        <div class="border-l border-[#d2d2d7] pl-3 flex flex-col">
+          <span class="text-xs uppercase tracking-widest text-[#1d1d1f] font-semibold">FNNS</span>
+          <span class="text-[10px] text-[#86868b]">Recepción de Espectadores</span>
+        </div>
+      </div>
+      <span class="text-xs font-normal text-[#86868b] hidden sm:inline">Teatro Juares — Barquisimeto</span>
+    </div>
+  </header>
+
+  <!-- ================= FORMULARIO PRINCIPAL (CAPTURA DE DATOS) ================= -->
+  <main class="max-w-xl w-full mx-auto px-6 py-10 flex-1 relative z-10">
+    
+    <div class="text-center mb-8">
+      <span class="inline-block bg-white/20 backdrop-blur-md text-white border border-white/30 text-[11px] font-semibold uppercase px-3 py-1 rounded-full mb-2">Entrada de Público General</span>
+      <h1 class="text-3xl font-bold tracking-tight text-white drop-shadow-md">Registro de Espectador</h1>
+      <p class="text-xs md:text-sm text-slate-200 mt-1 font-normal drop-shadow">
+        Ingresa tus datos para registrar tu asistencia y generar tu pase de entrada.
+      </p>
+    </div>
+
+    <form id="formularioEspectador" class="space-y-6">
+      
+      <section class="bg-white/90 backdrop-blur-xl rounded-3xl p-6 md:p-8 border border-white/70 shadow-[0_8px_30px_rgba(0,0,0,0.12)] space-y-4">
+        
+        <!-- NOMBRES Y APELLIDOS -->
+        <div>
+          <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Nombres y Apellidos *</label>
+          <input type="text" id="campoNombre" name="Nombre_Completo" required placeholder="Ej: Carlos Eduardo Pérez Gómez" class="w-full bg-[#f5f5f7] border border-[#d2d2d7]/50 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
+        </div>
+
+        <!-- CÉDULA -->
+        <div>
+          <label class="block text-xs font-medium text-[#515154] mb-1.5 uppercase tracking-wide">Cédula de Identidad *</label>
+          <input type="text" id="campoCedula" name="Cedula" placeholder="Ej: V-18456789" required class="w-full bg-[#f5f5f7] border border-[#d2d2d7]/50 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
+        </div>
+
+        <!-- WHATSAPP Y CORREO -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <label class="block text-xs font-medium text-[#515154] uppercase tracking-wide">Número de WhatsApp *</label>
+              <span class="text-[10px] text-[#0071e3] font-medium">Recepción Pase</span>
+            </div>
+            <input type="tel" id="campoTelefono" name="Telefono_WhatsApp" placeholder="Ej: 04141234567" required class="w-full bg-[#f5f5f7] border border-[#d2d2d7]/50 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
+          </div>
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <label class="block text-xs font-medium text-[#515154] uppercase tracking-wide">Correo Electrónico *</label>
+              <span class="text-[10px] text-[#34c759] font-medium">Confirmación</span>
+            </div>
+            <input type="email" id="campoEmail" name="email" placeholder="usuario@correo.com" required class="w-full bg-[#f5f5f7] border border-[#d2d2d7]/50 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
+          </div>
+        </div>
+
+      </section>
+
+      <!-- BOTÓN DE ENVÍO -->
+      <div>
+        <button type="submit" id="btnSubmit" class="w-full bg-[#0071e3] hover:bg-[#0077ed] active:bg-[#0062c4] text-white font-medium py-4 px-6 rounded-2xl transition duration-200 shadow-xl text-sm cursor-pointer">
+          Confirmar Registro & Generar Pase
+        </button>
+      </div>
+
+      <div id="cajaError" class="hidden rounded-2xl p-4 text-center text-xs font-medium bg-[#fff5f5] text-[#b91c1c] border border-[#fecaca]"></div>
+    </form>
+  </main>
+
+  <!-- ================= MODAL DEL PASE QR DIGITAL ================= -->
+  <div id="modalAgradecimiento" class="fixed inset-0 z-50 bg-[#0f1115]/60 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="bg-white max-w-md w-full rounded-3xl p-7 md:p-8 shadow-[0_25px_70px_rgba(0,0,0,0.3)] border border-[#d2d2d7]/50 text-center modal-animate space-y-6 max-h-[90vh] overflow-y-auto">
+      
+      <div class="w-16 h-16 bg-[#edfcf2] text-[#34c759] rounded-2xl mx-auto flex items-center justify-center shadow-sm">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+        </svg>
+      </div>
+
+      <div class="space-y-2">
+        <span class="text-[11px] font-semibold uppercase tracking-wider text-[#0071e3]">Registro Exitoso</span>
+        <h2 class="text-xl md:text-2xl font-semibold text-[#1d1d1f]">¡Tu Pase está Listo!</h2>
+        <p class="text-xs text-[#515154] leading-relaxed">
+          Tus datos han sido registrados en la lista oficial de espectadores para el <strong>Teatro Juares</strong>.
+        </p>
+      </div>
+
+      <!-- Tarjeta del Pase / Entrada QR -->
+      <div class="bg-[#f5f5f7] rounded-2xl p-5 text-left text-xs space-y-3 border border-[#d2d2d7]/50">
+        <div class="flex items-center justify-between border-b border-[#d2d2d7]/40 pb-2">
+          <div>
+            <span class="text-[10px] text-[#86868b] uppercase block">Ticket Espectador</span>
+            <span id="resumenCodigoPase" class="font-mono font-bold text-sm text-[#0071e3]"></span>
+          </div>
+          <span class="bg-[#34c759]/15 text-[#15803d] text-[10px] font-semibold px-2 py-0.5 rounded-full">Registrado</span>
+        </div>
+
+        <!-- Renderizado dinámico del QR -->
+        <div class="flex flex-col items-center justify-center py-2 bg-white rounded-xl border border-[#d2d2d7]/40">
+          <img id="imagenQrPase" src="" alt="Pase QR Teatro Juares" class="w-36 h-36 object-contain">
+          <span class="text-[10px] text-[#86868b] mt-1 tracking-tight">Escanear en Entrada — Teatro Juares</span>
+        </div>
+
+        <div class="flex justify-between">
+          <span class="text-[#86868b]">Espectador:</span>
+          <span id="resumenNombre" class="font-semibold text-[#1d1d1f]"></span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-[#86868b]">Cédula:</span>
+          <span id="resumenCedula" class="font-semibold text-[#1d1d1f]"></span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-[#86868b]">Correo:</span>
+          <span id="resumenCorreo" class="font-semibold text-[#1d1d1f] truncate max-w-[200px]"></span>
+        </div>
+      </div>
+
+      <div class="p-3 bg-sky-50 rounded-xl border border-sky-100 text-[11px] text-sky-800 leading-relaxed text-center">
+        🎟️ Guarda una captura de pantalla de este pase. Próximamente se notificará la asignación final de butacas.
+      </div>
+
+      <div class="pt-1">
+        <button id="btnAceptarModal" class="w-full inline-flex items-center justify-center space-x-2 bg-[#25d366] hover:bg-[#20ba59] active:bg-[#1caa4f] text-white font-medium py-3.5 px-6 rounded-2xl text-xs transition duration-200 shadow-md cursor-pointer">
+          <span>Notificar por WhatsApp</span>
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="py-8 text-center text-xs text-slate-300 relative z-10">
+    Fundación Nacional El Niño Simón &copy; 2026. Todos los derechos reservados.
+  </footer>
+
+  <script>
+    // Tu Webhook de Google Apps Script vinculado
+    const GOOGLE_SHEETS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxBEJ74gZ6wuLPxkIJwtfaizzDw_lyaI_r9Q97Hkky5b2RSSV0slmfWdQC9OCzQK5ThhA/exec";
+    const NUMERO_WHATSAPP_FESTIVAL = "584129315743";
+
+    let enlaceWhatsAppFinal = "";
+
+    function entrarAlPortal() {
+      const portada = document.getElementById('portadaInicio');
+      portada.style.opacity = '0';
+      portada.style.transform = 'translateY(-16px) scale(0.99)';
+      portada.style.pointerEvents = 'none';
+      setTimeout(() => {
+        portada.style.display = 'none';
+      }, 700);
+    }
+
+    // Código Único de Entrada para Espectadores
+    function generarCodigoPase() {
+      const numRandom = Math.floor(1000 + Math.random() * 9000);
+      return `FNNS-ESP-${numRandom}`;
+    }
+
+    // Normalización de teléfono a formato internacional (58...)
+    function normalizarTelefono(tel) {
+      let limpio = tel.replace(/\D/g, '');
+      if (limpio.startsWith('0')) {
+        limpio = '58' + limpio.substring(1);
+      } else if (!limpio.startsWith('58') && limpio.length === 10) {
+        limpio = '58' + limpio;
+      }
+      return limpio;
+    }
+
+    const form = document.getElementById('formularioEspectador');
+    const btn = document.getElementById('btnSubmit');
+    const modal = document.getElementById('modalAgradecimiento');
+    const btnAceptarModal = document.getElementById('btnAceptarModal');
+    const cajaError = document.getElementById('cajaError');
+
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      btn.disabled = true;
+      btn.innerText = "Registrando datos y conectando...";
+      cajaError.classList.add('hidden');
+
+      const nombre = document.getElementById('campoNombre').value.trim();
+      const cedula = document.getElementById('campoCedula').value.trim();
+      const telefonoRaw = document.getElementById('campoTelefono').value.trim();
+      const telefonoLimpio = normalizarTelefono(telefonoRaw);
+      const email = document.getElementById('campoEmail').value.trim();
+
+      const idPase = generarCodigoPase();
+
+      // Generación del código QR de acceso
+      const qrDataText = encodeURIComponent(`FESTIVAL-2026|ESPECTADOR|ID:${idPase}|CI:${cedula}|NOMBRE:${nombre}`);
+      const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${qrDataText}&format=svg`;
+
+      // Payload exacto hacia tu Google Sheet
+      const payloadBaseDatos = {
+        idPase: idPase,
+        fecha: new Date().toLocaleString("es-VE", { timeZone: "America/Caracas" }),
+        nombre: nombre,
+        cedula: cedula,
+        telefonoWhatsApp: telefonoLimpio,
+        email: email,
+        estatus: "Registrado",
+        puesto: "Por Asignar"
+      };
+
+      try {
+        // Envío directo al webhook de Apps Script
+        await fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payloadBaseDatos)
+        });
+
+        // Respaldo local en el navegador
+        try {
+          const registrosLocales = JSON.parse(localStorage.getItem('fnns_espectadores') || "[]");
+          registrosLocales.push(payloadBaseDatos);
+          localStorage.setItem('fnns_espectadores', JSON.stringify(registrosLocales));
+        } catch(e) {}
+
+        // Presentación de datos en el pase visual
+        document.getElementById('resumenCodigoPase').innerText = idPase;
+        document.getElementById('imagenQrPase').src = qrImageUrl;
+        document.getElementById('resumenNombre').innerText = nombre;
+        document.getElementById('resumenCedula').innerText = cedula;
+        document.getElementById('resumenCorreo').innerText = email;
+
+        // Enlace WhatsApp personalizado
+        const textoWhatsApp = `👋 ¡Hola! He completado mi registro como *Espectador* para el *Festival de la Voz Niño Simón 2026*:\n\n` +
+          `🎟️ *Pase N°:* ${idPase}\n` +
+          `👤 *Nombre:* ${nombre}\n` +
+          `🪪 *Cédula:* ${cedula}\n` +
+          `📧 *Correo:* ${email}\n` +
+          `📞 *WhatsApp:* ${telefonoLimpio}\n\n` +
+          `🏛️ *Lugar:* Teatro Juares, Barquisimeto.\n` +
+          `Quedo a la espera de la asignación de puestos.`;
+
+        enlaceWhatsAppFinal = `https://wa.me/${NUMERO_WHATSAPP_FESTIVAL}?text=${encodeURIComponent(textoWhatsApp)}`;
+
+        form.reset();
+        modal.classList.remove('hidden');
+
+      } catch (err) {
+        cajaError.innerHTML = `<strong>Error:</strong> No se pudo completar la conexión. Verifica tu conexión e inténtalo de nuevo.`;
+        cajaError.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+        btn.innerText = "Confirmar Registro & Generar Pase";
+      }
+    });
+
+    btnAceptarModal.addEventListener('click', function() {
+      modal.classList.add('hidden');
+      if (enlaceWhatsAppFinal) {
+        window.open(enlaceWhatsAppFinal, '_blank');
+      }
+    });
+  </script>
+</body>
+</html>
