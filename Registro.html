@@ -118,7 +118,7 @@
           Entrada libre para público espectador hasta completar el aforo disponible.
         </p>
 
-        <!-- Botón de Entrada: Oculta la portada blanca y revela el formulario -->
+        <!-- Botón de Entrada -->
         <button onclick="entrarAlPortal()" class="group relative inline-flex items-center justify-center space-x-2 bg-[#0071e3] hover:bg-[#0077ed] active:bg-[#0062c4] text-white px-8 py-3.5 rounded-2xl text-sm font-semibold transition duration-200 shadow-[0_8px_25px_rgba(0,113,227,0.35)] cursor-pointer">
           <span>Ingresar y Dejar Datos</span>
           <svg class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -149,7 +149,7 @@
     </div>
   </header>
 
-  <!-- ================= FORMULARIO PRINCIPAL (CAPTURA DE DATOS) ================= -->
+  <!-- ================= FORMULARIO PRINCIPAL ================= -->
   <main class="max-w-xl w-full mx-auto px-6 py-10 flex-1 relative z-10">
     
     <div class="text-center mb-8">
@@ -188,7 +188,7 @@
           <div>
             <div class="flex items-center justify-between mb-1.5">
               <label class="block text-xs font-medium text-[#515154] uppercase tracking-wide">Correo Electrónico *</label>
-              <span class="text-[10px] text-[#34c759] font-medium">Confirmación</span>
+              <span class="text-[10px] text-[#34c759] font-medium">Envío del Pase</span>
             </div>
             <input type="email" id="campoEmail" name="email" placeholder="usuario@correo.com" required class="w-full bg-[#f5f5f7] border border-[#d2d2d7]/50 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-[#0071e3] transition">
           </div>
@@ -255,8 +255,9 @@
         </div>
       </div>
 
-      <div class="p-3 bg-sky-50 rounded-xl border border-sky-100 text-[11px] text-sky-800 leading-relaxed text-center">
-        🎟️ Guarda una captura de pantalla de este pase. Próximamente se notificará la asignación final de butacas.
+      <!-- Confirmación de envío de correo -->
+      <div class="p-3 bg-emerald-50 rounded-xl border border-emerald-100 text-[11px] text-emerald-800 leading-relaxed text-center">
+        ✉️ ¡Hemos enviado tu entrada oficial con su código QR directamente a tu correo electrónico!
       </div>
 
       <div class="pt-1">
@@ -290,13 +291,11 @@
       }, 700);
     }
 
-    // Código Único de Entrada para Espectadores
     function generarCodigoPase() {
       const numRandom = Math.floor(1000 + Math.random() * 9000);
       return `FNNS-ESP-${numRandom}`;
     }
 
-    // Normalización de teléfono a formato internacional (58...)
     function normalizarTelefono(tel) {
       let limpio = tel.replace(/\D/g, '');
       if (limpio.startsWith('0')) {
@@ -316,7 +315,7 @@
     form.addEventListener('submit', async function(e) {
       e.preventDefault();
       btn.disabled = true;
-      btn.innerText = "Registrando datos y conectando...";
+      btn.innerText = "Registrando y despachando entrada...";
       cajaError.classList.add('hidden');
 
       const nombre = document.getElementById('campoNombre').value.trim();
@@ -327,11 +326,9 @@
 
       const idPase = generarCodigoPase();
 
-      // Generación del código QR de acceso
       const qrDataText = encodeURIComponent(`FESTIVAL-2026|ESPECTADOR|ID:${idPase}|CI:${cedula}|NOMBRE:${nombre}`);
       const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${qrDataText}&format=svg`;
 
-      // Payload exacto hacia tu Google Sheet
       const payloadBaseDatos = {
         idPase: idPase,
         fecha: new Date().toLocaleString("es-VE", { timeZone: "America/Caracas" }),
@@ -344,7 +341,6 @@
       };
 
       try {
-        // Envío directo al webhook de Apps Script
         await fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
           method: "POST",
           mode: "no-cors",
@@ -352,21 +348,18 @@
           body: JSON.stringify(payloadBaseDatos)
         });
 
-        // Respaldo local en el navegador
         try {
           const registrosLocales = JSON.parse(localStorage.getItem('fnns_espectadores') || "[]");
           registrosLocales.push(payloadBaseDatos);
           localStorage.setItem('fnns_espectadores', JSON.stringify(registrosLocales));
         } catch(e) {}
 
-        // Presentación de datos en el pase visual
         document.getElementById('resumenCodigoPase').innerText = idPase;
         document.getElementById('imagenQrPase').src = qrImageUrl;
         document.getElementById('resumenNombre').innerText = nombre;
         document.getElementById('resumenCedula').innerText = cedula;
         document.getElementById('resumenCorreo').innerText = email;
 
-        // Enlace WhatsApp personalizado
         const textoWhatsApp = `👋 ¡Hola! He completado mi registro como *Espectador* para el *Festival de la Voz Niño Simón 2026*:\n\n` +
           `🎟️ *Pase N°:* ${idPase}\n` +
           `👤 *Nombre:* ${nombre}\n` +
