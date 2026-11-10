@@ -255,7 +255,7 @@
         </div>
       </div>
 
-      <!-- Confirmación de envío de correo -->
+      <!-- Notificación del despacho por correo -->
       <div class="p-3 bg-emerald-50 rounded-xl border border-emerald-100 text-[11px] text-emerald-800 leading-relaxed text-center">
         ✉️ ¡Hemos enviado tu entrada oficial con su código QR directamente a tu correo electrónico!
       </div>
@@ -275,7 +275,7 @@
   </footer>
 
   <script>
-    // Tu Webhook de Google Apps Script vinculado
+    // URL activa de tu Webhook de Google Apps Script
     const GOOGLE_SHEETS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxBEJ74gZ6wuLPxkIJwtfaizzDw_lyaI_r9Q97Hkky5b2RSSV0slmfWdQC9OCzQK5ThhA/exec";
     const NUMERO_WHATSAPP_FESTIVAL = "584129315743";
 
@@ -315,7 +315,7 @@
     form.addEventListener('submit', async function(e) {
       e.preventDefault();
       btn.disabled = true;
-      btn.innerText = "Registrando y despachando entrada...";
+      btn.innerText = "Registrando y enviando entrada...";
       cajaError.classList.add('hidden');
 
       const nombre = document.getElementById('campoNombre').value.trim();
