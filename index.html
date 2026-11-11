@@ -18,10 +18,13 @@
   <meta property="og:image:secure_url" content="https://i.postimg.cc/WbGGBdzC/IMAGEN-ENLACE-DE-WHATSAPP.jpg">
   <meta property="og:image:type" content="image/jpeg">
 
+  <!-- Font Awesome para Iconografía -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
   <!-- Tipografías Cinematográficas -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800&family=Montserrat:wght@200;300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800;900&family=Montserrat:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
 
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -40,7 +43,6 @@
       font-variant-numeric: tabular-nums;
     }
 
-    /* Sombras de proyección cinematográfica para alto contraste */
     .film-shadow {
       text-shadow: 0 4px 24px rgba(6, 22, 45, 0.75), 0 1px 4px rgba(0, 0, 0, 0.6);
     }
@@ -73,7 +75,6 @@
       pointer-events: none;
     }
 
-    /* Alternancia automática según la orientación del dispositivo */
     .video-portrait {
       display: block;
     }
@@ -89,28 +90,33 @@
         display: block !important;
       }
     }
+
+    .glass-card {
+      background: rgba(6, 21, 40, 0.75);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
   </style>
 </head>
 <body class="min-h-full flex flex-col justify-between bg-[#061528] text-white antialiased relative overflow-x-hidden selection:bg-white selection:text-black">
 
   <!-- ================= VIDEOS DE FONDO ADAPTATIVOS ================= -->
-  <!-- 1. Video Vertical para móviles y pantallas en orientación vertical -->
   <video class="video-bg video-portrait" autoplay muted loop playsinline preload="auto">
     <source src="TEATRO.mp4" type="video/mp4">
   </video>
 
-  <!-- 2. Video Horizontal para pantallas panorámicas, laptops, PC y móviles girados -->
   <video class="video-bg video-landscape" autoplay muted loop playsinline preload="auto">
     <source src="TEATROHORIZONTAL.mp4" type="video/mp4">
   </video>
 
-  <!-- Viñeta cinematográfica para contraste del texto en el cielo -->
-  <div class="fixed inset-0 z-[1] bg-gradient-to-b from-[#061528]/65 via-[#061528]/25 to-[#061528]/15 pointer-events-none"></div>
+  <!-- Viñeta cinematográfica para contraste -->
+  <div class="fixed inset-0 z-[1] bg-gradient-to-b from-[#061528]/75 via-[#061528]/40 to-[#061528]/85 pointer-events-none"></div>
 
   <!-- ================= IDENTIFICADOR SUPERIOR ================= -->
   <header class="w-full pt-8 pb-4 px-6 flex justify-center relative z-20">
     <div class="flex items-center space-x-3.5 opacity-90 hover:opacity-100 transition duration-300">
-      <img src="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png" alt="Logo FNNS" class="h-8 md:h-9 w-auto object-contain filter drop-shadow-[0_4px_12px_rgba(0,0,0,0.6)]">
+      <img src="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png" alt="Logo FNNS" class="h-8 md:h-10 w-auto object-contain filter drop-shadow-[0_4px_12px_rgba(0,0,0,0.6)]">
       <div class="border-l border-white/30 pl-3.5 flex flex-col text-left">
         <span class="font-cinema text-[10px] md:text-[11px] font-bold tracking-[0.25em] text-white uppercase film-shadow">Fundación Nacional</span>
         <span class="text-[9px] tracking-[0.2em] text-white/70 uppercase">El Niño Simón</span>
@@ -118,11 +124,11 @@
     </div>
   </header>
 
-  <!-- ================= NÚCLEO EN EL CIELO: TÍTULO Y CONTADOR UNIFICADO ================= -->
-  <main class="w-full max-w-4xl mx-auto px-4 pt-4 pb-[38vh] sm:pb-[42vh] flex flex-col items-center text-center my-auto relative z-10">
+  <!-- ================= NÚCLEO EN EL CIELO: TÍTULO, CONTADOR Y ACCIONES ================= -->
+  <main class="w-full max-w-4xl mx-auto px-4 pt-4 pb-16 flex flex-col items-center text-center relative z-10 space-y-7">
 
     <!-- Cintillo de Entrada -->
-    <div class="inline-flex items-center space-x-2.5 mb-3">
+    <div class="inline-flex items-center space-x-2.5">
       <span class="h-[1px] w-6 sm:w-10 bg-gradient-to-r from-transparent to-white/60"></span>
       <span class="font-cinema text-[10px] sm:text-xs tracking-[0.35em] uppercase text-white/80 film-shadow">
         Cuenta Regresiva Oficial
@@ -131,22 +137,22 @@
     </div>
 
     <!-- Título Principal Cinematográfico -->
-    <h1 class="font-cinema text-2xl sm:text-4xl md:text-5xl font-bold uppercase text-white tracking-[0.2em] leading-tight mb-2 film-shadow">
-      Festival de la Voz
-    </h1>
-    <h2 class="text-xs sm:text-sm md:text-base font-light tracking-[0.35em] uppercase text-white/85 mb-8 film-shadow">
-      Niño Simón &bull; Edición 2026
-    </h2>
+    <div>
+      <h1 class="font-cinema text-3xl sm:text-5xl md:text-6xl font-bold uppercase text-white tracking-[0.2em] leading-tight mb-2 film-shadow">
+        Festival de la Voz
+      </h1>
+      <h2 class="text-xs sm:text-sm md:text-base font-light tracking-[0.35em] uppercase text-white/85 film-shadow">
+        Niño Simón &bull; Edición 2026
+      </h2>
+    </div>
 
     <!-- Leyenda de Tiempo Restante -->
-    <p class="text-[11px] sm:text-xs font-medium tracking-[0.3em] uppercase text-[#7ec8ff] mb-4 film-shadow">
+    <p class="text-[11px] sm:text-xs font-medium tracking-[0.3em] uppercase text-[#7ec8ff] film-shadow">
       Faltan exactamente para el comienzo
     </p>
 
     <!-- ================= CONTADOR COMPACTO SIN CUADROS ================= -->
     <div id="countdownContainer" class="flex flex-col items-center">
-      
-      <!-- Cifras integradas con separadores rítmicos -->
       <div class="flex items-baseline justify-center text-white glow-num tnum select-none">
         
         <!-- Días -->
@@ -180,7 +186,6 @@
         </div>
 
       </div>
-
     </div>
 
     <!-- Mensaje cuando el tiempo llega a cero -->
@@ -189,13 +194,76 @@
     </div>
 
     <!-- Sede y Fecha -->
-    <div class="mt-8 flex items-center justify-center space-x-3 text-[10px] sm:text-[11px] tracking-[0.3em] uppercase text-white/75 film-shadow">
+    <div class="flex items-center justify-center space-x-3 text-[10px] sm:text-[11px] tracking-[0.3em] uppercase text-white/75 film-shadow">
       <span>22 de Noviembre</span>
       <span class="text-white/40">&bull;</span>
       <span>Teatro Juares</span>
       <span class="text-white/40">&bull;</span>
       <span>Barquisimeto</span>
     </div>
+
+    <!-- ================= DOS BOTONES PRINCIPALES ================= -->
+    <div class="w-full max-w-xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+      
+      <!-- BOTÓN 1: Ir a la Subpágina de Participantes y Votación -->
+      <a href="participantes.html" class="w-full sm:w-auto flex-1 group relative inline-flex items-center justify-center px-7 py-4 overflow-hidden rounded-xl bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 text-slate-950 font-bold uppercase tracking-wider text-xs sm:text-sm shadow-[0_0_30px_rgba(245,158,11,0.45)] hover:shadow-[0_0_40px_rgba(245,158,11,0.7)] transition-all duration-300 hover:scale-[1.02] active:scale-95">
+        <span class="flex items-center gap-2.5 font-cinema">
+          <i class="fa-solid fa-users-viewfinder text-base group-hover:rotate-6 transition-transform"></i>
+          <span>Conocer Participantes &bull; Votar</span>
+        </span>
+      </a>
+
+      <!-- BOTÓN 2: Ir a streaming.html para la transmisión oficial -->
+      <a href="streaming.html" class="w-full sm:w-auto flex-1 group relative inline-flex items-center justify-center px-7 py-4 overflow-hidden rounded-xl bg-[#0b2447]/90 hover:bg-[#0e2f5d] border border-[#7ec8ff]/40 text-white font-semibold uppercase tracking-wider text-xs sm:text-sm backdrop-blur-md shadow-[0_0_25px_rgba(14,47,93,0.6)] hover:shadow-[0_0_35px_rgba(126,200,255,0.4)] transition-all duration-300 hover:scale-[1.02] active:scale-95">
+        <span class="flex items-center gap-2.5 font-cinema">
+          <span class="relative flex h-2.5 w-2.5">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+          </span>
+          <span>Transmisión en Vivo</span>
+        </a>
+
+    </div>
+
+    <!-- ================= TARJETA DE INSTAGRAM OFICIAL ================= -->
+    <section class="w-full max-w-xl mx-auto mt-6 pt-4">
+      <div class="glass-card rounded-2xl p-5 text-left border border-white/15 relative overflow-hidden group">
+        
+        <!-- Gradiente decorativo Instagram en la esquina -->
+        <div class="absolute -right-8 -top-8 w-28 h-28 bg-gradient-to-tr from-yellow-500 via-pink-500 to-purple-600 rounded-full blur-2xl opacity-20 pointer-events-none"></div>
+
+        <div class="flex items-center justify-between gap-3 mb-3">
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-full p-[2px] bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
+              <div class="w-full h-full rounded-full bg-slate-900 p-1 flex items-center justify-center">
+                <img src="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png" alt="FNNS Instagram" class="w-full h-full object-contain">
+              </div>
+            </div>
+            <div>
+              <div class="flex items-center gap-1.5">
+                <span class="text-xs sm:text-sm font-bold text-white tracking-wide">fundacionninosimonccs</span>
+                <i class="fa-solid fa-circle-check text-[11px] text-[#0095f6]"></i>
+              </div>
+              <span class="text-[10px] text-white/60 tracking-wider">Fundación Nacional El Niño Simón</span>
+            </div>
+          </div>
+          <span class="text-[10px] uppercase font-semibold tracking-wider text-pink-400 bg-pink-500/10 px-2.5 py-1 rounded-full border border-pink-500/20">
+            Oficial
+          </span>
+        </div>
+
+        <p class="text-xs text-white/80 leading-relaxed font-light mb-4">
+          Descubre las novedades, ensayos y la cobertura fotográfica del <strong>Festival de la Voz Niño Simón 2026</strong> en el Teatro Juares.
+        </p>
+
+        <a href="https://www.instagram.com/fundacionninosimonccs" target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#f09433] via-[#e6683c] to-[#bc1888] hover:opacity-95 text-white text-xs font-semibold uppercase tracking-wider transition active:scale-95 shadow-lg shadow-pink-500/20">
+          <i class="fa-brands fa-instagram text-sm"></i>
+          <span>Ver Última Publicación en Instagram</span>
+          <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+        </a>
+
+      </div>
+    </section>
 
   </main>
 
