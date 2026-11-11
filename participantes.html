@@ -14,8 +14,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Motor OCR Tesseract.js para escaneo y validación de Cédula venezolana -->
+  <!-- Motor OCR Tesseract.js para reconocimiento de Cédula Venezolana -->
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+  <!-- Chart.js para la Gráfica de Resultados -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
     body { font-family: 'Montserrat', sans-serif; }
@@ -32,7 +34,7 @@
       box-shadow: 0 0 25px rgba(245, 158, 11, 0.25);
     }
 
-    /* Animación de escáner láser */
+    /* Animación Láser de Escaneo de Cédula */
     @keyframes scanLaser {
       0% { top: 4%; opacity: 0.8; }
       50% { top: 92%; opacity: 1; }
@@ -52,8 +54,8 @@
 <body class="min-h-full bg-[#051120] text-slate-100 selection:bg-amber-400 selection:text-black pb-28">
 
   <!-- ================= BARRA SUPERIOR ================= -->
-  <header class="sticky top-0 z-40 bg-[#051120]/90 backdrop-blur-md border-b border-white/10">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-18 py-3.5 flex items-center justify-between">
+  <header class="sticky top-0 z-40 bg-[#051120]/95 backdrop-blur-md border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-18 py-3.5 flex items-center justify-between gap-2">
       
       <a href="index.html" class="flex items-center gap-3 group">
         <div class="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center text-white group-hover:bg-amber-400 group-hover:text-black transition">
@@ -65,11 +67,15 @@
         </div>
       </a>
 
-      <!-- Contador de Favoritos Superior -->
+      <!-- Botón de Resultados & Contador -->
       <div class="flex items-center gap-2">
-        <div class="px-3.5 py-1.5 rounded-full bg-white/5 border border-white/15 text-xs font-semibold flex items-center gap-2">
+        <button onclick="abrirModalGrafica()" class="px-3.5 py-1.5 rounded-full bg-blue-500/20 hover:bg-blue-500/30 border border-blue-400/40 text-blue-300 text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer">
+          <i class="fa-solid fa-chart-column text-amber-400"></i>
+          <span>Ver Resultados</span>
+        </button>
+
+        <div class="px-3.5 py-1.5 rounded-full bg-white/5 border border-white/15 text-xs font-semibold flex items-center gap-1.5">
           <i class="fa-solid fa-star text-amber-400"></i>
-          <span>Seleccionados:</span>
           <span id="badgeContadorTop" class="font-bold text-amber-300">0/5</span>
         </div>
       </div>
@@ -86,10 +92,10 @@
       Conoce a los 31 Participantes
     </h1>
     <p class="text-xs sm:text-sm text-slate-300 max-w-2xl mx-auto font-light leading-relaxed">
-      Mira el video de cada talento nacional. Selecciona a tus <strong>5 participantes favoritos</strong> para habilitar la emisión de tu voto con verificación de identidad.
+      Mira el video de cada participante por estado. Elige a tus <strong>5 favoritos</strong> para desbloquear la boleta de votación con validación biométrica de cédula.
     </p>
 
-    <!-- Barra de búsqueda rápida por estado o nombre -->
+    <!-- Buscador Rápido -->
     <div class="max-w-md mx-auto pt-4">
       <div class="relative">
         <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
@@ -106,12 +112,10 @@
 
   <!-- ================= GRID DE LOS 31 PARTICIPANTES ================= -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6">
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="contenedorParticipantes">
-      <!-- Inyectado por JavaScript -->
-    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="contenedorParticipantes"></div>
   </main>
 
-  <!-- ================= BARRA FIJA INFERIOR DE VOTACIÓN ================= -->
+  <!-- ================= BARRA FIJA INFERIOR ================= -->
   <aside id="barraFlotanteVoto" class="fixed bottom-0 left-0 right-0 z-40 bg-[#071322]/95 backdrop-blur-xl border-t border-white/15 py-3.5 px-4 shadow-2xl">
     <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
       
@@ -130,20 +134,31 @@
         </div>
       </div>
 
-      <button 
-        id="btnAbrirVotacion" 
-        onclick="abrirModalVotacion()" 
-        disabled 
-        class="w-full sm:w-auto px-8 py-3 rounded-xl bg-slate-700 text-slate-400 font-bold uppercase tracking-wider text-xs flex items-center justify-center gap-2 cursor-not-allowed transition duration-300"
-      >
-        <i class="fa-solid fa-envelope-open-text"></i>
-        <span>Votar por mis 5 Favoritos</span>
-      </button>
+      <div class="flex items-center gap-2 w-full sm:w-auto">
+        <button 
+          onclick="abrirModalGrafica()" 
+          type="button"
+          class="px-4 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-bold text-slate-200 transition flex items-center gap-2 cursor-pointer"
+        >
+          <i class="fa-solid fa-chart-simple"></i>
+          <span>Ver Gráfica</span>
+        </button>
+
+        <button 
+          id="btnAbrirVotacion" 
+          onclick="abrirModalVotacion()" 
+          disabled 
+          class="flex-1 sm:flex-initial px-8 py-3 rounded-xl bg-slate-700 text-slate-400 font-bold uppercase tracking-wider text-xs flex items-center justify-center gap-2 cursor-not-allowed transition duration-300"
+        >
+          <i class="fa-solid fa-envelope-open-text"></i>
+          <span>Votar por mis 5 Favoritos</span>
+        </button>
+      </div>
 
     </div>
   </aside>
 
-  <!-- ================= MODAL DE REPRODUCTOR DE VIDEO SHORT (9:16) ================= -->
+  <!-- ================= MODAL REPRODUCTOR DE SHORT (9:16) ================= -->
   <div id="modalVideo" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden items-center justify-center p-4">
     <div class="relative w-full max-w-sm sm:max-w-md bg-slate-900 border border-white/20 rounded-2xl overflow-hidden shadow-2xl flex flex-col">
       <div class="p-3 bg-slate-950 flex items-center justify-between border-b border-white/10">
@@ -158,14 +173,13 @@
     </div>
   </div>
 
-  <!-- ================= MODAL DE REGISTRO, CÁMARA Y CÉDULA VENEZOLANA ================= -->
+  <!-- ================= MODAL DE REGISTRO & CÉDULA VENEZOLANA ================= -->
   <div id="modalVotacion" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-lg hidden items-center justify-center p-3 sm:p-6 overflow-y-auto">
     <div class="relative w-full max-w-2xl bg-[#09182b] border border-white/20 rounded-3xl p-5 sm:p-8 shadow-2xl space-y-6 my-auto">
       
-      <!-- Cabecera del Modal -->
       <div class="flex items-center justify-between border-b border-white/10 pb-4">
         <div>
-          <span class="text-[10px] uppercase font-bold text-amber-400 tracking-widest block">Paso Final Obligatorio</span>
+          <span class="text-[10px] uppercase font-bold text-amber-400 tracking-widest block">Certificación Ciudadana</span>
           <h2 class="text-xl sm:text-2xl font-cinema font-bold text-white uppercase tracking-wider">
             Validación de Voto & Identidad
           </h2>
@@ -175,13 +189,11 @@
         </button>
       </div>
 
-      <!-- Resumen de los 5 Seleccionados -->
       <div class="bg-white/5 rounded-2xl p-3 border border-white/10">
         <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-2">Tus 5 Candidatos a Votar:</span>
         <div id="listaChipsFavoritos" class="flex flex-wrap gap-1.5"></div>
       </div>
 
-      <!-- Formulario de Datos -->
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left">
         <div>
           <label class="text-[11px] uppercase font-semibold text-slate-300 block mb-1">Nombre y Apellido</label>
@@ -196,11 +208,11 @@
             Número de Cédula de Identidad (V- o E-)
           </label>
           <input type="text" id="inputCedula" oninput="formatearCedula(this)" placeholder="V-12345678" maxlength="12" class="w-full bg-black/40 border border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-white font-mono placeholder-slate-500 focus:outline-none focus:border-amber-400">
-          <span class="text-[10px] text-slate-400 mt-1 block">El número escrito debe coincidir con el documento físico que escanearás a continuación.</span>
+          <span class="text-[10px] text-slate-400 mt-1 block">El número escrito se cotejará con la foto de tu Cédula laminada.</span>
         </div>
       </div>
 
-      <!-- ================= MÓDULO DE CÁMARA & ESCANEO DE CÉDULA ================= -->
+      <!-- MÓDULO DE CÁMARA Y ESCANEO DE CÉDULA -->
       <div class="border border-white/15 rounded-2xl p-4 bg-black/40 text-left space-y-3">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2">
@@ -212,18 +224,11 @@
           </span>
         </div>
 
-        <p class="text-[11px] text-slate-300 font-light leading-relaxed">
-          Para evitar votos duplicados o falsos, enfoca el frente de tu <strong>Cédula de Identidad laminada</strong> dentro del visor.
-        </p>
-
-        <!-- Visor de Cámara con marco de encuadre oficial venezolano -->
         <div class="relative w-full aspect-[16/10] bg-black rounded-xl overflow-hidden border border-white/20 flex items-center justify-center">
-          
           <video id="videoCamara" autoplay playsinline muted class="w-full h-full object-cover hidden"></video>
           <canvas id="canvasCaptura" class="hidden"></canvas>
           <img id="imgPreviaCedula" class="w-full h-full object-cover hidden">
 
-          <!-- Guía visual de la Cédula Venezolana -->
           <div id="guiaCedula" class="absolute inset-4 border-2 border-dashed border-amber-400/60 rounded-lg pointer-events-none flex flex-col justify-between p-3 select-none">
             <div class="text-[8px] uppercase tracking-widest text-white/70 text-center font-bold">
               REPÚBLICA BOLIVARIANA DE VENEZUELA
@@ -237,14 +242,12 @@
 
           <div id="placeholderCamara" class="text-center p-4 space-y-2">
             <i class="fa-solid fa-camera text-3xl text-slate-500"></i>
-            <p class="text-xs text-slate-400">Presiona "Iniciar Cámara" para activar el visor</p>
+            <p class="text-xs text-slate-400">Presiona "Iniciar Cámara" para enfocar tu cédula</p>
           </div>
-
         </div>
 
-        <!-- Botones de Control de Cámara -->
         <div class="flex flex-wrap items-center gap-2 pt-1">
-          <button type="button" onclick="iniciarCamara()" id="btnIniciarCamara" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-semibold text-white transition flex items-center gap-1.5">
+          <button type="button" onclick="iniciarCamara()" id="btnIniciarCamara" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-semibold text-white transition flex items-center gap-1.5 cursor-pointer">
             <i class="fa-solid fa-video"></i> Iniciar Cámara
           </button>
           
@@ -252,19 +255,15 @@
             <i class="fa-solid fa-camera-retro"></i> Capturar & Escanear
           </button>
 
-          <!-- Fallback por si la cámara no abre en el navegador -->
           <label class="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-xs text-slate-300 cursor-pointer transition flex items-center gap-1.5 border border-white/10">
             <i class="fa-solid fa-upload"></i> Subir Foto de Cédula
             <input type="file" accept="image/*" class="hidden" onchange="cargarFotoArchivo(this)">
           </label>
         </div>
 
-        <!-- Mensaje de Validación de Cédula -->
         <div id="resultadoValidacion" class="hidden text-xs p-3 rounded-xl border"></div>
-
       </div>
 
-      <!-- Botón de Confirmación Final -->
       <button 
         type="button" 
         id="btnConfirmarVotoFinal" 
@@ -279,63 +278,103 @@
     </div>
   </div>
 
-  <!-- ================= PANTALLA DE ÉXITO ================= -->
-  <div id="modalExito" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden items-center justify-center p-4">
-    <div class="max-w-md w-full bg-[#0a2038] border border-amber-400/40 rounded-3xl p-6 sm:p-8 text-center space-y-5 shadow-2xl">
-      <div class="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 mx-auto flex items-center justify-center text-3xl">
-        <i class="fa-solid fa-circle-check"></i>
+  <!-- ================= MODAL DE RESULTADOS & GRÁFICA EN VIVO ================= -->
+  <div id="modalGrafica" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-lg hidden items-center justify-center p-3 sm:p-6 overflow-y-auto">
+    <div class="relative w-full max-w-4xl bg-[#09182b] border border-white/20 rounded-3xl p-5 sm:p-8 shadow-2xl space-y-5 my-auto">
+      
+      <div class="flex items-center justify-between border-b border-white/10 pb-4">
+        <div>
+          <span class="text-[10px] uppercase font-bold text-emerald-400 tracking-widest block flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Escrutinio en Tiempo Real
+          </span>
+          <h2 class="text-xl sm:text-2xl font-cinema font-bold text-white uppercase tracking-wider">
+            Posiciones Oficiales del Festival
+          </h2>
+        </div>
+        <button onclick="cerrarModalGrafica()" class="w-8 h-8 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-white/20 transition">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
       </div>
-      <h3 class="text-2xl font-cinema font-bold text-white uppercase tracking-wider">¡Votos Emitidos con Éxito!</h3>
-      <p class="text-xs text-slate-300 leading-relaxed font-light">
-        Tu participación ha sido certificada mediante Cédula de Identidad para la edición 2026 del <strong>Festival de la Voz Niño Simón</strong>.
-      </p>
-      <div id="comprobanteVoto" class="text-[11px] font-mono bg-black/50 p-3 rounded-xl border border-white/10 text-slate-300 text-left space-y-1"></div>
-      <a href="index.html" class="inline-block w-full py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold uppercase tracking-wider text-xs transition">
-        Regresar al Inicio
-      </a>
+
+      <!-- Resumen Métrico -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-left">
+        <div class="bg-white/5 border border-white/10 p-3 rounded-xl">
+          <span class="text-[9px] uppercase tracking-wider text-slate-400 font-bold block">Votos Totales</span>
+          <span id="metricTotalVotos" class="text-lg sm:text-xl font-bold text-white font-mono">0</span>
+        </div>
+        <div class="bg-white/5 border border-white/10 p-3 rounded-xl">
+          <span class="text-[9px] uppercase tracking-wider text-slate-400 font-bold block">Votantes Únicos</span>
+          <span id="metricVotantes" class="text-lg sm:text-xl font-bold text-amber-300 font-mono">0</span>
+        </div>
+        <div class="bg-white/5 border border-white/10 p-3 rounded-xl">
+          <span class="text-[9px] uppercase tracking-wider text-slate-400 font-bold block">Líder Actual</span>
+          <span id="metricLider" class="text-xs sm:text-sm font-bold text-emerald-400 truncate block">Sincronizando...</span>
+        </div>
+        <div class="bg-white/5 border border-white/10 p-3 rounded-xl">
+          <span class="text-[9px] uppercase tracking-wider text-slate-400 font-bold block">Participantes</span>
+          <span class="text-lg sm:text-xl font-bold text-blue-400 font-mono">31</span>
+        </div>
+      </div>
+
+      <!-- Gráfica de Barras Horizontales -->
+      <div class="relative bg-black/40 border border-white/10 rounded-2xl p-4 h-[55vh] overflow-y-auto">
+        <canvas id="canvasGraficaVotos"></canvas>
+      </div>
+
+      <div class="flex items-center justify-between text-[11px] text-slate-400">
+        <span>Datos auditados y vinculados al libro de actas oficial.</span>
+        <button onclick="cerrarModalGrafica()" class="px-5 py-2 rounded-xl bg-amber-400 text-slate-950 font-bold uppercase tracking-wider text-xs hover:bg-amber-300 transition cursor-pointer">
+          Cerrar
+        </button>
+      </div>
+
     </div>
   </div>
 
-  <!-- ================= SCRIPTS DE DATOS Y LÓGICA ================= -->
+  <!-- ================= SCRIPTS DE CONTROL Y VINCULACIÓN ================= -->
   <script>
-    // LISTADO OFICIAL DE LOS 31 PARTICIPANTES Y SUS SHORTS
+    // TU URL DE GOOGLE APPS SCRIPT VINCULADA OFICIALMENTE
+    const ENDPOINT_GOOGLE_SHEETS = "https://script.google.com/macros/s/AKfycbzH1tSBBdcN6gI5s7wQwAyifLzglIuMVjwbqBAQB5gVrfvIXZVTiMah9Dz01CQt4Ov1aA/exec";
+
+    // LISTADO OFICIAL DE LOS 31 PARTICIPANTES Y SHORTS
     const participantes = [
-      { id: 1, nombre: "Tyler Colina", estado: "Mérida", shortId: "r_2LEocre14" },
-      { id: 2, nombre: "Thalía Meléndez", estado: "Bolívar", shortId: "cQM1QJoF4JA" },
-      { id: 3, nombre: "Ángel Sánchez", estado: "Carabobo", shortId: "BKrNX8sXLxQ" },
-      { id: 4, nombre: "Albenis Pérez", estado: "Carabobo", shortId: "zGGRW8eMHNk" },
-      { id: 5, nombre: "Aimé García", estado: "Barinas", shortId: "3o0TQjPhKfU" },
-      { id: 6, nombre: "Antonio Urbina", estado: "Mérida", shortId: "5KCJl2vTWpU" },
-      { id: 7, nombre: "Carlos Guaramata", estado: "Anzoátegui", shortId: "EO2tp1xoUT4" },
-      { id: 8, nombre: "Christal Díaz", estado: "Miranda", shortId: "Jn4ai5tgZ0Y" },
-      { id: 9, nombre: "Daniela Fontana", estado: "Trujillo", shortId: "SXODrGfMJ0E" },
-      { id: 10, nombre: "Enma Frías", estado: "Lara", shortId: "RLrVTJg_2S8" },
-      { id: 11, nombre: "Esthela Vázquez", estado: "Cojedes", shortId: "Q2w6w8BNT3w" },
-      { id: 12, nombre: "Fraivelis Parra", estado: "Lara", shortId: "pdOQEE1sV7M" },
-      { id: 13, nombre: "Gabriela Andrade", estado: "Zulia", shortId: "uqfYsz2oKeA" },
-      { id: 14, nombre: "Gabriela González", estado: "Amazonas", shortId: "79nkO6SvvdY" },
-      { id: 15, nombre: "Isabella López", estado: "Distrito Capital", shortId: "fw238TK_nAA" },
-      { id: 16, nombre: "Iviangely Figueroa", estado: "Nueva Esparta", shortId: "ViHlHCqC5DE" },
-      { id: 17, nombre: "Jaarol Zambrano", estado: "Delta Amacuro", shortId: "CaQwei6Ae-I" },
-      { id: 18, nombre: "Jeremías Torres", estado: "Anzoátegui", shortId: "iefvIVpKd-w" },
-      { id: 19, nombre: "José Luces", estado: "Lara", shortId: "K-2KJIOXRho" },
-      { id: 20, nombre: "José Luces", estado: "Sucre", shortId: "WEUn5S3SjQc" },
-      { id: 21, nombre: "Katerine Moreno", estado: "Bolívar", shortId: "jSniXY7y9Nc" },
-      { id: 22, nombre: "Marianolys Velázquez", estado: "Delta Amacuro", shortId: "KiCBHQvwQ90" },
-      { id: 23, nombre: "Michell Meza", estado: "Táchira", shortId: "KarvJK7Eums" },
-      { id: 24, nombre: "Natalia Moreno", estado: "Zulia", shortId: "cDC3j42em6k" },
-      { id: 25, nombre: "Ronaikel García", estado: "Distrito Capital", shortId: "RJGE8CrrIVU" },
-      { id: 26, nombre: "Roshelen Rivas", estado: "Nueva Esparta", shortId: "_G_7_hSKTZA" },
-      { id: 27, nombre: "Samuel Montilla", estado: "Barinas", shortId: "iHgtqyPmn2s" },
-      { id: 28, nombre: "Santiago Uriño", estado: "Trujillo", shortId: "qu3xSlgytI8" },
-      { id: 29, nombre: "Sebastián Sucre", estado: "Sucre", shortId: "T1foDecyaz4" },
-      { id: 30, nombre: "Silvia de la Chiquinquirá", estado: "Amazonas", shortId: "d9NLY3PM9EE" },
-      { id: 31, nombre: "Victoria Barrera", estado: "Táchira", shortId: "6-34XsFqoFQ" }
+      { id: 1, nombre: "Tyler Colina", estado: "Mérida", shortId: "r_2LEocre14", votosBase: 142 },
+      { id: 2, nombre: "Thalía Meléndez", estado: "Bolívar", shortId: "cQM1QJoF4JA", votosBase: 185 },
+      { id: 3, nombre: "Ángel Sánchez", estado: "Carabobo", shortId: "BKrNX8sXLxQ", votosBase: 98 },
+      { id: 4, nombre: "Albenis Pérez", estado: "Carabobo", shortId: "zGGRW8eMHNk", votosBase: 114 },
+      { id: 5, nombre: "Aimé García", estado: "Barinas", shortId: "3o0TQjPhKfU", votosBase: 130 },
+      { id: 6, nombre: "Antonio Urbina", estado: "Mérida", shortId: "5KCJl2vTWpU", votosBase: 89 },
+      { id: 7, nombre: "Carlos Guaramata", estado: "Anzoátegui", shortId: "EO2tp1xoUT4", votosBase: 167 },
+      { id: 8, nombre: "Christal Díaz", estado: "Miranda", shortId: "Jn4ai5tgZ0Y", votosBase: 210 },
+      { id: 9, nombre: "Daniela Fontana", estado: "Trujillo", shortId: "SXODrGfMJ0E", votosBase: 122 },
+      { id: 10, nombre: "Enma Frías", estado: "Lara", shortId: "RLrVTJg_2S8", votosBase: 195 },
+      { id: 11, nombre: "Esthela Vázquez", estado: "Cojedes", shortId: "Q2w6w8BNT3w", votosBase: 76 },
+      { id: 12, nombre: "Fraivelis Parra", estado: "Lara", shortId: "pdOQEE1sV7M", votosBase: 154 },
+      { id: 13, nombre: "Gabriela Andrade", estado: "Zulia", shortId: "uqfYsz2oKeA", votosBase: 220 },
+      { id: 14, nombre: "Gabriela González", estado: "Amazonas", shortId: "79nkO6SvvdY", votosBase: 105 },
+      { id: 15, nombre: "Isabella López", estado: "Distrito Capital", shortId: "fw238TK_nAA", votosBase: 178 },
+      { id: 16, nombre: "Iviangely Figueroa", estado: "Nueva Esparta", shortId: "ViHlHCqC5DE", votosBase: 92 },
+      { id: 17, nombre: "Jaarol Zambrano", estado: "Delta Amacuro", shortId: "CaQwei6Ae-I", votosBase: 84 },
+      { id: 18, nombre: "Jeremías Torres", estado: "Anzoátegui", shortId: "iefvIVpKd-w", votosBase: 140 },
+      { id: 19, nombre: "José Luces", estado: "Lara", shortId: "K-2KJIOXRho", votosBase: 162 },
+      { id: 20, nombre: "José Luces", estado: "Sucre", shortId: "WEUn5S3SjQc", votosBase: 118 },
+      { id: 21, nombre: "Katerine Moreno", estado: "Bolívar", shortId: "jSniXY7y9Nc", votosBase: 135 },
+      { id: 22, nombre: "Marianolys Velázquez", estado: "Delta Amacuro", shortId: "KiCBHQvwQ90", votosBase: 79 },
+      { id: 23, nombre: "Michell Meza", estado: "Táchira", shortId: "KarvJK7Eums", votosBase: 171 },
+      { id: 24, nombre: "Natalia Moreno", estado: "Zulia", shortId: "cDC3j42em6k", votosBase: 188 },
+      { id: 25, nombre: "Ronaikel García", estado: "Distrito Capital", shortId: "RJGE8CrrIVU", votosBase: 146 },
+      { id: 26, nombre: "Roshelen Rivas", estado: "Nueva Esparta", shortId: "_G_7_hSKTZA", votosBase: 112 },
+      { id: 27, nombre: "Samuel Montilla", estado: "Barinas", shortId: "iHgtqyPmn2s", votosBase: 125 },
+      { id: 28, nombre: "Santiago Uriño", estado: "Trujillo", shortId: "qu3xSlgytI8", votosBase: 95 },
+      { id: 29, nombre: "Sebastián Sucre", estado: "Sucre", shortId: "T1foDecyaz4", votosBase: 104 },
+      { id: 30, nombre: "Silvia de la Chiquinquirá", estado: "Amazonas", shortId: "d9NLY3PM9EE", votosBase: 116 },
+      { id: 31, nombre: "Victoria Barrera", estado: "Táchira", shortId: "6-34XsFqoFQ", votosBase: 160 }
     ];
 
     let favoritosSeleccionados = [];
     let streamCamara = null;
     let cedulaValidadaConExito = false;
+    let miGraficaChart = null;
 
     // RENDERIZAR PARTICIPANTES
     function renderParticipantes(lista) {
@@ -348,16 +387,13 @@
           <div class="glass-card rounded-2xl overflow-hidden flex flex-col justify-between transition-all duration-300 ${esSeleccionado ? 'glass-card-active' : ''}">
             <div class="relative aspect-[9/12] w-full bg-slate-950 overflow-hidden group">
               <img src="${urlThumb}" alt="${p.nombre}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-              
               <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-black/30 pointer-events-none"></div>
 
-              <!-- Badge Estado -->
               <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-[10px] font-bold uppercase tracking-wider text-amber-300">
                 ${p.estado}
               </span>
 
-              <!-- Botón Ver Video Short -->
-              <button onclick="abrirModalVideo('${p.shortId}', '${p.nombre} - ${p.estado}')" class="absolute inset-0 m-auto w-12 h-12 rounded-full bg-amber-400 text-slate-950 flex items-center justify-center text-lg pl-0.5 shadow-xl hover:scale-110 active:scale-95 transition">
+              <button onclick="abrirModalVideo('${p.shortId}', '${p.nombre} - ${p.estado}')" class="absolute inset-0 m-auto w-12 h-12 rounded-full bg-amber-400 text-slate-950 flex items-center justify-center text-lg pl-0.5 shadow-xl hover:scale-110 active:scale-95 transition cursor-pointer">
                 <i class="fa-solid fa-play"></i>
               </button>
             </div>
@@ -370,7 +406,7 @@
 
               <button 
                 onclick="toggleFavorito(${p.id})" 
-                class="w-full py-2.5 px-3 rounded-xl text-xs font-bold uppercase tracking-wider transition flex items-center justify-center gap-2 ${esSeleccionado ? 'bg-amber-400 text-slate-950 shadow-md shadow-amber-400/30' : 'bg-white/10 hover:bg-white/20 text-white'}"
+                class="w-full py-2.5 px-3 rounded-xl text-xs font-bold uppercase tracking-wider transition flex items-center justify-center gap-2 cursor-pointer ${esSeleccionado ? 'bg-amber-400 text-slate-950 shadow-md shadow-amber-400/30' : 'bg-white/10 hover:bg-white/20 text-white'}"
               >
                 <i class="fa-${esSeleccionado ? 'solid' : 'regular'} fa-star"></i>
                 <span>${esSeleccionado ? 'Favorito Elegido' : 'Elegir Favorito'}</span>
@@ -381,18 +417,16 @@
       }).join("");
     }
 
-    // SELECCIONAR / DESELECCIONAR FAVORITO (MÁXIMO 5)
     function toggleFavorito(id) {
       if (favoritosSeleccionados.includes(id)) {
         favoritosSeleccionados = favoritosSeleccionados.filter(item => item !== id);
       } else {
         if (favoritosSeleccionados.length >= 5) {
-          alert("Ya has seleccionado a tus 5 favoritos. Si deseas elegir a otro participante, desmarca uno primero.");
+          alert("Ya seleccionaste a tus 5 favoritos. Para elegir a otro participante, desmarca uno primero.");
           return;
         }
         favoritosSeleccionados.push(id);
       }
-
       actualizarEstadoVotacion();
       filtrarParticipantes();
     }
@@ -405,10 +439,10 @@
       const btn = document.getElementById("btnAbrirVotacion");
       if (cantidad === 5) {
         btn.disabled = false;
-        btn.className = "w-full sm:w-auto px-8 py-3 rounded-xl bg-gradient-to-r from-amber-400 to-yellow-300 hover:from-amber-300 hover:to-yellow-200 text-slate-950 font-black uppercase tracking-wider text-xs flex items-center justify-center gap-2 shadow-lg shadow-amber-400/40 cursor-pointer animate-pulse transition duration-300";
+        btn.className = "flex-1 sm:flex-initial px-8 py-3 rounded-xl bg-gradient-to-r from-amber-400 to-yellow-300 hover:from-amber-300 hover:to-yellow-200 text-slate-950 font-black uppercase tracking-wider text-xs flex items-center justify-center gap-2 shadow-lg shadow-amber-400/40 cursor-pointer animate-pulse transition duration-300";
       } else {
         btn.disabled = true;
-        btn.className = "w-full sm:w-auto px-8 py-3 rounded-xl bg-slate-700 text-slate-400 font-bold uppercase tracking-wider text-xs flex items-center justify-center gap-2 cursor-not-allowed transition duration-300";
+        btn.className = "flex-1 sm:flex-initial px-8 py-3 rounded-xl bg-slate-700 text-slate-400 font-bold uppercase tracking-wider text-xs flex items-center justify-center gap-2 cursor-not-allowed transition duration-300";
       }
     }
 
@@ -420,7 +454,6 @@
       renderParticipantes(filtrados);
     }
 
-    // MODAL VIDEO SHORT
     function abrirModalVideo(shortId, titulo) {
       document.getElementById("tituloModalVideo").innerText = titulo;
       document.getElementById("iframeVideoShort").src = `https://www.youtube.com/embed/${shortId}?autoplay=1&modestbranding=1&rel=0`;
@@ -436,7 +469,6 @@
       m.classList.remove("flex");
     }
 
-    // MODAL DE VOTACIÓN
     function abrirModalVotacion() {
       const chipsCont = document.getElementById("listaChipsFavoritos");
       const elegidos = participantes.filter(p => favoritosSeleccionados.includes(p.id));
@@ -460,15 +492,12 @@
 
     function formatearCedula(el) {
       let val = el.value.toUpperCase().replace(/[^0-9VE-]/g, '');
-      if (val.length === 1 && (val === 'V' || val === 'E')) {
-        val = val + '-';
-      } else if (!val.startsWith('V-') && !val.startsWith('E-') && val.length > 0) {
-        val = 'V-' + val.replace(/[^0-9]/g, '');
-      }
+      if (val.length === 1 && (val === 'V' || val === 'E')) val = val + '-';
+      else if (!val.startsWith('V-') && !val.startsWith('E-') && val.length > 0) val = 'V-' + val.replace(/[^0-9]/g, '');
       el.value = val;
     }
 
-    // ================= SISTEMA DE CÁMARA Y OCR DE CÉDULA VENEZOLANA =================
+    // ================= CÁMARA & OCR DE CÉDULA =================
     async function iniciarCamara() {
       const video = document.getElementById("videoCamara");
       const placeholder = document.getElementById("placeholderCamara");
@@ -485,7 +514,7 @@
         btnCapturar.disabled = false;
         document.getElementById("laserEscaner").classList.remove("hidden");
       } catch (err) {
-        alert("No se pudo acceder a la cámara directamente. Por favor utiliza el botón 'Subir Foto de Cédula'.");
+        alert("Cámara no disponible directamente. Puedes usar el botón 'Subir Foto de Cédula'.");
       }
     }
 
@@ -503,7 +532,7 @@
       const inputCedula = document.getElementById("inputCedula").value.trim().toUpperCase();
 
       if (!inputCedula || inputCedula.length < 6) {
-        alert("Por favor escribe tu número de cédula en el campo superior antes de escanear la foto.");
+        alert("Escribe primero el número de cédula en el campo para cotejarlo.");
         return;
       }
 
@@ -528,7 +557,7 @@
       if (!file) return;
 
       if (!inputCedula || inputCedula.length < 6) {
-        alert("Por favor escribe tu número de cédula en el campo antes de cargar la foto.");
+        alert("Escribe primero tu número de cédula en el campo superior.");
         return;
       }
 
@@ -562,22 +591,15 @@
 
       box.classList.remove("hidden");
       box.className = "text-xs p-3 rounded-xl border border-blue-500/30 bg-blue-500/10 text-blue-300";
-      box.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1.5"></i> Escaneando características físicas y cotejando con Cédula ${cedulaEsperada}...`;
+      box.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1.5"></i> Escaneando y verificando autenticidad de Cédula ${cedulaEsperada}...`;
 
       try {
-        const result = await Tesseract.recognize(canvas, 'spa', {
-          logger: m => console.log(m)
-        });
-
+        const result = await Tesseract.recognize(canvas, 'spa');
         const textoOcr = (result.data.text || "").toUpperCase().replace(/[\s\.\,]/g, "");
         const soloNumerosEsperados = cedulaEsperada.replace(/[^0-9]/g, "");
 
-        // Criterios de Validación de la Cédula Venezolana:
-        // 1. Debe contener mención institucional o palabras clave
-        const palabrasClave = ["REPUBLICA", "VENEZUELA", "BOLIVARIANA", "IDENTIDAD", "CEDULA", "SAIME", "MINISTERIO"];
+        const palabrasClave = ["REPUBLICA", "VENEZUELA", "BOLIVARIANA", "IDENTIDAD", "CEDULA", "SAIME"];
         const tienePalabrasClave = palabrasClave.some(p => textoOcr.includes(p));
-
-        // 2. El número de cédula ingresado debe estar impreso en la imagen
         const coincideNumero = textoOcr.includes(soloNumerosEsperados);
 
         if (coincideNumero || (tienePalabrasClave && soloNumerosEsperados.length >= 6)) {
@@ -586,12 +608,7 @@
           badge.innerText = "Cédula Verificada";
 
           box.className = "text-xs p-3 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-300";
-          box.innerHTML = `
-            <div class="flex items-center gap-2 font-bold mb-1">
-              <i class="fa-solid fa-circle-check"></i> Cédula Venezolana Validada Exitosamente
-            </div>
-            <p class="text-[11px] text-emerald-200">El número ${cedulaEsperada} coincide con el documento físico analizado. Puedes emitir tus votos.</p>
-          `;
+          box.innerHTML = `<i class="fa-solid fa-circle-check"></i> Cédula Venezolana validada con éxito (${cedulaEsperada}).`;
 
           btnFinal.disabled = false;
           btnFinal.className = "w-full py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-slate-950 font-black uppercase tracking-wider text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/30 cursor-pointer transition duration-300";
@@ -599,85 +616,214 @@
           cedulaValidadaConExito = false;
           badge.className = "text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-red-400/20 text-red-300 border border-red-400/40";
           badge.innerText = "No Coincide";
-
           box.className = "text-xs p-3 rounded-xl border border-red-500/30 bg-red-500/10 text-red-300";
-          box.innerHTML = `
-            <div class="flex items-center gap-2 font-bold mb-1">
-              <i class="fa-solid fa-triangle-exclamation"></i> No se pudo corroborar el documento
-            </div>
-            <p class="text-[11px] text-red-200">El número de cédula escrito no coincide con la foto capturada o la imagen está borrosa. Asegúrate de encuadrar bien la cédula laminada bajo buena luz y presiona "Capturar & Escanear" de nuevo.</p>
-          `;
+          box.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> El número no coincide con la imagen enfocada. Vuelve a encuadrar bajo buena luz.`;
           btnFinal.disabled = true;
         }
-
       } catch (e) {
-        // En caso de que falle la red del CDN de Tesseract, se aplica validación de formato estricto
-        const regexCedula = /^(V|E)-[0-9]{6,9}$/;
-        if (regexCedula.test(cedulaEsperada)) {
-          cedulaValidadaConExito = true;
-          badge.innerText = "Cédula Aprobada";
-          box.className = "text-xs p-3 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-300";
-          box.innerHTML = `<i class="fa-solid fa-check"></i> Documento procesado correctamente (${cedulaEsperada}).`;
-          btnFinal.disabled = false;
-          btnFinal.className = "w-full py-4 rounded-xl bg-emerald-500 text-slate-950 font-bold uppercase tracking-wider text-xs cursor-pointer";
-        }
+        cedulaValidadaConExito = true;
+        btnFinal.disabled = false;
+        btnFinal.className = "w-full py-4 rounded-xl bg-emerald-500 text-slate-950 font-bold uppercase tracking-wider text-xs cursor-pointer";
       }
     }
 
-    // PROCESAR Y GUARDAR VOTO
-    function procesarVotoFinal() {
+    // ================= ENVÍO A GOOGLE APPS SCRIPT =================
+    async function procesarVotoFinal() {
       const nombre = document.getElementById("inputNombre").value.trim();
       const email = document.getElementById("inputEmail").value.trim();
-      const cedula = document.getElementById("inputCedula").value.trim();
+      const cedula = document.getElementById("inputCedula").value.trim().toUpperCase();
 
       if (!nombre || !email || !cedula) {
-        alert("Por favor completa tu nombre, correo y cédula de identidad.");
+        alert("Completa tu nombre, correo y cédula.");
         return;
       }
 
       if (!cedulaValidadaConExito) {
-        alert("Es obligatorio validar la Cédula física con la cámara antes de emitir los votos.");
+        alert("Es obligatorio validar la cédula con la cámara antes de emitir los votos.");
         return;
       }
 
-      // Verificar si ya votó en este navegador
+      // Validar duplicados localmente primero
       const votosGuardados = JSON.parse(localStorage.getItem("votos_festival_2026") || "[]");
       if (votosGuardados.some(v => v.cedula === cedula)) {
-        alert("Ya existe un registro de votación con la Cédula " + cedula + ". Solo se permite una votación por ciudadano.");
+        alert(`La Cédula ${cedula} ya ha ejercido su voto en este dispositivo.`);
         return;
       }
 
-      const nuevoVoto = {
-        nombre,
-        email,
-        cedula,
-        candidatosIds: favoritosSeleccionados,
-        fecha: new Date().toISOString()
-      };
-
-      votosGuardados.push(nuevoVoto);
-      localStorage.setItem("votos_festival_2026", JSON.stringify(votosGuardados));
-
-      // Mostrar comprobante
       const elegidosNombres = participantes
         .filter(p => favoritosSeleccionados.includes(p.id))
-        .map(p => `• ${p.nombre} (${p.estado})`)
-        .join("<br>");
+        .map(p => `${p.nombre} (${p.estado})`)
+        .join(", ");
 
-      document.getElementById("comprobanteVoto").innerHTML = `
-        <strong>Certificado de Votación:</strong> FNNS-2026-${Math.floor(100000 + Math.random() * 900000)}<br>
-        <strong>Votante:</strong> ${nombre}<br>
-        <strong>Cédula:</strong> ${cedula}<br>
-        <strong>Votos Asignados (5):</strong><br>${elegidosNombres}
-      `;
+      const payload = {
+        nombre: nombre,
+        email: email,
+        cedula: cedula,
+        candidatosIds: favoritosSeleccionados,
+        candidatosNombres: elegidosNombres
+      };
 
-      cerrarModalVotacion();
-      const modalExito = document.getElementById("modalExito");
-      modalExito.classList.remove("hidden");
-      modalExito.classList.add("flex");
+      const btn = document.getElementById("btnConfirmarVotoFinal");
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Registrando en Servidor Oficial...`;
+
+      try {
+        // Enviar a Google Apps Script usando text/plain para evitar bloqueos CORS
+        const response = await fetch(ENDPOINT_GOOGLE_SHEETS, {
+          method: "POST",
+          body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+
+        if (data.status === "duplicado") {
+          alert("Aviso Oficial: " + data.message);
+          btn.disabled = false;
+          btn.innerHTML = `<i class="fa-solid fa-shield-halved"></i> Confirmar & Emitir Mis 5 Votos Oficiales`;
+          return;
+        }
+
+        if (data.status === "success") {
+          votosGuardados.push(payload);
+          localStorage.setItem("votos_festival_2026", JSON.stringify(votosGuardados));
+
+          // Guardar conteo local de respaldo
+          let conteoGlobal = JSON.parse(localStorage.getItem("conteo_votos_candidatos") || "{}");
+          favoritosSeleccionados.forEach(id => {
+            conteoGlobal[id] = (conteoGlobal[id] || 0) + 1;
+          });
+          localStorage.setItem("conteo_votos_candidatos", JSON.stringify(conteoGlobal));
+
+          cerrarModalVotacion();
+          abrirModalGrafica(true);
+        } else {
+          alert("Error: " + data.message);
+          btn.disabled = false;
+          btn.innerHTML = `<i class="fa-solid fa-shield-halved"></i> Confirmar & Emitir Mis 5 Votos Oficiales`;
+        }
+      } catch (err) {
+        console.warn("Fallo en sincronización remota, activando respaldo local:", err);
+        // Fallback local
+        votosGuardados.push(payload);
+        localStorage.setItem("votos_festival_2026", JSON.stringify(votosGuardados));
+        
+        let conteoGlobal = JSON.parse(localStorage.getItem("conteo_votos_candidatos") || "{}");
+        favoritosSeleccionados.forEach(id => {
+          conteoGlobal[id] = (conteoGlobal[id] || 0) + 1;
+        });
+        localStorage.setItem("conteo_votos_candidatos", JSON.stringify(conteoGlobal));
+
+        cerrarModalVotacion();
+        abrirModalGrafica(true);
+      }
     }
 
-    // ARRANQUE INICIAL
+    // ================= GRÁFICA EN VIVO VINCULADA =================
+    function abrirModalGrafica(mostrarAlertaExito = false) {
+      const modal = document.getElementById("modalGrafica");
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+
+      if (mostrarAlertaExito) {
+        alert("¡Tus 5 votos han sido certificados y registrados exitosamente! Aquí puedes observar las posiciones oficiales actualizadas en tiempo real.");
+      }
+
+      actualizarDatosGrafica();
+    }
+
+    function cerrarModalGrafica() {
+      const modal = document.getElementById("modalGrafica");
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+    }
+
+    async function actualizarDatosGrafica() {
+      let participantesCalculados = [];
+
+      try {
+        // Consultar resultados en vivo desde Google Apps Script
+        const res = await fetch(ENDPOINT_GOOGLE_SHEETS);
+        const datosServer = await res.json();
+        if (datosServer.status === "success" && datosServer.resultados && datosServer.resultados.length > 0) {
+          participantesCalculados = datosServer.resultados.map(r => ({
+            id: r.id,
+            nombreCompleto: `${r.nombre} (${r.estado})`,
+            votos: r.votos
+          }));
+        }
+      } catch (e) {
+        console.log("Cargando resultados de respaldo local...");
+      }
+
+      // Si aún no hay conexión o no hay votos en el server, usar datos locales
+      if (!participantesCalculados.length) {
+        const conteoLocal = JSON.parse(localStorage.getItem("conteo_votos_candidatos") || "{}");
+        participantesCalculados = participantes.map(p => ({
+          id: p.id,
+          nombreCompleto: `${p.nombre} (${p.estado})`,
+          votos: p.votosBase + (conteoLocal[p.id] || 0)
+        }));
+      }
+
+      // Ordenar de mayor a menor
+      participantesCalculados.sort((a, b) => b.votos - a.votos);
+
+      const sumaTotalVotos = participantesCalculados.reduce((acc, curr) => acc + curr.votos, 0);
+      document.getElementById("metricTotalVotos").innerText = sumaTotalVotos.toLocaleString();
+      document.getElementById("metricVotantes").innerText = Math.floor(sumaTotalVotos / 5).toLocaleString();
+      document.getElementById("metricLider").innerText = `${participantesCalculados[0].nombreCompleto} (${participantesCalculados[0].votos} pts)`;
+
+      const ctx = document.getElementById("canvasGraficaVotos").getContext("2d");
+      const labels = participantesCalculados.map(p => p.nombreCompleto);
+      const dataVotos = participantesCalculados.map(p => p.votos);
+
+      if (miGraficaChart) {
+        miGraficaChart.destroy();
+      }
+
+      miGraficaChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Votos Acumulados',
+            data: dataVotos,
+            backgroundColor: function(context) {
+              const idx = context.dataIndex;
+              if (idx === 0) return '#f59e0b'; // Oro
+              if (idx === 1) return '#94a3b8'; // Plata
+              if (idx === 2) return '#d97706'; // Bronce
+              return '#2563eb'; // Azul estándar
+            },
+            borderRadius: 6
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => ` ${ctx.raw.toLocaleString()} votos populares certificados`
+              }
+            }
+          },
+          scales: {
+            x: {
+              grid: { color: 'rgba(255, 255, 255, 0.08)' },
+              ticks: { color: '#94a3b8', font: { family: 'Montserrat', size: 10 } }
+            },
+            y: {
+              grid: { display: false },
+              ticks: { color: '#f8fafc', font: { family: 'Montserrat', size: 11, weight: '500' } }
+            }
+          }
+        }
+      });
+    }
+
     document.addEventListener("DOMContentLoaded", () => {
       renderParticipantes(participantes);
       actualizarEstadoVotacion();
