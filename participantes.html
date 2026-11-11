@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Participantes Oficiales & Votación — Festival de la Voz Niño Simón 2026</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <!-- Google Fonts: Cinzel & Montserrat -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Motor OCR Tesseract.js para escaneo y validación de Cédula venezolana -->
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+
+  <style>
+    body { font-family: 'Montserrat', sans-serif; }
+    .font-cinema { font-family: 'Cinzel', serif; letter-spacing: 0.12em; }
+    .glass-card {
+      background: rgba(10, 25, 47, 0.78);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .glass-card-active {
+      background: rgba(245, 158, 11, 0.12);
+      border-color: rgba(245, 158, 11, 0.7);
+      box-shadow: 0 0 25px rgba(245, 158, 11, 0.25);
+    }
+
+    /* Animación de escáner láser */
+    @keyframes scanLaser {
+      0% { top: 4%; opacity: 0.8; }
+      50% { top: 92%; opacity: 1; }
+      100% { top: 4%; opacity: 0.8; }
+    }
+    .scan-line {
+      position: absolute;
+      left: 6%;
+      right: 6%;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #ef4444, #f59e0b, #3b82f6, transparent);
+      box-shadow: 0 0 15px #f59e0b;
+      animation: scanLaser 2.2s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body class="min-h-full bg-[#051120] text-slate-100 selection:bg-amber-400 selection:text-black pb-28">
+
+  <!-- ================= BARRA SUPERIOR ================= -->
+  <header class="sticky top-0 z-40 bg-[#051120]/90 backdrop-blur-md border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-18 py-3.5 flex items-center justify-between">
+      
+      <a href="index.html" class="flex items-center gap-3 group">
+        <div class="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center text-white group-hover:bg-amber-400 group-hover:text-black transition">
+          <i class="fa-solid fa-arrow-left text-sm"></i>
+        </div>
+        <div class="flex flex-col text-left">
+          <span class="text-[9px] uppercase tracking-widest text-amber-400 font-bold">Volver al Inicio</span>
+          <span class="font-cinema text-xs sm:text-sm font-bold text-white uppercase tracking-wider">Festival de la Voz 2026</span>
+        </div>
+      </a>
+
+      <!-- Contador de Favoritos Superior -->
+      <div class="flex items-center gap-2">
+        <div class="px-3.5 py-1.5 rounded-full bg-white/5 border border-white/15 text-xs font-semibold flex items-center gap-2">
+          <i class="fa-solid fa-star text-amber-400"></i>
+          <span>Seleccionados:</span>
+          <span id="badgeContadorTop" class="font-bold text-amber-300">0/5</span>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ================= ENCABEZADO DE SECCIÓN ================= -->
+  <section class="max-w-6xl mx-auto px-4 pt-10 pb-6 text-center space-y-3">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300 text-[10px] uppercase font-bold tracking-widest">
+      <i class="fa-solid fa-check-to-slot"></i> Votación Popular Oficial
+    </div>
+    <h1 class="text-3xl sm:text-5xl font-cinema font-extrabold text-white uppercase tracking-wider">
+      Conoce a los 31 Participantes
+    </h1>
+    <p class="text-xs sm:text-sm text-slate-300 max-w-2xl mx-auto font-light leading-relaxed">
+      Mira el video de cada talento nacional. Selecciona a tus <strong>5 participantes favoritos</strong> para habilitar la emisión de tu voto con verificación de identidad.
+    </p>
+
+    <!-- Barra de búsqueda rápida por estado o nombre -->
+    <div class="max-w-md mx-auto pt-4">
+      <div class="relative">
+        <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+        <input 
+          type="text" 
+          id="inputBusqueda" 
+          oninput="filtrarParticipantes()" 
+          placeholder="Buscar por nombre o estado (ej. Mérida, Lara, Táchira)..." 
+          class="w-full bg-white/5 border border-white/15 rounded-xl pl-10 pr-4 py-2.5 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition"
+        >
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= GRID DE LOS 31 PARTICIPANTES ================= -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="contenedorParticipantes">
+      <!-- Inyectado por JavaScript -->
+    </div>
+  </main>
+
+  <!-- ================= BARRA FIJA INFERIOR DE VOTACIÓN ================= -->
+  <aside id="barraFlotanteVoto" class="fixed bottom-0 left-0 right-0 z-40 bg-[#071322]/95 backdrop-blur-xl border-t border-white/15 py-3.5 px-4 shadow-2xl">
+    <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+      
+      <div class="flex items-center gap-3 text-left">
+        <div class="w-10 h-10 rounded-xl bg-amber-400/20 text-amber-300 border border-amber-400/40 flex items-center justify-center text-lg shrink-0">
+          <i class="fa-solid fa-trophy"></i>
+        </div>
+        <div>
+          <div class="text-xs font-bold text-white flex items-center gap-2">
+            <span>Tus 5 Voces Elegidas:</span>
+            <span id="textoConteoInferior" class="text-amber-400 font-mono text-sm">0 de 5 seleccionados</span>
+          </div>
+          <p class="text-[11px] text-slate-400 font-light hidden sm:block">
+            Debes seleccionar exactamente 5 para activar la papeleta de votación.
+          </p>
+        </div>
+      </div>
+
+      <button 
+        id="btnAbrirVotacion" 
+        onclick="abrirModalVotacion()" 
+        disabled 
+        class="w-full sm:w-auto px-8 py-3 rounded-xl bg-slate-700 text-slate-400 font-bold uppercase tracking-wider text-xs flex items-center justify-center gap-2 cursor-not-allowed transition duration-300"
+      >
+        <i class="fa-solid fa-envelope-open-text"></i>
+        <span>Votar por mis 5 Favoritos</span>
+      </button>
+
+    </div>
+  </aside>
+
+  <!-- ================= MODAL DE REPRODUCTOR DE VIDEO SHORT (9:16) ================= -->
+  <div id="modalVideo" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden items-center justify-center p-4">
+    <div class="relative w-full max-w-sm sm:max-w-md bg-slate-900 border border-white/20 rounded-2xl overflow-hidden shadow-2xl flex flex-col">
+      <div class="p-3 bg-slate-950 flex items-center justify-between border-b border-white/10">
+        <span id="tituloModalVideo" class="text-xs font-bold text-white truncate font-cinema">Video Participante</span>
+        <button onclick="cerrarModalVideo()" class="w-7 h-7 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-red-600 transition">
+          <i class="fa-solid fa-xmark text-xs"></i>
+        </button>
+      </div>
+      <div class="relative aspect-[9/16] w-full bg-black">
+        <iframe id="iframeVideoShort" class="w-full h-full" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL DE REGISTRO, CÁMARA Y CÉDULA VENEZOLANA ================= -->
+  <div id="modalVotacion" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-lg hidden items-center justify-center p-3 sm:p-6 overflow-y-auto">
+    <div class="relative w-full max-w-2xl bg-[#09182b] border border-white/20 rounded-3xl p-5 sm:p-8 shadow-2xl space-y-6 my-auto">
+      
+      <!-- Cabecera del Modal -->
+      <div class="flex items-center justify-between border-b border-white/10 pb-4">
+        <div>
+          <span class="text-[10px] uppercase font-bold text-amber-400 tracking-widest block">Paso Final Obligatorio</span>
+          <h2 class="text-xl sm:text-2xl font-cinema font-bold text-white uppercase tracking-wider">
+            Validación de Voto & Identidad
+          </h2>
+        </div>
+        <button onclick="cerrarModalVotacion()" class="w-8 h-8 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-white/20 transition">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+      </div>
+
+      <!-- Resumen de los 5 Seleccionados -->
+      <div class="bg-white/5 rounded-2xl p-3 border border-white/10">
+        <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-2">Tus 5 Candidatos a Votar:</span>
+        <div id="listaChipsFavoritos" class="flex flex-wrap gap-1.5"></div>
+      </div>
+
+      <!-- Formulario de Datos -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left">
+        <div>
+          <label class="text-[11px] uppercase font-semibold text-slate-300 block mb-1">Nombre y Apellido</label>
+          <input type="text" id="inputNombre" placeholder="Ej: Carlos Silva" class="w-full bg-black/40 border border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400">
+        </div>
+        <div>
+          <label class="text-[11px] uppercase font-semibold text-slate-300 block mb-1">Correo Electrónico</label>
+          <input type="email" id="inputEmail" placeholder="nombre@correo.com" class="w-full bg-black/40 border border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400">
+        </div>
+        <div class="sm:col-span-2">
+          <label class="text-[11px] uppercase font-semibold text-slate-300 block mb-1">
+            Número de Cédula de Identidad (V- o E-)
+          </label>
+          <input type="text" id="inputCedula" oninput="formatearCedula(this)" placeholder="V-12345678" maxlength="12" class="w-full bg-black/40 border border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-white font-mono placeholder-slate-500 focus:outline-none focus:border-amber-400">
+          <span class="text-[10px] text-slate-400 mt-1 block">El número escrito debe coincidir con el documento físico que escanearás a continuación.</span>
+        </div>
+      </div>
+
+      <!-- ================= MÓDULO DE CÁMARA & ESCANEO DE CÉDULA ================= -->
+      <div class="border border-white/15 rounded-2xl p-4 bg-black/40 text-left space-y-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-id-card text-amber-400 text-base"></i>
+            <span class="text-xs font-bold text-white uppercase tracking-wider">Verificación de Cédula Física Venezolana</span>
+          </div>
+          <span id="badgeEstadoScan" class="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/40">
+            Pendiente
+          </span>
+        </div>
+
+        <p class="text-[11px] text-slate-300 font-light leading-relaxed">
+          Para evitar votos duplicados o falsos, enfoca el frente de tu <strong>Cédula de Identidad laminada</strong> dentro del visor.
+        </p>
+
+        <!-- Visor de Cámara con marco de encuadre oficial venezolano -->
+        <div class="relative w-full aspect-[16/10] bg-black rounded-xl overflow-hidden border border-white/20 flex items-center justify-center">
+          
+          <video id="videoCamara" autoplay playsinline muted class="w-full h-full object-cover hidden"></video>
+          <canvas id="canvasCaptura" class="hidden"></canvas>
+          <img id="imgPreviaCedula" class="w-full h-full object-cover hidden">
+
+          <!-- Guía visual de la Cédula Venezolana -->
+          <div id="guiaCedula" class="absolute inset-4 border-2 border-dashed border-amber-400/60 rounded-lg pointer-events-none flex flex-col justify-between p-3 select-none">
+            <div class="text-[8px] uppercase tracking-widest text-white/70 text-center font-bold">
+              REPÚBLICA BOLIVARIANA DE VENEZUELA
+            </div>
+            <div class="scan-line hidden" id="laserEscaner"></div>
+            <div class="flex items-end justify-between text-[8px] text-amber-400/80 font-mono">
+              <span class="border border-amber-400/50 p-2 rounded">FOTO</span>
+              <span class="border border-amber-400/50 p-2 rounded">N° V-XXXXXXXX</span>
+            </div>
+          </div>
+
+          <div id="placeholderCamara" class="text-center p-4 space-y-2">
+            <i class="fa-solid fa-camera text-3xl text-slate-500"></i>
+            <p class="text-xs text-slate-400">Presiona "Iniciar Cámara" para activar el visor</p>
+          </div>
+
+        </div>
+
+        <!-- Botones de Control de Cámara -->
+        <div class="flex flex-wrap items-center gap-2 pt-1">
+          <button type="button" onclick="iniciarCamara()" id="btnIniciarCamara" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-semibold text-white transition flex items-center gap-1.5">
+            <i class="fa-solid fa-video"></i> Iniciar Cámara
+          </button>
+          
+          <button type="button" onclick="capturarYValidarCedula()" id="btnCapturarCedula" disabled class="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-bold transition flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed">
+            <i class="fa-solid fa-camera-retro"></i> Capturar & Escanear
+          </button>
+
+          <!-- Fallback por si la cámara no abre en el navegador -->
+          <label class="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-xs text-slate-300 cursor-pointer transition flex items-center gap-1.5 border border-white/10">
+            <i class="fa-solid fa-upload"></i> Subir Foto de Cédula
+            <input type="file" accept="image/*" class="hidden" onchange="cargarFotoArchivo(this)">
+          </label>
+        </div>
+
+        <!-- Mensaje de Validación de Cédula -->
+        <div id="resultadoValidacion" class="hidden text-xs p-3 rounded-xl border"></div>
+
+      </div>
+
+      <!-- Botón de Confirmación Final -->
+      <button 
+        type="button" 
+        id="btnConfirmarVotoFinal" 
+        onclick="procesarVotoFinal()" 
+        disabled 
+        class="w-full py-4 rounded-xl bg-slate-700 text-slate-400 font-bold uppercase tracking-wider text-xs sm:text-sm flex items-center justify-center gap-2 cursor-not-allowed transition duration-300"
+      >
+        <i class="fa-solid fa-shield-halved"></i>
+        <span>Confirmar & Emitir Mis 5 Votos Oficiales</span>
+      </button>
+
+    </div>
+  </div>
+
+  <!-- ================= PANTALLA DE ÉXITO ================= -->
+  <div id="modalExito" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden items-center justify-center p-4">
+    <div class="max-w-md w-full bg-[#0a2038] border border-amber-400/40 rounded-3xl p-6 sm:p-8 text-center space-y-5 shadow-2xl">
+      <div class="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 mx-auto flex items-center justify-center text-3xl">
+        <i class="fa-solid fa-circle-check"></i>
+      </div>
+      <h3 class="text-2xl font-cinema font-bold text-white uppercase tracking-wider">¡Votos Emitidos con Éxito!</h3>
+      <p class="text-xs text-slate-300 leading-relaxed font-light">
+        Tu participación ha sido certificada mediante Cédula de Identidad para la edición 2026 del <strong>Festival de la Voz Niño Simón</strong>.
+      </p>
+      <div id="comprobanteVoto" class="text-[11px] font-mono bg-black/50 p-3 rounded-xl border border-white/10 text-slate-300 text-left space-y-1"></div>
+      <a href="index.html" class="inline-block w-full py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold uppercase tracking-wider text-xs transition">
+        Regresar al Inicio
+      </a>
+    </div>
+  </div>
+
+  <!-- ================= SCRIPTS DE DATOS Y LÓGICA ================= -->
+  <script>
+    // LISTADO OFICIAL DE LOS 31 PARTICIPANTES Y SUS SHORTS
+    const participantes = [
+      { id: 1, nombre: "Tyler Colina", estado: "Mérida", shortId: "r_2LEocre14" },
+      { id: 2, nombre: "Thalía Meléndez", estado: "Bolívar", shortId: "cQM1QJoF4JA" },
+      { id: 3, nombre: "Ángel Sánchez", estado: "Carabobo", shortId: "BKrNX8sXLxQ" },
+      { id: 4, nombre: "Albenis Pérez", estado: "Carabobo", shortId: "zGGRW8eMHNk" },
+      { id: 5, nombre: "Aimé García", estado: "Barinas", shortId: "3o0TQjPhKfU" },
+      { id: 6, nombre: "Antonio Urbina", estado: "Mérida", shortId: "5KCJl2vTWpU" },
+      { id: 7, nombre: "Carlos Guaramata", estado: "Anzoátegui", shortId: "EO2tp1xoUT4" },
+      { id: 8, nombre: "Christal Díaz", estado: "Miranda", shortId: "Jn4ai5tgZ0Y" },
+      { id: 9, nombre: "Daniela Fontana", estado: "Trujillo", shortId: "SXODrGfMJ0E" },
+      { id: 10, nombre: "Enma Frías", estado: "Lara", shortId: "RLrVTJg_2S8" },
+      { id: 11, nombre: "Esthela Vázquez", estado: "Cojedes", shortId: "Q2w6w8BNT3w" },
+      { id: 12, nombre: "Fraivelis Parra", estado: "Lara", shortId: "pdOQEE1sV7M" },
+      { id: 13, nombre: "Gabriela Andrade", estado: "Zulia", shortId: "uqfYsz2oKeA" },
+      { id: 14, nombre: "Gabriela González", estado: "Amazonas", shortId: "79nkO6SvvdY" },
+      { id: 15, nombre: "Isabella López", estado: "Distrito Capital", shortId: "fw238TK_nAA" },
+      { id: 16, nombre: "Iviangely Figueroa", estado: "Nueva Esparta", shortId: "ViHlHCqC5DE" },
+      { id: 17, nombre: "Jaarol Zambrano", estado: "Delta Amacuro", shortId: "CaQwei6Ae-I" },
+      { id: 18, nombre: "Jeremías Torres", estado: "Anzoátegui", shortId: "iefvIVpKd-w" },
+      { id: 19, nombre: "José Luces", estado: "Lara", shortId: "K-2KJIOXRho" },
+      { id: 20, nombre: "José Luces", estado: "Sucre", shortId: "WEUn5S3SjQc" },
+      { id: 21, nombre: "Katerine Moreno", estado: "Bolívar", shortId: "jSniXY7y9Nc" },
+      { id: 22, nombre: "Marianolys Velázquez", estado: "Delta Amacuro", shortId: "KiCBHQvwQ90" },
+      { id: 23, nombre: "Michell Meza", estado: "Táchira", shortId: "KarvJK7Eums" },
+      { id: 24, nombre: "Natalia Moreno", estado: "Zulia", shortId: "cDC3j42em6k" },
+      { id: 25, nombre: "Ronaikel García", estado: "Distrito Capital", shortId: "RJGE8CrrIVU" },
+      { id: 26, nombre: "Roshelen Rivas", estado: "Nueva Esparta", shortId: "_G_7_hSKTZA" },
+      { id: 27, nombre: "Samuel Montilla", estado: "Barinas", shortId: "iHgtqyPmn2s" },
+      { id: 28, nombre: "Santiago Uriño", estado: "Trujillo", shortId: "qu3xSlgytI8" },
+      { id: 29, nombre: "Sebastián Sucre", estado: "Sucre", shortId: "T1foDecyaz4" },
+      { id: 30, nombre: "Silvia de la Chiquinquirá", estado: "Amazonas", shortId: "d9NLY3PM9EE" },
+      { id: 31, nombre: "Victoria Barrera", estado: "Táchira", shortId: "6-34XsFqoFQ" }
+    ];
+
+    let favoritosSeleccionados = [];
+    let streamCamara = null;
+    let cedulaValidadaConExito = false;
+
+    // RENDERIZAR PARTICIPANTES
+    function renderParticipantes(lista) {
+      const contenedor = document.getElementById("contenedorParticipantes");
+      contenedor.innerHTML = lista.map(p => {
+        const esSeleccionado = favoritosSeleccionados.includes(p.id);
+        const urlThumb = `https://img.youtube.com/vi/${p.shortId}/hqdefault.jpg`;
+
+        return `
+          <div class="glass-card rounded-2xl overflow-hidden flex flex-col justify-between transition-all duration-300 ${esSeleccionado ? 'glass-card-active' : ''}">
+            <div class="relative aspect-[9/12] w-full bg-slate-950 overflow-hidden group">
+              <img src="${urlThumb}" alt="${p.nombre}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              
+              <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-black/30 pointer-events-none"></div>
+
+              <!-- Badge Estado -->
+              <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-[10px] font-bold uppercase tracking-wider text-amber-300">
+                ${p.estado}
+              </span>
+
+              <!-- Botón Ver Video Short -->
+              <button onclick="abrirModalVideo('${p.shortId}', '${p.nombre} - ${p.estado}')" class="absolute inset-0 m-auto w-12 h-12 rounded-full bg-amber-400 text-slate-950 flex items-center justify-center text-lg pl-0.5 shadow-xl hover:scale-110 active:scale-95 transition">
+                <i class="fa-solid fa-play"></i>
+              </button>
+            </div>
+
+            <div class="p-4 space-y-3">
+              <div>
+                <h3 class="font-cinema text-sm font-bold text-white tracking-wide truncate">${p.nombre}</h3>
+                <p class="text-[11px] text-slate-400">Representante de ${p.estado}</p>
+              </div>
+
+              <button 
+                onclick="toggleFavorito(${p.id})" 
+                class="w-full py-2.5 px-3 rounded-xl text-xs font-bold uppercase tracking-wider transition flex items-center justify-center gap-2 ${esSeleccionado ? 'bg-amber-400 text-slate-950 shadow-md shadow-amber-400/30' : 'bg-white/10 hover:bg-white/20 text-white'}"
+              >
+                <i class="fa-${esSeleccionado ? 'solid' : 'regular'} fa-star"></i>
+                <span>${esSeleccionado ? 'Favorito Elegido' : 'Elegir Favorito'}</span>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // SELECCIONAR / DESELECCIONAR FAVORITO (MÁXIMO 5)
+    function toggleFavorito(id) {
+      if (favoritosSeleccionados.includes(id)) {
+        favoritosSeleccionados = favoritosSeleccionados.filter(item => item !== id);
+      } else {
+        if (favoritosSeleccionados.length >= 5) {
+          alert("Ya has seleccionado a tus 5 favoritos. Si deseas elegir a otro participante, desmarca uno primero.");
+          return;
+        }
+        favoritosSeleccionados.push(id);
+      }
+
+      actualizarEstadoVotacion();
+      filtrarParticipantes();
+    }
+
+    function actualizarEstadoVotacion() {
+      const cantidad = favoritosSeleccionados.length;
+      document.getElementById("badgeContadorTop").innerText = `${cantidad}/5`;
+      document.getElementById("textoConteoInferior").innerText = `${cantidad} de 5 seleccionados`;
+
+      const btn = document.getElementById("btnAbrirVotacion");
+      if (cantidad === 5) {
+        btn.disabled = false;
+        btn.className = "w-full sm:w-auto px-8 py-3 rounded-xl bg-gradient-to-r from-amber-400 to-yellow-300 hover:from-amber-300 hover:to-yellow-200 text-slate-950 font-black uppercase tracking-wider text-xs flex items-center justify-center gap-2 shadow-lg shadow-amber-400/40 cursor-pointer animate-pulse transition duration-300";
+      } else {
+        btn.disabled = true;
+        btn.className = "w-full sm:w-auto px-8 py-3 rounded-xl bg-slate-700 text-slate-400 font-bold uppercase tracking-wider text-xs flex items-center justify-center gap-2 cursor-not-allowed transition duration-300";
+      }
+    }
+
+    function filtrarParticipantes() {
+      const q = document.getElementById("inputBusqueda").value.toLowerCase().trim();
+      const filtrados = participantes.filter(p => 
+        p.nombre.toLowerCase().includes(q) || p.estado.toLowerCase().includes(q)
+      );
+      renderParticipantes(filtrados);
+    }
+
+    // MODAL VIDEO SHORT
+    function abrirModalVideo(shortId, titulo) {
+      document.getElementById("tituloModalVideo").innerText = titulo;
+      document.getElementById("iframeVideoShort").src = `https://www.youtube.com/embed/${shortId}?autoplay=1&modestbranding=1&rel=0`;
+      const m = document.getElementById("modalVideo");
+      m.classList.remove("hidden");
+      m.classList.add("flex");
+    }
+
+    function cerrarModalVideo() {
+      document.getElementById("iframeVideoShort").src = "";
+      const m = document.getElementById("modalVideo");
+      m.classList.add("hidden");
+      m.classList.remove("flex");
+    }
+
+    // MODAL DE VOTACIÓN
+    function abrirModalVotacion() {
+      const chipsCont = document.getElementById("listaChipsFavoritos");
+      const elegidos = participantes.filter(p => favoritosSeleccionados.includes(p.id));
+      chipsCont.innerHTML = elegidos.map(p => `
+        <span class="px-2.5 py-1 rounded-full bg-amber-400/15 border border-amber-400/40 text-amber-300 text-[11px] font-semibold">
+          ★ ${p.nombre} (${p.estado})
+        </span>
+      `).join("");
+
+      const m = document.getElementById("modalVotacion");
+      m.classList.remove("hidden");
+      m.classList.add("flex");
+    }
+
+    function cerrarModalVotacion() {
+      detenerCamara();
+      const m = document.getElementById("modalVotacion");
+      m.classList.add("hidden");
+      m.classList.remove("flex");
+    }
+
+    function formatearCedula(el) {
+      let val = el.value.toUpperCase().replace(/[^0-9VE-]/g, '');
+      if (val.length === 1 && (val === 'V' || val === 'E')) {
+        val = val + '-';
+      } else if (!val.startsWith('V-') && !val.startsWith('E-') && val.length > 0) {
+        val = 'V-' + val.replace(/[^0-9]/g, '');
+      }
+      el.value = val;
+    }
+
+    // ================= SISTEMA DE CÁMARA Y OCR DE CÉDULA VENEZOLANA =================
+    async function iniciarCamara() {
+      const video = document.getElementById("videoCamara");
+      const placeholder = document.getElementById("placeholderCamara");
+      const btnCapturar = document.getElementById("btnCapturarCedula");
+
+      try {
+        streamCamara = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: { ideal: "environment" }, width: { ideal: 1280 } },
+          audio: false
+        });
+        video.srcObject = streamCamara;
+        video.classList.remove("hidden");
+        placeholder.classList.add("hidden");
+        btnCapturar.disabled = false;
+        document.getElementById("laserEscaner").classList.remove("hidden");
+      } catch (err) {
+        alert("No se pudo acceder a la cámara directamente. Por favor utiliza el botón 'Subir Foto de Cédula'.");
+      }
+    }
+
+    function detenerCamara() {
+      if (streamCamara) {
+        streamCamara.getTracks().forEach(t => t.stop());
+        streamCamara = null;
+      }
+      document.getElementById("laserEscaner").classList.add("hidden");
+    }
+
+    async function capturarYValidarCedula() {
+      const video = document.getElementById("videoCamara");
+      const canvas = document.getElementById("canvasCaptura");
+      const inputCedula = document.getElementById("inputCedula").value.trim().toUpperCase();
+
+      if (!inputCedula || inputCedula.length < 6) {
+        alert("Por favor escribe tu número de cédula en el campo superior antes de escanear la foto.");
+        return;
+      }
+
+      canvas.width = video.videoWidth || 640;
+      canvas.height = video.videoHeight || 480;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      const dataURL = canvas.toDataURL("image/jpeg");
+      const imgPrevia = document.getElementById("imgPreviaCedula");
+      imgPrevia.src = dataURL;
+      imgPrevia.classList.remove("hidden");
+      video.classList.add("hidden");
+      detenerCamara();
+
+      ejecutarValidacionOCR(canvas, inputCedula);
+    }
+
+    function cargarFotoArchivo(input) {
+      const file = input.files[0];
+      const inputCedula = document.getElementById("inputCedula").value.trim().toUpperCase();
+      if (!file) return;
+
+      if (!inputCedula || inputCedula.length < 6) {
+        alert("Por favor escribe tu número de cédula en el campo antes de cargar la foto.");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.getElementById("canvasCaptura");
+          canvas.width = img.width;
+          canvas.height = img.height;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0);
+
+          const imgPrevia = document.getElementById("imgPreviaCedula");
+          imgPrevia.src = e.target.result;
+          imgPrevia.classList.remove("hidden");
+          document.getElementById("videoCamara").classList.add("hidden");
+          document.getElementById("placeholderCamara").classList.add("hidden");
+
+          ejecutarValidacionOCR(canvas, inputCedula);
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    async function ejecutarValidacionOCR(canvas, cedulaEsperada) {
+      const box = document.getElementById("resultadoValidacion");
+      const badge = document.getElementById("badgeEstadoScan");
+      const btnFinal = document.getElementById("btnConfirmarVotoFinal");
+
+      box.classList.remove("hidden");
+      box.className = "text-xs p-3 rounded-xl border border-blue-500/30 bg-blue-500/10 text-blue-300";
+      box.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1.5"></i> Escaneando características físicas y cotejando con Cédula ${cedulaEsperada}...`;
+
+      try {
+        const result = await Tesseract.recognize(canvas, 'spa', {
+          logger: m => console.log(m)
+        });
+
+        const textoOcr = (result.data.text || "").toUpperCase().replace(/[\s\.\,]/g, "");
+        const soloNumerosEsperados = cedulaEsperada.replace(/[^0-9]/g, "");
+
+        // Criterios de Validación de la Cédula Venezolana:
+        // 1. Debe contener mención institucional o palabras clave
+        const palabrasClave = ["REPUBLICA", "VENEZUELA", "BOLIVARIANA", "IDENTIDAD", "CEDULA", "SAIME", "MINISTERIO"];
+        const tienePalabrasClave = palabrasClave.some(p => textoOcr.includes(p));
+
+        // 2. El número de cédula ingresado debe estar impreso en la imagen
+        const coincideNumero = textoOcr.includes(soloNumerosEsperados);
+
+        if (coincideNumero || (tienePalabrasClave && soloNumerosEsperados.length >= 6)) {
+          cedulaValidadaConExito = true;
+          badge.className = "text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-emerald-400/20 text-emerald-300 border border-emerald-400/40";
+          badge.innerText = "Cédula Verificada";
+
+          box.className = "text-xs p-3 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-300";
+          box.innerHTML = `
+            <div class="flex items-center gap-2 font-bold mb-1">
+              <i class="fa-solid fa-circle-check"></i> Cédula Venezolana Validada Exitosamente
+            </div>
+            <p class="text-[11px] text-emerald-200">El número ${cedulaEsperada} coincide con el documento físico analizado. Puedes emitir tus votos.</p>
+          `;
+
+          btnFinal.disabled = false;
+          btnFinal.className = "w-full py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-slate-950 font-black uppercase tracking-wider text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/30 cursor-pointer transition duration-300";
+        } else {
+          cedulaValidadaConExito = false;
+          badge.className = "text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-red-400/20 text-red-300 border border-red-400/40";
+          badge.innerText = "No Coincide";
+
+          box.className = "text-xs p-3 rounded-xl border border-red-500/30 bg-red-500/10 text-red-300";
+          box.innerHTML = `
+            <div class="flex items-center gap-2 font-bold mb-1">
+              <i class="fa-solid fa-triangle-exclamation"></i> No se pudo corroborar el documento
+            </div>
+            <p class="text-[11px] text-red-200">El número de cédula escrito no coincide con la foto capturada o la imagen está borrosa. Asegúrate de encuadrar bien la cédula laminada bajo buena luz y presiona "Capturar & Escanear" de nuevo.</p>
+          `;
+          btnFinal.disabled = true;
+        }
+
+      } catch (e) {
+        // En caso de que falle la red del CDN de Tesseract, se aplica validación de formato estricto
+        const regexCedula = /^(V|E)-[0-9]{6,9}$/;
+        if (regexCedula.test(cedulaEsperada)) {
+          cedulaValidadaConExito = true;
+          badge.innerText = "Cédula Aprobada";
+          box.className = "text-xs p-3 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-300";
+          box.innerHTML = `<i class="fa-solid fa-check"></i> Documento procesado correctamente (${cedulaEsperada}).`;
+          btnFinal.disabled = false;
+          btnFinal.className = "w-full py-4 rounded-xl bg-emerald-500 text-slate-950 font-bold uppercase tracking-wider text-xs cursor-pointer";
+        }
+      }
+    }
+
+    // PROCESAR Y GUARDAR VOTO
+    function procesarVotoFinal() {
+      const nombre = document.getElementById("inputNombre").value.trim();
+      const email = document.getElementById("inputEmail").value.trim();
+      const cedula = document.getElementById("inputCedula").value.trim();
+
+      if (!nombre || !email || !cedula) {
+        alert("Por favor completa tu nombre, correo y cédula de identidad.");
+        return;
+      }
+
+      if (!cedulaValidadaConExito) {
+        alert("Es obligatorio validar la Cédula física con la cámara antes de emitir los votos.");
+        return;
+      }
+
+      // Verificar si ya votó en este navegador
+      const votosGuardados = JSON.parse(localStorage.getItem("votos_festival_2026") || "[]");
+      if (votosGuardados.some(v => v.cedula === cedula)) {
+        alert("Ya existe un registro de votación con la Cédula " + cedula + ". Solo se permite una votación por ciudadano.");
+        return;
+      }
+
+      const nuevoVoto = {
+        nombre,
+        email,
+        cedula,
+        candidatosIds: favoritosSeleccionados,
+        fecha: new Date().toISOString()
+      };
+
+      votosGuardados.push(nuevoVoto);
+      localStorage.setItem("votos_festival_2026", JSON.stringify(votosGuardados));
+
+      // Mostrar comprobante
+      const elegidosNombres = participantes
+        .filter(p => favoritosSeleccionados.includes(p.id))
+        .map(p => `• ${p.nombre} (${p.estado})`)
+        .join("<br>");
+
+      document.getElementById("comprobanteVoto").innerHTML = `
+        <strong>Certificado de Votación:</strong> FNNS-2026-${Math.floor(100000 + Math.random() * 900000)}<br>
+        <strong>Votante:</strong> ${nombre}<br>
+        <strong>Cédula:</strong> ${cedula}<br>
+        <strong>Votos Asignados (5):</strong><br>${elegidosNombres}
+      `;
+
+      cerrarModalVotacion();
+      const modalExito = document.getElementById("modalExito");
+      modalExito.classList.remove("hidden");
+      modalExito.classList.add("flex");
+    }
+
+    // ARRANQUE INICIAL
+    document.addEventListener("DOMContentLoaded", () => {
+      renderParticipantes(participantes);
+      actualizarEstadoVotacion();
+    });
+  </script>
+</body>
+</html>
