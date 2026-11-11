@@ -10,7 +10,7 @@
   <meta name="description" content="Cuenta regresiva oficial para el Festival de la Voz Niño Simón 2026 en el Teatro Juares.">
   <link rel="icon" type="image/png" href="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png">
 
-  <!-- Open Graph para vista previa en WhatsApp, Facebook y Redes -->
+  <!-- Open Graph para WhatsApp y Redes Sociales -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="Festival de la Voz Niño Simón 2026 — Cuenta Regresiva">
   <meta property="og:description" content="Cuenta regresiva oficial para el Festival de la Voz Niño Simón 2026 en el Teatro Juares.">
@@ -18,7 +18,7 @@
   <meta property="og:image:secure_url" content="https://i.postimg.cc/WbGGBdzC/IMAGEN-ENLACE-DE-WHATSAPP.jpg">
   <meta property="og:image:type" content="image/jpeg">
 
-  <!-- Font Awesome para Iconografía -->
+  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
   <!-- Tipografías Cinematográficas -->
@@ -60,7 +60,7 @@
       animation: pulseSoft 2s ease-in-out infinite;
     }
 
-    /* Video de fondo a pantalla completa */
+    /* Video de fondo adaptativo */
     .video-bg {
       position: fixed;
       top: 50%;
@@ -110,10 +110,10 @@
     <source src="TEATROHORIZONTAL.mp4" type="video/mp4">
   </video>
 
-  <!-- Viñeta cinematográfica para contraste -->
+  <!-- Viñeta Cinematográfica -->
   <div class="fixed inset-0 z-[1] bg-gradient-to-b from-[#061528]/75 via-[#061528]/40 to-[#061528]/85 pointer-events-none"></div>
 
-  <!-- ================= IDENTIFICADOR SUPERIOR ================= -->
+  <!-- ================= LOGO SUPERIOR ================= -->
   <header class="w-full pt-8 pb-4 px-6 flex justify-center relative z-20">
     <div class="flex items-center space-x-3.5 opacity-90 hover:opacity-100 transition duration-300">
       <img src="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png" alt="Logo FNNS" class="h-8 md:h-10 w-auto object-contain filter drop-shadow-[0_4px_12px_rgba(0,0,0,0.6)]">
@@ -124,10 +124,10 @@
     </div>
   </header>
 
-  <!-- ================= NÚCLEO EN EL CIELO: TÍTULO, CONTADOR Y ACCIONES ================= -->
+  <!-- ================= CONTENIDO CENTRAL ================= -->
   <main class="w-full max-w-4xl mx-auto px-4 pt-4 pb-16 flex flex-col items-center text-center relative z-10 space-y-7">
 
-    <!-- Cintillo de Entrada -->
+    <!-- Cintillo Superior -->
     <div class="inline-flex items-center space-x-2.5">
       <span class="h-[1px] w-6 sm:w-10 bg-gradient-to-r from-transparent to-white/60"></span>
       <span class="font-cinema text-[10px] sm:text-xs tracking-[0.35em] uppercase text-white/80 film-shadow">
@@ -136,7 +136,7 @@
       <span class="h-[1px] w-6 sm:w-10 bg-gradient-to-l from-transparent to-white/60"></span>
     </div>
 
-    <!-- Título Principal Cinematográfico -->
+    <!-- Título Principal -->
     <div>
       <h1 class="font-cinema text-3xl sm:text-5xl md:text-6xl font-bold uppercase text-white tracking-[0.2em] leading-tight mb-2 film-shadow">
         Festival de la Voz
@@ -146,12 +146,11 @@
       </h2>
     </div>
 
-    <!-- Leyenda de Tiempo Restante -->
     <p class="text-[11px] sm:text-xs font-medium tracking-[0.3em] uppercase text-[#7ec8ff] film-shadow">
       Faltan exactamente para el comienzo
     </p>
 
-    <!-- ================= CONTADOR COMPACTO SIN CUADROS ================= -->
+    <!-- Contador Regresivo -->
     <div id="countdownContainer" class="flex flex-col items-center">
       <div class="flex items-baseline justify-center text-white glow-num tnum select-none">
         
@@ -188,7 +187,6 @@
       </div>
     </div>
 
-    <!-- Mensaje cuando el tiempo llega a cero -->
     <div id="festivalIniciado" class="hidden text-white font-cinema tracking-[0.2em] text-sm md:text-lg border-y border-white/30 py-3 px-6 film-shadow">
       EL FESTIVAL HA COMENZADO EN EL TEATRO JUARES
     </div>
@@ -202,34 +200,20 @@
       <span>Barquisimeto</span>
     </div>
 
-    <!-- ================= DOS BOTONES PRINCIPALES ================= -->
-    <div class="w-full max-w-xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
-      
-      <!-- BOTÓN 1: Ir a la Subpágina de Participantes y Votación -->
-      <a href="participantes.html" class="w-full sm:w-auto flex-1 group relative inline-flex items-center justify-center px-7 py-4 overflow-hidden rounded-xl bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 text-slate-950 font-bold uppercase tracking-wider text-xs sm:text-sm shadow-[0_0_30px_rgba(245,158,11,0.45)] hover:shadow-[0_0_40px_rgba(245,158,11,0.7)] transition-all duration-300 hover:scale-[1.02] active:scale-95">
-        <span class="flex items-center gap-2.5 font-cinema">
-          <i class="fa-solid fa-users-viewfinder text-base group-hover:rotate-6 transition-transform"></i>
+    <!-- BOTÓN DE ENLACE A PARTICIPANTES -->
+    <div class="w-full max-w-md mx-auto pt-2">
+      <a href="participantes.html" class="w-full group relative inline-flex items-center justify-center px-8 py-4 overflow-hidden rounded-xl bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 text-slate-950 font-bold uppercase tracking-wider text-xs sm:text-sm shadow-[0_0_35px_rgba(245,158,11,0.5)] hover:shadow-[0_0_45px_rgba(245,158,11,0.8)] transition-all duration-300 hover:scale-[1.02] active:scale-95">
+        <span class="flex items-center gap-3 font-cinema">
+          <i class="fa-solid fa-users-viewfinder text-lg group-hover:rotate-6 transition-transform"></i>
           <span>Conocer Participantes &bull; Votar</span>
         </span>
       </a>
-
-      <!-- BOTÓN 2: Ir a streaming.html para la transmisión oficial -->
-      <a href="streaming.html" class="w-full sm:w-auto flex-1 group relative inline-flex items-center justify-center px-7 py-4 overflow-hidden rounded-xl bg-[#0b2447]/90 hover:bg-[#0e2f5d] border border-[#7ec8ff]/40 text-white font-semibold uppercase tracking-wider text-xs sm:text-sm backdrop-blur-md shadow-[0_0_25px_rgba(14,47,93,0.6)] hover:shadow-[0_0_35px_rgba(126,200,255,0.4)] transition-all duration-300 hover:scale-[1.02] active:scale-95">
-        <span class="flex items-center gap-2.5 font-cinema">
-          <span class="relative flex h-2.5 w-2.5">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
-          </span>
-          <span>Transmisión en Vivo</span>
-        </a>
-
     </div>
 
-    <!-- ================= TARJETA DE INSTAGRAM OFICIAL ================= -->
-    <section class="w-full max-w-xl mx-auto mt-6 pt-4">
+    <!-- TARJETA INSTAGRAM OFICIAL (@fnn.simon) -->
+    <section class="w-full max-w-md mx-auto pt-2">
       <div class="glass-card rounded-2xl p-5 text-left border border-white/15 relative overflow-hidden group">
         
-        <!-- Gradiente decorativo Instagram en la esquina -->
         <div class="absolute -right-8 -top-8 w-28 h-28 bg-gradient-to-tr from-yellow-500 via-pink-500 to-purple-600 rounded-full blur-2xl opacity-20 pointer-events-none"></div>
 
         <div class="flex items-center justify-between gap-3 mb-3">
@@ -241,7 +225,7 @@
             </div>
             <div>
               <div class="flex items-center gap-1.5">
-                <span class="text-xs sm:text-sm font-bold text-white tracking-wide">fundacionninosimonccs</span>
+                <span class="text-xs sm:text-sm font-bold text-white tracking-wide">fnn.simon</span>
                 <i class="fa-solid fa-circle-check text-[11px] text-[#0095f6]"></i>
               </div>
               <span class="text-[10px] text-white/60 tracking-wider">Fundación Nacional El Niño Simón</span>
@@ -253,12 +237,12 @@
         </div>
 
         <p class="text-xs text-white/80 leading-relaxed font-light mb-4">
-          Descubre las novedades, ensayos y la cobertura fotográfica del <strong>Festival de la Voz Niño Simón 2026</strong> en el Teatro Juares.
+          Sigue las coberturas, ensayos y galerías exclusivas del <strong>Festival de la Voz Niño Simón 2026</strong> en nuestra cuenta oficial de Instagram.
         </p>
 
-        <a href="https://www.instagram.com/fundacionninosimonccs" target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#f09433] via-[#e6683c] to-[#bc1888] hover:opacity-95 text-white text-xs font-semibold uppercase tracking-wider transition active:scale-95 shadow-lg shadow-pink-500/20">
+        <a href="https://www.instagram.com/fnn.simon?mdxt=MWkzb2Rud2ZiYXkwcw==" target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#f09433] via-[#e6683c] to-[#bc1888] hover:opacity-95 text-white text-xs font-semibold uppercase tracking-wider transition active:scale-95 shadow-lg shadow-pink-500/25">
           <i class="fa-brands fa-instagram text-sm"></i>
-          <span>Ver Última Publicación en Instagram</span>
+          <span>Visitar @fnn.simon en Instagram</span>
           <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
         </a>
 
@@ -272,7 +256,6 @@
     Fundación Nacional El Niño Simón &copy; 2026
   </footer>
 
-  <!-- ================= LÓGICA DEL CONTADOR REGRESIVO ================= -->
   <script>
     const fechaFestival = new Date("2026-11-22T08:00:00-04:00").getTime();
 
