@@ -407,7 +407,7 @@
       { id: 16, nombre: "Iviangely Figueroa", estado: "Nueva Esparta", shortId: "ViHlHCqC5DE" },
       { id: 17, nombre: "Jaarol Zambrano", estado: "Delta Amacuro", shortId: "CaQwei6Ae-I" },
       { id: 18, nombre: "Jeremías Torres", estado: "Anzoátegui", shortId: "iefvIVpKd-w" },
-      { id: 19, nombre: "José Luces", estado: "Lara", shortId: "K-2KJIOXRho" },
+      { id: 19, nombre: "Gabriel Raúl Solórzano Guevara", estado: "Miranda", shortId: "b9JyOpp3cmU" },
       { id: 20, nombre: "José Luces", estado: "Sucre", shortId: "WEUn5S3SjQc" },
       { id: 21, nombre: "Katerine Moreno", estado: "Bolívar", shortId: "jSniXY7y9Nc" },
       { id: 22, nombre: "Marianolys Velázquez", estado: "Delta Amacuro", shortId: "KiCBHQvwQ90" },
@@ -429,8 +429,7 @@
 
     function renderParticipantes(lista) {
       const contenedor = document.getElementById("contenedorParticipantes");
-      const listaVisible = lista.filter(p => p.id !== 19);
-      contenedor.innerHTML = listaVisible.map(p => {
+      contenedor.innerHTML = lista.map(p => {
         const esSeleccionado = favoritosSeleccionados.includes(p.id);
         const urlThumb = `https://img.youtube.com/vi/${p.shortId}/hqdefault.jpg`;
 
@@ -806,13 +805,31 @@
           listaVotantes = data.votantes || [];
 
           if (data.resultados && data.resultados.length > 0) {
-            participantesCalculados = data.resultados
-              .filter(r => Number(r.id) !== 19 && !(r.nombre === "José Luces" && r.estado === "Lara"))
-              .map(r => ({
+            const votosNuevosGabriel = listaVotantes.filter(v =>
+              (v.votosResumen || "").toLowerCase().includes("gabriel raúl solórzano") ||
+              (v.votosResumen || "").toLowerCase().includes("gabriel raul solorzano")
+            ).length;
+
+            participantesCalculados = data.resultados.map(r => {
+              const esAntiguoLara = Number(r.id) === 19 || (
+                (r.nombre || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes("jose luces") &&
+                (r.estado || "").toLowerCase().trim() === "lara"
+              );
+
+              if (esAntiguoLara) {
+                return {
+                  id: 19,
+                  nombreCompleto: "Gabriel Raúl Solórzano Guevara (Miranda)",
+                  votos: votosNuevosGabriel
+                };
+              }
+
+              return {
                 id: r.id,
                 nombreCompleto: `${r.nombre} (${r.estado})`,
                 votos: Number(r.votos) || 0
-              }));
+              };
+            });
           }
         }
       } catch (e) {
@@ -820,13 +837,11 @@
       }
 
       if (!participantesCalculados.length) {
-        participantesCalculados = participantes
-          .filter(p => p.id !== 19)
-          .map(p => ({
-            id: p.id,
-            nombreCompleto: `${p.nombre} (${p.estado})`,
-            votos: 0
-          }));
+        participantesCalculados = participantes.map(p => ({
+          id: p.id,
+          nombreCompleto: `${p.nombre} (${p.estado})`,
+          votos: 0
+        }));
       }
 
       // Ordenar de mayor a menor votos
@@ -841,15 +856,23 @@
       document.getElementById("contadorVotantesTabla").innerText = `${listaVotantes.length} votantes registrados`;
       const tbody = document.getElementById("tbodyVotantes");
       if (listaVotantes.length > 0) {
-        tbody.innerHTML = listaVotantes.map(v => `
+        tbody.innerHTML = listaVotantes.map(v => {
+          let resumenLimpio = v.votosResumen || "";
+          if (resumenLimpio.includes("José Luces (Sucre)")) {
+            resumenLimpio = resumenLimpio.replace(/,\s*José Luces \(Lara\)|José Luces \(Lara\),\s*|José Luces \(Lara\)/g, "");
+          } else {
+            resumenLimpio = resumenLimpio.replace(/José Luces \(Lara\)/g, "José Luces (Sucre)");
+          }
+          return `
           <tr class="hover:bg-white/5 transition">
             <td class="py-2.5 px-3 text-slate-400 whitespace-nowrap">${v.fecha}</td>
             <td class="py-2.5 px-3 text-amber-400 font-bold whitespace-nowrap">${v.cedula}</td>
             <td class="py-2.5 px-3 text-white font-medium whitespace-nowrap">${v.nombre}</td>
             <td class="py-2.5 px-3 text-slate-400">${v.email}</td>
-            <td class="py-2.5 px-3 text-slate-300 text-[10px] leading-tight">${v.votosResumen}</td>
+            <td class="py-2.5 px-3 text-slate-300 text-[10px] leading-tight">${resumenLimpio}</td>
           </tr>
-        `).join("");
+        `;
+        }).join("");
       } else {
         tbody.innerHTML = `<tr><td colspan="5" class="py-8 text-center text-slate-500">Aún no hay votantes registrados en el libro oficial.</td></tr>`;
       }
