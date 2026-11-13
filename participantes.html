@@ -429,7 +429,8 @@
 
     function renderParticipantes(lista) {
       const contenedor = document.getElementById("contenedorParticipantes");
-      contenedor.innerHTML = lista.map(p => {
+      const listaVisible = lista.filter(p => p.id !== 19);
+      contenedor.innerHTML = listaVisible.map(p => {
         const esSeleccionado = favoritosSeleccionados.includes(p.id);
         const urlThumb = `https://img.youtube.com/vi/${p.shortId}/hqdefault.jpg`;
 
@@ -805,11 +806,13 @@
           listaVotantes = data.votantes || [];
 
           if (data.resultados && data.resultados.length > 0) {
-            participantesCalculados = data.resultados.map(r => ({
-              id: r.id,
-              nombreCompleto: `${r.nombre} (${r.estado})`,
-              votos: Number(r.votos) || 0
-            }));
+            participantesCalculados = data.resultados
+              .filter(r => Number(r.id) !== 19 && !(r.nombre === "José Luces" && r.estado === "Lara"))
+              .map(r => ({
+                id: r.id,
+                nombreCompleto: `${r.nombre} (${r.estado})`,
+                votos: Number(r.votos) || 0
+              }));
           }
         }
       } catch (e) {
@@ -817,11 +820,13 @@
       }
 
       if (!participantesCalculados.length) {
-        participantesCalculados = participantes.map(p => ({
-          id: p.id,
-          nombreCompleto: `${p.nombre} (${p.estado})`,
-          votos: 0
-        }));
+        participantesCalculados = participantes
+          .filter(p => p.id !== 19)
+          .map(p => ({
+            id: p.id,
+            nombreCompleto: `${p.nombre} (${p.estado})`,
+            votos: 0
+          }));
       }
 
       // Ordenar de mayor a menor votos
