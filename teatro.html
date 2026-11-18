@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Control de Silletería Oficial — Festival de la Voz Niño Simón 2026</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <!-- Google Fonts: Cinzel & Montserrat -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body { font-family: 'Montserrat', sans-serif; }
+    .font-cinema { font-family: 'Cinzel', serif; letter-spacing: 0.08em; }
+
+    /* Estilos de Butaca tipo Cine */
+    .seat-btn {
+      width: 26px;
+      height: 24px;
+      font-size: 8.5px;
+      font-weight: 700;
+      border-radius: 5px 5px 2px 2px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+      position: relative;
+      user-select: none;
+      border-bottom-width: 3px;
+    }
+    .seat-btn:not(:disabled):hover {
+      transform: translateY(-2px) scale(1.12);
+      z-index: 20;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    }
+    .seat-selected {
+      background-color: #ffffff !important;
+      color: #051120 !important;
+      border-color: #f59e0b !important;
+      box-shadow: 0 0 0 2px #f59e0b, 0 0 14px rgba(245, 158, 11, 0.9) !important;
+      transform: scale(1.15);
+      z-index: 25;
+    }
+    .seat-occupied {
+      opacity: 0.95;
+      box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.85);
+    }
+    .seat-occupied::after {
+      content: "";
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      width: 5px;
+      height: 5px;
+      border-radius: 9999px;
+      background-color: #10b981;
+      box-shadow: 0 0 4px #10b981;
+    }
+    .seat-blocked {
+      background: repeating-linear-gradient(
+        45deg,
+        rgba(30, 41, 59, 0.55),
+        rgba(30, 41, 59, 0.55) 3px,
+        rgba(15, 23, 42, 0.85) 3px,
+        rgba(15, 23, 42, 0.85) 6px
+      ) !important;
+      color: rgba(148, 163, 184, 0.45) !important;
+      border-color: rgba(71, 85, 105, 0.4) !important;
+      cursor: not-allowed;
+    }
+    .seat-highlight-search {
+      animation: pulseSeat 1.2s infinite;
+      outline: 2.5px solid #38bdf8;
+      outline-offset: 1px;
+      z-index: 30;
+    }
+    @keyframes pulseSeat {
+      0%, 100% { transform: scale(1.1); }
+      50% { transform: scale(1.25); }
+    }
+
+    /* Scrollbar limpio */
+    .custom-scroll::-webkit-scrollbar { height: 8px; width: 8px; }
+    .custom-scroll::-webkit-scrollbar-track { background: rgba(5, 17, 32, 0.8); }
+    .custom-scroll::-webkit-scrollbar-thumb { background: rgba(245, 158, 11, 0.45); border-radius: 9999px; }
+    .custom-scroll::-webkit-scrollbar-thumb:hover { background: rgba(245, 158, 11, 0.8); }
+  </style>
+</head>
+<body class="min-h-full bg-[#051120] text-slate-100 pb-28">
+
+  <!-- ================= ENCABEZADO INSTITUCIONAL ================= -->
+  <header class="sticky top-0 z-40 bg-[#051120]/95 backdrop-blur-md border-b border-white/10">
+    <div class="max-w-[1440px] mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-amber-400/15 border border-amber-400/40 text-amber-400 flex items-center justify-center text-lg">
+          <i class="fa-solid fa-masks-theater"></i>
+        </div>
+        <div>
+          <span class="text-[10px] uppercase tracking-widest text-amber-400 font-bold block">
+            Organizado por la Fundación Nacional del Niño Simón
+          </span>
+          <h1 class="font-cinema text-sm sm:text-lg font-bold text-white uppercase">
+            Silletería Oficial · Teatro Juares (Barquisimeto)
+          </h1>
+        </div>
+      </div>
+
+      <!-- Acciones Rápidas -->
+      <div class="flex flex-wrap items-center gap-2">
+        <button onclick="abrirModalListado()" class="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-xs font-semibold text-white flex items-center gap-2 transition cursor-pointer">
+          <i class="fa-solid fa-list-check text-amber-400"></i>
+          <span>Padrón Asignado (<span id="topCountAsignadas">0</span>)</span>
+        </button>
+
+        <button onclick="exportarCSV()" class="px-3.5 py-2 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-400/40 text-emerald-300 text-xs font-semibold flex items-center gap-2 transition cursor-pointer">
+          <i class="fa-solid fa-file-excel"></i>
+          <span>Exportar Excel</span>
+        </button>
+
+        <button onclick="exportarJSON()" title="Descargar respaldo de seguridad" class="px-3 py-2 rounded-xl bg-blue-500/20 hover:bg-blue-500/30 border border-blue-400/40 text-blue-300 text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer">
+          <i class="fa-solid fa-download"></i>
+          <span class="hidden sm:inline">Respaldo</span>
+        </button>
+
+        <label title="Cargar respaldo JSON" class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-slate-300 text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer">
+          <i class="fa-solid fa-upload"></i>
+          <span class="hidden sm:inline">Cargar</span>
+          <input type="file" accept=".json" class="hidden" onchange="importarJSON(this)" />
+        </label>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= BARRA DE MÉTRICAS Y CONTROLES ================= -->
+  <section class="max-w-[1440px] mx-auto px-4 pt-5 space-y-4">
+    <!-- KPIs -->
+    <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
+      <div class="bg-[#0a192f]/80 border border-white/10 rounded-2xl p-3.5">
+        <span class="text-[10px] uppercase font-bold text-slate-400 block">Capacidad Habilitada</span>
+        <span id="kpiHabilitadas" class="text-xl font-bold text-white font-mono">632</span>
+        <span class="text-[10px] text-slate-400 block">Butacas operativas</span>
+      </div>
+      <div class="bg-[#0a192f]/80 border border-emerald-500/30 rounded-2xl p-3.5">
+        <span class="text-[10px] uppercase font-bold text-emerald-400 block">Butacas Asignadas</span>
+        <span id="kpiAsignadas" class="text-xl font-bold text-emerald-300 font-mono">0</span>
+        <span id="kpiPorcentaje" class="text-[10px] text-emerald-400/80 block">0% ocupado</span>
+      </div>
+      <div class="bg-[#0a192f]/80 border border-amber-400/30 rounded-2xl p-3.5">
+        <span class="text-[10px] uppercase font-bold text-amber-400 block">Butacas Disponibles</span>
+        <span id="kpiDisponibles" class="text-xl font-bold text-amber-300 font-mono">632</span>
+        <span class="text-[10px] text-slate-400 block">Listas para asignar</span>
+      </div>
+      <div class="bg-[#0a192f]/80 border border-white/10 rounded-2xl p-3.5">
+        <span class="text-[10px] uppercase font-bold text-slate-400 block">Inhabilitadas (A–C)</span>
+        <span id="kpiBloqueadas" class="text-xl font-bold text-slate-400 font-mono">78</span>
+        <span class="text-[10px] text-slate-500 block">Patio Verde y Amarillo</span>
+      </div>
+      <div class="col-span-2 sm:col-span-1 bg-[#0a192f]/80 border border-white/10 rounded-2xl p-3.5 flex flex-col justify-between">
+        <span class="text-[10px] uppercase font-bold text-slate-400 block">Filas A, B y C Patio</span>
+        <button id="btnToggleABC" onclick="toggleFilasABC()" class="mt-1 w-full py-1.5 px-2.5 rounded-lg bg-white/10 hover:bg-white/20 text-[11px] font-semibold text-amber-300 transition cursor-pointer">
+          <i class="fa-solid fa-lock mr-1"></i> Bloqueadas (Activar)
+        </button>
+      </div>
+    </div>
+
+    <!-- Buscador y Filtros -->
+    <div class="bg-[#0a192f]/80 border border-white/10 rounded-2xl p-3.5 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+      <div class="relative flex-1">
+        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+        <input
+          type="text"
+          id="inputBuscar"
+          oninput="buscarEnMapa()"
+          placeholder="Buscar persona por nombre, cédula, estado o código de butaca (ej. D2, L27, Jurado)..."
+          class="w-full bg-black/40 border border-white/15 rounded-xl pl-9 pr-4 py-2 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-amber-400"
+        />
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2">
+        <select id="filtroZona" onchange="aplicarFiltroZona()" class="bg-black/50 border border-white/15 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-400">
+          <option value="TODAS">Todas las Zonas del Teatro</option>
+          <option value="VERDE">Verde · Patio Par (R+N 38 / PM 31)</option>
+          <option value="AMARILLO">Amarillo · Patio Impar (IE 24 / DR 31)</option>
+          <option value="MOSTAZA">Mostaza · Niños CDN Barquisimeto (81)</option>
+          <option value="AZUL_CLARO">Azul Claro · Niños CDN Barquisimeto (81)</option>
+          <option value="ROJO">Rojo · Representantes CDN (38)</option>
+          <option value="FUCSIA">Fucsia · Representantes CDN (39)</option>
+          <option value="AZUL_OSCURO">Azul Oscuro · Padres (19) y Trabajadores CDN (79)</option>
+          <option value="GRIS">Gris · Público General (112)</option>
+          <option value="BALCON_DERECHO">Balcón Derecho · Prensa (13 + 1 Barbarie)</option>
+          <option value="BALCON_IZQUIERDO">Balcón Izquierdo · Prensa (13 + 1 Barbarie)</option>
+          <option value="PALCO">Palco Presidencial (9)</option>
+          <option value="FOSA">Fosa · Jurado (5)</option>
+        </select>
+
+        <!-- Control de Zoom -->
+        <div class="flex items-center bg-black/40 border border-white/15 rounded-xl p-1 text-xs">
+          <button onclick="cambiarZoom(0.85)" class="px-2 py-1 hover:bg-white/10 rounded-lg text-slate-300 cursor-pointer" title="Alejar">85%</button>
+          <button onclick="cambiarZoom(1)" class="px-2 py-1 bg-amber-400/20 text-amber-300 font-bold rounded-lg cursor-pointer" title="Normal">100%</button>
+          <button onclick="cambiarZoom(1.15)" class="px-2 py-1 hover:bg-white/10 rounded-lg text-slate-300 cursor-pointer" title="Acercar">115%</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Leyenda Interactiva de Cupos por Coordinación -->
+    <details open class="bg-[#0a192f]/80 border border-white/10 rounded-2xl p-3.5">
+      <summary class="text-xs font-bold uppercase tracking-wider text-amber-400 cursor-pointer flex items-center justify-between">
+        <span><i class="fa-solid fa-layer-group mr-1.5"></i> Distribución Oficial y Cupos por Zona (Clic para ver/ocultar)</span>
+        <span class="text-[10px] text-slate-400 font-normal">Organizado de abajo hacia arriba por bloque</span>
+      </summary>
+      <div id="gridCupos" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 pt-3 text-[11px]"></div>
+    </details>
+  </section>
+
+  <!-- ================= PLANO INTERACTIVO DEL TEATRO JUARES ================= -->
+  <main class="max-w-[1440px] mx-auto px-4 pt-5">
+    <div class="bg-[#071426] border border-white/15 rounded-3xl p-4 sm:p-6 shadow-2xl overflow-x-auto custom-scroll">
+      <div id="lienzoTeatro" class="min-w-[1120px] mx-auto space-y-6 origin-top transition-transform duration-200">
+
+        <!-- NIVEL 1: GALERÍA (PARTE SUPERIOR) -->
+        <div class="border border-white/15 rounded-2xl p-4 bg-black/25 space-y-3">
+          <div class="flex items-center justify-between border-b border-white/10 pb-2">
+            <span class="text-[11px] font-bold uppercase tracking-widest text-slate-400">Nivel Galería · Superior</span>
+            <span class="px-4 py-1 rounded-full bg-blue-600/30 border border-blue-400/40 font-cinema text-xs font-bold text-blue-200">
+              GALERÍA
+            </span>
+            <span class="text-[10px] text-slate-400">Izq: Impares (27→1) · Der: Pares (2→26)</span>
+          </div>
+
+          <!-- Galería Superior: Gris (D-L) vs Azul Oscuro (D-L) -->
+          <div class="grid grid-cols-[1fr_36px_1fr] gap-2 items-end">
+            <div id="galeriaGris" class="space-y-1"></div>
+            <div class="text-center text-[9px] text-slate-500 font-mono pb-2">PASILLO</div>
+            <div id="galeriaAzulOscuro" class="space-y-1"></div>
+          </div>
+
+          <div class="border-t border-dashed border-white/15 my-2"></div>
+
+          <!-- Galería Inferior: Fucsia (A-C) vs Rojo (A-C) -->
+          <div class="grid grid-cols-[1fr_36px_1fr] gap-2 items-end">
+            <div id="galeriaFucsia" class="space-y-1"></div>
+            <div class="text-center text-[9px] text-slate-500 font-mono pb-2">PASILLO</div>
+            <div id="galeriaRojo" class="space-y-1"></div>
+          </div>
+        </div>
+
+        <!-- NIVEL 2: BALCÓN DERECHO + PALCO PRESIDENCIAL + BALCÓN IZQUIERDO -->
+        <div class="grid grid-cols-[200px_1fr_200px] gap-4 items-center">
+          <!-- Balcón Derecho (Izquierda del plano) -->
+          <div class="border border-blue-400/30 rounded-2xl p-3 bg-blue-950/20">
+            <div class="text-center mb-2">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-blue-300 block">Balcón Derecho</span>
+              <span class="text-[9px] text-slate-400">13 Prensa + 1 Barbarie</span>
+            </div>
+            <div id="balconDerecho" class="space-y-1 flex flex-col items-end"></div>
+          </div>
+
+          <!-- Palco Presidencial + Cabinas -->
+          <div class="border border-blue-400/30 rounded-2xl p-3.5 bg-blue-950/25 flex items-center justify-between gap-3">
+            <div class="w-24 h-20 rounded-xl bg-blue-900/50 border border-blue-400/30 flex items-center justify-center text-center p-2 text-[9px] font-bold uppercase text-blue-200">
+              Cabina de Iluminación
+            </div>
+
+            <div class="flex-1 text-center space-y-2">
+              <span class="inline-block px-4 py-0.5 rounded-full bg-blue-600/40 border border-blue-400/40 font-cinema text-[11px] font-bold text-white uppercase tracking-widest">
+                Palco Presidencial
+              </span>
+              <div id="palcoPresidencial" class="space-y-1.5 flex flex-col items-center"></div>
+            </div>
+
+            <div class="w-24 h-20 rounded-xl bg-blue-900/50 border border-blue-400/30 flex items-center justify-center text-center p-2 text-[9px] font-bold uppercase text-blue-200">
+              Cabina de Sonido
+            </div>
+          </div>
+
+          <!-- Balcón Izquierdo (Derecha del plano) -->
+          <div class="border border-blue-400/30 rounded-2xl p-3 bg-blue-950/20">
+            <div class="text-center mb-2">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-blue-300 block">Balcón Izquierdo</span>
+              <span class="text-[9px] text-slate-400">13 Prensa + 1 Barbarie</span>
+            </div>
+            <div id="balconIzquierdo" class="space-y-1 flex flex-col items-start"></div>
+          </div>
+        </div>
+
+        <!-- NIVEL 3: PATIO (SALA PRINCIPAL) -->
+        <div class="border border-white/15 rounded-2xl p-4 bg-black/25 space-y-3">
+          <div class="flex items-center justify-between border-b border-white/10 pb-2">
+            <span class="text-[11px] font-bold uppercase tracking-widest text-slate-400">Nivel Patio · Sala Principal</span>
+            <span class="px-5 py-1 rounded-full bg-blue-600/30 border border-blue-400/40 font-cinema text-xs font-bold text-blue-200">
+              PATIO
+            </span>
+            <span class="text-[10px] text-slate-400">Izq: Impares · Der: Pares</span>
+          </div>
+
+          <!-- Patio Trasero: Azul Claro (O-I) vs Mostaza (O-I) -->
+          <div class="grid grid-cols-[1fr_36px_1fr] gap-2 items-end">
+            <div id="patioAzulClaro" class="space-y-1"></div>
+            <div class="text-center text-[9px] text-slate-500 font-mono pb-2">PASILLO</div>
+            <div id="patioMostaza" class="space-y-1"></div>
+          </div>
+
+          <div class="border-t border-dashed border-white/15 my-2"></div>
+
+          <!-- Patio Delantero: Amarillo (H-A) vs Verde (H-A) -->
+          <div class="grid grid-cols-[1fr_36px_1fr] gap-2 items-end">
+            <div id="patioAmarillo" class="space-y-1"></div>
+            <div class="text-center text-[9px] text-slate-500 font-mono pb-2">PASILLO</div>
+            <div id="patioVerde" class="space-y-1"></div>
+          </div>
+        </div>
+
+        <!-- NIVEL 4: FOSA (JURADO) Y ESCENARIO -->
+        <div class="space-y-2 pt-1">
+          <!-- Fosa Jurado -->
+          <div class="max-w-2xl mx-auto rounded-xl bg-blue-600/25 border border-blue-400/50 py-2 px-4 flex items-center justify-between">
+            <span class="font-cinema text-xs font-bold uppercase tracking-widest text-blue-200">
+              <i class="fa-solid fa-gavel mr-1.5 text-amber-400"></i> Fosa · Jurado Calificador
+            </span>
+            <div id="fosaJurado" class="flex items-center gap-2"></div>
+          </div>
+
+          <!-- Escenario -->
+          <div class="max-w-4xl mx-auto rounded-2xl bg-gradient-to-r from-red-900/80 via-red-700/90 to-red-900/80 border border-red-400/50 py-3 text-center shadow-lg shadow-red-950/50">
+            <span class="font-cinema text-sm sm:text-base font-extrabold uppercase tracking-[0.45em] text-white">
+              E S C E N A R I O
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- ================= BARRA FLOTANTE DE SELECCIÓN TIPO CINE ================= -->
+  <aside id="barraSeleccion" class="fixed bottom-0 left-0 right-0 z-40 bg-[#071322]/95 backdrop-blur-xl border-t border-white/15 py-3 px-4 shadow-2xl">
+    <div class="max-w-[1440px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div class="flex items-center gap-3 overflow-x-auto max-w-full">
+        <div class="w-10 h-10 rounded-xl bg-amber-400/20 border border-amber-400/40 text-amber-300 flex items-center justify-center shrink-0">
+          <i class="fa-solid fa-couch"></i>
+        </div>
+        <div>
+          <div class="text-xs font-bold text-white flex items-center gap-2">
+            <span>Butacas Seleccionadas:</span>
+            <span id="contadorSeleccion" class="text-amber-400 font-mono">0</span>
+          </div>
+          <div id="chipsSeleccion" class="text-[11px] text-slate-300 truncate max-w-md sm:max-w-xl">
+            Haz clic sobre una o varias butacas disponibles en el mapa para asignarlas.
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+        <button id="btnLimpiarSel" onclick="limpiarSeleccion()" class="hidden px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-semibold text-slate-200 transition cursor-pointer">
+          Deseleccionar
+        </button>
+
+        <button id="btnAsignarSel" onclick="abrirModalAsignacion()" disabled class="px-6 py-2.5 rounded-xl bg-slate-700 text-slate-400 font-bold uppercase tracking-wider text-xs flex items-center gap-2 cursor-not-allowed transition">
+          <i class="fa-solid fa-user-check"></i>
+          <span>Asignar Butacas</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ================= MODAL ASIGNAR / EDITAR BUTACA ================= -->
+  <div id="modalAsignar" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden items-center justify-center p-4 overflow-y-auto">
+    <div class="w-full max-w-lg bg-[#09182b] border border-white/20 rounded-3xl p-6 shadow-2xl space-y-5 my-auto">
+      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+        <div>
+          <span class="text-[10px] uppercase font-bold text-amber-400 tracking-widest block">Asignación Nominal</span>
+          <h2 id="tituloModalAsignar" class="font-cinema text-lg font-bold text-white uppercase">Asignar Butaca</h2>
+        </div>
+        <button onclick="cerrarModalAsignar()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center cursor-pointer">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+      </div>
+
+      <!-- Butacas incluidas -->
+      <div class="bg-black/40 border border-white/10 rounded-xl p-3">
+        <span class="text-[10px] uppercase font-bold text-slate-400 block mb-1.5">Ubicación en Teatro Juares:</span>
+        <div id="detalleButacasModal" class="flex flex-wrap gap-1.5"></div>
+      </div>
+
+      <form onsubmit="guardarAsignacion(event)" class="space-y-3.5 text-left">
+        <div>
+          <label class="text-[11px] uppercase font-semibold text-slate-300 block mb-1">Nombre y Apellido del Asistente *</label>
+          <input type="text" id="campoNombre" required placeholder="Ej: María Gabriela Pernía" class="w-full bg-black/40 border border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-amber-400" />
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="text-[11px] uppercase font-semibold text-slate-300 block mb-1">Cédula / Credencial</label>
+            <input type="text" id="campoCedula" placeholder="Ej: V-18456789" class="w-full bg-black/40 border border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-white font-mono focus:outline-none focus:border-amber-400" />
+          </div>
+          <div>
+            <label class="text-[11px] uppercase font-semibold text-slate-300 block mb-1">Estado / Delegación / Medio</label>
+            <input type="text" id="campoDelegacion" placeholder="Ej: Lara / Táchira / Prensa" class="w-full bg-black/40 border border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-amber-400" />
+          </div>
+        </div>
+
+        <div>
+          <label class="text-[11px] uppercase font-semibold text-slate-300 block mb-1">Coordinación / Rol *</label>
+          <select id="campoRol" class="w-full bg-black/60 border border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-amber-400">
+            <option value="R+N · Niño no clasificado + Representante">R+N · Niño no clasificado + Representante (Verde)</option>
+            <option value="PM · Preparador Musical">PM · Preparador Musical (Verde)</option>
+            <option value="IE · Invitado Especial">IE · Invitado Especial (Amarillo)</option>
+            <option value="DR · Director Regional">DR · Director Regional (Amarillo)</option>
+            <option value="CDN · Niño CDN Barquisimeto">CDN · Niño CDN Barquisimeto (Mostaza / Azul Claro)</option>
+            <option value="REP_CDN · Representante CDN">REP_CDN · Representante CDN (Rojo / Fucsia)</option>
+            <option value="PADRES_CDN · Padres CDN">PADRES_CDN · Padres CDN (Azul Oscuro F1-F2)</option>
+            <option value="TRAB_CDN · Trabajador CDN Barquisimeto">TRAB_CDN · Trabajador CDN Barquisimeto (Azul Oscuro)</option>
+            <option value="PG · Público General">PG · Público General (Gris)</option>
+            <option value="PRENSA · Prensa Acreditada">PRENSA · Prensa Acreditada (Balcón)</option>
+            <option value="BARBARIE · Producción Barbarie">BARBARIE · Producción Barbarie (Balcón)</option>
+            <option value="JURADO · Jurado Calificador">JURADO · Jurado Calificador (Fosa)</option>
+            <option value="PALCO · Palco Presidencial">PALCO · Palco Presidencial</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="text-[11px] uppercase font-semibold text-slate-300 block mb-1">Observaciones (Opcional)</label>
+          <input type="text" id="campoNota" placeholder="Ej: Acompañante de participante / Pase VIP" class="w-full bg-black/40 border border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-amber-400" />
+        </div>
+
+        <div class="flex items-center justify-between gap-2 pt-3 border-t border-white/10">
+          <button type="button" id="btnLiberarButaca" onclick="liberarButacasModal()" class="hidden px-4 py-2.5 rounded-xl bg-red-500/20 hover:bg-red-500/30 border border-red-400/40 text-red-300 text-xs font-bold transition cursor-pointer">
+            <i class="fa-solid fa-trash-can mr-1"></i> Liberar Butaca
+          </button>
+
+          <div class="flex items-center gap-2 ml-auto">
+            <button type="button" onclick="cerrarModalAsignar()" class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-semibold text-slate-300 cursor-pointer">
+              Cancelar
+            </button>
+            <button type="submit" class="px-6 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold uppercase tracking-wider text-xs cursor-pointer">
+              Guardar Asignación
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= MODAL PADRÓN GENERAL DE ASIGNACIONES ================= -->
+  <div id="modalListado" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden items-center justify-center p-4 overflow-y-auto">
+    <div class="w-full max-w-5xl bg-[#09182b] border border-white/20 rounded-3xl p-6 shadow-2xl space-y-4 my-auto">
+      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+        <div>
+          <span class="text-[10px] uppercase font-bold text-emerald-400 tracking-widest block">Control de Puerta y Protocolo</span>
+          <h2 class="font-cinema text-lg sm:text-xl font-bold text-white uppercase">Listado General de Butacas Asignadas</h2>
+        </div>
+        <button onclick="cerrarModalListado()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center cursor-pointer">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+      </div>
+
+      <div class="bg-black/40 border border-white/10 rounded-2xl overflow-hidden max-h-[60vh] overflow-y-auto custom-scroll">
+        <table class="w-full text-left text-xs text-slate-200">
+          <thead class="sticky top-0 bg-[#061528] text-[10px] uppercase font-bold text-amber-400 border-b border-white/10">
+            <tr>
+              <th class="py-3 px-3">Butaca</th>
+              <th class="py-3 px-3">Zona / Bloque</th>
+              <th class="py-3 px-3">Nombre y Apellido</th>
+              <th class="py-3 px-3">Cédula</th>
+              <th class="py-3 px-3">Delegación</th>
+              <th class="py-3 px-3">Rol</th>
+              <th class="py-3 px-3 text-right">Acción</th>
+            </tr>
+          </thead>
+          <tbody id="tbodyListado" class="divide-y divide-white/5 text-[11px]"></tbody>
+        </table>
+      </div>
+
+      <div class="flex items-center justify-between pt-2">
+        <button onclick="limpiarTodoElMapa()" class="px-4 py-2 rounded-xl bg-red-500/15 hover:bg-red-500/25 border border-red-500/30 text-red-300 text-xs font-semibold cursor-pointer">
+          Reiniciar Mapa Completo
+        </button>
+        <div class="flex gap-2">
+          <button onclick="exportarCSV()" class="px-4 py-2 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs cursor-pointer">
+            <i class="fa-solid fa-file-excel mr-1"></i> Descargar Excel (CSV)
+          </button>
+          <button onclick="cerrarModalListado()" class="px-4 py-2 rounded-xl bg-white/10 text-white font-semibold text-xs cursor-pointer">
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= LÓGICA DE SILLETERÍA TEATRO JUARES ================= -->
+  <script>
+    const STORAGE_KEY = "teatro_juares_festival_2026_v1";
+    let asignaciones = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+    let seleccionActual = [];
+    let filasABCDesbloqueadas = false;
+    let butacasEditandoEnModal = [];
+
+    // Definición de colores por zona
+    const ZONA_STYLES = {
+      VERDE: { label: "Verde · Patio Par", bg: "bg-emerald-500/85 border-emerald-300 text-slate-950", rolDefault: "R+N · Niño no clasificado + Representante" },
+      AMARILLO: { label: "Amarillo · Patio Impar", bg: "bg-yellow-400/90 border-yellow-200 text-slate-950", rolDefault: "IE · Invitado Especial" },
+      MOSTAZA: { label: "Mostaza · Patio Par (I–O)", bg: "bg-amber-500/90 border-amber-200 text-slate-950", rolDefault: "CDN · Niño CDN Barquisimeto" },
+      AZUL_CLARO: { label: "Azul Claro · Patio Impar (I–O)", bg: "bg-cyan-400/90 border-cyan-100 text-slate-950", rolDefault: "CDN · Niño CDN Barquisimeto" },
+      ROJO: { label: "Rojo · Galería Par (A–C)", bg: "bg-red-600/90 border-red-300 text-white", rolDefault: "REP_CDN · Representante CDN" },
+      FUCSIA: { label: "Fucsia · Galería Impar (A–C)", bg: "bg-fuchsia-500/90 border-fuchsia-200 text-white", rolDefault: "REP_CDN · Representante CDN" },
+      AZUL_OSCURO: { label: "Azul Oscuro · Galería Par (D–L)", bg: "bg-indigo-600/90 border-indigo-300 text-white", rolDefault: "TRAB_CDN · Trabajador CDN Barquisimeto" },
+      GRIS: { label: "Gris · Galería Impar (D–L)", bg: "bg-slate-400/90 border-slate-200 text-slate-950", rolDefault: "PG · Público General" },
+      BALCON_DERECHO: { label: "Balcón Derecho", bg: "bg-sky-500/90 border-sky-200 text-slate-950", rolDefault: "PRENSA · Prensa Acreditada" },
+      BALCON_IZQUIERDO: { label: "Balcón Izquierdo", bg: "bg-sky-500/90 border-sky-200 text-slate-950", rolDefault: "PRENSA · Prensa Acreditada" },
+      PALCO: { label: "Palco Presidencial", bg: "bg-blue-600/90 border-blue-300 text-white", rolDefault: "PALCO · Palco Presidencial" },
+      FOSA: { label: "Fosa · Jurado", bg: "bg-amber-400 border-amber-100 text-slate-950", rolDefault: "JURADO · Jurado Calificador" }
+    };
+
+    // Cupos de referencia oficiales
+    const CUPOS_OFICIALES = [
+      { id: "VERDE_RN", nombre: "Verde · Niños no clasif. + Rep. (R+N)", filas: "Filas D, E, F (Par)", meta: 38, color: "bg-emerald-500", filter: (s) => s.zona === "VERDE" && ["D","E","F"].includes(s.fila) && asignaciones[s.id]?.rol?.startsWith("R+N") },
+      { id: "VERDE_PM", nombre: "Verde · Preparadores Musicales (PM)", filas: "Filas F, G, H (Par)", meta: 31, color: "bg-emerald-400", filter: (s) => s.zona === "VERDE" && ["F","G","H"].includes(s.fila) && asignaciones[s.id]?.rol?.startsWith("PM") },
+      { id: "AMARILLO_IE", nombre: "Amarillo · Invitados Especiales (IE)", filas: "Filas D, E (Impar)", meta: 24, color: "bg-yellow-400", filter: (s) => s.zona === "AMARILLO" && ["D","E"].includes(s.fila) && asignaciones[s.id]?.rol?.startsWith("IE") },
+      { id: "AMARILLO_DR", nombre: "Amarillo · Directores Regionales (DR)", filas: "Filas F, G, H (Impar)", meta: 31, color: "bg-yellow-300", filter: (s) => s.zona === "AMARILLO" && ["F","G","H"].includes(s.fila) && asignaciones[s.id]?.rol?.startsWith("DR") },
+      { id: "MOSTAZA", nombre: "Mostaza · Niños CDN Barquisimeto", filas: "Filas I a O (Par)", meta: 81, color: "bg-amber-500", filter: (s) => s.zona === "MOSTAZA" && !!asignaciones[s.id] },
+      { id: "AZUL_CLARO", nombre: "Azul Claro · Niños CDN Barquisimeto", filas: "Filas I a O (Impar)", meta: 81, color: "bg-cyan-400", filter: (s) => s.zona === "AZUL_CLARO" && !!asignaciones[s.id] },
+      { id: "ROJO", nombre: "Rojo · Representantes CDN", filas: "Galería A–C (Par)", meta: 38, color: "bg-red-600", filter: (s) => s.zona === "ROJO" && !!asignaciones[s.id] },
+      { id: "FUCSIA", nombre: "Fucsia · Representantes CDN", filas: "Galería A–C (Impar)", meta: 39, color: "bg-fuchsia-500", filter: (s) => s.zona === "FUCSIA" && !!asignaciones[s.id] },
+      { id: "AZUL_PADRES", nombre: "Azul Oscuro · Padres CDN (Filas 1–2)", filas: "Galería D–E (Par)", meta: 19, color: "bg-indigo-500", filter: (s) => s.zona === "AZUL_OSCURO" && asignaciones[s.id]?.rol?.startsWith("PADRES_CDN") },
+      { id: "AZUL_TRAB", nombre: "Azul Oscuro · Trabajadores CDN", filas: "Galería F–L (Par)", meta: 79, color: "bg-indigo-600", filter: (s) => s.zona === "AZUL_OSCURO" && asignaciones[s.id]?.rol?.startsWith("TRAB_CDN") },
+      { id: "GRIS", nombre: "Gris · Público General (PG)", filas: "Galería D–L (Impar)", meta: 112, color: "bg-slate-400", filter: (s) => s.zona === "GRIS" && !!asignaciones[s.id] },
+      { id: "BALCONES", nombre: "Balcones Der. e Izq. · Prensa + Barbarie", filas: "13 + 1 por balcón", meta: 28, color: "bg-sky-500", filter: (s) => (s.zona === "BALCON_DERECHO" || s.zona === "BALCON_IZQUIERDO") && !!asignaciones[s.id] }
+    ];
+
+    const CATALOGO_BUTACAS = [];
+
+    function generarRangoImpares(maxImpar) {
+      const arr = [];
+      for (let n = maxImpar; n >= 1; n -= 2) arr.push(n);
+      return arr;
+    }
+
+    function generarRangoPares(maxPar, excluidos = []) {
+      const arr = [];
+      for (let n = 2; n <= maxPar; n += 2) {
+        arr.push(excluidos.includes(n) ? null : n);
+      }
+      return arr;
+    }
+
+    function construirFilaHTML(contenedor, zona, filaLabel, numeros, lado, options = {}) {
+      const rowDiv = document.createElement("div");
+      rowDiv.className = `flex items-center gap-1 ${lado === "IZQ" ? "justify-end" : "justify-start"}`;
+
+      const tagFila = `<span class="w-9 text-[9px] font-mono font-bold text-slate-400 ${lado === "IZQ" ? "text-left mr-1" : "text-right ml-1"}">F-${filaLabel}</span>`;
+      if (lado === "IZQ") rowDiv.insertAdjacentHTML("beforeend", tagFila);
+
+      numeros.forEach(num => {
+        if (num === null) {
+          // Espacio negro NO EXISTE en el plano oficial
+          const empty = document.createElement("span");
+          empty.className = "w-[26px] h-[24px] rounded bg-black border border-white/10 inline-flex items-center justify-center text-[7px] text-slate-700";
+          empty.title = "Butaca no existe en Teatro Juares";
+          empty.innerText = "×";
+          rowDiv.appendChild(empty);
+          return;
+        }
+
+        const codigo = `${filaLabel}${num}`;
+        const id = `${zona}_${codigo}`;
+        const bloqueada = Boolean(options.bloqueada);
+        const subRol = options.subRol || ZONA_STYLES[zona].rolDefault;
+
+        CATALOGO_BUTACAS.push({ id, zona, fila: filaLabel, numero: num, codigo, bloqueada, subRol });
+
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.id = `btn_${id}`;
+        btn.dataset.seatId = id;
+        btn.dataset.zona = zona;
+        btn.innerText = codigo;
+        btn.onclick = () => manejarClickButaca(id);
+        rowDiv.appendChild(btn);
+      });
+
+      if (lado === "DER") rowDiv.insertAdjacentHTML("beforeend", tagFila);
+      contenedor.appendChild(rowDiv);
+    }
+
+    function inicializarTeatro() {
+      CATALOGO_BUTACAS.length = 0;
+
+      // 1. GALERÍA GRIS (Impares, Filas L -> D)
+      const contGris = document.getElementById("galeriaGris");
+      contGris.innerHTML = "";
+      [
+        ["L", 27], ["K", 25], ["J", 25],
+        ["I", 23], ["H", 23], ["G", 23], ["F", 23], ["E", 23], ["D", 23]
+      ].forEach(([f, max]) => construirFilaHTML(contGris, "GRIS", f, generarRangoImpares(max), "IZQ"));
+
+      // 2. GALERÍA AZUL OSCURO (Pares, Filas L -> D)
+      const contAzulOsc = document.getElementById("galeriaAzulOscuro");
+      contAzulOsc.innerHTML = "";
+      [
+        ["L", 26, [2, 10]], ["K", 26, []], ["J", 24, [4]],
+        ["I", 22, []], ["H", 22, []], ["G", 22, []], ["F", 22, []],
+        ["E", 22, []], ["D", 22, []]
+      ].forEach(([f, max, excl]) => {
+        const subRol = (f === "D" || f === "E") ? "PADRES_CDN · Padres CDN" : "TRAB_CDN · Trabajador CDN Barquisimeto";
+        construirFilaHTML(contAzulOsc, "AZUL_OSCURO", f, generarRangoPares(max, excl), "DER", { subRol });
+      });
+
+      // 3. GALERÍA FUCSIA (Impares, Filas C -> A)
+      const contFucsia = document.getElementById("galeriaFucsia");
+      contFucsia.innerHTML = "";
+      ["C", "B", "A"].forEach(f => construirFilaHTML(contFucsia, "FUCSIA", f, generarRangoImpares(25), "IZQ"));
+
+      // 4. GALERÍA ROJO (Pares, Filas C -> A)
+      const contRojo = document.getElementById("galeriaRojo");
+      contRojo.innerHTML = "";
+      [["C", 26, [2]], ["B", 26, []], ["A", 26, []]].forEach(([f, max, excl]) =>
+        construirFilaHTML(contRojo, "ROJO", f, generarRangoPares(max, excl), "DER")
+      );
+
+      // 5. BALCÓN DERECHO (Izquierda del mapa, puestos 1..14)
+      const contBalDer = document.getElementById("balconDerecho");
+      contBalDer.innerHTML = "";
+      [[1], [2], [3], [4], [5], [6, 7], [8, 9, 10], [11, 12, 13, 14]].forEach((grupo, idx) => {
+        const div = document.createElement("div");
+        div.className = "flex gap-1 justify-end";
+        grupo.forEach(n => {
+          const id = `BALCON_DERECHO_B${n}`;
+          const subRol = n === 14 ? "BARBARIE · Producción Barbarie" : "PRENSA · Prensa Acreditada";
+          CATALOGO_BUTACAS.push({ id, zona: "BALCON_DERECHO", fila: `N${idx+1}`, numero: n, codigo: `BD-${n}`, bloqueada: false, subRol });
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.id = `btn_${id}`;
+          btn.dataset.seatId = id;
+          btn.dataset.zona = "BALCON_DERECHO";
+          btn.innerText = n;
+          btn.onclick = () => manejarClickButaca(id);
+          div.appendChild(btn);
+        });
+        contBalDer.appendChild(div);
+      });
+
+      // 6. PALCO PRESIDENCIAL (8-9 atrás, 7..1 adelante)
+      const contPalco = document.getElementById("palcoPresidencial");
+      contPalco.innerHTML = "";
+      [[8, 9], [7, 6, 5, 4, 3, 2, 1]].forEach((filaNums, idx) => {
+        const div = document.createElement("div");
+        div.className = "flex gap-1.5 justify-center";
+        filaNums.forEach(n => {
+          const id = `PALCO_P${n}`;
+          CATALOGO_BUTACAS.push({ id, zona: "PALCO", fila: `P${idx+1}`, numero: n, codigo: `PAL-${n}`, bloqueada: false, subRol: "PALCO · Palco Presidencial" });
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.id = `btn_${id}`;
+          btn.dataset.seatId = id;
+          btn.dataset.zona = "PALCO";
+          btn.innerText = `P${n}`;
+          btn.onclick = () => manejarClickButaca(id);
+          div.appendChild(btn);
+        });
+        contPalco.appendChild(div);
+      });
+
+      // 7. BALCÓN IZQUIERDO (Derecha del mapa, puestos 1..14)
+      const contBalIzq = document.getElementById("balconIzquierdo");
+      contBalIzq.innerHTML = "";
+      [[1], [2], [3], [4], [5], [6, 7], [8, 9, 10], [11, 12, 13, 14]].forEach((grupo, idx) => {
+        const div = document.createElement("div");
+        div.className = "flex gap-1 justify-start";
+        grupo.forEach(n => {
+          const id = `BALCON_IZQUIERDO_B${n}`;
+          const subRol = n === 14 ? "BARBARIE · Producción Barbarie" : "PRENSA · Prensa Acreditada";
+          CATALOGO_BUTACAS.push({ id, zona: "BALCON_IZQUIERDO", fila: `N${idx+1}`, numero: n, codigo: `BI-${n}`, bloqueada: false, subRol });
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.id = `btn_${id}`;
+          btn.dataset.seatId = id;
+          btn.dataset.zona = "BALCON_IZQUIERDO";
+          btn.innerText = n;
+          btn.onclick = () => manejarClickButaca(id);
+          div.appendChild(btn);
+        });
+        contBalIzq.appendChild(div);
+      });
+
+      // 8. PATIO AZUL CLARO (Impares, Filas O -> I)
+      const contAzulClaro = document.getElementById("patioAzulClaro");
+      contAzulClaro.innerHTML = "";
+      [["O", 17], ["N", 23], ["M", 23], ["L", 23], ["K", 23], ["J", 23], ["I", 23]].forEach(([f, max]) =>
+        construirFilaHTML(contAzulClaro, "AZUL_CLARO", f, generarRangoImpares(max), "IZQ")
+      );
+
+      // 9. PATIO MOSTAZA (Pares, Filas O -> I)
+      const contMostaza = document.getElementById("patioMostaza");
+      contMostaza.innerHTML = "";
+      [["O", 18], ["N", 24], ["M", 24], ["L", 24], ["K", 24], ["J", 24], ["I", 24]].forEach(([f, max]) =>
+        construirFilaHTML(contMostaza, "MOSTAZA", f, generarRangoPares(max), "DER")
+      );
+
+      // 10. PATIO AMARILLO (Impares, Filas H -> A; C, B, A bloqueadas por defecto)
+      const contAmarillo = document.getElementById("patioAmarillo");
+      contAmarillo.innerHTML = "";
+      [
+        ["H", 25, false, "DR · Director Regional"],
+        ["G", 27, false, "DR · Director Regional"],
+        ["F", 27, false, "DR · Director Regional"],
+        ["E", 27, false, "IE · Invitado Especial"],
+        ["D", 27, false, "IE · Invitado Especial"],
+        ["C", 27, true, "IE · Invitado Especial"],
+        ["B", 25, true, "IE · Invitado Especial"],
+        ["A", 23, true, "IE · Invitado Especial"]
+      ].forEach(([f, max, bloq, subRol]) =>
+        construirFilaHTML(contAmarillo, "AMARILLO", f, generarRangoImpares(max), "IZQ", { bloqueada: bloq && !filasABCDesbloqueadas, subRol })
+      );
+
+      // 11. PATIO VERDE (Pares, Filas H -> A; C, B, A bloqueadas por defecto)
+      const contVerde = document.getElementById("patioVerde");
+      contVerde.innerHTML = "";
+      [
+        ["H", 26, false, "PM · Preparador Musical"],
+        ["G", 28, false, "PM · Preparador Musical"],
+        ["F", 28, false, "PM · Preparador Musical"],
+        ["E", 28, false, "R+N · Niño no clasificado + Representante"],
+        ["D", 28, false, "R+N · Niño no clasificado + Representante"],
+        ["C", 28, true, "R+N · Niño no clasificado + Representante"],
+        ["B", 26, true, "R+N · Niño no clasificado + Representante"],
+        ["A", 24, true, "R+N · Niño no clasificado + Representante"]
+      ].forEach(([f, max, bloq, subRol]) =>
+        construirFilaHTML(contVerde, "VERDE", f, generarRangoPares(max), "DER", { bloqueada: bloq && !filasABCDesbloqueadas, subRol })
+      );
+
+      // 12. FOSA JURADO (5 puestos)
+      const contFosa = document.getElementById("fosaJurado");
+      contFosa.innerHTML = "";
+      [1, 2, 3, 4, 5].forEach(n => {
+        const id = `FOSA_J${n}`;
+        CATALOGO_BUTACAS.push({ id, zona: "FOSA", fila: "FOSA", numero: n, codigo: `JUR-${n}`, bloqueada: false, subRol: "JURADO · Jurado Calificador" });
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.id = `btn_${id}`;
+        btn.dataset.seatId = id;
+        btn.dataset.zona = "FOSA";
+        btn.innerText = `J${n}`;
+        btn.onclick = () => manejarClickButaca(id);
+        contFosa.appendChild(btn);
+      });
+
+      actualizarEstilosYContadores();
+    }
+
+    function actualizarEstilosYContadores() {
+      let habilitadas = 0;
+      let asignadas = 0;
+      let bloqueadas = 0;
+
+      CATALOGO_BUTACAS.forEach(seat => {
+        const btn = document.getElementById(`btn_${seat.id}`);
+        if (!btn) return;
+
+        const info = asignaciones[seat.id];
+        const isSelected = seleccionActual.includes(seat.id);
+
+        if (seat.bloqueada) {
+          bloqueadas++;
+          btn.disabled = true;
+          btn.className = "seat-btn seat-blocked";
+          btn.title = `${ZONA_STYLES[seat.zona].label} · ${seat.codigo} (Fila inhabilitada)`;
+          return;
+        }
+
+        habilitadas++;
+        btn.disabled = false;
+
+        if (info) {
+          asignadas++;
+          btn.className = `seat-btn ${ZONA_STYLES[seat.zona].bg} seat-occupied ${isSelected ? "seat-selected" : ""}`;
+          btn.title = `ASIGNADA · ${seat.codigo} (${ZONA_STYLES[seat.zona].label})\nPersona: ${info.nombre}\nCédula: ${info.cedula || "N/A"}\nDelegación: ${info.delegacion || "N/A"}\nRol: ${info.rol}`;
+        } else {
+          btn.className = `seat-btn ${ZONA_STYLES[seat.zona].bg} ${isSelected ? "seat-selected" : ""}`;
+          btn.title = `DISPONIBLE · ${seat.codigo} (${ZONA_STYLES[seat.zona].label})`;
+        }
+      });
+
+      const disponibles = habilitadas - asignadas;
+      const pct = habilitadas > 0 ? Math.round((asignadas / habilitadas) * 100) : 0;
+
+      document.getElementById("kpiHabilitadas").innerText = habilitadas;
+      document.getElementById("kpiAsignadas").innerText = asignadas;
+      document.getElementById("kpiPorcentaje").innerText = `${pct}% ocupado`;
+      document.getElementById("kpiDisponibles").innerText = disponibles;
+      document.getElementById("kpiBloqueadas").innerText = bloqueadas;
+      document.getElementById("topCountAsignadas").innerText = asignadas;
+
+      // Renderizar tarjetas de cupos
+      const gridCupos = document.getElementById("gridCupos");
+      gridCupos.innerHTML = CUPOS_OFICIALES.map(c => {
+        const usados = CATALOGO_BUTACAS.filter(c.filter).length;
+        const pctCupo = Math.min(100, Math.round((usados / c.meta) * 100));
+        return `
+          <div class="bg-black/40 border border-white/10 rounded-xl p-2.5 space-y-1.5">
+            <div class="flex items-center justify-between gap-2">
+              <span class="font-semibold text-white truncate flex items-center gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-sm ${c.color} shrink-0"></span>
+                ${c.nombre}
+              </span>
+              <span class="font-mono font-bold text-amber-300 shrink-0">${usados}/${c.meta}</span>
+            </div>
+            <div class="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+              <div class="h-full ${c.color}" style="width: ${pctCupo}%"></div>
+            </div>
+            <span class="text-[9px] text-slate-400 block">${c.filas}</span>
+          </div>
+        `;
+      }).join("");
+
+      actualizarBarraInferior();
+    }
+
+    function manejarClickButaca(seatId) {
+      const seat = CATALOGO_BUTACAS.find(s => s.id === seatId);
+      if (!seat || seat.bloqueada) return;
+
+      // Si ya está asignada y no hay selección múltiple activa, abrir ficha para ver/editar/liberar
+      if (asignaciones[seatId] && seleccionActual.length === 0) {
+        butacasEditandoEnModal = [seatId];
+        abrirModalConButacas([seatId]);
+        return;
+      }
+
+      if (seleccionActual.includes(seatId)) {
+        seleccionActual = seleccionActual.filter(id => id !== seatId);
+      } else {
+        seleccionActual.push(seatId);
+      }
+
+      actualizarEstilosYContadores();
+    }
+
+    function actualizarBarraInferior() {
+      const count = seleccionActual.length;
+      document.getElementById("contadorSeleccion").innerText = count;
+
+      const btnAsignar = document.getElementById("btnAsignarSel");
+      const btnLimpiar = document.getElementById("btnLimpiarSel");
+      const chips = document.getElementById("chipsSeleccion");
+
+      if (count > 0) {
+        const etiquetas = seleccionActual.map(id => {
+          const s = CATALOGO_BUTACAS.find(x => x.id === id);
+          return s ? `${s.codigo} (${ZONA_STYLES[s.zona].label.split("·")[0].trim()})` : id;
+        });
+        chips.innerText = etiquetas.join(" · ");
+        btnLimpiar.classList.remove("hidden");
+        btnAsignar.disabled = false;
+        btnAsignar.className = "px-6 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold uppercase tracking-wider text-xs flex items-center gap-2 shadow-lg shadow-amber-400/30 cursor-pointer transition";
+      } else {
+        chips.innerText = "Haz clic sobre una o varias butacas disponibles en el mapa para asignarlas.";
+        btnLimpiar.classList.add("hidden");
+        btnAsignar.disabled = true;
+        btnAsignar.className = "px-6 py-2.5 rounded-xl bg-slate-700 text-slate-400 font-bold uppercase tracking-wider text-xs flex items-center gap-2 cursor-not-allowed transition";
+      }
+    }
+
+    function limpiarSeleccion() {
+      seleccionActual = [];
+      actualizarEstilosYContadores();
+    }
+
+    function abrirModalAsignacion() {
+      if (seleccionActual.length === 0) return;
+      butacasEditandoEnModal = [...seleccionActual];
+      abrirModalConButacas(butacasEditandoEnModal);
+    }
+
+    function abrirModalConButacas(listaIds) {
+      const detalleCont = document.getElementById("detalleButacasModal");
+      detalleCont.innerHTML = listaIds.map(id => {
+        const s = CATALOGO_BUTACAS.find(x => x.id === id);
+        return `<span class="px-2.5 py-1 rounded-lg bg-amber-400/15 border border-amber-400/40 text-amber-300 text-[11px] font-mono font-bold">${s.codigo} · ${ZONA_STYLES[s.zona].label}</span>`;
+      }).join("");
+
+      const primera = CATALOGO_BUTACAS.find(x => x.id === listaIds[0]);
+      const existente = listaIds.length === 1 ? asignaciones[listaIds[0]] : null;
+
+      document.getElementById("tituloModalAsignar").innerText = existente
+        ? `Editar Butaca ${primera.codigo}`
+        : `Asignar ${listaIds.length} Butaca(s)`;
+
+      document.getElementById("campoNombre").value = existente?.nombre || "";
+      document.getElementById("campoCedula").value = existente?.cedula || "";
+      document.getElementById("campoDelegacion").value = existente?.delegacion || "";
+      document.getElementById("campoRol").value = existente?.rol || primera.subRol;
+      document.getElementById("campoNota").value = existente?.nota || "";
+
+      const btnLiberar = document.getElementById("btnLiberarButaca");
+      if (listaIds.some(id => !!asignaciones[id])) {
+        btnLiberar.classList.remove("hidden");
+      } else {
+        btnLiberar.classList.add("hidden");
+      }
+
+      const m = document.getElementById("modalAsignar");
+      m.classList.remove("hidden");
+      m.classList.add("flex");
+    }
+
+    function cerrarModalAsignar() {
+      const m = document.getElementById("modalAsignar");
+      m.classList.add("hidden");
+      m.classList.remove("flex");
+    }
+
+    function guardarAsignacion(e) {
+      e.preventDefault();
+      const nombre = document.getElementById("campoNombre").value.trim();
+      const cedula = document.getElementById("campoCedula").value.trim().toUpperCase();
+      const delegacion = document.getElementById("campoDelegacion").value.trim();
+      const rol = document.getElementById("campoRol").value;
+      const nota = document.getElementById("campoNota").value.trim();
+
+      if (!nombre) return;
+
+      butacasEditandoEnModal.forEach(id => {
+        asignaciones[id] = {
+          nombre,
+          cedula,
+          delegacion,
+          rol,
+          nota,
+          fecha: new Date().toLocaleString("es-VE")
+        };
+      });
+
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(asignaciones));
+      seleccionActual = [];
+      cerrarModalAsignar();
+      actualizarEstilosYContadores();
+    }
+
+    function liberarButacasModal() {
+      butacasEditandoEnModal.forEach(id => delete asignaciones[id]);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(asignaciones));
+      seleccionActual = [];
+      cerrarModalAsignar();
+      actualizarEstilosYContadores();
+    }
+
+    function toggleFilasABC() {
+      filasABCDesbloqueadas = !filasABCDesbloqueadas;
+      const btn = document.getElementById("btnToggleABC");
+      btn.innerHTML = filasABCDesbloqueadas
+        ? `<i class="fa-solid fa-lock-open mr-1"></i> Habilitadas (Bloquear)`
+        : `<i class="fa-solid fa-lock mr-1"></i> Bloqueadas (Activar)`;
+      inicializarTeatro();
+    }
+
+    function cambiarZoom(factor) {
+      document.getElementById("lienzoTeatro").style.transform = `scale(${factor})`;
+    }
+
+    function aplicarFiltroZona() {
+      const zonaSel = document.getElementById("filtroZona").value;
+      CATALOGO_BUTACAS.forEach(s => {
+        const btn = document.getElementById(`btn_${s.id}`);
+        if (!btn) return;
+        btn.style.opacity = (zonaSel === "TODAS" || s.zona === zonaSel) ? "1" : "0.18";
+      });
+    }
+
+    function buscarEnMapa() {
+      const q = document.getElementById("inputBuscar").value.toLowerCase().trim();
+      CATALOGO_BUTACAS.forEach(s => {
+        const btn = document.getElementById(`btn_${s.id}`);
+        if (!btn) return;
+        btn.classList.remove("seat-highlight-search");
+
+        if (!q) return;
+        const info = asignaciones[s.id];
+        const texto = `${s.codigo} ${ZONA_STYLES[s.zona].label} ${info?.nombre || ""} ${info?.cedula || ""} ${info?.delegacion || ""} ${info?.rol || ""}`.toLowerCase();
+        if (texto.includes(q)) {
+          btn.classList.add("seat-highlight-search");
+        }
+      });
+    }
+
+    // ================= MODAL LISTADO & EXPORTACIONES =================
+    function abrirModalListado() {
+      const tbody = document.getElementById("tbodyListado");
+      const entradas = Object.entries(asignaciones);
+
+      if (entradas.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="py-8 text-center text-slate-400">Aún no hay butacas asignadas. Selecciona asientos en el mapa para comenzar.</td></tr>`;
+      } else {
+        tbody.innerHTML = entradas.map(([id, info]) => {
+          const s = CATALOGO_BUTACAS.find(x => x.id === id);
+          return `
+            <tr class="hover:bg-white/5">
+              <td class="py-2.5 px-3 font-mono font-bold text-amber-300">${s ? s.codigo : id}</td>
+              <td class="py-2.5 px-3 text-slate-300">${s ? ZONA_STYLES[s.zona].label : ""}</td>
+              <td class="py-2.5 px-3 font-semibold text-white">${info.nombre}</td>
+              <td class="py-2.5 px-3 font-mono text-slate-300">${info.cedula || "—"}</td>
+              <td class="py-2.5 px-3 text-slate-300">${info.delegacion || "—"}</td>
+              <td class="py-2.5 px-3 text-emerald-300">${info.rol}</td>
+              <td class="py-2.5 px-3 text-right">
+                <button onclick="cerrarModalListado(); butacasEditandoEnModal=['${id}']; abrirModalConButacas(['${id}']);" class="px-2.5 py-1 rounded bg-white/10 hover:bg-amber-400 hover:text-slate-950 text-[10px] font-bold transition cursor-pointer">
+                  Editar
+                </button>
+              </td>
+            </tr>
+          `;
+        }).join("");
+      }
+
+      const m = document.getElementById("modalListado");
+      m.classList.remove("hidden");
+      m.classList.add("flex");
+    }
+
+    function cerrarModalListado() {
+      const m = document.getElementById("modalListado");
+      m.classList.add("hidden");
+      m.classList.remove("flex");
+    }
+
+    function exportarCSV() {
+      const entradas = Object.entries(asignaciones);
+      if (entradas.length === 0) {
+        alert("No hay butacas asignadas para exportar todavía.");
+        return;
+      }
+
+      const filas = [["Butaca", "Fila", "Zona", "Nombre y Apellido", "Cédula", "Delegación/Estado", "Rol/Coordinación", "Observaciones", "Fecha Registro"]];
+      entradas.forEach(([id, info]) => {
+        const s = CATALOGO_BUTACAS.find(x => x.id === id);
+        filas.push([
+          s ? s.codigo : id,
+          s ? s.fila : "",
+          s ? ZONA_STYLES[s.zona].label : "",
+          info.nombre,
+          info.cedula || "",
+          info.delegacion || "",
+          info.rol,
+          info.nota || "",
+          info.fecha || ""
+        ]);
+      });
+
+      const csvContent = "\uFEFF" + filas.map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(";")).join("\n");
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `Silleteria_Teatro_Juares_2026_${new Date().toISOString().slice(0,10)}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function exportarJSON() {
+      const blob = new Blob([JSON.stringify(asignaciones, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `Respaldo_Silleteria_TeatroJuares_${new Date().toISOString().slice(0,10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function importarJSON(input) {
+      const file = input.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const data = JSON.parse(e.target.result);
+          if (typeof data === "object" && data !== null) {
+            asignaciones = data;
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(asignaciones));
+            actualizarEstilosYContadores();
+            alert("Respaldo cargado con éxito.");
+          }
+        } catch (err) {
+          alert("El archivo seleccionado no es un respaldo válido.");
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function limpiarTodoElMapa() {
+      if (!confirm("¿Seguro que deseas borrar todas las asignaciones de butacas?")) return;
+      asignaciones = {};
+      localStorage.removeItem(STORAGE_KEY);
+      cerrarModalListado();
+      actualizarEstilosYContadores();
+    }
+
+    document.addEventListener("DOMContentLoaded", inicializarTeatro);
+  </script>
+</body>
+</html>
