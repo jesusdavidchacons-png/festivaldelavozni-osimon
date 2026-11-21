@@ -14,51 +14,24 @@
   <style>
     body { font-family: 'Inter', sans-serif; }
     .font-display { font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.04em; }
-    .media-layer {
-      transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-    }
   </style>
 </head>
 <body class="bg-[#09090b] text-zinc-100 antialiased selection:bg-blue-600 selection:text-white">
 
   <!-- ===================================================================== -->
   <!-- VISTA 1: SALIDA WEB PARA EL TÓTEM (200cm Alto x 50cm Ancho / 1:4)     -->
-  <!-- Abrir en la PC del Tótem con: totem.html?view=totem y presionar F11   -->
+  <!-- Solo imagen/video limpio sin textos superpuestos                      -->
   <!-- ===================================================================== -->
   <div id="vistaTotem" class="hidden fixed inset-0 w-screen h-screen bg-black overflow-hidden select-none">
     
-    <!-- Capas A y B para Crossfade instantáneo -->
-    <div id="capaMediaA" class="media-layer absolute inset-0 w-full h-full opacity-100"></div>
-    <div id="capaMediaB" class="media-layer absolute inset-0 w-full h-full opacity-0"></div>
+    <!-- Contenedor único limpio de salida en vivo (Cero desfase) -->
+    <div id="salidaTotemLimpia" class="w-full h-full bg-black"></div>
 
-    <!-- Overlay Inferior con los datos del niño al aire -->
-    <div id="overlayDatosParticipante" class="media-layer opacity-0 translate-y-6 pointer-events-none absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-black via-black/90 to-transparent pt-28 pb-10 px-5 text-center flex flex-col items-center">
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-600/25 border border-blue-400/40 backdrop-blur-md mb-3">
-        <span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
-        <span id="totemCategoria" class="text-[11px] font-bold uppercase tracking-widest text-blue-200">CATEGORÍA</span>
-      </div>
-      
-      <h1 id="totemNombre" class="font-display text-4xl sm:text-5xl text-white leading-none drop-shadow-[0_4px_16px_rgba(0,0,0,0.9)] mb-2">
-        NOMBRE PARTICIPANTE
-      </h1>
-      
-      <div class="w-12 h-0.5 bg-blue-500 rounded-full my-2"></div>
-      
-      <p id="totemEstado" class="text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] text-zinc-300">
-        DELEGACIÓN REGIONAL
-      </p>
-
-      <div class="mt-6 pt-4 border-t border-white/10 w-full flex flex-col items-center opacity-75">
-        <span class="text-[9px] uppercase tracking-[0.25em] text-zinc-400">7° Festival de la Voz</span>
-        <span class="text-[10px] font-bold uppercase tracking-[0.18em] text-white">El Niño Simón 2026</span>
-      </div>
-    </div>
-
-    <!-- Botón flotante discreto en la esquina superior izquierda (solo visible al pasar el mouse) para cargar el Video Loop local en la PC del Tótem -->
-    <div class="fixed top-3 left-3 z-40 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center gap-2 bg-black/80 backdrop-blur-md border border-white/15 px-3 py-1.5 rounded-full">
+    <!-- Botón oculto en esquina superior izquierda (al pasar el mouse) para cargar video MP4 pesado local en la PC del Tótem -->
+    <div class="fixed top-3 left-3 z-40 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center gap-2 bg-black/85 backdrop-blur-md border border-white/15 px-3 py-1.5 rounded-full">
       <label class="cursor-pointer text-[11px] font-semibold text-emerald-400 hover:text-emerald-300">
         📁 Cargar Video Loop Local (MP4)
-        <input type="file" accept="video/*,image/*" class="hidden" onchange="cargarVideoLocalTotem('loop', this.files[0])">
+        <input type="file" accept="video/*,image/*" class="hidden" onchange="cargarLocalTotem('loop', this.files[0])">
       </label>
     </div>
   </div>
@@ -99,7 +72,7 @@
       <!-- Columna Izquierda -->
       <div class="lg:col-span-8 space-y-5">
         
-        <!-- BLOQUE 1: VIDEO BUCLE ROTATIVO -->
+        <!-- BLOQUE 1: VIDEO / IMAGEN BUCLE ROTATIVO -->
         <section id="cardLoop" class="rounded-2xl p-4 bg-zinc-900/90 border-2 border-emerald-500/60 shadow-lg transition-all">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div class="flex items-center gap-3.5">
@@ -111,15 +84,15 @@
                   <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-zinc-800 text-zinc-300">Reposo / Espera</span>
                   <span id="badgeLoopLive" class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-500 text-black">● EN EL TÓTEM</span>
                 </div>
-                <h2 class="text-base font-bold text-white mt-1">Video Bucle Rotativo Oficial</h2>
-                <p class="text-xs text-zinc-400">Para videos MP4 pesados, cárgalos directo en la esquina superior izquierda de la pantalla del Tótem.</p>
+                <h2 class="text-base font-bold text-white mt-1">Video / Arte Bucle Rotativo</h2>
+                <p id="status-loop" class="text-xs text-zinc-400">Sube imagen o video ligero aquí (o carga un MP4 pesado directo en la PC del Tótem).</p>
               </div>
             </div>
 
             <div class="flex items-center gap-2 shrink-0">
               <label class="cursor-pointer px-3 py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-xs font-medium text-zinc-200 transition text-center">
-                <span id="labelSubirLoop">🖼️ Subir Imagen</span>
-                <input type="file" accept="image/*" class="hidden" onchange="subirImagenComprimida('loop', this.files[0])">
+                <span id="labelSubirLoop">📁 Subir Foto/Video</span>
+                <input type="file" accept="image/*,video/*" class="hidden" onchange="subirArchivo('loop', this.files[0])">
               </label>
               <button onclick="activarLoop()" class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-xs font-bold text-white transition cursor-pointer shadow-md">
                 PONER LOOP
@@ -151,11 +124,6 @@
 
           <div class="relative w-[135px] h-[540px] bg-black rounded-xl border-2 border-zinc-700 overflow-hidden shadow-2xl">
             <div id="previewMedia" class="w-full h-full"></div>
-            <div id="previewOverlay" class="hidden absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/90 to-transparent pt-10 pb-3 px-2 text-center">
-              <span id="prevCat" class="text-[6px] font-bold uppercase tracking-wider text-blue-300 block">CAT</span>
-              <p id="prevNom" class="font-display text-sm text-white leading-tight mt-0.5">NOMBRE</p>
-              <p id="prevEst" class="text-[6px] uppercase tracking-widest text-zinc-300 mt-0.5">ESTADO</p>
-            </div>
           </div>
 
           <button onclick="activarBlackout()" class="mt-4 w-full py-2 rounded-xl bg-zinc-950 hover:bg-red-950/50 border border-zinc-800 hover:border-red-800/60 text-[11px] font-semibold text-zinc-400 hover:text-red-300 transition cursor-pointer">
@@ -217,9 +185,10 @@
     ];
 
     const esVistaTotem = new URLSearchParams(window.location.search).get('view') === 'totem';
-    let mediosNube = {};      // Fotos comprimidas guardadas en Firestore (cada una en su propio documento)
-    let videosLocalesTotem = {}; // Videos MP4 cargados directo en la PC del Tótem
+    let mediosNube = {};
+    let videosLocalesTotem = {};
     let estadoEnVivo = { modo: 'loop', id: null };
+    let ultimaRenderKey = "";
 
     window.addEventListener('DOMContentLoaded', () => {
       if (esVistaTotem) {
@@ -229,25 +198,23 @@
         renderizarLista();
       }
 
-      // Escuchar todas las fotos subidas (cada participante en su propio doc para soportar hasta 1MB por foto sin límite)
+      // Escuchar archivos subidos (fotos y videos)
       db.collection('totem_fotos_2026').onSnapshot((snapshot) => {
-        snapshot.forEach((doc) => {
-          mediosNube[doc.id] = doc.data();
+        snapshot.docChanges().forEach((change) => {
+          if (change.type === "added" || change.type === "modified") {
+            mediosNube[change.doc.id] = change.doc.data();
+          }
         });
         if (!esVistaTotem) {
           actualizarVistaLoop();
           renderizarLista();
         }
+        // Forzar actualización si lo que está al aire acaba de subir o cambiar
+        ultimaRenderKey = "";
         aplicarEstadoEnPantalla(estadoEnVivo);
-      }, (err) => {
-        const badge = document.getElementById('badgeEstadoNube');
-        if (badge) {
-          badge.innerText = "Error de permisos Firestore";
-          badge.className = "text-[10px] font-semibold px-2 py-0.5 rounded-full bg-red-500/15 text-red-400 border border-red-500/30";
-        }
       });
 
-      // Escuchar qué participante o loop está al aire en tiempo real
+      // Escuchar cambios en vivo al instante
       db.collection('totem_estado_2026').doc('vivo').onSnapshot((doc) => {
         if (doc.exists) {
           aplicarEstadoEnPantalla(doc.data());
@@ -256,12 +223,43 @@
     });
 
     // =========================================================================
-    // COMPRESIÓN AUTOMÁTICA DE FOTOS EN EL TELÉFONO Y ENVÍO A FIRESTORE
+    // SUBIDA DE FOTOS Y VIDEOS DESDE EL TELÉFONO
     // =========================================================================
-    function subirImagenComprimida(id, file) {
+    function subirArchivo(id, file) {
       if (!file) return;
       const key = String(id);
       const statusEl = document.getElementById(`status-${key}`);
+      const esVideo = file.type.startsWith('video');
+
+      if (esVideo) {
+        // Firestore admite hasta 1 MB por documento (ideal para loops cortos/GIFs MP4 de hasta ~750 KB)
+        if (file.size > 750 * 1024) {
+          alert(`Este video pesa ${(file.size / (1024 * 1024)).toFixed(1)} MB.\n\nPor Internet desde el teléfono el límite sin servidor externo es 750 KB.\n\nSi es el Video Loop pesado, cárgalo directo en la pantalla del Tótem (esquina superior izquierda) para que corra sin límite de peso.`);
+          return;
+        }
+
+        if (statusEl) {
+          statusEl.innerText = "⏳ Subiendo video...";
+          statusEl.className = "text-[10px] mt-0.5 text-amber-400";
+        }
+
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+          try {
+            await db.collection('totem_fotos_2026').doc(key).set({
+              url: e.target.result,
+              tipo: 'video',
+              actualizado: Date.now()
+            });
+          } catch (err) {
+            alert("Error subiendo video: " + err.message);
+          }
+        };
+        reader.readAsDataURL(file);
+        return;
+      }
+
+      // Si es imagen: comprimir en HD vertical para que suba en 0.5 seg
       if (statusEl) {
         statusEl.innerText = "⏳ Optimizando y subiendo...";
         statusEl.className = "text-[10px] mt-0.5 text-amber-400";
@@ -271,7 +269,6 @@
       reader.onload = (event) => {
         const img = new Image();
         img.onload = async () => {
-          // Redimensionar manteniendo proporción (máximo 1280px de alto para que pese ~150KB y se vea nítido)
           const maxAlto = 1280;
           let width = img.width;
           let height = img.height;
@@ -286,7 +283,7 @@
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, width, height);
 
-          const base64Comprimido = canvas.toDataURL('image/jpeg', 0.82);
+          const base64Comprimido = canvas.toDataURL('image/jpeg', 0.85);
 
           try {
             await db.collection('totem_fotos_2026').doc(key).set({
@@ -295,7 +292,7 @@
               actualizado: Date.now()
             });
           } catch (err) {
-            alert("No se pudo guardar en Firestore. Verifica que Firestore esté en Modo de Prueba: " + err.message);
+            alert("Error subiendo imagen: " + err.message);
           }
         };
         img.src = event.target.result;
@@ -303,17 +300,17 @@
       reader.readAsDataURL(file);
     }
 
-    // Carga de video MP4 local directo en la PC del Tótem (0 latencia, sin límite de peso)
-    function cargarVideoLocalTotem(key, file) {
+    function cargarLocalTotem(key, file) {
       if (!file) return;
       const url = URL.createObjectURL(file);
       const tipo = file.type.startsWith('video') ? 'video' : 'imagen';
-      videosLocalesTotem[key] = { url, tipo };
+      videosLocalesTotem[key] = { url, tipo, actualizado: Date.now() };
+      ultimaRenderKey = "";
       aplicarEstadoEnPantalla(estadoEnVivo);
     }
 
     // =========================================================================
-    // SWITCHER EN VIVO
+    // SWITCHER EN VIVO (SIN DESFASE)
     // =========================================================================
     function emitirEstado(nuevoEstado) {
       estadoEnVivo = nuevoEstado;
@@ -325,53 +322,26 @@
     function activarParticipante(id) { emitirEstado({ modo: 'participante', id: Number(id) }); }
     function activarBlackout() { emitirEstado({ modo: 'blackout', id: null }); }
 
-    let capaActiva = 'A';
-
     function aplicarEstadoEnPantalla(estado) {
       estadoEnVivo = estado;
       if (!esVistaTotem) actualizarUIProductora();
 
-      const overlay = document.getElementById('overlayDatosParticipante');
-      const prevOverlay = document.getElementById('previewOverlay');
-
-      if (estado.modo === 'blackout') {
-        ponerMediaEnContenedor(null);
-        if (overlay) overlay.classList.add('opacity-0', 'translate-y-6');
-        if (prevOverlay) prevOverlay.classList.add('hidden');
-        return;
-      }
+      let mediaItem = null;
+      let renderKey = estado.modo;
 
       if (estado.modo === 'loop') {
-        // Prioriza el video MP4 cargado localmente en el tótem; si no hay, usa la imagen de la nube
-        const mediaLoop = videosLocalesTotem['loop'] || mediosNube['loop'];
-        ponerMediaEnContenedor(mediaLoop);
-        if (overlay) overlay.classList.add('opacity-0', 'translate-y-6');
-        if (prevOverlay) prevOverlay.classList.add('hidden');
-        return;
-      }
-
-      if (estado.modo === 'participante') {
+        mediaItem = videosLocalesTotem['loop'] || mediosNube['loop'];
+        renderKey = `loop_${mediaItem ? mediaItem.actualizado : 'vacio'}`;
+      } else if (estado.modo === 'participante') {
         const key = String(estado.id);
-        const p = PARTICIPANTES_BASE.find(x => x.id === Number(estado.id));
-        const mediaP = videosLocalesTotem[key] || mediosNube[key];
-        ponerMediaEnContenedor(mediaP);
-
-        if (p && overlay) {
-          document.getElementById('totemCategoria').innerText = `CATEGORÍA ${p.categoria}`;
-          document.getElementById('totemNombre').innerText = p.nombre;
-          document.getElementById('totemEstado').innerText = `REGIONAL ${p.estado}`;
-          overlay.classList.remove('opacity-0', 'translate-y-6');
-        }
-        if (p && prevOverlay) {
-          document.getElementById('prevCat').innerText = p.categoria;
-          document.getElementById('prevNom').innerText = p.nombre;
-          document.getElementById('prevEst').innerText = p.estado;
-          prevOverlay.classList.remove('hidden');
-        }
+        mediaItem = videosLocalesTotem[key] || mediosNube[key];
+        renderKey = `part_${key}_${mediaItem ? mediaItem.actualizado : 'vacio'}`;
       }
-    }
 
-    function ponerMediaEnContenedor(mediaItem) {
+      // Evita recargar el video si ya está reproduciéndose exactamente el mismo
+      if (renderKey === ultimaRenderKey) return;
+      ultimaRenderKey = renderKey;
+
       const htmlMedia = !mediaItem
         ? `<div class="w-full h-full bg-black"></div>`
         : mediaItem.tipo === 'video'
@@ -381,18 +351,8 @@
       const prev = document.getElementById('previewMedia');
       if (prev) prev.innerHTML = htmlMedia;
 
-      if (esVistaTotem) {
-        const capaEntrante = capaActiva === 'A' ? document.getElementById('capaMediaB') : document.getElementById('capaMediaA');
-        const capaSaliente = capaActiva === 'A' ? document.getElementById('capaMediaA') : document.getElementById('capaMediaB');
-
-        capaEntrante.innerHTML = htmlMedia;
-        capaEntrante.classList.remove('opacity-0');
-        capaEntrante.classList.add('opacity-100');
-
-        capaSaliente.classList.remove('opacity-100');
-        capaSaliente.classList.add('opacity-0');
-        capaActiva = capaActiva === 'A' ? 'B' : 'A';
-      }
+      const salida = document.getElementById('salidaTotemLimpia');
+      if (salida) salida.innerHTML = htmlMedia;
     }
 
     function actualizarVistaLoop() {
@@ -400,8 +360,10 @@
       const thumb = document.getElementById('thumbLoop');
       const lbl = document.getElementById('labelSubirLoop');
       if (m && thumb) {
-        thumb.innerHTML = `<img src="${m.url}" class="w-full h-full object-cover" />`;
-        lbl.innerText = "🔄 Cambiar Imagen";
+        thumb.innerHTML = m.tipo === 'video'
+          ? `<video src="${m.url}" muted class="w-full h-full object-cover"></video>`
+          : `<img src="${m.url}" class="w-full h-full object-cover" />`;
+        lbl.innerText = "🔄 Cambiar Loop";
       }
     }
 
@@ -440,7 +402,9 @@
         const esAlAire = estadoEnVivo.modo === 'participante' && Number(estadoEnVivo.id) === p.id;
 
         const thumbHtml = media
-          ? `<img src="${media.url}" class="w-full h-full object-cover" />`
+          ? (media.tipo === 'video'
+              ? `<video src="${media.url}" muted class="w-full h-full object-cover"></video>`
+              : `<img src="${media.url}" class="w-full h-full object-cover" />`)
           : `<span class="text-[10px] font-bold text-zinc-600">#${p.id}</span>`;
 
         return `
@@ -458,15 +422,15 @@
                   </div>
                   <h3 class="text-xs sm:text-sm font-bold text-white truncate mt-1">${p.nombre}</h3>
                   <p id="status-${p.id}" class="text-[10px] mt-0.5 ${media ? 'text-emerald-400' : 'text-zinc-500'}">
-                    ${media ? '✓ Foto lista en la nube' : 'Pendiente por subir foto'}
+                    ${media ? `✓ Listo en la nube (${media.tipo})` : 'Pendiente por subir foto o video'}
                   </p>
                 </div>
               </div>
 
               <div class="flex items-center gap-2 shrink-0">
                 <label class="cursor-pointer px-3 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-[11px] font-medium text-zinc-200 transition">
-                  <span>${media ? 'Cambiar' : 'Subir Foto'}</span>
-                  <input type="file" accept="image/*" class="hidden" onchange="subirImagenComprimida(${p.id}, this.files[0])">
+                  <span>${media ? 'Cambiar' : 'Subir'}</span>
+                  <input type="file" accept="image/*,video/*" class="hidden" onchange="subirArchivo(${p.id}, this.files[0])">
                 </label>
 
                 <button onclick="activarParticipante(${p.id})" class="px-3.5 py-2 rounded-xl text-[11px] font-bold transition cursor-pointer ${esAlAire ? 'bg-red-600 text-white animate-pulse' : 'bg-blue-600 hover:bg-blue-500 text-white'}">
