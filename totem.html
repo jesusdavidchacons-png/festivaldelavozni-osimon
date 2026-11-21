@@ -1,0 +1,1321 @@
+<!DOCTYPE html> 
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TotemCast Live | Controlador de Señal Vertical 1:4</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Bebas Neue & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['"Bebas Neue"', 'sans-serif'],
+          },
+          colors: {
+            obs: {
+              bg: '#090B0E',
+              panel: '#12151B',
+              card: '#191D26',
+              border: '#272D3A',
+              onair: '#EF4444',
+              live: '#10B981',
+              accent: '#3B82F6'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Estilos base y scrollbar tipo consola broadcast */
+    body {
+      background-color: #090B0E;
+      color: #F3F4F6;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #090B0E;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #272D3A;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #4B5563;
+    }
+
+    /* Animaciones broadcast */
+    @keyframes pulseOnAir {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.65); }
+      50% { box-shadow: 0 0 18px 4px rgba(239, 68, 68, 0.35); }
+    }
+    .on-air-glow {
+      animation: pulseOnAir 2s infinite;
+    }
+
+    @keyframes pulseLoopLive {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.55); }
+      50% { box-shadow: 0 0 18px 4px rgba(16, 185, 129, 0.3); }
+    }
+    .loop-live-glow {
+      animation: pulseLoopLive 2s infinite;
+    }
+
+    /* Transiciones Crossfade en el Tótem */
+    .totem-layer {
+      transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* Ocultar cursor en Vista Tótem cuando está inactivo */
+    .cursor-hidden {
+      cursor: none !important;
+    }
+    .cursor-hidden * {
+      cursor: none !important;
+    }
+
+    /* Contenedor proporción exacta 1:4 (50cm x 200cm) para el monitor de retorno */
+    .aspect-totem-1-4 {
+      aspect-ratio: 1 / 4;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-red-500 selection:text-white">
+
+  <!-- ==================== NOTIFICACIÓN TOAST (Sin alert()) ==================== -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- ==================== PANTALLA INICIAL DE SELECCIÓN ==================== -->
+  <div id="view-launcher" class="hidden min-h-screen flex flex-col items-center justify-center p-5 sm:p-8 bg-gradient-to-b from-[#090B0E] via-[#11151C] to-[#090B0E]">
+    <div class="max-w-3xl w-full text-center space-y-7">
+      <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-obs-card border border-obs-border text-xs font-semibold tracking-wider uppercase text-amber-300">
+        <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span>
+        7° Festival de la Voz "El Niño Simón" • Tótem 200×50cm
+      </div>
+      
+      <div class="space-y-2">
+        <h1 class="font-display text-5xl sm:text-6xl tracking-wide text-white leading-none">
+          TOTEM<span class="text-red-500">CAST</span> LIVE
+        </h1>
+        <p class="text-gray-400 max-w-xl mx-auto text-sm sm:text-base">
+          Carga las fotos o videos de los 31 participantes desde tu teléfono y controla en vivo quién sale en el tótem vertical o cuándo rueda el video bucle de presentación.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5 pt-2">
+        <!-- Tarjeta Productora -->
+        <button onclick="switchRoute('admin')" class="group text-left bg-obs-panel hover:bg-obs-card border border-obs-border hover:border-red-500/70 p-6 sm:p-7 rounded-2xl transition-all duration-200 shadow-xl flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="w-12 h-12 rounded-xl bg-red-500/15 border border-red-500/30 flex items-center justify-center text-red-500 text-xl group-hover:scale-110 transition-transform">
+              <i class="fa-solid fa-mobile-screen-button"></i>
+            </div>
+            <div>
+              <h2 class="font-display text-2xl tracking-wide text-white flex items-center gap-2">
+                📱 PANEL PRODUCTORA
+                <span class="font-sans text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-red-500/20 text-red-400">Control Móvil / PC</span>
+              </h2>
+              <p class="text-gray-400 text-sm mt-2 leading-relaxed">
+                Sube el video bucle de espera, carga la foto o video de cada uno de los 31 niños y envíalos al tótem con un toque.
+              </p>
+            </div>
+          </div>
+          <div class="mt-6 pt-4 border-t border-obs-border/60 flex items-center justify-between text-xs font-semibold text-red-400 group-hover:text-red-300">
+            <span>Entrar al Panel de Producción</span>
+            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+          </div>
+        </button>
+
+        <!-- Tarjeta Tótem -->
+        <button onclick="switchRoute('totem')" class="group text-left bg-obs-panel hover:bg-obs-card border border-obs-border hover:border-emerald-500/70 p-6 sm:p-7 rounded-2xl transition-all duration-200 shadow-xl flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="w-12 h-12 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xl group-hover:scale-110 transition-transform">
+              <i class="fa-solid fa-tv"></i>
+            </div>
+            <div>
+              <h2 class="font-display text-2xl tracking-wide text-white flex items-center gap-2">
+                🖥️ PANTALLA TÓTEM (200×50CM)
+                <span class="font-sans text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400">Salida 1:4</span>
+              </h2>
+              <p class="text-gray-400 text-sm mt-2 leading-relaxed">
+                Señal limpia a pantalla completa para la computadora conectada al tótem vertical de 2 metros de alto.
+              </p>
+            </div>
+          </div>
+          <div class="mt-6 pt-4 border-t border-obs-border/60 flex items-center justify-between text-xs font-semibold text-emerald-400 group-hover:text-emerald-300">
+            <span>Abrir Salida de Video</span>
+            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 1. VISTA PRODUCTORA (MOBILE-FIRST + DESKTOP) ==================== -->
+  <div id="view-admin" class="hidden flex-1 flex flex-col min-h-screen lg:h-screen lg:overflow-hidden">
+    
+    <!-- Header Broadcast -->
+    <header class="sticky top-0 z-30 bg-obs-panel/95 backdrop-blur-md border-b border-obs-border px-3 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-2 shrink-0">
+      <div class="flex items-center gap-2.5">
+        <button onclick="switchRoute('launcher')" title="Inicio" class="w-9 h-9 rounded-xl bg-obs-card hover:bg-gray-800 border border-obs-border flex items-center justify-center text-red-500 transition">
+          <i class="fa-solid fa-tower-broadcast"></i>
+        </button>
+        <div>
+          <h1 class="font-display text-xl sm:text-2xl tracking-wide text-white leading-none">
+            7° FESTIVAL <span class="text-amber-400">"EL NIÑO SIMÓN"</span>
+          </h1>
+          <p class="text-[11px] text-gray-400 hidden sm:block">Control de Señal Tótem Vertical 200×50cm</p>
+        </div>
+      </div>
+
+      <!-- Acciones de Conexión por Internet & Tótem -->
+      <div class="flex items-center gap-2 flex-wrap">
+        <button onclick="openFirebaseModal()" id="connection-badge" class="flex items-center gap-1.5 px-2.5 sm:px-3 py-2 rounded-xl bg-blue-600/15 hover:bg-blue-600/25 border border-blue-500/40 text-xs font-semibold text-blue-300 transition">
+          <span id="connection-dot" class="w-2 h-2 rounded-full bg-amber-400"></span>
+          <span id="connection-text">☁️ Conectar por Internet</span>
+        </button>
+
+        <!-- Botón Abrir Monitor en Móvil -->
+        <button onclick="toggleMobileMonitorDrawer()" class="lg:hidden px-3 py-2 rounded-xl bg-obs-card hover:bg-gray-800 border border-obs-border text-xs font-semibold text-gray-200 flex items-center gap-1.5">
+          <i class="fa-solid fa-eye text-red-400"></i>
+          <span>Ver Tótem</span>
+        </button>
+
+        <!-- Abrir / Copiar URL Tótem -->
+        <div class="flex items-center rounded-xl overflow-hidden border border-obs-border bg-obs-card">
+          <button onclick="openTotemWindow()" class="px-3 py-2 hover:bg-gray-800 text-emerald-400 text-xs font-semibold flex items-center gap-1.5 transition" title="Abrir ventana tótem">
+            <i class="fa-solid fa-up-right-from-square"></i>
+            <span class="hidden sm:inline">Abrir Tótem</span>
+          </button>
+          <button onclick="copyTotemUrl()" class="px-2.5 py-2 bg-obs-bg/60 hover:bg-gray-800 border-l border-obs-border text-gray-300 text-xs transition" title="Copiar enlace para la PC del tótem">
+            <i class="fa-regular fa-copy"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Cuerpo Principal: Izquierda (Loop + 31 Participantes) / Derecha (Monitor Retorno 1:4) -->
+    <main class="flex-1 flex flex-col lg:flex-row lg:overflow-hidden">
+      
+      <!-- PANEL DE CONTROL Y ESCALETA -->
+      <section class="flex-1 flex flex-col lg:overflow-y-auto p-3 sm:p-5 lg:p-6 gap-4 sm:gap-5">
+        
+        <!-- 1. TARJETA MAESTRA: VIDEO BUCLE DE PRESENTACIÓN (ESPERA) -->
+        <div id="loop-control-card" class="bg-obs-panel border-2 border-obs-border rounded-2xl p-4 sm:p-5 transition-all shadow-lg">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            
+            <div class="flex items-start gap-3.5 flex-1 min-w-0">
+              <!-- Miniatura del bucle actual -->
+              <div id="loop-thumbnail-box" class="w-16 h-20 sm:w-20 sm:h-24 rounded-xl bg-black border border-obs-border overflow-hidden shrink-0 relative flex items-center justify-center">
+                <!-- Renderizado por JS -->
+              </div>
+
+              <div class="space-y-1.5 flex-1 min-w-0">
+                <div class="flex flex-wrap items-center gap-2">
+                  <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                    <i class="fa-solid fa-repeat mr-1"></i> Cuando nadie participa
+                  </span>
+                  <span id="loop-status-badge" class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-obs-card text-gray-300 border border-obs-border">
+                    Por defecto
+                  </span>
+                  <span id="loop-active-pill" class="hidden px-2.5 py-0.5 rounded text-[10px] font-extrabold uppercase tracking-wider bg-emerald-500 text-black animate-pulse">
+                    ● EN VIVO EN TÓTEM
+                  </span>
+                </div>
+
+                <h2 class="font-display text-xl sm:text-2xl tracking-wide text-white">
+                  VIDEO BUCLE DE PRESENTACIÓN (ESPERA)
+                </h2>
+                <p id="loop-filename-label" class="text-xs text-gray-400 truncate">
+                  Visual institucional rotativo del festival
+                </p>
+
+                <!-- Casilla dedicada para subir el video bucle desde el teléfono/PC -->
+                <div class="pt-1 flex flex-wrap items-center gap-2">
+                  <label class="cursor-pointer inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-obs-card hover:bg-gray-800 border border-dashed border-amber-400/60 text-xs font-semibold text-amber-300 transition active:scale-95">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <span>Subir Video / Foto Bucle</span>
+                    <input type="file" id="upload-loop-input" accept="video/*,image/*" class="hidden" onchange="handleLoopUpload(event)" />
+                  </label>
+                  <span id="loop-uploading-spinner" class="hidden text-xs text-blue-400 font-medium">
+                    <i class="fa-solid fa-spinner fa-spin mr-1"></i> Subiendo...
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- BOTÓN GIGANTE ACTIVAR BUCLE EN TÓTEM -->
+            <div class="shrink-0">
+              <button id="btn-activate-loop" onclick="activateLoopMode()" class="w-full md:w-auto px-6 py-4 rounded-xl font-display text-lg tracking-wider uppercase flex items-center justify-center gap-2.5 transition-all shadow-lg bg-emerald-600 hover:bg-emerald-500 text-white active:scale-95">
+                <i class="fa-solid fa-play"></i>
+                <span>ACTIVAR BUCLE EN TÓTEM</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. BARRA DE BÚSQUEDA Y FILTROS RÁPIDOS -->
+        <div class="bg-obs-panel border border-obs-border rounded-2xl p-3.5 sm:p-4 space-y-3">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+            <div class="flex items-center gap-2">
+              <h3 class="font-display text-lg tracking-wide text-white">
+                PARTICIPANTES OFICIALES (31)
+              </h3>
+              <span id="loaded-media-counter" class="px-2.5 py-0.5 rounded-full bg-blue-500/15 border border-blue-500/30 text-[11px] font-semibold text-blue-300">
+                0/31 con archivo
+              </span>
+            </div>
+
+            <!-- Buscador por nombre o estado regional -->
+            <div class="relative w-full sm:w-72">
+              <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 text-xs"></i>
+              <input type="text" id="search-input" oninput="renderParticipantsList()" placeholder="Buscar niño/a o regional (Ej. Zulia)..." class="w-full bg-obs-bg border border-obs-border focus:border-blue-500 rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder-gray-500 outline-none" />
+            </div>
+          </div>
+
+          <!-- Botones de filtro por categoría / estado de carga -->
+          <div class="flex items-center gap-1.5 overflow-x-auto pb-1">
+            <button onclick="setFilter('all')" id="filter-all" class="filter-chip px-3 py-1.5 rounded-lg text-xs font-semibold bg-white text-black transition shrink-0">
+              Todos (31)
+            </button>
+            <button onclick="setFilter('infantil')" id="filter-infantil" class="filter-chip px-3 py-1.5 rounded-lg text-xs font-semibold bg-obs-card text-gray-300 hover:text-white border border-obs-border transition shrink-0">
+              Categoría Infantil
+            </button>
+            <button onclick="setFilter('juvenil')" id="filter-juvenil" class="filter-chip px-3 py-1.5 rounded-lg text-xs font-semibold bg-obs-card text-gray-300 hover:text-white border border-obs-border transition shrink-0">
+              Categoría Juvenil
+            </button>
+            <button onclick="setFilter('uploaded')" id="filter-uploaded" class="filter-chip px-3 py-1.5 rounded-lg text-xs font-semibold bg-obs-card text-gray-300 hover:text-white border border-obs-border transition shrink-0">
+              <i class="fa-solid fa-check-circle text-emerald-400 mr-1"></i> Con archivo cargado
+            </button>
+          </div>
+        </div>
+
+        <!-- 3. LISTA DE LOS 31 PARTICIPANTES (CADA UNO CON SU CASILLA DE CARGA) -->
+        <div id="participants-list" class="space-y-3 pb-10">
+          <!-- Renderizado dinámicamente por JS -->
+        </div>
+
+      </section>
+
+      <!-- PANEL DERECHO (STICKY EN DESKTOP / DRAWER EN MÓVIL): MONITOR DE RETORNO 1:4 -->
+      <aside id="monitor-sidebar" class="hidden lg:flex fixed inset-0 z-40 lg:static lg:z-auto w-full lg:w-[340px] xl:w-[370px] bg-[#0C0F14]/98 lg:bg-[#0C0F14] border-l border-obs-border p-5 flex-col items-center justify-between shrink-0 overflow-y-auto">
+        
+        <div class="w-full flex items-center justify-between mb-2">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span>
+            <span class="font-display text-base tracking-wider text-gray-200">MONITOR EN VIVO (TÓTEM 1:4)</span>
+          </div>
+          <button onclick="toggleMobileMonitorDrawer()" class="lg:hidden px-3 py-1 rounded-lg bg-obs-card border border-obs-border text-xs text-gray-300">
+            Cerrar ✕
+          </button>
+        </div>
+
+        <!-- SIMULADOR EXACTO PROPORCIÓN 1:4 (50cm x 200cm) -->
+        <div class="flex-1 flex items-center justify-center w-full py-2">
+          <div class="relative h-[430px] sm:h-[470px] aspect-totem-1-4 bg-black rounded-xl border-[3px] border-obs-border shadow-2xl overflow-hidden flex items-center justify-center">
+            <div id="admin-preview-stage" class="w-full h-full relative bg-black overflow-hidden"></div>
+            <div class="absolute inset-0 pointer-events-none border border-white/10 rounded-lg"></div>
+          </div>
+        </div>
+
+        <!-- Controles inferiores del Monitor -->
+        <div class="w-full space-y-2.5 mt-3 pt-3 border-t border-obs-border">
+          <div class="bg-obs-panel rounded-xl p-2.5 border border-obs-border flex items-center justify-between text-xs">
+            <span class="text-gray-400">Al aire ahora:</span>
+            <span id="current-signal-label" class="font-bold text-emerald-400 truncate max-w-[185px]">Bucle Presentación</span>
+          </div>
+
+          <button id="btn-blackout" onclick="toggleBlackout()" class="w-full py-3 px-4 rounded-xl bg-obs-card hover:bg-gray-800 border border-obs-border text-gray-300 font-display text-base tracking-wider uppercase flex items-center justify-center gap-2 transition">
+            <i class="fa-solid fa-power-off"></i>
+            <span>Corte a Negro (Blackout)</span>
+          </button>
+        </div>
+
+      </aside>
+    </main>
+  </div>
+
+  <!-- ==================== 2. VISTA TÓTEM (`?view=totem` - SALIDA LIMPIA 1:4) ==================== -->
+  <div id="view-totem" class="hidden fixed inset-0 w-screen h-screen bg-black overflow-hidden select-none z-40">
+    <div id="totem-output-stage" class="w-full h-full relative bg-black overflow-hidden"></div>
+
+    <!-- Botón flotante discreto que desaparece tras 3s de inactividad -->
+    <div id="totem-floating-controls" class="fixed top-4 right-4 z-50 flex items-center gap-2 transition-opacity duration-500 opacity-100">
+      <button onclick="toggleFullscreen()" class="px-3 py-2 rounded-lg bg-black/75 hover:bg-black text-white/85 hover:text-white border border-white/20 backdrop-blur-md text-xs font-medium flex items-center gap-1.5 shadow-lg">
+        <i class="fa-solid fa-expand"></i>
+        <span>Pantalla Completa (F11)</span>
+      </button>
+      <button onclick="switchRoute('admin')" class="px-3 py-2 rounded-lg bg-black/75 hover:bg-red-600/90 text-white/85 hover:text-white border border-white/20 backdrop-blur-md text-xs font-medium flex items-center gap-1.5 shadow-lg">
+        <i class="fa-solid fa-sliders"></i>
+        <span>Panel Productora</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL CONFIGURACIÓN FIREBASE (INTERNET) ==================== -->
+  <div id="firebase-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-obs-panel border border-obs-border rounded-2xl max-w-xl w-full p-5 sm:p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-start justify-between border-b border-obs-border pb-3">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-blue-500/20 text-blue-400">Sincronización por Internet</span>
+          <h3 class="font-display text-2xl tracking-wide text-white mt-1">Conectar Teléfono con Tótem (Firebase)</h3>
+        </div>
+        <button onclick="closeFirebaseModal()" class="w-8 h-8 rounded-lg bg-obs-card hover:bg-gray-800 text-gray-400 hover:text-white flex items-center justify-center">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="space-y-2.5 text-xs text-gray-300 leading-relaxed bg-obs-bg p-4 rounded-xl border border-obs-border">
+        <p class="font-semibold text-white">Para que la productora suba videos desde su celular y salgan al instante en la PC del tótem por Internet:</p>
+        <ol class="list-decimal list-inside space-y-1 text-gray-400">
+          <li>Crea un proyecto gratis en <span class="text-blue-400 font-medium">console.firebase.google.com</span>.</li>
+          <li>Activa <strong>Firestore Database</strong> y <strong>Storage</strong> (en modo prueba).</li>
+          <li>Copia el objeto <code class="text-emerald-400">firebaseConfig</code> de tu app Web y pégalo aquí (y también en el navegador de la PC del tótem).</li>
+        </ol>
+      </div>
+
+      <div class="space-y-1.5">
+        <label class="block text-xs font-semibold text-gray-300">Pega aquí tu <code class="text-blue-400">firebaseConfig</code>:</label>
+        <textarea id="firebase-config-input" rows="5" placeholder='{
+  "apiKey": "AIzaSy...",
+  "authDomain": "festival-nino-simon.firebaseapp.com",
+  "projectId": "festival-nino-simon",
+  "storageBucket": "festival-nino-simon.appspot.com",
+  "messagingSenderId": "123456789",
+  "appId": "1:123456789:web:abcdef"
+}' class="w-full bg-obs-bg border border-obs-border focus:border-blue-500 rounded-xl p-3 font-mono text-xs text-emerald-300 placeholder-gray-600 outline-none"></textarea>
+      </div>
+
+      <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
+        <button onclick="clearFirebaseConfig()" class="px-3.5 py-2 rounded-xl bg-obs-card hover:bg-red-500/20 text-gray-400 hover:text-red-400 border border-obs-border text-xs font-semibold transition">
+          Usar Modo Local
+        </button>
+        <div class="flex items-center gap-2">
+          <button onclick="closeFirebaseModal()" class="px-4 py-2 rounded-xl bg-obs-card hover:bg-gray-800 text-gray-300 text-xs font-semibold">
+            Cancelar
+          </button>
+          <button onclick="saveAndConnectFirebase()" class="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-display text-base tracking-wider uppercase shadow-lg transition">
+            Guardar y Conectar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== LÓGICA DE APLICACIÓN, INDEXEDDB & FIREBASE ==================== -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+    // -------------------- PLANILLA OFICIAL: 31 PARTICIPANTES --------------------
+    const OFFICIAL_ROSTER = [
+      { num: 1,  id: 'p-01', name: 'ANGEL GABRIEL SANCHEZ',             category: 'Categoría Infantil', regional: 'Regional Carabobo' },
+      { num: 2,  id: 'p-02', name: 'ARBELIZ PÉREZ',                     category: 'Categoría Juvenil',  regional: 'Regional Carabobo' },
+      { num: 3,  id: 'p-03', name: 'CHRISTAL ESMERALDA DIAZ RIVAS',     category: 'Categoría Infantil', regional: 'Regional Miranda' },
+      { num: 4,  id: 'p-04', name: 'GABRIEL RAÚL SOLORZANO GUEVARA',    category: 'Categoría Juvenil',  regional: 'Regional Miranda' },
+      { num: 5,  id: 'p-05', name: 'ESTHELA VAZQUES',                   category: 'Categoría Juvenil',  regional: 'Regional Cojedes' },
+      { num: 6,  id: 'p-06', name: 'MARIALNOLYS VELÁZQUEZ',             category: 'Categoría Infantil', regional: 'Regional Delta Amacuro' },
+      { num: 7,  id: 'p-07', name: 'JAAROL ZAMBRANO',                   category: 'Categoría Juvenil',  regional: 'Regional Delta Amacuro' },
+      { num: 8,  id: 'p-08', name: 'TALIA DE LOS ANGELES MELENDEZ SUAREZ', category: 'Categoría Infantil', regional: 'Regional Bolivar' },
+      { num: 9,  id: 'p-09', name: 'KATHERINE MORENO',                  category: 'Categoría Juvenil',  regional: 'Regional Bolivar' },
+      { num: 10, id: 'p-10', name: 'FRAIVELIS NICOLE PARRA SANCHÉZ',    category: 'Categoría Infantil', regional: 'Regional Lara' },
+      { num: 11, id: 'p-11', name: 'ENMA ANTONELLA FRÍAS EVIES',        category: 'Categoría Juvenil',  regional: 'Regional Lara' },
+      { num: 12, id: 'p-12', name: 'CARLOS MANUEL GUARAMATA PERFECTO',  category: 'Categoría Infantil', regional: 'Regional Anzoátegui' },
+      { num: 13, id: 'p-13', name: 'JEREMIAS ANDRES TORRES YEGUES',     category: 'Categoría Juvenil',  regional: 'Regional Anzoátegui' },
+      { num: 14, id: 'p-14', name: 'TYLER MATHIAS COLINA YZARRA',       category: 'Categoría Infantil', regional: 'Regional Mérida' },
+      { num: 15, id: 'p-15', name: 'ANTOHAM RICHAEL URBINA OCANTO',     category: 'Categoría Juvenil',  regional: 'Regional Mérida' },
+      { num: 16, id: 'p-16', name: 'ISABELLA SOFIA LOPEZ MARQUEZ',      category: 'Categoría Infantil', regional: 'Regional Distrito Capital' },
+      { num: 17, id: 'p-17', name: 'RONAIKELL JAVIER GARCIA VENEGAS',   category: 'Categoría Juvenil',  regional: 'Regional Distrito Capital' },
+      { num: 18, id: 'p-18', name: 'AIMEE VALENTINA GARCIA COLMENARES', category: 'Categoría Juvenil',  regional: 'Regional Barinas' },
+      { num: 19, id: 'p-19', name: 'SAMUEL ANDRES MONTILLA CABANERIO',  category: 'Categoría Infantil', regional: 'Regional Barinas' },
+      { num: 20, id: 'p-20', name: 'MICHELL SARAY MEZA VILLAMIZAR',     category: 'Categoría Infantil', regional: 'Regional Táchira' },
+      { num: 21, id: 'p-21', name: 'VICTORIA CHEKINA BARRERA ALVAREZ',  category: 'Categoría Juvenil',  regional: 'Regional Táchira' },
+      { num: 22, id: 'p-22', name: 'IVIANGELY CAROLINA FIGEROA',        category: 'Categoría Juvenil',  regional: 'Regional Nueva Esparta' },
+      { num: 23, id: 'p-23', name: 'ROSHELEN RIVAS VALDERRAMA',         category: 'Categoría Infantil', regional: 'Regional Nueva Esparta' },
+      { num: 24, id: 'p-24', name: 'JOSE PABLO LUCES MAUREA',           category: 'Categoría Infantil', regional: 'Regional Sucre' },
+      { num: 25, id: 'p-25', name: 'SEBASTIAN OMAR SUCRE LAFAURIE',     category: 'Categoría Juvenil',  regional: 'Regional Sucre' },
+      { num: 26, id: 'p-26', name: 'DANIELA FONTANA',                   category: 'Categoría Juvenil',  regional: 'Regional Trujillo' },
+      { num: 27, id: 'p-27', name: 'SANTIAGO GUDIÑO',                   category: 'Categoría Infantil', regional: 'Regional Trujillo' },
+      { num: 28, id: 'p-28', name: 'NATALIA MORENO',                    category: 'Categoría Juvenil',  regional: 'Regional Zulia' },
+      { num: 29, id: 'p-29', name: 'GABRIELA GALILEA ANDRADE GUTIÉRREZ', category: 'Categoría Infantil', regional: 'Regional Zulia' },
+      { num: 30, id: 'p-30', name: 'GABRIELA LADINO',                   category: 'Categoría Juvenil',  regional: 'Regional Amazonas' },
+      { num: 31, id: 'p-31', name: 'SILVIA VALERIA CORO BEJA',          category: 'Categoría Infantil', regional: 'Regional Amazonas' }
+    ];
+
+    const STORAGE_KEY = 'totemcast_nino_simon_v2';
+    const FB_CONFIG_KEY = 'totemcast_firebase_config';
+    const DEFAULT_LOOP_URL = 'https://assets.mixkit.co/videos/preview/mixkit-golden-particles-floating-in-the-air-43568-large.mp4';
+    const channel = new BroadcastChannel('totemcast_nino_simon_channel');
+
+    // -------------------- INDEXEDDB PARA ARCHIVOS LOCALES PESADOS --------------------
+    const DB_NAME = 'TotemCastMediaDB';
+    const STORE_NAME = 'media_blobs';
+
+    function openMediaDB() {
+      return new Promise((resolve, reject) => {
+        const req = indexedDB.open(DB_NAME, 1);
+        req.onupgradeneeded = () => {
+          if (!req.result.objectStoreNames.contains(STORE_NAME)) {
+            req.result.createObjectStore(STORE_NAME);
+          }
+        };
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    async function saveBlobToIDB(key, blob) {
+      const db = await openMediaDB();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE_NAME, 'readwrite');
+        tx.objectStore(STORE_NAME).put(blob, key);
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+      });
+    }
+
+    async function getBlobFromIDB(key) {
+      const db = await openMediaDB();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE_NAME, 'readonly');
+        const req = tx.objectStore(STORE_NAME).get(key);
+        req.onsuccess = () => resolve(req.result || null);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    // Caché en memoria de URLs generadas desde IndexedDB
+    const localBlobUrlCache = {};
+
+    async function hydrateLocalBlobs(state) {
+      let changed = false;
+      if (state.loopMedia?.idbKey && !localBlobUrlCache[state.loopMedia.idbKey]) {
+        const blob = await getBlobFromIDB(state.loopMedia.idbKey);
+        if (blob) {
+          localBlobUrlCache[state.loopMedia.idbKey] = URL.createObjectURL(blob);
+          changed = true;
+        }
+      }
+      for (const p of state.participants) {
+        if (p.idbKey && !localBlobUrlCache[p.idbKey]) {
+          const blob = await getBlobFromIDB(p.idbKey);
+          if (blob) {
+            localBlobUrlCache[p.idbKey] = URL.createObjectURL(blob);
+            changed = true;
+          }
+        }
+      }
+      if (changed) {
+        renderAdminUI();
+        renderTotemStage(document.getElementById('totem-output-stage'), false);
+      }
+    }
+
+    function resolveMediaUrl(item) {
+      if (!item) return null;
+      if (item.cloudUrl) return item.cloudUrl;
+      if (item.idbKey && localBlobUrlCache[item.idbKey]) return localBlobUrlCache[item.idbKey];
+      return item.url || null;
+    }
+
+    // -------------------- ESTADO GLOBAL --------------------
+    function buildDefaultState() {
+      return {
+        mode: 'loop', // 'loop' | 'participant' | 'blackout'
+        activeParticipantId: null,
+        updatedAt: Date.now(),
+        loopMedia: {
+          title: 'Visual Dorado Gala (Por defecto)',
+          type: 'video',
+          url: DEFAULT_LOOP_URL,
+          cloudUrl: null,
+          idbKey: null,
+          isCustom: false
+        },
+        participants: OFFICIAL_ROSTER.map(p => ({
+          ...p,
+          mediaType: null, // 'image' | 'video' | null
+          fileName: null,
+          cloudUrl: null,
+          idbKey: null
+        }))
+      };
+    }
+
+    function loadInitialState() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed.participants) && parsed.participants.length === 31) {
+            return parsed;
+          }
+        }
+      } catch (e) {
+        console.warn('Error leyendo estado:', e);
+      }
+      return buildDefaultState();
+    }
+
+    let appState = loadInitialState();
+    let currentFilter = 'all';
+    let db = null;
+    let storage = null;
+    let isCloudConnected = false;
+    let unsubscribeSnapshot = null;
+
+    // -------------------- ENRUTADOR --------------------
+    function initRouter() {
+      const params = new URLSearchParams(window.location.search);
+      const view = params.get('view');
+      if (view === 'totem') {
+        showView('totem');
+      } else if (view === 'admin') {
+        showView('admin');
+      } else {
+        showView('launcher');
+      }
+    }
+
+    window.switchRoute = function(route) {
+      const url = new URL(window.location);
+      if (route === 'launcher') {
+        url.searchParams.delete('view');
+      } else {
+        url.searchParams.set('view', route);
+      }
+      window.history.pushState({}, '', url);
+      showView(route);
+    };
+
+    window.addEventListener('popstate', initRouter);
+
+    function showView(route) {
+      document.getElementById('view-launcher').classList.add('hidden');
+      document.getElementById('view-admin').classList.add('hidden');
+      document.getElementById('view-totem').classList.add('hidden');
+
+      if (route === 'totem') {
+        document.getElementById('view-totem').classList.remove('hidden');
+        setupTotemInactivityHide();
+        renderTotemStage(document.getElementById('totem-output-stage'), false);
+      } else if (route === 'admin') {
+        document.getElementById('view-admin').classList.remove('hidden');
+        renderAdminUI();
+      } else {
+        document.getElementById('view-launcher').classList.remove('hidden');
+      }
+    }
+
+    // -------------------- SINCRONIZACIÓN LOCAL + FIREBASE --------------------
+    async function broadcastStateUpdate(newState) {
+      appState = { ...newState, updatedAt: Date.now() };
+
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+      } catch (e) {
+        console.warn('Error guardando metadatos en localStorage:', e);
+      }
+
+      channel.postMessage(appState);
+      renderAdminUI();
+      renderTotemStage(document.getElementById('totem-output-stage'), false);
+
+      if (isCloudConnected && db) {
+        try {
+          await setDoc(doc(db, 'totem_festival', 'nino_simon_7'), appState);
+        } catch (err) {
+          console.error('Error sincronizando con Firebase:', err);
+          showToast('Error al sincronizar con la nube. Verifica permisos de Firestore.', 'error');
+        }
+      }
+    }
+
+    channel.onmessage = async (event) => {
+      if (event.data && event.data.updatedAt > appState.updatedAt) {
+        appState = event.data;
+        await hydrateLocalBlobs(appState);
+        renderAdminUI();
+        renderTotemStage(document.getElementById('totem-output-stage'), false);
+      }
+    };
+
+    window.addEventListener('storage', async (e) => {
+      if (e.key === STORAGE_KEY && e.newValue) {
+        const parsed = JSON.parse(e.newValue);
+        if (parsed.updatedAt > appState.updatedAt) {
+          appState = parsed;
+          await hydrateLocalBlobs(appState);
+          renderAdminUI();
+          renderTotemStage(document.getElementById('totem-output-stage'), false);
+        }
+      }
+    });
+
+    // -------------------- CONEXIÓN FIREBASE (INTERNET) --------------------
+    function initFirebaseFromSaved() {
+      const savedConfig = localStorage.getItem(FB_CONFIG_KEY);
+      if (!savedConfig) return;
+      try {
+        connectFirebase(JSON.parse(savedConfig), true);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function connectFirebase(configObj, silent = false) {
+      try {
+        const fbApp = initializeApp(configObj, 'FestivalNinoSimon_' + Date.now());
+        db = getFirestore(fbApp);
+        storage = getStorage(fbApp);
+        isCloudConnected = true;
+
+        updateConnectionBadge(true);
+
+        if (unsubscribeSnapshot) unsubscribeSnapshot();
+        unsubscribeSnapshot = onSnapshot(doc(db, 'totem_festival', 'nino_simon_7'), (docSnap) => {
+          if (docSnap.exists()) {
+            const remoteData = docSnap.data();
+            if (remoteData.updatedAt && remoteData.updatedAt > appState.updatedAt) {
+              appState = remoteData;
+              renderAdminUI();
+              renderTotemStage(document.getElementById('totem-output-stage'), false);
+            }
+          } else {
+            setDoc(doc(db, 'totem_festival', 'nino_simon_7'), appState);
+          }
+        });
+
+        if (!silent) {
+          showToast('Conectado por Internet vía Firebase', 'success');
+        }
+      } catch (err) {
+        console.error(err);
+        isCloudConnected = false;
+        updateConnectionBadge(false);
+        showToast('Error conectando a Firebase. Revisa tu configuración.', 'error');
+      }
+    }
+
+    function updateConnectionBadge(connected) {
+      const dot = document.getElementById('connection-dot');
+      const text = document.getElementById('connection-text');
+      const badge = document.getElementById('connection-badge');
+      if (!dot || !text || !badge) return;
+
+      if (connected) {
+        dot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
+        text.textContent = '🌐 En Línea (Nube Activa)';
+        badge.className = 'flex items-center gap-1.5 px-2.5 sm:px-3 py-2 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/40 text-xs font-semibold text-emerald-300 transition';
+      } else {
+        dot.className = 'w-2 h-2 rounded-full bg-amber-400';
+        text.textContent = '☁️ Conectar por Internet';
+        badge.className = 'flex items-center gap-1.5 px-2.5 sm:px-3 py-2 rounded-xl bg-blue-600/15 hover:bg-blue-600/25 border border-blue-500/40 text-xs font-semibold text-blue-300 transition';
+      }
+    }
+
+    window.openFirebaseModal = function() {
+      const saved = localStorage.getItem(FB_CONFIG_KEY);
+      if (saved) document.getElementById('firebase-config-input').value = saved;
+      document.getElementById('firebase-modal').classList.remove('hidden');
+    };
+
+    window.closeFirebaseModal = function() {
+      document.getElementById('firebase-modal').classList.add('hidden');
+    };
+
+    window.saveAndConnectFirebase = function() {
+      const raw = document.getElementById('firebase-config-input').value.trim();
+      if (!raw) return showToast('Pega el objeto firebaseConfig primero', 'error');
+      try {
+        const cleaned = raw
+          .replace(/^const\s+firebaseConfig\s*=\s*/, '')
+          .replace(/;$/, '')
+          .replace(/([{,]\s*)([a-zA-Z0-9_]+)\s*:/g, '$1"$2":')
+          .replace(/'/g, '"');
+        const parsed = JSON.parse(cleaned);
+        if (!parsed.projectId || !parsed.apiKey) throw new Error('Faltan campos');
+        localStorage.setItem(FB_CONFIG_KEY, JSON.stringify(parsed, null, 2));
+        connectFirebase(parsed, false);
+        closeFirebaseModal();
+      } catch (e) {
+        showToast('Formato inválido. Copia las llaves { apiKey: ... }', 'error');
+      }
+    };
+
+    window.clearFirebaseConfig = function() {
+      localStorage.removeItem(FB_CONFIG_KEY);
+      if (unsubscribeSnapshot) unsubscribeSnapshot();
+      isCloudConnected = false;
+      db = null;
+      storage = null;
+      updateConnectionBadge(false);
+      closeFirebaseModal();
+      showToast('Modo local activado', 'info');
+    };
+
+    // -------------------- SUBIDA DE ARCHIVOS (LOOP E INDIVIDUALES) --------------------
+    async function processUploadedFile(file, keyPrefix) {
+      const mediaType = file.type.startsWith('video/') ? 'video' : 'image';
+      const idbKey = `${keyPrefix}_${Date.now()}`;
+
+      // 1. Guardar siempre en IndexedDB local para persistencia instantánea
+      await saveBlobToIDB(idbKey, file);
+      localBlobUrlCache[idbKey] = URL.createObjectURL(file);
+
+      // 2. Si Firebase está conectado, subir también a Firebase Storage para transmisión por Internet
+      let cloudUrl = null;
+      if (isCloudConnected && storage) {
+        try {
+          const storageRef = ref(storage, `nino_simon_7/${idbKey}_${file.name}`);
+          const snap = await uploadBytes(storageRef, file);
+          cloudUrl = await getDownloadURL(snap.ref);
+        } catch (err) {
+          console.error('Error subiendo archivo a Firebase Storage:', err);
+          showToast('Guardado en dispositivo, pero falló la subida a la nube.', 'error');
+        }
+      }
+
+      return { mediaType, idbKey, cloudUrl, fileName: file.name };
+    }
+
+    window.handleLoopUpload = async function(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const spinner = document.getElementById('loop-uploading-spinner');
+      spinner.classList.remove('hidden');
+
+      try {
+        const uploaded = await processUploadedFile(file, 'loop_master');
+        await broadcastStateUpdate({
+          ...appState,
+          mode: 'loop',
+          activeParticipantId: null,
+          loopMedia: {
+            title: file.name,
+            type: uploaded.mediaType,
+            url: DEFAULT_LOOP_URL,
+            cloudUrl: uploaded.cloudUrl,
+            idbKey: uploaded.idbKey,
+            isCustom: true
+          }
+        });
+        showToast('Video/Foto bucle cargado y activado', 'success');
+      } finally {
+        spinner.classList.add('hidden');
+        event.target.value = '';
+      }
+    };
+
+    window.handleParticipantFileUpload = async function(event, participantId) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const statusBadge = document.getElementById(`upload-status-${participantId}`);
+      if (statusBadge) {
+        statusBadge.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-blue-400"></i> Subiendo...';
+      }
+
+      try {
+        const uploaded = await processUploadedFile(file, participantId);
+        const updatedParticipants = appState.participants.map(p => {
+          if (p.id !== participantId) return p;
+          return {
+            ...p,
+            mediaType: uploaded.mediaType,
+            fileName: uploaded.fileName,
+            idbKey: uploaded.idbKey,
+            cloudUrl: uploaded.cloudUrl
+          };
+        });
+
+        await broadcastStateUpdate({
+          ...appState,
+          participants: updatedParticipants
+        });
+
+        const targetP = updatedParticipants.find(p => p.id === participantId);
+        showToast(`Archivo cargado para #${String(targetP.num).padStart(2, '0')} ${targetP.name}`, 'success');
+      } finally {
+        event.target.value = '';
+      }
+    };
+
+    // -------------------- ACCIONES DE EMISIÓN (SWITCHER) --------------------
+    window.activateLoopMode = function() {
+      broadcastStateUpdate({
+        ...appState,
+        mode: 'loop',
+        activeParticipantId: null
+      });
+      showToast('Bucle de presentación activado en el tótem', 'info');
+    };
+
+    window.sendParticipantToTotem = function(id) {
+      const p = appState.participants.find(item => item.id === id);
+      if (!p) return;
+
+      broadcastStateUpdate({
+        ...appState,
+        mode: 'participant',
+        activeParticipantId: id
+      });
+      showToast(`AL AIRE: #${String(p.num).padStart(2, '0')} ${p.name}`, 'live');
+    };
+
+    window.toggleBlackout = function() {
+      const nextMode = appState.mode === 'blackout' ? 'loop' : 'blackout';
+      broadcastStateUpdate({
+        ...appState,
+        mode: nextMode,
+        activeParticipantId: nextMode === 'blackout' ? null : appState.activeParticipantId
+      });
+      showToast(nextMode === 'blackout' ? 'Tótem en Negro (Blackout)' : 'Señal restaurada', 'info');
+    };
+
+    window.setFilter = function(filterName) {
+      currentFilter = filterName;
+      document.querySelectorAll('.filter-chip').forEach(btn => {
+        btn.className = 'filter-chip px-3 py-1.5 rounded-lg text-xs font-semibold bg-obs-card text-gray-300 hover:text-white border border-obs-border transition shrink-0';
+      });
+      const activeBtn = document.getElementById(`filter-${filterName}`);
+      if (activeBtn) {
+        activeBtn.className = 'filter-chip px-3 py-1.5 rounded-lg text-xs font-semibold bg-white text-black transition shrink-0';
+      }
+      renderParticipantsList();
+    };
+
+    // -------------------- RENDERIZADO VISTA PRODUCTORA --------------------
+    function renderAdminUI() {
+      if (document.getElementById('view-admin').classList.contains('hidden')) return;
+
+      // 1. Tarjeta Maestra Loop
+      const loopCard = document.getElementById('loop-control-card');
+      const loopPill = document.getElementById('loop-active-pill');
+      const btnLoop = document.getElementById('btn-activate-loop');
+      const loopStatusBadge = document.getElementById('loop-status-badge');
+      const loopFilename = document.getElementById('loop-filename-label');
+      const loopThumbBox = document.getElementById('loop-thumbnail-box');
+
+      const isLoopLive = appState.mode === 'loop';
+      const loopUrl = resolveMediaUrl(appState.loopMedia);
+
+      if (appState.loopMedia.isCustom) {
+        loopStatusBadge.textContent = '✓ Cargado';
+        loopStatusBadge.className = 'px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
+      } else {
+        loopStatusBadge.textContent = 'Por defecto';
+        loopStatusBadge.className = 'px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-obs-card text-gray-300 border border-obs-border';
+      }
+
+      loopFilename.textContent = appState.loopMedia.title || 'Visual rotativo de presentación';
+
+      if (loopUrl) {
+        loopThumbBox.innerHTML = appState.loopMedia.type === 'video'
+          ? `<video src="${loopUrl}" muted loop autoplay playsinline class="w-full h-full object-cover"></video>`
+          : `<img src="${loopUrl}" class="w-full h-full object-cover" />`;
+      }
+
+      if (isLoopLive) {
+        loopCard.classList.add('border-emerald-500', 'bg-emerald-950/15');
+        loopCard.classList.remove('border-obs-border');
+        loopPill.classList.remove('hidden');
+        btnLoop.className = 'w-full md:w-auto px-6 py-4 rounded-xl font-display text-lg tracking-wider uppercase flex items-center justify-center gap-2.5 transition-all bg-emerald-500 text-black font-bold loop-live-glow';
+        btnLoop.innerHTML = '<span class="w-2.5 h-2.5 rounded-full bg-black animate-ping"></span><span>BUCLE AL AIRE</span>';
+      } else {
+        loopCard.classList.remove('border-emerald-500', 'bg-emerald-950/15');
+        loopCard.classList.add('border-obs-border');
+        loopPill.classList.add('hidden');
+        btnLoop.className = 'w-full md:w-auto px-6 py-4 rounded-xl font-display text-lg tracking-wider uppercase flex items-center justify-center gap-2.5 transition-all shadow-lg bg-emerald-600 hover:bg-emerald-500 text-white active:scale-95';
+        btnLoop.innerHTML = '<i class="fa-solid fa-play"></i><span>ACTIVAR BUCLE EN TÓTEM</span>';
+      }
+
+      // 2. Lista de 31 Participantes
+      renderParticipantsList();
+
+      // 3. Monitor de retorno 1:4
+      renderTotemStage(document.getElementById('admin-preview-stage'), true);
+
+      // 4. Etiqueta señal actual & Blackout
+      const signalLabel = document.getElementById('current-signal-label');
+      const btnBlackout = document.getElementById('btn-blackout');
+      if (appState.mode === 'blackout') {
+        signalLabel.textContent = 'BLACKOUT (Negro)';
+        signalLabel.className = 'font-bold text-amber-400 truncate max-w-[185px]';
+        btnBlackout.classList.add('bg-amber-500/20', 'border-amber-500', 'text-amber-300');
+      } else if (appState.mode === 'participant') {
+        const activeP = appState.participants.find(p => p.id === appState.activeParticipantId);
+        signalLabel.textContent = activeP ? `#${String(activeP.num).padStart(2, '0')} ${activeP.name}` : 'Participante';
+        signalLabel.className = 'font-bold text-red-400 truncate max-w-[185px]';
+        btnBlackout.classList.remove('bg-amber-500/20', 'border-amber-500', 'text-amber-300');
+      } else {
+        signalLabel.textContent = 'Bucle Presentación';
+        signalLabel.className = 'font-bold text-emerald-400 truncate max-w-[185px]';
+        btnBlackout.classList.remove('bg-amber-500/20', 'border-amber-500', 'text-amber-300');
+      }
+    }
+
+    window.renderParticipantsList = function() {
+      const container = document.getElementById('participants-list');
+      const counterEl = document.getElementById('loaded-media-counter');
+      const query = (document.getElementById('search-input')?.value || '').toLowerCase().trim();
+
+      const totalLoaded = appState.participants.filter(p => Boolean(resolveMediaUrl(p))).length;
+      if (counterEl) {
+        counterEl.textContent = `${totalLoaded}/31 con archivo`;
+      }
+
+      const filtered = appState.participants.filter(p => {
+        const matchesSearch = !query || 
+          p.name.toLowerCase().includes(query) || 
+          p.regional.toLowerCase().includes(query) ||
+          String(p.num).includes(query);
+
+        if (!matchesSearch) return false;
+        if (currentFilter === 'infantil') return p.category.toLowerCase().includes('infantil');
+        if (currentFilter === 'juvenil') return p.category.toLowerCase().includes('juvenil');
+        if (currentFilter === 'uploaded') return Boolean(resolveMediaUrl(p));
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="bg-obs-panel border border-obs-border rounded-2xl p-8 text-center text-gray-500 text-xs">
+            No se encontraron participantes con ese filtro.
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(p => {
+        const isOnAir = appState.mode === 'participant' && appState.activeParticipantId === p.id;
+        const mediaUrl = resolveMediaUrl(p);
+        const hasMedia = Boolean(mediaUrl);
+        const numFormatted = String(p.num).padStart(2, '0');
+        const isInfantil = p.category.toLowerCase().includes('infantil');
+
+        return `
+          <div class="rounded-2xl border p-3.5 sm:p-4 transition-all ${
+            isOnAir 
+              ? 'bg-red-950/30 border-red-500 shadow-lg' 
+              : 'bg-obs-panel hover:bg-obs-card/80 border-obs-border'
+          }">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5">
+              
+              <!-- Izquierda: Número + Miniatura + Datos del Niño/a -->
+              <div class="flex items-center gap-3 min-w-0 flex-1">
+                <!-- Número oficial -->
+                <div class="w-9 h-9 rounded-xl ${isOnAir ? 'bg-red-600 text-white' : 'bg-obs-bg border border-obs-border text-gray-300'} font-display text-lg flex items-center justify-center shrink-0">
+                  #${numFormatted}
+                </div>
+
+                <!-- Miniatura de archivo (si existe) o ícono -->
+                <div class="w-12 h-14 rounded-xl bg-black border border-obs-border overflow-hidden shrink-0 relative flex items-center justify-center">
+                  ${hasMedia
+                    ? (p.mediaType === 'video'
+                        ? `<video src="${mediaUrl}" muted class="w-full h-full object-cover"></video><span class="absolute bottom-0.5 right-0.5 bg-black/80 text-[8px] px-1 rounded text-white"><i class="fa-solid fa-video"></i></span>`
+                        : `<img src="${mediaUrl}" alt="${escapeHtml(p.name)}" class="w-full h-full object-cover" />`)
+                    : `<i class="fa-solid fa-microphone-lines text-gray-600 text-sm"></i>`
+                  }
+                </div>
+
+                <!-- Nombre, Categoría y Regional -->
+                <div class="min-w-0 flex-1">
+                  <div class="flex flex-wrap items-center gap-1.5 mb-0.5">
+                    <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
+                      isInfantil 
+                        ? 'bg-sky-500/15 text-sky-300 border border-sky-500/30' 
+                        : 'bg-purple-500/15 text-purple-300 border border-purple-500/30'
+                    }">
+                      ${escapeHtml(p.category)}
+                    </span>
+                    <span class="text-[11px] font-semibold text-amber-300/90">
+                      • ${escapeHtml(p.regional)}
+                    </span>
+                  </div>
+
+                  <h4 class="font-display text-lg sm:text-xl tracking-wide text-white leading-tight truncate">
+                    ${escapeHtml(p.name)}
+                  </h4>
+
+                  <div id="upload-status-${p.id}" class="text-[11px] mt-0.5 truncate ${hasMedia ? 'text-emerald-400 font-medium' : 'text-gray-500'}">
+                    ${hasMedia 
+                      ? `<i class="fa-solid fa-circle-check mr-1"></i>Archivo listo: ${escapeHtml(p.fileName || 'Cargado')}` 
+                      : 'Sin foto/video (mostrará tarjeta gráfica oficial)'
+                    }
+                  </div>
+                </div>
+              </div>
+
+              <!-- Derecha: Casilla Individual de Carga + Botón Enviar al Tótem -->
+              <div class="flex items-center gap-2 sm:shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-obs-border/60">
+                
+                <!-- Casilla individual para subir foto o video desde el teléfono -->
+                <label class="flex-1 sm:flex-initial cursor-pointer px-3 py-2.5 rounded-xl bg-obs-bg hover:bg-gray-800 border ${hasMedia ? 'border-emerald-500/40 text-emerald-300' : 'border-dashed border-gray-600 text-gray-300'} text-xs font-semibold flex items-center justify-center gap-1.5 transition active:scale-95">
+                  <i class="fa-solid ${hasMedia ? 'fa-rotate' : 'fa-camera'}"></i>
+                  <span>${hasMedia ? 'Cambiar archivo' : 'Subir Foto / Video'}</span>
+                  <input type="file" accept="image/*,video/*" class="hidden" onchange="handleParticipantFileUpload(event, '${p.id}')" />
+                </label>
+
+                <!-- Botón Enviar al Tótem -->
+                <button onclick="sendParticipantToTotem('${p.id}')" class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl font-display text-base tracking-wider uppercase transition-all flex items-center justify-center gap-2 active:scale-95 ${
+                  isOnAir
+                    ? 'bg-red-600 text-white on-air-glow'
+                    : 'bg-obs-card hover:bg-red-600 text-white border border-obs-border hover:border-red-500'
+                }">
+                  ${isOnAir
+                    ? '<span class="w-2 h-2 rounded-full bg-white animate-ping"></span><span>AL AIRE</span>'
+                    : '<i class="fa-solid fa-satellite-dish text-xs"></i><span>ENVIAR AL TÓTEM</span>'
+                  }
+                </button>
+              </div>
+
+            </div>
+          </div>
+        `;
+      }).join('');
+    };
+
+    // -------------------- RENDERIZADO DE SALIDA VERTICAL 1:4 (TÓTEM & MONITOR) --------------------
+    function renderTotemStage(container, isMiniPreview = false) {
+      if (!container) return;
+
+      // 1. Modo Blackout
+      if (appState.mode === 'blackout') {
+        container.innerHTML = `<div class="w-full h-full bg-black totem-layer opacity-100"></div>`;
+        return;
+      }
+
+      // 2. Modo Participante en Escena
+      if (appState.mode === 'participant') {
+        const p = appState.participants.find(item => item.id === appState.activeParticipantId);
+        if (p) {
+          const mediaUrl = resolveMediaUrl(p);
+          const numFormatted = String(p.num).padStart(2, '0');
+
+          const festTitleSize = isMiniPreview ? 'text-[9px] leading-tight' : 'text-[2.3vw] leading-tight';
+          const nameSize = isMiniPreview ? 'text-base leading-none' : 'text-[6.8vw] leading-[0.95]';
+          const catSize = isMiniPreview ? 'text-[8px]' : 'text-[2.2vw]';
+          const regSize = isMiniPreview ? 'text-[9px]' : 'text-[2.7vw]';
+          const padY = isMiniPreview ? 'py-3 px-2.5' : 'py-[4vh] px-[4vw]';
+
+          // Si el participante tiene foto o video cargado
+          if (mediaUrl) {
+            container.innerHTML = `
+              <div class="w-full h-full relative bg-black flex flex-col justify-between overflow-hidden totem-layer opacity-100">
+                
+                <!-- Fondo ambiental desenfocado -->
+                <div class="absolute inset-0 overflow-hidden opacity-45 scale-110 blur-xl">
+                  ${p.mediaType === 'video'
+                    ? `<video src="${mediaUrl}" autoplay loop muted playsinline class="w-full h-full object-cover"></video>`
+                    : `<img src="${mediaUrl}" class="w-full h-full object-cover" />`
+                  }
+                </div>
+
+                <div class="absolute inset-0 bg-gradient-to-b from-black/85 via-transparent to-black/95"></div>
+
+                <!-- Cabecera Oficial del Festival -->
+                <div class="relative z-10 ${padY} text-center">
+                  <p class="font-display tracking-widest text-amber-400 uppercase ${festTitleSize}">
+                    7° FESTIVAL DE LA VOZ "EL NIÑO SIMÓN"
+                  </p>
+                </div>
+
+                <!-- Marco central nítido con foto o video del participante -->
+                <div class="relative z-10 my-auto px-[4vw] flex items-center justify-center">
+                  <div class="w-full aspect-[3/4] rounded-2xl overflow-hidden border-2 border-amber-400/50 shadow-[0_0_50px_rgba(0,0,0,0.95)] bg-black relative">
+                    ${p.mediaType === 'video'
+                      ? `<video src="${mediaUrl}" autoplay loop muted playsinline class="w-full h-full object-cover"></video>`
+                      : `<img src="${mediaUrl}" alt="${escapeHtml(p.name)}" class="w-full h-full object-cover" />`
+                    }
+                    <span class="absolute top-2 left-2 bg-red-600/95 text-white font-display tracking-wider px-2 py-0.5 rounded ${catSize}">
+                      #${numFormatted}
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Pleca inferior con Nombre, Categoría y Regional -->
+                <div class="relative z-10 ${padY} text-center space-y-1">
+                  <div class="w-10 h-1 bg-amber-400 mx-auto rounded-full mb-1.5"></div>
+                  <h2 class="font-display uppercase tracking-wide text-white drop-shadow-lg ${nameSize}">
+                    ${escapeHtml(p.name)}
+                  </h2>
+                  <p class="font-sans font-bold text-amber-300 uppercase tracking-wider ${regSize}">
+                    ${escapeHtml(p.regional)}
+                  </p>
+                  <p class="font-sans font-medium text-gray-300 uppercase tracking-widest ${catSize}">
+                    ${escapeHtml(p.category)}
+                  </p>
+                </div>
+              </div>
+            `;
+          } else {
+            // Tarjeta gráfica oficial de gala si aún no se subió foto/video
+            container.innerHTML = `
+              <div class="w-full h-full relative bg-gradient-to-b from-[#131824] via-[#0B0E14] to-[#1A120B] flex flex-col justify-between items-center text-center overflow-hidden ${padY} totem-layer opacity-100">
+                <div class="space-y-1 pt-2">
+                  <span class="inline-block px-2.5 py-0.5 rounded-full bg-red-600 text-white font-display tracking-widest uppercase ${catSize}">
+                    EN ESCENA • #${numFormatted}
+                  </span>
+                  <p class="font-display tracking-widest text-amber-400 uppercase pt-1 ${festTitleSize}">
+                    7° FESTIVAL DE LA VOZ<br>"EL NIÑO SIMÓN"
+                  </p>
+                </div>
+
+                <div class="my-auto space-y-3 px-2">
+                  <div class="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-full bg-amber-500/15 border-2 border-amber-400/50 flex items-center justify-center text-amber-300">
+                    <i class="fa-solid fa-microphone-lines text-2xl"></i>
+                  </div>
+                  <h2 class="font-display uppercase tracking-wide text-white drop-shadow-lg ${nameSize}">
+                    ${escapeHtml(p.name)}
+                  </h2>
+                  <div class="w-12 h-1 bg-red-500 mx-auto rounded-full"></div>
+                  <p class="font-sans font-extrabold text-amber-300 uppercase tracking-wider ${regSize}">
+                    ${escapeHtml(p.regional)}
+                  </p>
+                  <p class="font-sans font-semibold text-gray-300 uppercase tracking-widest ${catSize}">
+                    ${escapeHtml(p.category)}
+                  </p>
+                </div>
+
+                <div class="pb-2">
+                  <span class="font-display tracking-widest text-white/40 uppercase ${catSize}">
+                    GRAN FINAL NACIONAL
+                  </span>
+                </div>
+              </div>
+            `;
+          }
+          return;
+        }
+      }
+
+      // 3. Modo Loop / Bucle de Presentación (Cuando nadie participa)
+      const loopUrl = resolveMediaUrl(appState.loopMedia) || DEFAULT_LOOP_URL;
+      container.innerHTML = `
+        <div class="w-full h-full relative bg-black overflow-hidden totem-layer opacity-100">
+          ${appState.loopMedia.type === 'image'
+            ? `<img src="${loopUrl}" alt="Presentación Festival" class="w-full h-full object-cover" />`
+            : `<video src="${loopUrl}" autoplay loop muted playsinline class="w-full h-full object-cover"></video>`
+          }
+        </div>
+      `;
+    }
+
+    // -------------------- UTILIDADES UI --------------------
+    window.toggleMobileMonitorDrawer = function() {
+      const sidebar = document.getElementById('monitor-sidebar');
+      sidebar.classList.toggle('hidden');
+      sidebar.classList.toggle('flex');
+    };
+
+    let inactivityTimer = null;
+    function setupTotemInactivityHide() {
+      const totemView = document.getElementById('view-totem');
+      const controls = document.getElementById('totem-floating-controls');
+
+      const resetTimer = () => {
+        totemView.classList.remove('cursor-hidden');
+        controls.classList.remove('opacity-0', 'pointer-events-none');
+        controls.classList.add('opacity-100');
+
+        clearTimeout(inactivityTimer);
+        inactivityTimer = setTimeout(() => {
+          totemView.classList.add('cursor-hidden');
+          controls.classList.remove('opacity-100');
+          controls.classList.add('opacity-0', 'pointer-events-none');
+        }, 3000);
+      };
+
+      window.addEventListener('mousemove', resetTimer);
+      window.addEventListener('touchstart', resetTimer);
+      resetTimer();
+    }
+
+    window.toggleFullscreen = function() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen().catch(() => {});
+      }
+    };
+
+    window.openTotemWindow = function() {
+      const url = new URL(window.location);
+      url.searchParams.set('view', 'totem');
+      window.open(url.toString(), 'TotemOutputWindow', 'width=420,height=920');
+    };
+
+    window.copyTotemUrl = function() {
+      const url = new URL(window.location);
+      url.searchParams.set('view', 'totem');
+      const tempInput = document.createElement('input');
+      tempInput.value = url.toString();
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand('copy');
+      document.body.removeChild(tempInput);
+      showToast('Enlace de Pantalla Tótem copiado', 'success');
+    };
+
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      
+      const styles = {
+        live: 'bg-red-600 border-red-400 text-white',
+        success: 'bg-emerald-600 border-emerald-400 text-white',
+        error: 'bg-rose-700 border-rose-400 text-white',
+        info: 'bg-obs-card border-obs-border text-gray-100'
+      };
+
+      toast.className = `px-4 py-2.5 rounded-xl border shadow-xl text-xs font-semibold flex items-center gap-2 transition-all duration-300 ${styles[type] || styles.info}`;
+      toast.innerHTML = `<i class="fa-solid fa-circle-dot"></i><span>${escapeHtml(message)}</span>`;
+      
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(8px)';
+        setTimeout(() => toast.remove(), 300);
+      }, 2800);
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    // Arrancar aplicación e hidratar archivos guardados localmente
+    (async function bootstrap() {
+      initFirebaseFromSaved();
+      await hydrateLocalBlobs(appState);
+      initRouter();
+    })();
+  </script>
+</body>
+</html>
