@@ -7,8 +7,9 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   
-  <!-- PeerJS para conexión directa Teléfono <-> Tótem por Internet sin servidores -->
-  <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+  <!-- Firebase Firestore (Conectado directo a tu proyecto totem-festival-2026) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
   <style>
     body { font-family: 'Inter', sans-serif; }
@@ -26,7 +27,7 @@
   <!-- ===================================================================== -->
   <div id="vistaTotem" class="hidden fixed inset-0 w-screen h-screen bg-black overflow-hidden select-none">
     
-    <!-- Capas A y B para fundido instantáneo -->
+    <!-- Capas A y B para Crossfade instantáneo -->
     <div id="capaMediaA" class="media-layer absolute inset-0 w-full h-full opacity-100"></div>
     <div id="capaMediaB" class="media-layer absolute inset-0 w-full h-full opacity-0"></div>
 
@@ -53,29 +54,12 @@
       </div>
     </div>
 
-    <!-- Cartel de Emparejamiento Inicial (Desaparece en cuanto se conecta el teléfono) -->
-    <div id="panelCodigoTotem" class="fixed inset-0 z-40 bg-black/90 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center">
-      <div class="bg-zinc-900 border border-zinc-700 rounded-3xl p-8 max-w-sm w-full shadow-2xl space-y-5">
-        <div class="w-12 h-12 rounded-2xl bg-blue-600/20 border border-blue-500/40 text-blue-400 mx-auto flex items-center justify-center font-display text-2xl">
-          1:4
-        </div>
-        <div>
-          <span class="text-[10px] font-bold uppercase tracking-widest text-blue-400">Pantalla Receptora Lista</span>
-          <h2 class="text-lg font-bold text-white mt-1">Conecta el Teléfono</h2>
-          <p class="text-xs text-zinc-400 mt-1">Ingresa este código de 4 dígitos en el panel de la productora:</p>
-        </div>
-
-        <div class="bg-zinc-950 border border-zinc-800 rounded-2xl py-4 px-6">
-          <span id="codigoGeneradoTotem" class="font-mono text-4xl font-bold tracking-[0.25em] text-emerald-400">----</span>
-        </div>
-
-        <p id="estadoRedTotem" class="text-[11px] text-zinc-500 animate-pulse">Generando canal seguro en vivo...</p>
-      </div>
-    </div>
-
-    <!-- Notificación discreta cuando entra un archivo desde el teléfono -->
-    <div id="toastTotem" class="hidden fixed top-4 right-4 z-30 bg-black/80 backdrop-blur-md border border-emerald-500/40 px-3 py-1.5 rounded-full text-[11px] text-emerald-300 font-medium">
-      ✓ Archivo recibido en memoria
+    <!-- Botón flotante discreto en la esquina superior izquierda (solo visible al pasar el mouse) para cargar el Video Loop local en la PC del Tótem -->
+    <div class="fixed top-3 left-3 z-40 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center gap-2 bg-black/80 backdrop-blur-md border border-white/15 px-3 py-1.5 rounded-full">
+      <label class="cursor-pointer text-[11px] font-semibold text-emerald-400 hover:text-emerald-300">
+        📁 Cargar Video Loop Local (MP4)
+        <input type="file" accept="video/*,image/*" class="hidden" onchange="cargarVideoLocalTotem('loop', this.files[0])">
+      </label>
     </div>
   </div>
 
@@ -84,7 +68,7 @@
   <!-- ===================================================================== -->
   <div id="vistaProductora" class="min-h-screen flex flex-col">
     
-    <!-- Header Sticky con Emparejamiento Directo -->
+    <!-- Header Sticky -->
     <header class="sticky top-0 z-30 bg-[#09090b]/95 backdrop-blur-xl border-b border-zinc-800/80 px-4 py-3">
       <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3">
         <div class="flex items-center gap-3">
@@ -94,35 +78,25 @@
           <div>
             <div class="flex items-center gap-2">
               <h1 class="text-sm font-bold text-white tracking-tight">Control Tótem 1:4</h1>
-              <span id="badgeConexion" class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-400 border border-amber-500/30">
-                Desconectado
+              <span id="badgeEstadoNube" class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                ● En Línea
               </span>
             </div>
             <p class="text-[11px] text-zinc-400">7° Festival de la Voz "El Niño Simón" • 200×50 cm</p>
           </div>
         </div>
 
-        <!-- Barra para meter el código de 4 dígitos del Tótem -->
-        <div class="flex items-center gap-2">
-          <div class="flex items-center bg-zinc-900 border border-zinc-700 rounded-xl overflow-hidden">
-            <input type="text" id="inputCodigoTotem" maxlength="4" inputmode="numeric" placeholder="Código (4 díg.)" class="w-28 bg-transparent px-3 py-2 text-xs font-mono font-bold text-white placeholder-zinc-500 focus:outline-none uppercase text-center">
-            <button onclick="conectarConTotem()" id="btnConectar" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-3.5 py-2 transition cursor-pointer">
-              Conectar
-            </button>
-          </div>
-
-          <a href="?view=totem" target="_blank" class="hidden sm:inline-flex px-3 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-xs font-medium text-zinc-200 transition items-center gap-1.5">
-            <span>Abrir Tótem</span>
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-          </a>
-        </div>
+        <a href="?view=totem" target="_blank" class="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-xs font-semibold text-white transition shadow-lg shadow-blue-600/25 flex items-center gap-1.5">
+          <span>Abrir Pantalla Tótem</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+        </a>
       </div>
     </header>
 
     <!-- Cuerpo Principal -->
     <main class="max-w-6xl w-full mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1">
       
-      <!-- Columna Izquierda: Loop + Lista de 31 Participantes -->
+      <!-- Columna Izquierda -->
       <div class="lg:col-span-8 space-y-5">
         
         <!-- BLOQUE 1: VIDEO BUCLE ROTATIVO -->
@@ -130,7 +104,7 @@
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div class="flex items-center gap-3.5">
               <div id="thumbLoop" class="w-14 h-20 rounded-xl bg-zinc-950 border border-zinc-800 overflow-hidden flex items-center justify-center shrink-0">
-                <span class="text-[10px] text-zinc-500 text-center px-1">Sin Loop</span>
+                <span class="text-[10px] text-zinc-500 text-center px-1">Loop</span>
               </div>
               <div>
                 <div class="flex items-center gap-2">
@@ -138,14 +112,14 @@
                   <span id="badgeLoopLive" class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-500 text-black">● EN EL TÓTEM</span>
                 </div>
                 <h2 class="text-base font-bold text-white mt-1">Video Bucle Rotativo Oficial</h2>
-                <p id="status-loop" class="text-xs text-zinc-400">Se reproduce en loop continuo cuando no hay participante en escena.</p>
+                <p class="text-xs text-zinc-400">Para videos MP4 pesados, cárgalos directo en la esquina superior izquierda de la pantalla del Tótem.</p>
               </div>
             </div>
 
             <div class="flex items-center gap-2 shrink-0">
               <label class="cursor-pointer px-3 py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-xs font-medium text-zinc-200 transition text-center">
-                <span id="labelSubirLoop">📁 Cargar Loop</span>
-                <input type="file" accept="video/*,image/*" class="hidden" onchange="procesarYEnviarArchivo('loop', this.files[0])">
+                <span id="labelSubirLoop">🖼️ Subir Imagen</span>
+                <input type="file" accept="image/*" class="hidden" onchange="subirImagenComprimida('loop', this.files[0])">
               </label>
               <button onclick="activarLoop()" class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-xs font-bold text-white transition cursor-pointer shadow-md">
                 PONER LOOP
@@ -167,7 +141,7 @@
         <div id="listaParticipantes" class="space-y-2.5"></div>
       </div>
 
-      <!-- Columna Derecha: Monitor de Retorno en Vivo (1:4) -->
+      <!-- Columna Derecha: Monitor 1:4 -->
       <div class="lg:col-span-4">
         <div class="sticky top-20 bg-zinc-900/90 border border-zinc-800 rounded-2xl p-4 flex flex-col items-center">
           <div class="w-full flex items-center justify-between mb-3">
@@ -194,8 +168,20 @@
 
   <script>
     // =========================================================================
-    // LISTA OFICIAL DE 31 PARTICIPANTES (7° FESTIVAL DE LA VOZ EL NIÑO SIMÓN)
+    // CONEXIÓN DIRECTA A TU FIRESTORE (totem-festival-2026)
     // =========================================================================
+    const firebaseConfig = {
+      apiKey: "AIzaSyBnVI5ODP17evQ_1aDLx7vSuKQYzmKPDzU",
+      authDomain: "totem-festival-2026.firebaseapp.com",
+      projectId: "totem-festival-2026",
+      storageBucket: "totem-festival-2026.firebasestorage.app",
+      messagingSenderId: "201679443416",
+      appId: "1:201679443416:web:bf2f9cc96f5c69595d8ead"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
     const PARTICIPANTES_BASE = [
       { id: 1, nombre: "ANGEL GABRIEL SANCHEZ", categoria: "INFANTIL", estado: "CARABOBO" },
       { id: 2, nombre: "ARBELIZ PÉREZ", categoria: "JUVENIL", estado: "CARABOBO" },
@@ -231,193 +217,114 @@
     ];
 
     const esVistaTotem = new URLSearchParams(window.location.search).get('view') === 'totem';
-    let mediosLocales = {}; // { "loop": { url, tipo, file }, "1": { url, tipo, file } }
+    let mediosNube = {};      // Fotos comprimidas guardadas en Firestore (cada una en su propio documento)
+    let videosLocalesTotem = {}; // Videos MP4 cargados directo en la PC del Tótem
     let estadoEnVivo = { modo: 'loop', id: null };
-    let peer = null;
-    let conexionActiva = null;
 
-    // =========================================================================
-    // INICIALIZACIÓN
-    // =========================================================================
     window.addEventListener('DOMContentLoaded', () => {
       if (esVistaTotem) {
         document.getElementById('vistaProductora').classList.add('hidden');
         document.getElementById('vistaTotem').classList.remove('hidden');
-        iniciarReceptorTotem();
       } else {
         renderizarLista();
       }
+
+      // Escuchar todas las fotos subidas (cada participante en su propio doc para soportar hasta 1MB por foto sin límite)
+      db.collection('totem_fotos_2026').onSnapshot((snapshot) => {
+        snapshot.forEach((doc) => {
+          mediosNube[doc.id] = doc.data();
+        });
+        if (!esVistaTotem) {
+          actualizarVistaLoop();
+          renderizarLista();
+        }
+        aplicarEstadoEnPantalla(estadoEnVivo);
+      }, (err) => {
+        const badge = document.getElementById('badgeEstadoNube');
+        if (badge) {
+          badge.innerText = "Error de permisos Firestore";
+          badge.className = "text-[10px] font-semibold px-2 py-0.5 rounded-full bg-red-500/15 text-red-400 border border-red-500/30";
+        }
+      });
+
+      // Escuchar qué participante o loop está al aire en tiempo real
+      db.collection('totem_estado_2026').doc('vivo').onSnapshot((doc) => {
+        if (doc.exists) {
+          aplicarEstadoEnPantalla(doc.data());
+        }
+      });
     });
 
     // =========================================================================
-    // MODO 1: RECEPTOR EN LA PC DEL TÓTEM (Genera código de 4 dígitos)
+    // COMPRESIÓN AUTOMÁTICA DE FOTOS EN EL TELÉFONO Y ENVÍO A FIRESTORE
     // =========================================================================
-    function iniciarReceptorTotem() {
-      const codigo4 = String(Math.floor(1000 + Math.random() * 9000));
-      const peerId = `fnns-totem-${codigo4}`;
-
-      peer = new Peer(peerId);
-
-      peer.on('open', () => {
-        document.getElementById('codigoGeneradoTotem').innerText = codigo4;
-        document.getElementById('estadoRedTotem').innerText = "Esperando conexión del teléfono...";
-      });
-
-      peer.on('error', (err) => {
-        if (err.type === 'unavailable-id') iniciarReceptorTotem();
-      });
-
-      peer.on('connection', (conn) => {
-        conexionActiva = conn;
-        document.getElementById('panelCodigoTotem').classList.add('hidden');
-
-        conn.on('data', (paquete) => {
-          // Recibir archivo enviado desde el teléfono (Foto o Video)
-          if (paquete.accion === 'ARCHIVO') {
-            const blob = new Blob([paquete.buffer], { type: paquete.mime });
-            const url = URL.createObjectURL(blob);
-            mediosLocales[String(paquete.id)] = { url, tipo: paquete.tipo };
-
-            // Mostrar aviso discreto
-            const toast = document.getElementById('toastTotem');
-            toast.innerText = `✓ Archivo #${paquete.id} cargado en memoria`;
-            toast.classList.remove('hidden');
-            setTimeout(() => toast.classList.add('hidden'), 2200);
-
-            // Si ese participante o loop ya estaba al aire, refrescar al instante
-            if (estadoEnVivo.modo === 'loop' && paquete.id === 'loop') {
-              aplicarEstadoEnPantalla(estadoEnVivo);
-            } else if (estadoEnVivo.modo === 'participante' && String(estadoEnVivo.id) === String(paquete.id)) {
-              aplicarEstadoEnPantalla(estadoEnVivo);
-            }
-          }
-
-          // Recibir orden de cambio en vivo
-          if (paquete.accion === 'ESTADO') {
-            aplicarEstadoEnPantalla(paquete.estado);
-          }
-        });
-
-        conn.on('close', () => {
-          document.getElementById('panelCodigoTotem').classList.remove('hidden');
-          document.getElementById('estadoRedTotem').innerText = "Teléfono desconectado. Esperando reconexión...";
-        });
-      });
-    }
-
-    // =========================================================================
-    // MODO 2: EMISOR EN EL TELÉFONO DE LA PRODUCTORA
-    // =========================================================================
-    function conectarConTotem() {
-      const codigo = document.getElementById('inputCodigoTotem').value.trim();
-      if (codigo.length !== 4) {
-        alert("Ingresa los 4 dígitos que aparecen en la pantalla del tótem.");
-        return;
-      }
-
-      const btn = document.getElementById('btnConectar');
-      const badge = document.getElementById('badgeConexion');
-      btn.innerText = "Conectando...";
-
-      if (!peer) peer = new Peer();
-
-      const conectar = () => {
-        const conn = peer.connect(`fnns-totem-${codigo}`, { reliable: true });
-
-        conn.on('open', () => {
-          conexionActiva = conn;
-          btn.innerText = "Conectado";
-          btn.className = "bg-zinc-700 text-emerald-400 text-xs font-bold px-3.5 py-2";
-          badge.innerText = `● Enlazado (${codigo})`;
-          badge.className = "text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30";
-
-          // Sincronizar automáticamente todos los archivos ya cargados en el teléfono hacia el tótem
-          Object.entries(mediosLocales).forEach(([id, item]) => {
-            if (item && item.file) enviarArchivoPorTunel(id, item.file);
-          });
-          conn.send({ accion: 'ESTADO', estado: estadoEnVivo });
-        });
-
-        conn.on('close', () => {
-          conexionActiva = null;
-          btn.innerText = "Reconectar";
-          btn.className = "bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-3.5 py-2 cursor-pointer";
-          badge.innerText = "Desconectado";
-          badge.className = "text-[10px] font-semibold px-2 py-0.5 rounded-full bg-red-500/15 text-red-400 border border-red-500/30";
-        });
-      };
-
-      if (peer.open) conectar();
-      else peer.once('open', conectar);
-    }
-
-    // =========================================================================
-    // CARGA EN EL TELÉFONO Y TRANSMISIÓN DIRECTA AL TÓTEM
-    // =========================================================================
-    function procesarYEnviarArchivo(id, file) {
+    function subirImagenComprimida(id, file) {
       if (!file) return;
       const key = String(id);
-      const tipo = file.type.startsWith('video') ? 'video' : 'imagen';
-      const localUrl = URL.createObjectURL(file);
-
-      mediosLocales[key] = { url: localUrl, tipo, file };
-      actualizarVistaLoop();
-      renderizarLista();
-
-      // Si ese elemento ya estaba al aire, actualizar monitor
-      if ((estadoEnVivo.modo === 'loop' && key === 'loop') ||
-          (estadoEnVivo.modo === 'participante' && String(estadoEnVivo.id) === key)) {
-        aplicarEstadoEnPantalla(estadoEnVivo);
-      }
-
-      // Enviar directo a la PC del tótem si está conectada
-      if (conexionActiva && conexionActiva.open) {
-        enviarArchivoPorTunel(key, file);
-      }
-    }
-
-    async function enviarArchivoPorTunel(key, file) {
       const statusEl = document.getElementById(`status-${key}`);
       if (statusEl) {
-        statusEl.innerText = "⏳ Enviando al tótem...";
+        statusEl.innerText = "⏳ Optimizando y subiendo...";
         statusEl.className = "text-[10px] mt-0.5 text-amber-400";
       }
 
-      const buffer = await file.arrayBuffer();
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = async () => {
+          // Redimensionar manteniendo proporción (máximo 1280px de alto para que pese ~150KB y se vea nítido)
+          const maxAlto = 1280;
+          let width = img.width;
+          let height = img.height;
+          if (height > maxAlto) {
+            width = Math.round((width * maxAlto) / height);
+            height = maxAlto;
+          }
+
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          const base64Comprimido = canvas.toDataURL('image/jpeg', 0.82);
+
+          try {
+            await db.collection('totem_fotos_2026').doc(key).set({
+              url: base64Comprimido,
+              tipo: 'imagen',
+              actualizado: Date.now()
+            });
+          } catch (err) {
+            alert("No se pudo guardar en Firestore. Verifica que Firestore esté en Modo de Prueba: " + err.message);
+          }
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // Carga de video MP4 local directo en la PC del Tótem (0 latencia, sin límite de peso)
+    function cargarVideoLocalTotem(key, file) {
+      if (!file) return;
+      const url = URL.createObjectURL(file);
       const tipo = file.type.startsWith('video') ? 'video' : 'imagen';
-
-      conexionActiva.send({
-        accion: 'ARCHIVO',
-        id: key,
-        tipo,
-        mime: file.type,
-        buffer
-      });
-
-      if (statusEl) {
-        statusEl.innerText = "✓ Listo en Tótem";
-        statusEl.className = "text-[10px] mt-0.5 text-emerald-400";
-      }
+      videosLocalesTotem[key] = { url, tipo };
+      aplicarEstadoEnPantalla(estadoEnVivo);
     }
 
     // =========================================================================
-    // CONTROLES EN VIVO (SWITCHER)
+    // SWITCHER EN VIVO
     // =========================================================================
     function emitirEstado(nuevoEstado) {
       estadoEnVivo = nuevoEstado;
       aplicarEstadoEnPantalla(nuevoEstado);
-      if (conexionActiva && conexionActiva.open) {
-        conexionActiva.send({ accion: 'ESTADO', estado: nuevoEstado });
-      }
+      db.collection('totem_estado_2026').doc('vivo').set(nuevoEstado);
     }
 
     function activarLoop() { emitirEstado({ modo: 'loop', id: null }); }
     function activarParticipante(id) { emitirEstado({ modo: 'participante', id: Number(id) }); }
     function activarBlackout() { emitirEstado({ modo: 'blackout', id: null }); }
 
-    // =========================================================================
-    // RENDERIZADO EN PANTALLA DEL TÓTEM Y MONITOR DE RETORNO
-    // =========================================================================
     let capaActiva = 'A';
 
     function aplicarEstadoEnPantalla(estado) {
@@ -435,15 +342,19 @@
       }
 
       if (estado.modo === 'loop') {
-        ponerMediaEnContenedor(mediosLocales['loop']);
+        // Prioriza el video MP4 cargado localmente en el tótem; si no hay, usa la imagen de la nube
+        const mediaLoop = videosLocalesTotem['loop'] || mediosNube['loop'];
+        ponerMediaEnContenedor(mediaLoop);
         if (overlay) overlay.classList.add('opacity-0', 'translate-y-6');
         if (prevOverlay) prevOverlay.classList.add('hidden');
         return;
       }
 
       if (estado.modo === 'participante') {
+        const key = String(estado.id);
         const p = PARTICIPANTES_BASE.find(x => x.id === Number(estado.id));
-        ponerMediaEnContenedor(mediosLocales[String(estado.id)]);
+        const mediaP = videosLocalesTotem[key] || mediosNube[key];
+        ponerMediaEnContenedor(mediaP);
 
         if (p && overlay) {
           document.getElementById('totemCategoria').innerText = `CATEGORÍA ${p.categoria}`;
@@ -485,14 +396,12 @@
     }
 
     function actualizarVistaLoop() {
-      const m = mediosLocales['loop'];
+      const m = mediosNube['loop'];
       const thumb = document.getElementById('thumbLoop');
       const lbl = document.getElementById('labelSubirLoop');
       if (m && thumb) {
-        thumb.innerHTML = m.tipo === 'video'
-          ? `<video src="${m.url}" muted class="w-full h-full object-cover"></video>`
-          : `<img src="${m.url}" class="w-full h-full object-cover" />`;
-        lbl.innerText = "🔄 Cambiar Loop";
+        thumb.innerHTML = `<img src="${m.url}" class="w-full h-full object-cover" />`;
+        lbl.innerText = "🔄 Cambiar Imagen";
       }
     }
 
@@ -517,7 +426,7 @@
       if (!contenedor) return;
 
       let totalListos = 0;
-      PARTICIPANTES_BASE.forEach(p => { if (mediosLocales[String(p.id)]) totalListos++; });
+      PARTICIPANTES_BASE.forEach(p => { if (mediosNube[String(p.id)]) totalListos++; });
       document.getElementById('contadorCargados').innerText = `${totalListos} / 31 listos`;
 
       const filtrados = PARTICIPANTES_BASE.filter(p =>
@@ -527,13 +436,11 @@
       );
 
       contenedor.innerHTML = filtrados.map(p => {
-        const media = mediosLocales[String(p.id)];
+        const media = mediosNube[String(p.id)];
         const esAlAire = estadoEnVivo.modo === 'participante' && Number(estadoEnVivo.id) === p.id;
 
         const thumbHtml = media
-          ? (media.tipo === 'video'
-              ? `<video src="${media.url}" muted class="w-full h-full object-cover"></video>`
-              : `<img src="${media.url}" class="w-full h-full object-cover" />`)
+          ? `<img src="${media.url}" class="w-full h-full object-cover" />`
           : `<span class="text-[10px] font-bold text-zinc-600">#${p.id}</span>`;
 
         return `
@@ -551,15 +458,15 @@
                   </div>
                   <h3 class="text-xs sm:text-sm font-bold text-white truncate mt-1">${p.nombre}</h3>
                   <p id="status-${p.id}" class="text-[10px] mt-0.5 ${media ? 'text-emerald-400' : 'text-zinc-500'}">
-                    ${media ? `✓ Cargado (${media.tipo})` : 'Pendiente por cargar foto/video'}
+                    ${media ? '✓ Foto lista en la nube' : 'Pendiente por subir foto'}
                   </p>
                 </div>
               </div>
 
               <div class="flex items-center gap-2 shrink-0">
                 <label class="cursor-pointer px-3 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-[11px] font-medium text-zinc-200 transition">
-                  <span>${media ? 'Cambiar' : 'Cargar'}</span>
-                  <input type="file" accept="image/*,video/*" class="hidden" onchange="procesarYEnviarArchivo(${p.id}, this.files[0])">
+                  <span>${media ? 'Cambiar' : 'Subir Foto'}</span>
+                  <input type="file" accept="image/*" class="hidden" onchange="subirImagenComprimida(${p.id}, this.files[0])">
                 </label>
 
                 <button onclick="activarParticipante(${p.id})" class="px-3.5 py-2 rounded-xl text-[11px] font-bold transition cursor-pointer ${esAlAire ? 'bg-red-600 text-white animate-pulse' : 'bg-blue-600 hover:bg-blue-500 text-white'}">
