@@ -440,7 +440,7 @@
             </select>
           </div>
 
-          <!-- PIN + Interruptores -->
+          <!-- PIN -->
           <div class="lg:col-span-2 space-y-1">
             <label for="inputStreamAdminPin" class="text-[10px] uppercase font-bold text-slate-300 block">
               PIN Backend *
@@ -1122,7 +1122,11 @@
   </div>
 
   <script>
+    // 1. Backend original de VOTACIONES (no se altera)
     const ENDPOINT_GOOGLE_SHEETS = "https://script.google.com/macros/s/AKfycbzH1tSBBdcN6gI5s7wQwAyifLzglIuMVjwbqBAQB5gVrfvIXZVTiMah9Dz01CQt4Ov1aA/exec";
+
+    // 2. Backend independiente de STREAMING YOUTUBE LIVE
+    const ENDPOINT_STREAM_CONFIG = "https://script.google.com/macros/s/AKfycbzR-IPRu-qFuGHV8qVQjr2bOJ9NjGCWEcrCiOm3msHbZhPJHPKF8HY0neOnt8M4QiTw/exec";
 
     const ESCALETA_INFANTIL = [
       { key: "inf_1", voteId: 13, orden: 1, nombre: "Gabriela Galilea Andrade Gutiérrez", estado: "Zulia", categoria: "Infantil", tema: "Los 2 Gavilanes", autor: "Letra y Música de: Adelis Freitez", genero: "Merengue Larense", shortId: "uqfYsz2oKeA" },
@@ -1243,7 +1247,7 @@
       if (savedPin) document.getElementById("inputStreamAdminPin").value = savedPin;
 
       try {
-        const res = await fetch(ENDPOINT_GOOGLE_SHEETS, { cache: "no-store" });
+        const res = await fetch(ENDPOINT_STREAM_CONFIG, { cache: "no-store" });
         const data = await res.json();
         if (data.status === "success" && data.streamConfig) {
           const c = data.streamConfig;
@@ -1292,7 +1296,7 @@
         : "Semifinales Nacionales · Señal Oficial";
 
       try {
-        const res = await fetch(ENDPOINT_GOOGLE_SHEETS, {
+        const res = await fetch(ENDPOINT_STREAM_CONFIG, {
           method: "POST",
           body: JSON.stringify({
             action: "updateStreamConfig",
