@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Consola de Overlays Alpha — Festival de la Voz Niño Simón 2026</title>
+  <title>Consola Broadcast 16:9 — Festival de la Voz Niño Simón 2026</title>
   <link rel="icon" type="image/png" href="./logo_color.png" />
 
   <script src="https://cdn.tailwindcss.com"></script>
@@ -42,72 +42,77 @@
       -webkit-font-smoothing: antialiased;
     }
 
+    /* LIENZO MAESTRO 16:9 (1920x1080) CON ESCALADO PROPORCIONAL AUTOMÁTICO */
+    #broadcastCanvas16x9 {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 1920px;
+      height: 1080px;
+      transform: translate(-50%, -50%) scale(1);
+      transform-origin: center center;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
     /* =====================================================================
-       MOTOR DE ANIMACIONES BROADCAST (ENTRADA IN / SALIDA OUT)
+       MOTOR DE ANIMACIONES BROADCAST 16:9 (ENTRADA IN / SALIDA OUT)
        ===================================================================== */
-    /* 1. Animación desde abajo (Lower Thirds y Barra FOX Elecciones) */
+    /* 1. Entrada/Salida desde abajo (Barra FOX Elecciones y Cintillo) */
     .anim-bottom-layer {
       opacity: 0;
-      transform: translateY(55px) scale(0.98);
-      pointer-events: none;
+      transform: translateY(70px);
       transition: transform 0.45s cubic-bezier(0.55, 0, 1, 0.45), opacity 0.35s ease;
     }
     .anim-bottom-layer.is-on-air {
       opacity: 1;
-      transform: translateY(0) scale(1);
-      pointer-events: auto;
+      transform: translateY(0);
       transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s ease;
     }
 
-    /* 2. Animación desde la derecha (Torre Top 5 Lateral) */
+    /* 2. Entrada/Salida desde la derecha (Torre Top 5 Lateral 16:9) */
     .anim-right-layer {
       opacity: 0;
-      transform: translateX(65px);
-      pointer-events: none;
+      transform: translateX(85px);
       transition: transform 0.42s cubic-bezier(0.55, 0, 1, 0.45), opacity 0.32s ease;
     }
     .anim-right-layer.is-on-air {
       opacity: 1;
       transform: translateX(0);
-      pointer-events: auto;
       transition: transform 0.62s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.42s ease;
     }
 
-    /* 3. Animación desde la izquierda (Pleca de Participante / Jurado) */
+    /* 3. Barrido lateral izquierdo (Pleca Lower-Third 16:9) */
     .anim-left-layer {
       opacity: 0;
-      transform: translateX(-75px);
+      transform: translateX(-90px);
       clip-path: inset(0 100% 0 0);
-      pointer-events: none;
       transition: transform 0.42s cubic-bezier(0.55, 0, 1, 0.45), clip-path 0.42s cubic-bezier(0.55, 0, 1, 0.45), opacity 0.3s ease;
     }
     .anim-left-layer.is-on-air {
       opacity: 1;
       transform: translateX(0);
       clip-path: inset(0 0% 0 0);
-      pointer-events: auto;
       transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1), clip-path 0.65s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
     }
 
-    /* 4. Animación Superior (Mosca EN VIVO / Logo) */
+    /* 4. Entrada/Salida Superior (Mosca EN VIVO + Logo) */
     .anim-top-layer {
       opacity: 0;
-      transform: translateY(-30px);
-      pointer-events: none;
+      transform: translateY(-45px);
       transition: transform 0.4s ease-in, opacity 0.3s ease;
     }
     .anim-top-layer.is-on-air {
       opacity: 1;
       transform: translateY(0);
-      pointer-events: auto;
       transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
     }
 
-    /* Estilos Broadcast FOX */
+    /* Chasis Broadcast FOX */
     .fox-shell {
       background: linear-gradient(180deg, #0a1936 0%, #050d1f 100%);
-      border: 1.5px solid rgba(255, 255, 255, 0.22);
-      box-shadow: 0 22px 55px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+      border: 2px solid rgba(255, 255, 255, 0.22);
+      box-shadow: 0 26px 65px rgba(0, 0, 0, 0.88), inset 0 1px 0 rgba(255, 255, 255, 0.18);
     }
     .fox-bar-smooth {
       transition: width 0.85s cubic-bezier(0.22, 1, 0.36, 1);
@@ -128,28 +133,25 @@
           <img src="./logo_color.png" alt="Logo" class="h-9 w-auto object-contain" />
           <div>
             <span class="text-[10px] font-bold uppercase tracking-widest text-[#f5b942] block">
-              Realización en Vivo &middot; YoloBox Extreme
+              Realización 16:9 &middot; YoloBox Extreme
             </span>
             <h1 class="font-fox text-lg sm:text-xl font-black uppercase text-white leading-none">
-              Disparador de Overlays Alpha (IN / OUT)
+              Disparador de Overlays Alpha (1920&times;1080)
             </h1>
           </div>
         </div>
 
         <div class="flex flex-wrap items-center gap-2.5">
-          <!-- Estado de Sincronización -->
           <div id="statusSyncBadge" class="px-3 py-1.5 rounded-lg bg-emerald-500/15 border border-emerald-500/35 text-emerald-300 text-xs font-bold flex items-center gap-2">
             <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
             <span id="statusSyncText">Canal Activo</span>
           </div>
 
-          <!-- Copiar URL para YoloBox -->
           <button onclick="copiarUrlSalidaYoloBox()" class="px-4 py-2 rounded-xl bg-[#f5b942] hover:bg-[#fbbf24] text-black font-bold text-xs flex items-center gap-2 shadow-lg shadow-amber-400/20 cursor-pointer transition">
             <i class="fa-solid fa-copy"></i>
-            <span>Copiar URL Alpha para YoloBox</span>
+            <span>Copiar URL 16:9 para YoloBox</span>
           </button>
 
-          <!-- Abrir Ventana de Prueba -->
           <button onclick="abrirVentanaSalida()" class="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-xs font-bold text-white flex items-center gap-1.5 cursor-pointer transition">
             <i class="fa-solid fa-up-right-from-square text-[#f5b942]"></i>
             <span>Abrir Salida</span>
@@ -161,11 +163,11 @@
     <!-- Panel Principal -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 pt-6 space-y-6">
 
-      <!-- Código de Sala / Canal de Sincronización -->
+      <!-- Canal de Sincronización y Clear All -->
       <div class="bg-[#0a101f] border border-white/10 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div class="text-xs text-slate-300">
-          <strong class="text-white"><i class="fa-solid fa-tower-broadcast text-[#f5b942] mr-1.5"></i> Canal de Producción:</strong>
-          Usa el mismo código en la URL de tu YoloBox Extreme para que los clics entren y salgan al instante.
+          <strong class="text-white"><i class="fa-solid fa-tower-broadcast text-[#f5b942] mr-1.5"></i> Canal de Producción 16:9:</strong>
+          Todos los gráficos están calibrados en resolución nativa <strong>1920&times;1080</strong> con zonas seguras de televisión.
         </div>
         <div class="flex items-center gap-2">
           <input
@@ -181,16 +183,16 @@
         </div>
       </div>
 
-      <!-- BOTONERA DE DISPARO IN / OUT (STREAM DECK) -->
+      <!-- BOTONERA DE DISPARO IN / OUT -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 
-        <!-- BOTÓN 1: TOP 5 ESTILO ELECCIONES FOX (HORIZONTAL INFERIOR) -->
+        <!-- BOTÓN 1: TOP 5 ELECCIONES FOX (PANORÁMICO 16:9 INFERIOR) -->
         <div class="bg-[#0a101f] border border-white/10 rounded-2xl p-5 flex flex-col justify-between gap-4">
           <div class="flex items-start justify-between gap-2">
             <div>
-              <span class="text-[10px] font-bold uppercase tracking-widest text-[#f5b942]">Gráfico Electoral</span>
+              <span class="text-[10px] font-bold uppercase tracking-widest text-[#f5b942]">Gráfico Widescreen 16:9</span>
               <h2 class="font-fox text-xl font-black uppercase text-white">Top 5 Elecciones FOX</h2>
-              <p class="text-xs text-slate-400 mt-0.5">Franja horizontal inferior con foto, porcentaje y votos en vivo.</p>
+              <p class="text-xs text-slate-400 mt-0.5">Franja horizontal inferior de 5 columnas con foto, porcentaje y votos en vivo.</p>
             </div>
             <span id="badge_foxElections" class="px-2.5 py-1 rounded text-[10px] font-extrabold uppercase bg-white/5 text-slate-400">OFF AIR</span>
           </div>
@@ -201,13 +203,13 @@
           </button>
         </div>
 
-        <!-- BOTÓN 2: TORRE TOP 5 LATERAL DERECHA -->
+        <!-- BOTÓN 2: TORRE TOP 5 LATERAL (TERCIO DERECHO 16:9) -->
         <div class="bg-[#0a101f] border border-white/10 rounded-2xl p-5 flex flex-col justify-between gap-4">
           <div class="flex items-start justify-between gap-2">
             <div>
-              <span class="text-[10px] font-bold uppercase tracking-widest text-sky-400">Gráfico Vertical</span>
+              <span class="text-[10px] font-bold uppercase tracking-widest text-sky-400">Tercio Derecho 16:9</span>
               <h2 class="font-fox text-xl font-black uppercase text-white">Torre Top 5 Lateral</h2>
-              <p class="text-xs text-slate-400 mt-0.5">Columna derecha compacta ideal para planos abiertos de tarima.</p>
+              <p class="text-xs text-slate-400 mt-0.5">Deja libre el centro y la izquierda del cuadro 16:9 para el cantante en tarima.</p>
             </div>
             <span id="badge_foxTower" class="px-2.5 py-1 rounded text-[10px] font-extrabold uppercase bg-white/5 text-slate-400">OFF AIR</span>
           </div>
@@ -222,9 +224,9 @@
         <div class="bg-[#0a101f] border border-white/10 rounded-2xl p-5 flex flex-col justify-between gap-4">
           <div class="flex items-start justify-between gap-2">
             <div>
-              <span class="text-[10px] font-bold uppercase tracking-widest text-rose-400">Identidad Permanente</span>
+              <span class="text-[10px] font-bold uppercase tracking-widest text-rose-400">Esquina Superior 16:9</span>
               <h2 class="font-fox text-xl font-black uppercase text-white">Bug "EN VIVO" + Logo</h2>
-              <p class="text-xs text-slate-400 mt-0.5">Esquina superior izquierda con logo_color.png y señal en directo.</p>
+              <p class="text-xs text-slate-400 mt-0.5">Identificador superior izquierdo con logo_color.png dentro de zona segura.</p>
             </div>
             <span id="badge_bugLive" class="px-2.5 py-1 rounded text-[10px] font-extrabold uppercase bg-white/5 text-slate-400">OFF AIR</span>
           </div>
@@ -235,17 +237,16 @@
           </button>
         </div>
 
-        <!-- BOTÓN 4: PLECA DE PARTICIPANTE EN ESCENA (LOWER-THIRD) -->
+        <!-- BOTÓN 4: PLECA DE PARTICIPANTE EN ESCENA (LOWER-THIRD 16:9) -->
         <div class="md:col-span-2 bg-[#0a101f] border border-white/10 rounded-2xl p-5 space-y-4">
           <div class="flex items-start justify-between gap-2">
             <div>
-              <span class="text-[10px] font-bold uppercase tracking-widest text-[#f5b942]">Tercios Inferiores (Lower-Third)</span>
+              <span class="text-[10px] font-bold uppercase tracking-widest text-[#f5b942]">Lower-Third 16:9</span>
               <h2 class="font-fox text-xl font-black uppercase text-white">Pleca de Participante en Escena</h2>
             </div>
             <span id="badge_lowerArtist" class="px-2.5 py-1 rounded text-[10px] font-extrabold uppercase bg-white/5 text-slate-400">OFF AIR</span>
           </div>
 
-          <!-- Selector rápido de los 31 participantes -->
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
             <select id="selectRapidoParticipante" onchange="cargarDatosParticipante(this.value)" class="bg-black/60 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#f5b942]">
               <option value="">-- Elegir de los 31 participantes --</option>
@@ -263,12 +264,12 @@
           </button>
         </div>
 
-        <!-- BOTÓN 5: CINTILLO DE AVISO INFERIOR (TICKER) -->
+        <!-- BOTÓN 5: CINTILLO DE AVISO INFERIOR -->
         <div class="bg-[#0a101f] border border-white/10 rounded-2xl p-5 flex flex-col justify-between gap-4">
           <div class="space-y-2.5">
             <div class="flex items-start justify-between gap-2">
               <div>
-                <span class="text-[10px] font-bold uppercase tracking-widest text-amber-400">Cintillo Informativo</span>
+                <span class="text-[10px] font-bold uppercase tracking-widest text-amber-400">Cintillo Widescreen</span>
                 <h2 class="font-fox text-xl font-black uppercase text-white">Banner Inferior</h2>
               </div>
               <span id="badge_tickerBanner" class="px-2.5 py-1 rounded text-[10px] font-extrabold uppercase bg-white/5 text-slate-400">OFF AIR</span>
@@ -291,16 +292,24 @@
 
       </div>
 
-      <!-- VISTA PREVIA EN TIEMPO REAL DENTRO DEL PANEL -->
+      <!-- MONITOR DE PREVISUALIZACIÓN 16:9 REAL -->
       <div class="bg-[#0a101f] border border-white/10 rounded-2xl p-4 space-y-3">
-        <div class="flex items-center justify-between">
+        <div class="flex flex-wrap items-center justify-between gap-2">
           <span class="text-xs font-bold uppercase tracking-wider text-slate-300">
-            <i class="fa-solid fa-tv text-[#f5b942] mr-1.5"></i> Monitor de Salida Alpha (Simulación sobre Cámara)
+            <i class="fa-solid fa-tv text-[#f5b942] mr-1.5"></i> Monitor de Salida 16:9 (1920&times;1080)
           </span>
-          <span class="text-[11px] text-slate-400">El fondo cuadriculado representa transparencia real en YoloBox</span>
+          <button type="button" onclick="toggleSafeGuides()" id="btnSafeGuides" class="px-3 py-1 rounded-lg bg-white/10 hover:bg-white/15 text-[11px] font-semibold text-amber-300 cursor-pointer">
+            <i class="fa-solid fa-border-all mr-1"></i> Guías Safe-Area 16:9: ON
+          </button>
         </div>
 
-        <div class="relative w-full aspect-video max-h-[460px] mx-auto rounded-xl overflow-hidden border border-white/15 bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:16px_16px] bg-[#070b14]">
+        <div class="relative w-full aspect-video rounded-xl overflow-hidden border border-white/15 bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:18px_18px] bg-[#070b14]">
+          <!-- Guías visuales de Zona Segura de TV (Action Safe 93% y Title Safe 90%) -->
+          <div id="safeGuidesOverlay" class="pointer-events-none absolute inset-0 z-20">
+            <div class="absolute inset-[3.5%] border border-dashed border-cyan-400/35"></div>
+            <div class="absolute inset-[5%] border border-dashed border-amber-400/40"></div>
+          </div>
+
           <iframe id="iframePreviewMonitor" src="" class="w-full h-full border-0 pointer-events-none"></iframe>
         </div>
       </div>
@@ -309,110 +318,116 @@
   </div>
 
   <!-- =========================================================================
-       INTERFAZ 2: ESCENARIO DE SALIDA ALPHA (TRANSPARENTE PARA YOLOBOX EXTREME)
+       INTERFAZ 2: ESCENARIO DE SALIDA ALPHA 16:9 (1920x1080 PARA YOLOBOX EXTREME)
        ========================================================================= -->
   <div id="alphaStage" class="hidden fixed inset-0 pointer-events-none overflow-hidden">
+    <div id="broadcastCanvas16x9">
 
-    <!-- CAPA A: BUG SUPERIOR IZQUIERDO (EN VIVO + LOGO) -->
-    <div id="layer_bugLive" class="anim-top-layer fixed top-7 left-8 z-30">
-      <div class="inline-flex items-center gap-3 px-3.5 py-2 rounded-md bg-[#060d1f]/92 border border-white/20 shadow-2xl">
-        <img src="./logo_color.png" alt="Logo" class="h-8 w-auto object-contain" />
-        <div class="h-6 w-[1px] bg-white/15"></div>
-        <div>
-          <div class="inline-flex items-center gap-1.5 bg-[#e11d48] px-2 py-0.5 rounded-sm">
-            <span class="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span>
-            <span class="font-fox text-[11px] font-black uppercase tracking-widest text-white leading-none">EN VIVO</span>
-          </div>
-          <span class="block font-fox text-xs font-bold uppercase tracking-wider text-slate-200 mt-0.5">
-            Teatro Juares &middot; 2026
-          </span>
-        </div>
-      </div>
-    </div>
-
-    <!-- CAPA B: PLECA DE PARTICIPANTE EN ESCENA (LOWER-THIRD IZQUIERDO) -->
-    <div id="layer_lowerArtist" class="anim-left-layer fixed bottom-12 left-10 z-30 max-w-xl">
-      <div class="fox-shell rounded-md overflow-hidden flex items-stretch">
-        <div class="w-2 bg-gradient-to-b from-[#f5b942] to-[#d97706]"></div>
-        <div class="px-4 py-3 bg-[#08152e] flex items-center justify-center border-r border-white/15">
-          <img src="./logo_color.png" alt="Logo" class="h-11 w-auto object-contain" />
-        </div>
-        <div class="px-5 py-2.5 flex flex-col justify-center">
-          <div class="flex items-center gap-2">
-            <span id="outArtistState" class="px-2 py-0.5 rounded-sm bg-[#e11d48] font-fox text-xs font-black uppercase tracking-widest text-white">
-              MIRANDA
+      <!-- CAPA A: BUG SUPERIOR IZQUIERDO (EN VIVO + LOGO) — ZONA SEGURA 16:9 -->
+      <div id="layer_bugLive" class="anim-top-layer absolute top-[48px] left-[64px] z-30">
+        <div class="inline-flex items-center gap-4 px-5 py-3 rounded-md bg-[#060d1f]/94 border-2 border-white/20 shadow-2xl">
+          <img src="./logo_color.png" alt="Logo" class="h-12 w-auto object-contain" />
+          <div class="h-9 w-[1px] bg-white/20"></div>
+          <div>
+            <div class="inline-flex items-center gap-2 bg-[#e11d48] px-2.5 py-0.5 rounded-sm">
+              <span class="w-2 h-2 rounded-full bg-white animate-ping"></span>
+              <span class="font-fox text-sm font-black uppercase tracking-widest text-white leading-none">EN VIVO</span>
+            </div>
+            <span class="block font-fox text-base font-bold uppercase tracking-wider text-slate-200 mt-1">
+              Teatro Juares &middot; 2026
             </span>
-            <span id="outArtistSong" class="font-fox text-xs font-bold uppercase tracking-wider text-[#f5b942]">
-              GALA FINAL 2026
-            </span>
-          </div>
-          <div id="outArtistName" class="font-fox text-2xl sm:text-3xl font-black uppercase text-white leading-none mt-1">
-            GABRIEL RAÚL SOLÓRZANO
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- CAPA C: TORRE TOP 5 LATERAL DERECHA -->
-    <div id="layer_foxTower" class="anim-right-layer fixed top-8 right-8 w-[390px] z-20">
-      <div class="fox-shell rounded-md overflow-hidden">
-        <div class="px-4 py-2.5 bg-gradient-to-r from-[#09152e] to-[#1a1208] border-b-2 border-[#f5b942] flex items-center justify-between">
-          <div class="flex items-center gap-2.5">
-            <img src="./logo_color.png" alt="Logo" class="h-7 w-auto object-contain" />
-            <div>
-              <span class="font-fox text-[10px] font-extrabold uppercase tracking-widest text-[#f5b942] block leading-none">
-                Votación en Vivo
+      <!-- CAPA B: PLECA DE PARTICIPANTE EN ESCENA (LOWER-THIRD 16:9 IZQUIERDO) -->
+      <div id="layer_lowerArtist" class="anim-left-layer absolute bottom-[64px] left-[64px] z-30 max-w-[920px]">
+        <div class="fox-shell rounded-md overflow-hidden flex items-stretch">
+          <div class="w-3 bg-gradient-to-b from-[#f5b942] to-[#d97706]"></div>
+          <div class="px-6 py-4 bg-[#08152e] flex items-center justify-center border-r border-white/15">
+            <img src="./logo_color.png" alt="Logo" class="h-16 w-auto object-contain" />
+          </div>
+          <div class="px-7 py-4 flex flex-col justify-center">
+            <div class="flex items-center gap-3">
+              <span id="outArtistState" class="px-3 py-0.5 rounded-sm bg-[#e11d48] font-fox text-base font-black uppercase tracking-widest text-white">
+                MIRANDA
               </span>
-              <span class="font-fox text-lg font-black uppercase text-white leading-none">
-                Top 5 Nacional
+              <span id="outArtistSong" class="font-fox text-base font-bold uppercase tracking-wider text-[#f5b942]">
+                GALA FINAL 2026
               </span>
             </div>
+            <div id="outArtistName" class="font-fox text-4xl font-black uppercase text-white leading-none mt-1.5">
+              GABRIEL RAÚL SOLÓRZANO
+            </div>
           </div>
-          <span id="outTowerTotal" class="font-tnum text-xs font-extrabold text-white bg-white/10 px-2 py-1 rounded">0</span>
         </div>
-        <div id="outTowerRows" class="divide-y divide-white/10"></div>
       </div>
-    </div>
 
-    <!-- CAPA D: TOP 5 ESTILO ELECCIONES FOX (HORIZONTAL INFERIOR) -->
-    <div id="layer_foxElections" class="anim-bottom-layer fixed bottom-6 left-6 right-6 z-20">
-      <div class="max-w-[1820px] mx-auto fox-shell rounded-md overflow-hidden">
-        <div class="h-1 w-full bg-gradient-to-r from-[#e11d48] via-[#f5b942] to-[#2563eb]"></div>
-        <div class="flex flex-col lg:flex-row items-stretch">
-          <div class="px-4 py-3 lg:w-[240px] shrink-0 bg-gradient-to-br from-[#0d234a] to-[#061126] border-r-2 border-[#f5b942] flex items-center lg:items-start lg:flex-col justify-between gap-2">
-            <img src="./logo_color.png" alt="Logo" class="h-10 w-auto object-contain" />
-            <div>
-              <div class="inline-flex items-center gap-1.5 bg-[#e11d48] px-2 py-0.5 rounded-sm mb-1">
-                <span class="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span>
-                <span class="font-fox text-[10px] font-black uppercase tracking-widest text-white">EN DIRECTO</span>
+      <!-- CAPA C: TORRE TOP 5 LATERAL DERECHA (TERCIO DERECHO 16:9) -->
+      <div id="layer_foxTower" class="anim-right-layer absolute top-[54px] right-[64px] w-[470px] z-20">
+        <div class="fox-shell rounded-md overflow-hidden">
+          <div class="px-5 py-3.5 bg-gradient-to-r from-[#09152e] to-[#1a1208] border-b-2 border-[#f5b942] flex items-center justify-between">
+            <div class="flex items-center gap-3.5">
+              <img src="./logo_color.png" alt="Logo" class="h-10 w-auto object-contain" />
+              <div>
+                <span class="font-fox text-xs font-extrabold uppercase tracking-widest text-[#f5b942] block leading-none">
+                  Votación en Vivo
+                </span>
+                <span class="font-fox text-2xl font-black uppercase text-white leading-none mt-0.5 block">
+                  Top 5 Nacional
+                </span>
               </div>
-              <div class="font-fox text-xl font-black uppercase text-white leading-none">TOP 5 NACIONAL</div>
             </div>
+            <span id="outTowerTotal" class="font-tnum text-sm font-extrabold text-white bg-white/10 px-2.5 py-1 rounded">0</span>
           </div>
-          <div id="outElectionsGrid" class="flex-1 grid grid-cols-5 divide-x divide-white/15"></div>
-        </div>
-        <div class="px-4 py-1 bg-[#040914] border-t border-white/15 flex items-center justify-between text-[11px]">
-          <span class="font-fox font-bold uppercase tracking-wider text-slate-300">
-            Fundación Nacional del Niño Simón &bull; Teatro Juares
-          </span>
-          <span class="font-tnum font-extrabold text-[#f5b942]" id="outElectionsTotal">0 VOTOS</span>
+          <div id="outTowerRows" class="divide-y divide-white/10"></div>
         </div>
       </div>
-    </div>
 
-    <!-- CAPA E: CINTILLO INFORMATIVO INFERIOR (TICKER) -->
-    <div id="layer_tickerBanner" class="anim-bottom-layer fixed bottom-5 left-10 right-10 z-25">
-      <div class="max-w-5xl mx-auto fox-shell rounded-md overflow-hidden flex items-center">
-        <div class="px-4 py-2.5 bg-[#e11d48] font-fox text-sm font-black uppercase tracking-widest text-white shrink-0 flex items-center gap-2">
-          <img src="./logo_color.png" alt="Logo" class="h-5 w-auto object-contain brightness-0 invert" />
-          <span>EN VIVO</span>
-        </div>
-        <div id="outTickerText" class="px-4 py-2 font-fox text-base sm:text-lg font-extrabold uppercase tracking-wide text-white truncate">
-          VOTA POR TUS 5 FAVORITOS EN DIRECTO · TEATRO JUARES, BARQUISIMETO
+      <!-- CAPA D: TOP 5 ESTILO ELECCIONES FOX (HORIZONTAL PANORÁMICO 16:9 INFERIOR) -->
+      <div id="layer_foxElections" class="anim-bottom-layer absolute bottom-[52px] left-[64px] right-[64px] z-20">
+        <div class="w-full fox-shell rounded-md overflow-hidden">
+          <div class="h-1.5 w-full bg-gradient-to-r from-[#e11d48] via-[#f5b942] to-[#2563eb]"></div>
+          <div class="flex flex-row items-stretch">
+            <!-- Bloque Izquierdo Identidad -->
+            <div class="px-6 py-4 w-[280px] shrink-0 bg-gradient-to-br from-[#0d234a] to-[#061126] border-r-2 border-[#f5b942] flex flex-col justify-between gap-2">
+              <img src="./logo_color.png" alt="Logo" class="h-12 w-auto object-contain self-start" />
+              <div>
+                <div class="inline-flex items-center gap-2 bg-[#e11d48] px-2.5 py-0.5 rounded-sm mb-1.5">
+                  <span class="w-2 h-2 rounded-full bg-white animate-ping"></span>
+                  <span class="font-fox text-xs font-black uppercase tracking-widest text-white">EN DIRECTO</span>
+                </div>
+                <div class="font-fox text-2xl font-black uppercase text-white leading-none">TOP 5 NACIONAL</div>
+                <div class="font-fox text-xs font-bold uppercase tracking-widest text-[#f5b942] mt-1">Votación Popular</div>
+              </div>
+            </div>
+            <!-- 5 Columnas Horizontales -->
+            <div id="outElectionsGrid" class="flex-1 grid grid-cols-5 divide-x divide-white/15"></div>
+          </div>
+          <!-- Cinta Inferior Totalizadora -->
+          <div class="px-6 py-1.5 bg-[#040914] border-t border-white/15 flex items-center justify-between text-sm">
+            <span class="font-fox font-bold uppercase tracking-wider text-slate-300">
+              Fundación Nacional del Niño Simón &bull; Teatro Juares, Barquisimeto
+            </span>
+            <span class="font-tnum font-extrabold text-[#f5b942]" id="outElectionsTotal">0 VOTOS</span>
+          </div>
         </div>
       </div>
-    </div>
 
+      <!-- CAPA E: CINTILLO INFORMATIVO INFERIOR 16:9 (TICKER) -->
+      <div id="layer_tickerBanner" class="anim-bottom-layer absolute bottom-[52px] left-[64px] right-[64px] z-25">
+        <div class="w-full fox-shell rounded-md overflow-hidden flex items-center">
+          <div class="px-6 py-3.5 bg-[#e11d48] font-fox text-lg font-black uppercase tracking-widest text-white shrink-0 flex items-center gap-3">
+            <img src="./logo_color.png" alt="Logo" class="h-7 w-auto object-contain brightness-0 invert" />
+            <span>EN VIVO</span>
+          </div>
+          <div id="outTickerText" class="px-6 py-3 font-fox text-2xl font-extrabold uppercase tracking-wide text-white truncate">
+            VOTA POR TUS 5 FAVORITOS EN DIRECTO · TEATRO JUARES, BARQUISIMETO
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
 
   <script>
@@ -455,8 +470,8 @@
     const params = new URLSearchParams(window.location.search);
     const isOutputMode = params.get("mode") === "output";
     let canalId = (params.get("canal") || "FNNS2026").toUpperCase().replace(/[^A-Z0-9_-]/g, "");
+    let safeGuidesVisible = true;
 
-    // Estado sincronizado de capas en el aire
     let state = {
       bugLive: false,
       foxElections: false,
@@ -471,6 +486,16 @@
 
     const localChannel = new BroadcastChannel("fnns_overlays_sync_" + canalId);
     let mqttClient = null;
+
+    // Escalado proporcional del lienzo 1920x1080 (16:9) a cualquier resolución de YoloBox o Monitor
+    function ajustarLienzo16x9() {
+      const canvas16x9 = document.getElementById("broadcastCanvas16x9");
+      if (!canvas16x9) return;
+      const vw = window.innerWidth || 1920;
+      const vh = window.innerHeight || 1080;
+      const scale = Math.min(vw / 1920, vh / 1080);
+      canvas16x9.style.transform = `translate(-50%, -50%) scale(${scale})`;
+    }
 
     function conectarSyncTiempoReal() {
       const topic = `fnns/festival2026/overlays/${canalId}`;
@@ -519,7 +544,6 @@
       aplicarEstadoVisual();
     }
 
-    // ================= ACCIONES DE LA MESA DE CONTROL =================
     function toggleLayer(layerKey) {
       state[layerKey] = !state[layerKey];
       emitirCambioEstado();
@@ -532,6 +556,14 @@
       state.lowerArtist = false;
       state.tickerBanner = false;
       emitirCambioEstado();
+    }
+
+    function toggleSafeGuides() {
+      safeGuidesVisible = !safeGuidesVisible;
+      const guides = document.getElementById("safeGuidesOverlay");
+      const btn = document.getElementById("btnSafeGuides");
+      guides.classList.toggle("hidden", !safeGuidesVisible);
+      btn.innerHTML = `<i class="fa-solid fa-border-all mr-1"></i> Guías Safe-Area 16:9: ${safeGuidesVisible ? "ON" : "OFF"}`;
     }
 
     function actualizarTextosEnVivo() {
@@ -558,12 +590,12 @@
     function copiarUrlSalidaYoloBox() {
       const url = obtenerUrlSalida();
       navigator.clipboard.writeText(url).then(() => {
-        alert("URL Alpha copiada al portapapeles:\n\n" + url + "\n\nPégala en YoloBox Extreme → Overlays → Web URL Overlay.");
+        alert("URL Alpha 16:9 copiada:\n\n" + url + "\n\nPégala en YoloBox Extreme → Overlays → Web URL Overlay.");
       });
     }
 
     function abrirVentanaSalida() {
-      window.open(obtenerUrlSalida(), "SalidaAlphaYoloBox", "width=1280,height=720");
+      window.open(obtenerUrlSalida(), "SalidaAlphaYoloBox16x9", "width=1280,height=720");
     }
 
     function cambiarCanalProduccion(nuevo) {
@@ -571,7 +603,6 @@
       window.location.href = `${window.location.href.split("?")[0]}?canal=${limpio}`;
     }
 
-    // ================= APLICAR ANIMACIONES IN / OUT =================
     function aplicarEstadoVisual() {
       const capas = ["bugLive", "foxElections", "foxTower", "lowerArtist", "tickerBanner"];
 
@@ -588,7 +619,6 @@
         document.getElementById("outArtistSong").innerText = state.artistSong;
         document.getElementById("outTickerText").innerText = state.tickerText;
       } else {
-        // Actualizar aspecto de botones en el Director
         capas.forEach(key => {
           const activo = Boolean(state[key]);
           const btn = document.getElementById(`btn_${key}`);
@@ -610,15 +640,14 @@
       }
     }
 
-    // ================= DATOS EN VIVO DEL TOP 5 (GOOGLE SHEETS) =================
     function normalizarTexto(str) {
       return String(str || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
     }
 
     function acortarNombre(nombre) {
-      if (nombre.length <= 20) return nombre;
+      if (nombre.length <= 21) return nombre;
       const p = nombre.split(" ");
-      return p.length >= 3 ? `${p[0]} ${p[2]}` : nombre.slice(0, 19) + ".";
+      return p.length >= 3 ? `${p[0]} ${p[2]}` : nombre.slice(0, 20) + ".";
     }
 
     async function actualizarTop5EnSalida() {
@@ -664,22 +693,20 @@
         document.getElementById("outTowerTotal").innerText = `${totalVotos.toLocaleString("es-VE")} VOTOS`;
         document.getElementById("outElectionsTotal").innerText = `${totalVotos.toLocaleString("es-VE")} VOTOS`;
 
-        // Renderizar Torre Derecha
+        // Renderizar Torre Derecha 16:9
         document.getElementById("outTowerRows").innerHTML = top5.map((p, i) => {
           const r = i + 1;
           const w = p.votos > 0 ? Math.max(6, Math.round((p.votos / maxVotos) * 100)) : 0;
           return `
-            <div class="px-3.5 py-2 flex items-center gap-2.5">
-              <span class="w-6 h-6 rounded-sm font-fox text-sm font-black flex items-center justify-center shrink-0 ${r === 1 ? "bg-[#f5b942] text-black" : "bg-white/10 text-white"}">${r}</span>
+            <div class="px-5 py-3 flex items-center gap-3.5">
+              <span class="w-8 h-8 rounded-sm font-fox text-lg font-black flex items-center justify-center shrink-0 ${r === 1 ? "bg-[#f5b942] text-black" : "bg-white/10 text-white"}">${r}</span>
               <div class="min-w-0 flex-1">
                 <div class="flex justify-between items-baseline gap-2">
-                  <span class="font-fox text-sm font-extrabold uppercase text-white truncate">${acortarNombre(p.nombre)}</span>
-                  <span class="font-tnum text-xs font-extrabold ${r === 1 ? "text-[#f5b942]" : "text-white"}">${p.votos.toLocaleString("es-VE")}</span>
+                  <span class="font-fox text-lg font-extrabold uppercase text-white truncate">${acortarNombre(p.nombre)}</span>
+                  <span class="font-tnum text-base font-extrabold ${r === 1 ? "text-[#f5b942]" : "text-white"}">${p.votos.toLocaleString("es-VE")}</span>
                 </div>
-                <div class="flex justify-between text-[9px] uppercase font-bold text-slate-400">
-                  <span>${p.estado}</span>
-                </div>
-                <div class="mt-1 w-full h-1 bg-black/60 rounded-full overflow-hidden">
+                <div class="text-xs uppercase font-bold text-slate-400 tracking-wider">${p.estado}</div>
+                <div class="mt-1.5 w-full h-1.5 bg-black/60 rounded-full overflow-hidden">
                   <div class="h-full ${r === 1 ? "bg-[#f5b942]" : "bg-sky-400"} fox-bar-smooth" style="width: ${w}%"></div>
                 </div>
               </div>
@@ -687,29 +714,29 @@
           `;
         }).join("");
 
-        // Renderizar Barra Horizontal FOX Elecciones
+        // Renderizar Barra Horizontal FOX Elecciones 16:9
         document.getElementById("outElectionsGrid").innerHTML = top5.map((p, i) => {
           const r = i + 1;
           const w = p.votos > 0 ? Math.max(6, Math.round((p.votos / maxVotos) * 100)) : 0;
           const pct = totalVotos > 0 ? ((p.votos / totalVotos) * 100).toFixed(1) : "0.0";
           const thumb = `https://img.youtube.com/vi/${p.shortId}/hqdefault.jpg`;
           return `
-            <div class="px-3 py-2.5 flex flex-col justify-between ${r === 1 ? "bg-[#f5b942]/15" : ""}">
-              <div class="flex items-center justify-between gap-1 mb-1">
-                <div class="flex items-center gap-1.5 min-w-0">
-                  <span class="w-5 h-5 rounded-sm font-fox text-xs font-black flex items-center justify-center shrink-0 ${r === 1 ? "bg-[#f5b942] text-black" : "bg-[#1e3a6e] text-white"}">${r}</span>
-                  <span class="font-fox text-xs font-extrabold uppercase tracking-wider ${r === 1 ? "text-[#f5b942]" : "text-sky-300"} truncate">${p.estado}</span>
+            <div class="px-4 py-3.5 flex flex-col justify-between ${r === 1 ? "bg-[#f5b942]/15" : ""}">
+              <div class="flex items-center justify-between gap-1 mb-1.5">
+                <div class="flex items-center gap-2 min-w-0">
+                  <span class="w-6 h-6 rounded-sm font-fox text-sm font-black flex items-center justify-center shrink-0 ${r === 1 ? "bg-[#f5b942] text-black" : "bg-[#1e3a6e] text-white"}">${r}</span>
+                  <span class="font-fox text-sm font-extrabold uppercase tracking-wider ${r === 1 ? "text-[#f5b942]" : "text-sky-300"} truncate">${p.estado}</span>
                 </div>
-                <span class="font-tnum text-xs font-extrabold text-slate-300">${pct}%</span>
+                <span class="font-tnum text-sm font-extrabold text-slate-200">${pct}%</span>
               </div>
-              <div class="flex items-center gap-2">
-                <img src="${thumb}" alt="${p.nombre}" class="w-10 h-10 rounded-sm object-cover border ${r === 1 ? "border-[#f5b942]" : "border-white/20"} shrink-0" />
+              <div class="flex items-center gap-3">
+                <img src="${thumb}" alt="${p.nombre}" class="w-12 h-12 rounded-sm object-cover border ${r === 1 ? "border-[#f5b942]" : "border-white/20"} shrink-0" />
                 <div class="min-w-0 flex-1">
-                  <div class="font-fox text-base font-black uppercase text-white truncate leading-tight">${acortarNombre(p.nombre)}</div>
-                  <div class="font-tnum text-sm font-extrabold ${r === 1 ? "text-[#f5b942]" : "text-white"}">${p.votos.toLocaleString("es-VE")} <span class="font-fox text-[10px] text-slate-400">VOTOS</span></div>
+                  <div class="font-fox text-xl font-black uppercase text-white truncate leading-tight">${acortarNombre(p.nombre)}</div>
+                  <div class="font-tnum text-lg font-extrabold ${r === 1 ? "text-[#f5b942]" : "text-white"}">${p.votos.toLocaleString("es-VE")} <span class="font-fox text-xs text-slate-400">VOTOS</span></div>
                 </div>
               </div>
-              <div class="mt-1.5 w-full h-1.5 bg-black/70 rounded-sm overflow-hidden">
+              <div class="mt-2 w-full h-2 bg-black/70 rounded-sm overflow-hidden">
                 <div class="h-full ${r === 1 ? "bg-[#f5b942]" : r === 2 ? "bg-[#e11d48]" : "bg-sky-400"} fox-bar-smooth" style="width: ${w}%"></div>
               </div>
             </div>
@@ -719,7 +746,6 @@
       } catch (e) {}
     }
 
-    // ================= INICIALIZACIÓN =================
     document.addEventListener("DOMContentLoaded", () => {
       const saved = localStorage.getItem("fnns_overlay_state_" + canalId);
       if (saved) {
@@ -730,6 +756,8 @@
         document.documentElement.classList.add("mode-output");
         document.body.classList.add("mode-output");
         document.getElementById("alphaStage").classList.remove("hidden");
+        ajustarLienzo16x9();
+        window.addEventListener("resize", ajustarLienzo16x9);
         aplicarEstadoVisual();
         actualizarTop5EnSalida();
         setInterval(actualizarTop5EnSalida, 5000);
@@ -738,7 +766,6 @@
         document.getElementById("directorUI").classList.remove("hidden");
         document.getElementById("inputCanalId").value = canalId;
 
-        // Llenar selector rápido de participantes
         const sel = document.getElementById("selectRapidoParticipante");
         PARTICIPANTES_OFICIALES.forEach(p => {
           const opt = document.createElement("option");
