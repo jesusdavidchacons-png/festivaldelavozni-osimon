@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YoloBox Alpha Overlay — Top 5 Votaciones</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=JetBrains+Mono:wght@600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* TRANSPARENCIA ALPHA OBLIGATORIA PARA YOLOBOX EXTREME */
+    html, body {
+      background: transparent !important;
+      background-color: rgba(0, 0, 0, 0) !important;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .font-fox {
+      font-family: 'Barlow Condensed', sans-serif;
+      letter-spacing: 0.04em;
+    }
+
+    .font-tnum {
+      font-family: 'JetBrains Mono', monospace;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Chasis Broadcast estilo FOX */
+    .fox-chassis {
+      background: linear-gradient(165deg, rgba(6, 10, 18, 0.94) 0%, rgba(11, 17, 30, 0.91) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      box-shadow: 0 22px 48px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    }
+
+    .fox-header-strip {
+      background: linear-gradient(90deg, #090e1a 0%, #131c31 65%, #1e1608 100%);
+      border-bottom: 2px solid #f5b942;
+    }
+
+    /* Animación de entrada broadcast */
+    @keyframes slideInRight {
+      0% { opacity: 0; transform: translateX(36px); }
+      100% { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes slideInUp {
+      0% { opacity: 0; transform: translateY(32px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    .anim-side { animation: slideInRight 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .anim-bottom { animation: slideInUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+    /* Destello dorado cuando entra un voto nuevo */
+    @keyframes voteFlash {
+      0% { background-color: rgba(245, 185, 66, 0.32); }
+      100% { background-color: transparent; }
+    }
+    .row-vote-flash {
+      animation: voteFlash 1.2s ease-out;
+    }
+
+    .bar-smooth {
+      transition: width 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ================= MODO 1: TORRE LATERAL FOX (POR DEFECTO / ?layout=side) ================= -->
+  <div id="layoutSide" class="hidden fixed top-10 right-10 w-[410px] anim-side">
+    <div class="fox-chassis rounded-md overflow-hidden">
+      
+      <!-- Cabecera FOX -->
+      <div class="fox-header-strip px-4 py-2.5 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <img src="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png" alt="Logo" class="h-6 w-auto object-contain" />
+          <div>
+            <div class="flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-[#e11d48] animate-ping"></span>
+              <span class="font-fox text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#f5b942]">
+                Votación en Directo
+              </span>
+            </div>
+            <div class="font-fox text-lg font-black uppercase tracking-wide text-white leading-none">
+              Top 5 Oficial
+            </div>
+          </div>
+        </div>
+
+        <div class="text-right">
+          <span class="block text-[9px] font-bold uppercase tracking-widest text-slate-400">Total Votos</span>
+          <span id="sideTotalVotos" class="font-tnum text-sm font-extrabold text-white">0</span>
+        </div>
+      </div>
+
+      <!-- Filas Top 5 -->
+      <div id="sideRowsContainer" class="divide-y divide-white/[0.08]"></div>
+
+      <!-- Pie Institucional -->
+      <div class="px-4 py-1.5 bg-black/70 border-t border-white/[0.06] flex items-center justify-between text-[9px] font-bold uppercase tracking-[0.16em] text-slate-400">
+        <span>Fundación Nacional del Niño Simón</span>
+        <span class="text-[#f5b942]">Teatro Juares</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODO 2: LOWER-THIRD HORIZONTAL (?layout=bottom) ================= -->
+  <div id="layoutBottom" class="hidden fixed bottom-9 left-10 right-10 anim-bottom">
+    <div class="max-w-[1680px] mx-auto">
+      
+      <!-- Pestaña Superior Izquierda -->
+      <div class="inline-flex items-center gap-3 px-4 py-1.5 bg-[#090e1a]/95 border-t border-x border-[#f5b942]/60 rounded-t-md">
+        <span class="w-2 h-2 rounded-full bg-[#e11d48] animate-ping"></span>
+        <span class="font-fox text-xs font-black uppercase tracking-[0.16em] text-[#f5b942]">
+          Top 5 Votación Popular en Directo
+        </span>
+        <span class="text-white/25">|</span>
+        <span class="font-tnum text-xs font-bold text-white" id="bottomTotalVotos">0 VOTOS</span>
+      </div>
+
+      <!-- Franja de 5 Columnas -->
+      <div id="bottomColsContainer" class="fox-chassis rounded-b-md rounded-tr-md grid grid-cols-5 divide-x divide-white/10 overflow-hidden border-t-2 border-t-[#f5b942]"></div>
+    </div>
+  </div>
+
+  <script>
+    const ENDPOINT_GOOGLE_SHEETS = "https://script.google.com/macros/s/AKfycbzH1tSBBdcN6gI5s7wQwAyifLzglIuMVjwbqBAQB5gVrfvIXZVTiMah9Dz01CQt4Ov1aA/exec";
+
+    const PARTICIPANTES_BASE = [
+      { id: 1, nombre: "Tyler Colina", estado: "Mérida" },
+      { id: 2, nombre: "Thalía Meléndez", estado: "Bolívar" },
+      { id: 3, nombre: "Ángel Sánchez", estado: "Carabobo" },
+      { id: 4, nombre: "Albenis Pérez", estado: "Carabobo" },
+      { id: 5, nombre: "Aimé García", estado: "Barinas" },
+      { id: 6, nombre: "Antonio Urbina", estado: "Mérida" },
+      { id: 7, nombre: "Carlos Guaramata", estado: "Anzoátegui" },
+      { id: 8, nombre: "Christal Díaz", estado: "Miranda" },
+      { id: 9, nombre: "Daniela Fontana", estado: "Trujillo" },
+      { id: 10, nombre: "Enma Frías", estado: "Lara" },
+      { id: 11, nombre: "Esthela Vázquez", estado: "Cojedes" },
+      { id: 12, nombre: "Fraivelis Parra", estado: "Lara" },
+      { id: 13, nombre: "Gabriela Andrade", estado: "Zulia" },
+      { id: 14, nombre: "Gabriela González", estado: "Amazonas" },
+      { id: 15, nombre: "Isabella López", estado: "Distrito Capital" },
+      { id: 16, nombre: "Iviangely Figueroa", estado: "Nueva Esparta" },
+      { id: 17, nombre: "Jaarol Zambrano", estado: "Delta Amacuro" },
+      { id: 18, nombre: "Jeremías Torres", estado: "Anzoátegui" },
+      { id: 19, nombre: "Gabriel Raúl Solórzano Guevara", estado: "Miranda" },
+      { id: 20, nombre: "José Luces", estado: "Sucre" },
+      { id: 21, nombre: "Katerine Moreno", estado: "Bolívar" },
+      { id: 22, nombre: "Marianolys Velázquez", estado: "Delta Amacuro" },
+      { id: 23, nombre: "Michell Meza", estado: "Táchira" },
+      { id: 24, nombre: "Natalia Moreno", estado: "Zulia" },
+      { id: 25, nombre: "Ronaikel García", estado: "Distrito Capital" },
+      { id: 26, nombre: "Roshelen Rivas", estado: "Nueva Esparta" },
+      { id: 27, nombre: "Samuel Montilla", estado: "Barinas" },
+      { id: 28, nombre: "Santiago Uriño", estado: "Trujillo" },
+      { id: 29, nombre: "Sebastián Sucre", estado: "Sucre" },
+      { id: 30, nombre: "Silvia de la Chiquinquirá", estado: "Amazonas" },
+      { id: 31, nombre: "Victoria Barrera", estado: "Táchira" }
+    ];
+
+    const params = new URLSearchParams(window.location.search);
+    const layoutMode = (params.get("layout") || "side").toLowerCase();
+    const alignSide = (params.get("align") || "right").toLowerCase();
+
+    let votosPrevios = {};
+
+    function configurarLayout() {
+      const sideEl = document.getElementById("layoutSide");
+      const bottomEl = document.getElementById("layoutBottom");
+
+      if (layoutMode === "bottom") {
+        bottomEl.classList.remove("hidden");
+      } else {
+        sideEl.classList.remove("hidden");
+        if (alignSide === "left") {
+          sideEl.classList.remove("right-10");
+          sideEl.classList.add("left-10");
+        }
+      }
+    }
+
+    function acortarNombreBroadcast(nombre) {
+      // Mantiene nombres largos nítidos en barra broadcast sin desbordar
+      if (nombre.length <= 24) return nombre;
+      const partes = nombre.split(" ");
+      if (partes.length >= 3) return `${partes[0]} ${partes[2]}`;
+      return nombre.slice(0, 23) + ".";
+    }
+
+    async function actualizarTop5() {
+      try {
+        const res = await fetch(ENDPOINT_GOOGLE_SHEETS);
+        const data = await res.json();
+        if (data.status !== "success") return;
+
+        const listaVotantes = data.votantes || [];
+        const votosGabriel = listaVotantes.filter(v =>
+          (v.votosResumen || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes("gabriel raul solorzano")
+        ).length;
+
+        const mapaVotos = {};
+        (data.resultados || []).forEach(r => {
+          const idNum = Number(r.id);
+          const esAntiguoLara = idNum === 19 || (
+            (r.nombre || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes("jose luces") &&
+            (r.estado || "").toLowerCase().trim() === "lara"
+          );
+          mapaVotos[idNum] = esAntiguoLara ? votosGabriel : (Number(r.votos) || 0);
+        });
+
+        const ordenados = PARTICIPANTES_BASE.map(p => ({
+          ...p,
+          votos: mapaVotos[p.id] !== undefined ? mapaVotos[p.id] : 0
+        })).sort((a, b) => b.votos - a.votos || a.id - b.id);
+
+        const totalVotos = ordenados.reduce((acc, p) => acc + p.votos, 0);
+        const top5 = ordenados.slice(0, 5);
+        const maxVotos = Math.max(1, top5[0]?.votos || 1);
+
+        document.getElementById("sideTotalVotos").innerText = totalVotos.toLocaleString("es-VE");
+        document.getElementById("bottomTotalVotos").innerText = `${totalVotos.toLocaleString("es-VE")} VOTOS`;
+
+        if (layoutMode === "bottom") {
+          renderizarBottom(top5, maxVotos, totalVotos);
+        } else {
+          renderizarSide(top5, maxVotos, totalVotos);
+        }
+
+        const nuevoMapaPrevio = {};
+        top5.forEach(p => { nuevoMapaPrevio[p.id] = p.votos; });
+        votosPrevios = nuevoMapaPrevio;
+      } catch (e) {
+        // Mantiene en pantalla el último estado válido si hay microcorte de red
+      }
+    }
+
+    function renderizarSide(top5, maxVotos, totalVotos) {
+      const cont = document.getElementById("sideRowsContainer");
+      cont.innerHTML = top5.map((p, idx) => {
+        const rank = idx + 1;
+        const ancho = p.votos > 0 ? Math.max(5, Math.round((p.votos / maxVotos) * 100)) : 0;
+        const pct = totalVotos > 0 ? ((p.votos / totalVotos) * 100).toFixed(1) : "0.0";
+        const subio = votosPrevios[p.id] !== undefined && p.votos > votosPrevios[p.id];
+
+        const badgeRankClass = rank === 1
+          ? "bg-[#f5b942] text-black"
+          : rank === 2
+            ? "bg-slate-200 text-black"
+            : rank === 3
+              ? "bg-amber-700 text-white"
+              : "bg-white/10 text-white";
+
+        const barColor = rank === 1 ? "bg-[#f5b942]" : "bg-sky-400";
+
+        return `
+          <div class="px-4 py-2.5 flex items-center gap-3 ${subio ? "row-vote-flash" : ""}">
+            <div class="w-7 h-7 rounded-sm font-fox text-base font-black flex items-center justify-center shrink-0 ${badgeRankClass}">
+              ${rank}
+            </div>
+
+            <div class="min-w-0 flex-1">
+              <div class="flex items-center justify-between gap-2">
+                <span class="font-fox text-base font-extrabold uppercase text-white truncate leading-none">
+                  ${acortarNombreBroadcast(p.nombre)}
+                </span>
+                <span class="font-tnum text-sm font-extrabold ${rank === 1 ? "text-[#f5b942]" : "text-white"} shrink-0">
+                  ${p.votos.toLocaleString("es-VE")}
+                </span>
+              </div>
+
+              <div class="flex items-center justify-between gap-2 mt-1">
+                <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                  ${p.estado}
+                </span>
+                <span class="font-tnum text-[10px] text-slate-400">${pct}%</span>
+              </div>
+
+              <div class="mt-1.5 w-full h-1 bg-white/10 rounded-full overflow-hidden">
+                <div class="h-full ${barColor} bar-smooth" style="width: ${ancho}%"></div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function renderizarBottom(top5, maxVotos, totalVotos) {
+      const cont = document.getElementById("bottomColsContainer");
+      cont.innerHTML = top5.map((p, idx) => {
+        const rank = idx + 1;
+        const ancho = p.votos > 0 ? Math.max(6, Math.round((p.votos / maxVotos) * 100)) : 0;
+        const subio = votosPrevios[p.id] !== undefined && p.votos > votosPrevios[p.id];
+        const rankBg = rank === 1 ? "bg-[#f5b942] text-black" : "bg-white/12 text-white";
+
+        return `
+          <div class="px-3.5 py-2.5 flex flex-col justify-between ${subio ? "row-vote-flash" : ""}">
+            <div class="flex items-center justify-between gap-2">
+              <div class="flex items-center gap-2 min-w-0">
+                <span class="w-5 h-5 rounded-sm font-fox text-xs font-black flex items-center justify-center shrink-0 ${rankBg}">
+                  ${rank}
+                </span>
+                <span class="text-[10px] font-bold uppercase tracking-widest text-[#f5b942] truncate">
+                  ${p.estado}
+                </span>
+              </div>
+              <span class="font-tnum text-sm font-extrabold text-white shrink-0">
+                ${p.votos.toLocaleString("es-VE")}
+              </span>
+            </div>
+
+            <div class="font-fox text-base font-extrabold uppercase text-white truncate mt-1">
+              ${acortarNombreBroadcast(p.nombre)}
+            </div>
+
+            <div class="mt-1.5 w-full h-1 bg-white/10 rounded-full overflow-hidden">
+              <div class="h-full ${rank === 1 ? "bg-[#f5b942]" : "bg-sky-400"} bar-smooth" style="width: ${ancho}%"></div>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      configurarLayout();
+      actualizarTop5();
+      setInterval(actualizarTop5, 6000);
+    });
+  </script>
+</body>
+</html>
