@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <!-- Cliente MQTT para disparo remoto hacia YoloBox Extreme -->
   <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
-  <!-- Generador de Código QR de alta velocidad -->
+  <!-- Generador de Código QR -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -63,7 +63,6 @@
       overflow: hidden;
     }
 
-    /* Ajuste para que las imágenes generadas por QRCodeJS ocupen el 100% de su caja */
     .qr-box-render img, .qr-box-render canvas {
       width: 100% !important;
       height: 100% !important;
@@ -340,9 +339,45 @@
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 pt-6 space-y-6">
 
+      <!-- SELECTOR DE ETAPA DE TRANSMISIÓN: SEMIFINALES VS GALA FINAL -->
+      <div class="bg-gradient-to-r from-[#0d172c] via-[#111e38] to-[#0d172c] border border-[#f5b942]/40 rounded-2xl p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xl">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-widest text-[#f5b942] block">
+            <i class="fa-solid fa-trophy mr-1"></i> Etapa del Festival (Cambia en todos los Overlays)
+          </span>
+          <h2 class="font-fox text-xl sm:text-2xl font-black uppercase text-white leading-tight">
+            Selecciona la Transmisión Actual
+          </h2>
+          <p class="text-xs text-slate-300">
+            Actualiza automáticamente el título de fase en el Bug superior, pleca de participantes y marcadores en vivo.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2.5 shrink-0">
+          <button
+            type="button"
+            id="btnStage_SEMIFINALES"
+            onclick="setEventStage('SEMIFINALES')"
+            class="px-5 py-3 rounded-xl font-fox text-base sm:text-lg font-black uppercase tracking-wider border transition cursor-pointer flex items-center justify-center gap-2"
+          >
+            <i class="fa-solid fa-microphone-lines"></i>
+            <span>SEMIFINALES</span>
+          </button>
+
+          <button
+            type="button"
+            id="btnStage_GALA_FINAL"
+            onclick="setEventStage('GALA FINAL')"
+            class="px-5 py-3 rounded-xl font-fox text-base sm:text-lg font-black uppercase tracking-wider border transition cursor-pointer flex items-center justify-center gap-2"
+          >
+            <i class="fa-solid fa-crown"></i>
+            <span>GALA FINAL</span>
+          </button>
+        </div>
+      </div>
+
       <!-- CONFIGURACIÓN DE CANAL Y URL DEL CÓDIGO QR DE VOTACIÓN -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
-        <!-- Canal y Clear All -->
         <div class="lg:col-span-5 bg-[#0a101f] border border-white/10 rounded-2xl p-4 flex flex-col justify-between gap-3">
           <div class="text-xs text-slate-300">
             <strong class="text-white block mb-0.5"><i class="fa-solid fa-tower-broadcast text-[#f5b942] mr-1.5"></i> Canal de Producción 16:9</strong>
@@ -362,7 +397,6 @@
           </div>
         </div>
 
-        <!-- Enlace del Código QR de Votación -->
         <div class="lg:col-span-7 bg-[#0a101f] border border-[#f5b942]/30 rounded-2xl p-4 flex items-center justify-between gap-4">
           <div class="flex-1 space-y-1.5">
             <label for="inputVoteUrlQR" class="text-xs font-bold text-[#f5b942] flex items-center gap-1.5">
@@ -460,8 +494,8 @@
           </div>
 
           <div class="sm:col-span-3">
-            <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Tema / Referencia</label>
-            <input type="text" id="inputArtistSong" value="Gala Final 2026" oninput="actualizarTextosEnVivo(false)" placeholder="Tema / Obra" class="w-full bg-black/60 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#f5b942]" />
+            <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Etapa / Tema</label>
+            <input type="text" id="inputArtistSong" value="SEMIFINALES 2026" oninput="actualizarTextosEnVivo(false)" placeholder="Tema / Obra" class="w-full bg-black/60 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#f5b942]" />
           </div>
         </div>
 
@@ -478,7 +512,7 @@
         </div>
       </div>
 
-      <!-- BOTONERA DE GRÁFICOS BROADCAST (CON QR INTEGRADO EN LOS DE VOTACIÓN) -->
+      <!-- BOTONERA DE GRÁFICOS BROADCAST -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
 
         <!-- TOP 5 ELECCIONES FOX + QR -->
@@ -587,7 +621,7 @@
   <div id="alphaStage" class="hidden fixed inset-0 pointer-events-none overflow-hidden">
     <div id="broadcastCanvas16x9">
 
-      <!-- CAPA A: BUG SUPERIOR IZQUIERDO (EN VIVO + LOGO BLANCO PURO) -->
+      <!-- CAPA A: BUG SUPERIOR IZQUIERDO (EN VIVO + ETAPA + LOGO BLANCO PURO) -->
       <div id="layer_bugLive" class="anim-top-layer absolute top-[48px] left-[64px] z-30">
         <div class="presence-frame inline-flex items-center gap-4 px-5 py-3 rounded-md bg-[#060d1f]/95 border-2 border-white/25">
           <img src="./logo_color.png" alt="Logo" style="-webkit-filter: brightness(0) invert(1); filter: brightness(0) invert(1);" class="h-12 w-auto object-contain logo-pure-white logo-alive" />
@@ -597,15 +631,15 @@
               <span class="w-2 h-2 rounded-full bg-white animate-ping"></span>
               <span class="font-fox text-sm font-black uppercase tracking-widest text-white leading-none">EN VIVO</span>
             </div>
-            <span class="block font-fox text-base font-bold uppercase tracking-wider text-slate-200 mt-1">
-              Teatro Juares &middot; 2026
+            <span id="outBugStage" class="block font-fox text-base font-extrabold uppercase tracking-wider text-[#f5b942] mt-1">
+              SEMIFINALES &middot; 2026
             </span>
           </div>
         </div>
       </div>
 
-      <!-- CAPA B: PLECA DE PARTICIPANTE CON CATEGORÍA (JUVENIL / INFANTIL) -->
-      <div id="layer_lowerArtist" class="anim-left-layer absolute bottom-[64px] left-[64px] z-30 max-w-[1040px]">
+      <!-- CAPA B: PLECA DE PARTICIPANTE CON CATEGORÍA (JUVENIL / INFANTIL) + ETAPA -->
+      <div id="layer_lowerArtist" class="anim-left-layer absolute bottom-[64px] left-[64px] z-30 max-w-[1060px]">
         <div class="presence-frame fox-shell rounded-md flex items-stretch">
           <div class="gold-pillar-alive w-3.5 shrink-0"></div>
           <div class="px-6 py-4 bg-[#08152e] flex items-center justify-center border-r border-white/15">
@@ -620,7 +654,7 @@
                 CATEGORÍA JUVENIL
               </span>
               <span id="outArtistSong" class="font-fox text-base font-bold uppercase tracking-wider text-slate-200 pl-1">
-                GALA FINAL 2026
+                SEMIFINALES 2026
               </span>
             </div>
             <div id="outArtistName" class="name-reveal-text font-fox text-[42px] font-black uppercase text-white leading-none mt-2">
@@ -637,8 +671,8 @@
             <div class="flex items-center gap-3.5">
               <img src="./logo_color.png" alt="Logo" style="-webkit-filter: brightness(0) invert(1); filter: brightness(0) invert(1);" class="h-10 w-auto object-contain logo-pure-white logo-alive" />
               <div>
-                <span class="font-fox text-xs font-extrabold uppercase tracking-widest text-[#f5b942] block leading-none">
-                  Votación en Vivo
+                <span id="outTowerStage" class="font-fox text-xs font-extrabold uppercase tracking-widest text-[#f5b942] block leading-none">
+                  SEMIFINALES &middot; EN VIVO
                 </span>
                 <span class="font-fox text-2xl font-black uppercase text-white leading-none mt-0.5 block">
                   Top 5 Nacional
@@ -684,7 +718,9 @@
                   <span class="font-fox text-xs font-black uppercase tracking-widest text-white">EN DIRECTO</span>
                 </div>
                 <div class="font-fox text-2xl font-black uppercase text-white leading-none">TOP 5 NACIONAL</div>
-                <div class="font-fox text-xs font-bold uppercase tracking-widest text-[#f5b942] mt-1">Votación Popular</div>
+                <div id="outElectionsStage" class="font-fox text-xs font-extrabold uppercase tracking-widest text-[#f5b942] mt-1">
+                  SEMIFINALES &middot; VOTACIÓN
+                </div>
               </div>
             </div>
 
@@ -710,7 +746,7 @@
           <!-- Cinta Inferior Totalizadora -->
           <div class="px-6 py-1.5 bg-[#040914] border-t border-white/15 flex items-center justify-between text-sm">
             <span class="font-fox font-bold uppercase tracking-wider text-slate-300">
-              Fundación Nacional del Niño Simón &bull; Teatro Juares, Barquisimeto
+              Fundación Nacional del Niño Simón &bull; <span id="outFooterStage" class="text-[#f5b942]">SEMIFINALES 2026</span> &bull; Teatro Juares, Barquisimeto
             </span>
             <span class="font-tnum font-extrabold text-[#f5b942]" id="outElectionsTotal">0 VOTOS</span>
           </div>
@@ -723,7 +759,7 @@
           <div class="flex items-center min-w-0 flex-1">
             <div class="px-6 py-4 bg-[#e11d48] font-fox text-lg font-black uppercase tracking-widest text-white shrink-0 flex items-center gap-3 self-stretch">
               <img src="./logo_color.png" alt="Logo" style="-webkit-filter: brightness(0) invert(1); filter: brightness(0) invert(1);" class="h-8 w-auto object-contain logo-pure-white logo-alive" />
-              <span>VOTA EN VIVO</span>
+              <span id="outTickerStage">SEMIFINALES</span>
             </div>
             <div id="outTickerText" class="name-reveal-text px-6 py-3 font-fox text-2xl font-extrabold uppercase tracking-wide text-white truncate">
               ESCANEA EL CÓDIGO QR Y VOTA POR TUS 5 FAVORITOS EN DIRECTO
@@ -819,6 +855,7 @@
     let ultimaUrlQrRenderizada = "";
 
     let state = {
+      eventStage: "SEMIFINALES",
       bugLive: false,
       foxElections: false,
       foxTower: false,
@@ -827,7 +864,7 @@
       artistName: "Gabriel Raúl Solórzano",
       artistState: "Miranda",
       artistCategory: "Juvenil",
-      artistSong: "Gala Final 2026",
+      artistSong: "SEMIFINALES 2026",
       tickerText: "ESCANEA EL CÓDIGO QR Y VOTA POR TUS 5 FAVORITOS EN DIRECTO",
       voteUrl: detectarUrlVotacionPorDefecto()
     };
@@ -921,6 +958,22 @@
       aplicarEstadoVisual();
     }
 
+    // Cambia entre SEMIFINALES y GALA FINAL en todas las capas al instante
+    function setEventStage(nuevaEtapa) {
+      state.eventStage = nuevaEtapa;
+
+      const inputSong = document.getElementById("inputArtistSong");
+      if (inputSong) {
+        const val = inputSong.value.trim().toUpperCase();
+        if (!val || val === "SEMIFINALES 2026" || val === "GALA FINAL 2026") {
+          inputSong.value = `${nuevaEtapa} 2026`;
+          state.artistSong = `${nuevaEtapa} 2026`;
+        }
+      }
+
+      emitirCambioEstado();
+    }
+
     function actualizarUrlQR(nuevaUrl) {
       state.voteUrl = nuevaUrl.trim() || detectarUrlVotacionPorDefecto();
       emitirCambioEstado();
@@ -952,7 +1005,7 @@
       state.artistName = document.getElementById("inputArtistName").value.trim() || "Participante";
       state.artistState = document.getElementById("inputArtistState").value.trim() || "Venezuela";
       state.artistCategory = document.getElementById("selectArtistCategory").value || "Juvenil";
-      state.artistSong = document.getElementById("inputArtistSong").value.trim() || "Gala Final";
+      state.artistSong = document.getElementById("inputArtistSong").value.trim() || `${state.eventStage} 2026`;
       state.tickerText = document.getElementById("inputTickerText").value.trim();
 
       if (reanimar && state.lowerArtist) {
@@ -978,7 +1031,7 @@
       state.artistName = document.getElementById("inputArtistName").value.trim() || "Participante";
       state.artistState = document.getElementById("inputArtistState").value.trim() || "Venezuela";
       state.artistCategory = document.getElementById("selectArtistCategory").value || "Juvenil";
-      state.artistSong = document.getElementById("inputArtistSong").value.trim() || "Gala Final";
+      state.artistSong = document.getElementById("inputArtistSong").value.trim() || `${state.eventStage} 2026`;
 
       state.lowerArtist = false;
       emitirCambioEstado();
@@ -1057,6 +1110,7 @@
 
     function aplicarEstadoVisual() {
       const capas = ["bugLive", "foxElections", "foxTower", "lowerArtist", "tickerBanner"];
+      const etapaActual = (state.eventStage || "SEMIFINALES").toUpperCase();
       renderizarCodigosQR(state.voteUrl);
 
       if (isOutputMode) {
@@ -1067,9 +1121,15 @@
           else el.classList.remove("is-on-air");
         });
 
+        document.getElementById("outBugStage").innerText = `${etapaActual} · 2026`;
+        document.getElementById("outTowerStage").innerText = `${etapaActual} · EN VIVO`;
+        document.getElementById("outElectionsStage").innerText = `${etapaActual} · VOTACIÓN`;
+        document.getElementById("outFooterStage").innerText = `${etapaActual} 2026`;
+        document.getElementById("outTickerStage").innerText = etapaActual;
+
         document.getElementById("outArtistName").innerText = state.artistName;
         document.getElementById("outArtistState").innerText = state.artistState;
-        document.getElementById("outArtistSong").innerText = state.artistSong;
+        document.getElementById("outArtistSong").innerText = state.artistSong || `${etapaActual} 2026`;
         document.getElementById("outTickerText").innerText = state.tickerText;
 
         const catBadge = document.getElementById("outArtistCategory");
@@ -1079,6 +1139,19 @@
           ? "px-3 py-0.5 rounded-sm bg-sky-400 font-fox text-base font-black uppercase tracking-widest text-slate-950"
           : "px-3 py-0.5 rounded-sm bg-[#f5b942] font-fox text-base font-black uppercase tracking-widest text-black";
       } else {
+        // Actualizar estilo de botones Semifinales vs Gala Final en el Director
+        const btnSemi = document.getElementById("btnStage_SEMIFINALES");
+        const btnFinal = document.getElementById("btnStage_GALA_FINAL");
+        if (btnSemi && btnFinal) {
+          if (etapaActual === "SEMIFINALES") {
+            btnSemi.className = "px-5 py-3 rounded-xl font-fox text-base sm:text-lg font-black uppercase tracking-wider border border-sky-300 bg-sky-400 text-slate-950 shadow-lg shadow-sky-400/25 transition cursor-pointer flex items-center justify-center gap-2";
+            btnFinal.className = "px-5 py-3 rounded-xl font-fox text-base sm:text-lg font-bold uppercase tracking-wider border border-white/15 bg-white/5 hover:bg-white/10 text-slate-300 transition cursor-pointer flex items-center justify-center gap-2";
+          } else {
+            btnFinal.className = "px-5 py-3 rounded-xl font-fox text-base sm:text-lg font-black uppercase tracking-wider border border-amber-300 bg-[#f5b942] text-slate-950 shadow-lg shadow-amber-400/25 transition cursor-pointer flex items-center justify-center gap-2";
+            btnSemi.className = "px-5 py-3 rounded-xl font-fox text-base sm:text-lg font-bold uppercase tracking-wider border border-white/15 bg-white/5 hover:bg-white/10 text-slate-300 transition cursor-pointer flex items-center justify-center gap-2";
+          }
+        }
+
         capas.forEach(key => {
           const activo = Boolean(state[key]);
           const btn = document.getElementById(`btn_${key}`);
@@ -1218,6 +1291,7 @@
         try { state = { ...state, ...JSON.parse(saved) }; } catch (e) {}
       }
       if (!state.voteUrl) state.voteUrl = detectarUrlVotacionPorDefecto();
+      if (!state.eventStage) state.eventStage = "SEMIFINALES";
 
       if (isOutputMode) {
         document.documentElement.classList.add("mode-output");
@@ -1233,6 +1307,7 @@
         document.getElementById("directorUI").classList.remove("hidden");
         document.getElementById("inputCanalId").value = canalId;
         document.getElementById("inputVoteUrlQR").value = state.voteUrl;
+        document.getElementById("inputArtistSong").value = state.artistSong || `${state.eventStage} 2026`;
 
         renderizarListasCategorias();
         document.getElementById("iframePreviewMonitor").src = obtenerUrlSalida();
