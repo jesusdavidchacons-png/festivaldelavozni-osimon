@@ -8,9 +8,7 @@
 
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-  <!-- Cliente MQTT para disparo remoto hacia YoloBox Extreme -->
   <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
-  <!-- Generador de Código QR -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -162,6 +160,16 @@
       transform: translateY(0);
     }
 
+    .author-reveal-text {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: transform 0.58s cubic-bezier(0.16, 1, 0.3, 1) 0.30s, opacity 0.45s ease 0.30s;
+    }
+    .is-on-air .author-reveal-text {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     /* =====================================================================
        3. PRESENCIA CONTINUA AL AIRE
        ===================================================================== */
@@ -196,6 +204,12 @@
     }
 
     @keyframes verticalGoldBeam {
+      0% { background-position: 0% 0%; }
+      50% { background-position: 0% 100%; }
+      100% { background-position: 0% 0%; }
+    }
+
+    @keyframes verticalCyanBeam {
       0% { background-position: 0% 0%; }
       50% { background-position: 0% 100%; }
       100% { background-position: 0% 0%; }
@@ -266,6 +280,12 @@
       background: linear-gradient(180deg, #fef08a, #f5b942, #b45309, #fde047);
       background-size: 100% 250%;
       animation: verticalGoldBeam 3.2s ease infinite;
+    }
+
+    .is-on-air .cyan-pillar-alive {
+      background: linear-gradient(180deg, #7dd3fc, #0ea5e9, #1d4ed8, #38bdf8);
+      background-size: 100% 250%;
+      animation: verticalCyanBeam 3.2s ease infinite;
     }
 
     .is-on-air .accent-flow-bar {
@@ -421,15 +441,17 @@
         </div>
       </div>
 
-      <!-- SECCIÓN DE PLECA DE PARTICIPANTES DIVIDIDA EN INFANTIL Y JUVENIL -->
-      <div class="bg-[#0a101f] border border-white/10 rounded-2xl p-5 space-y-4">
+      <!-- =====================================================================
+           SECCIÓN PRINCIPAL: ESCALETA INFANTIL + PLECA NOMBRE + FICHA MUSICAL
+           ===================================================================== -->
+      <div class="bg-[#0a101f] border border-white/10 rounded-2xl p-5 space-y-5">
         <div class="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-3">
           <div>
             <span class="text-[10px] font-bold uppercase tracking-widest text-[#f5b942] block">
-              Pleca de Nombres &middot; Lower-Third 16:9
+              Escaleta Oficial &middot; Lower-Thirds 16:9
             </span>
             <h2 class="font-fox text-xl font-black uppercase text-white">
-              Selección Rápida por Categoría (Infantil / Juvenil)
+              Selección de Participante y Repertorio Musical
             </h2>
           </div>
 
@@ -440,75 +462,125 @@
                 type="text"
                 id="filtroRapidoParticipantes"
                 oninput="renderizarListasCategorias()"
-                placeholder="Filtrar nombre o estado..."
+                placeholder="Filtrar orden, nombre, estado o tema..."
                 class="bg-black/60 border border-white/15 rounded-xl pl-8 pr-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#f5b942]"
               />
             </div>
-            <span id="badge_lowerArtist" class="px-2.5 py-1.5 rounded text-[10px] font-extrabold uppercase bg-white/5 text-slate-400">OFF AIR</span>
           </div>
         </div>
 
-        <!-- DOS COLUMNAS DIRECTAS: INFANTIL VS JUVENIL -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <div class="bg-black/40 border border-sky-400/25 rounded-2xl p-3.5 space-y-2.5">
+        <!-- DOS COLUMNAS DIRECTAS: INFANTIL (ORDEN #01-#16 OFICIAL) VS JUVENIL -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+          <!-- Bloque Infantil (7 cols con orden de actuación y tema) -->
+          <div class="lg:col-span-7 bg-black/40 border border-sky-400/30 rounded-2xl p-3.5 space-y-2.5">
             <div class="flex items-center justify-between">
               <span class="font-fox text-sm font-black uppercase tracking-wider text-sky-300 flex items-center gap-1.5">
                 <span class="w-2 h-2 rounded-full bg-sky-400"></span>
-                Categoría Infantil (<span id="countInfantil">0</span>)
+                Orden Eliminatoria Infantil (<span id="countInfantil">0</span>)
               </span>
-              <span class="text-[10px] text-slate-400">Clic para cargar en pleca</span>
+              <span class="text-[10px] text-slate-400">Carga nombre + tema + autor + género</span>
             </div>
-            <div id="listaChipsInfantil" class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 max-h-48 overflow-y-auto custom-scroll pr-1"></div>
+            <div id="listaChipsInfantil" class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 max-h-60 overflow-y-auto custom-scroll pr-1"></div>
           </div>
 
-          <div class="bg-black/40 border border-[#f5b942]/30 rounded-2xl p-3.5 space-y-2.5">
+          <!-- Bloque Juvenil (5 cols) -->
+          <div class="lg:col-span-5 bg-black/40 border border-[#f5b942]/30 rounded-2xl p-3.5 space-y-2.5">
             <div class="flex items-center justify-between">
               <span class="font-fox text-sm font-black uppercase tracking-wider text-[#f5b942] flex items-center gap-1.5">
                 <span class="w-2 h-2 rounded-full bg-[#f5b942]"></span>
                 Categoría Juvenil (<span id="countJuvenil">0</span>)
               </span>
-              <span class="text-[10px] text-slate-400">Clic para cargar en pleca</span>
+              <span class="text-[10px] text-slate-400">Clic para cargar</span>
             </div>
-            <div id="listaChipsJuvenil" class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 max-h-48 overflow-y-auto custom-scroll pr-1"></div>
+            <div id="listaChipsJuvenil" class="grid grid-cols-1 gap-1.5 max-h-60 overflow-y-auto custom-scroll pr-1"></div>
           </div>
         </div>
 
-        <!-- Campos de Edición Directa + Ajuste de Categoría + Disparo IN/OUT -->
-        <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5 pt-1">
-          <div class="sm:col-span-4">
-            <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Nombre en Pantalla</label>
-            <input type="text" id="inputArtistName" value="Gabriel Raúl Solórzano" oninput="actualizarTextosEnVivo(false)" placeholder="Nombre completo" class="w-full bg-black/60 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#f5b942]" />
+        <!-- PANEL DUAL DE CONTROL: INSERT 1 (PARTICIPANTE) Y INSERT 2 (FICHA MUSICAL ALTERNA) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 pt-1">
+          
+          <!-- INSERT 1: PLECA DE PARTICIPANTE -->
+          <div class="lg:col-span-6 bg-black/45 border border-white/10 rounded-2xl p-4 space-y-3 flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="font-fox text-sm font-black uppercase tracking-wider text-[#f5b942]">
+                  <i class="fa-solid fa-user-check mr-1"></i> Insert 1: Pleca de Participante
+                </span>
+                <span id="badge_lowerArtist" class="px-2.5 py-0.5 rounded text-[10px] font-extrabold uppercase bg-white/5 text-slate-400">OFF AIR</span>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-12 gap-2">
+                <div class="sm:col-span-8">
+                  <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Nombre en Pantalla</label>
+                  <input type="text" id="inputArtistName" value="Gabriela Galilea Andrade Gutiérrez" oninput="actualizarTextosEnVivo(false)" class="w-full bg-black/70 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#f5b942]" />
+                </div>
+                <div class="sm:col-span-4">
+                  <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Estado / Regional</label>
+                  <input type="text" id="inputArtistState" value="Zulia" oninput="actualizarTextosEnVivo(false)" class="w-full bg-black/70 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#f5b942]" />
+                </div>
+                <div class="sm:col-span-5">
+                  <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Categoría</label>
+                  <select id="selectArtistCategory" onchange="actualizarTextosEnVivo(false)" class="w-full bg-black/70 border border-white/15 rounded-xl px-2.5 py-2 text-xs font-bold text-[#f5b942] focus:outline-none focus:border-[#f5b942]">
+                    <option value="Infantil">Infantil</option>
+                    <option value="Juvenil">Juvenil</option>
+                  </select>
+                </div>
+                <div class="sm:col-span-7">
+                  <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Etapa / Orden</label>
+                  <input type="text" id="inputArtistSong" value="ORDEN #01 · SEMIFINALES" oninput="actualizarTextosEnVivo(false)" class="w-full bg-black/70 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#f5b942]" />
+                </div>
+              </div>
+            </div>
+
+            <div class="flex gap-2 pt-1">
+              <button id="btn_lowerArtist" onclick="toggleLayer('lowerArtist')" class="flex-1 py-3 rounded-xl font-fox text-sm sm:text-base font-black uppercase tracking-wider bg-emerald-500 hover:bg-emerald-400 text-black transition cursor-pointer flex items-center justify-center gap-2">
+                <i class="fa-solid fa-play"></i>
+                <span>DAR ENTRADA NOMBRE (IN)</span>
+              </button>
+              <button type="button" onclick="reanimarCapa('lowerArtist')" title="Re-animar entrada" class="px-3.5 py-3 rounded-xl bg-white/10 hover:bg-white/15 text-amber-300 text-xs cursor-pointer">
+                <i class="fa-solid fa-rotate"></i>
+              </button>
+            </div>
           </div>
 
-          <div class="sm:col-span-3">
-            <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Estado / Delegación</label>
-            <input type="text" id="inputArtistState" value="Miranda" oninput="actualizarTextosEnVivo(false)" placeholder="Estado" class="w-full bg-black/60 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#f5b942]" />
+          <!-- INSERT 2 (ALTERNO): FICHA MUSICAL (CANCIÓN, AUTOR Y GÉNERO) -->
+          <div class="lg:col-span-6 bg-black/45 border border-sky-400/25 rounded-2xl p-4 space-y-3 flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="font-fox text-sm font-black uppercase tracking-wider text-sky-300">
+                  <i class="fa-solid fa-music mr-1"></i> Insert 2 (Alterno): Ficha Musical
+                </span>
+                <span id="badge_songInfo" class="px-2.5 py-0.5 rounded text-[10px] font-extrabold uppercase bg-white/5 text-slate-400">OFF AIR</span>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-12 gap-2">
+                <div class="sm:col-span-7">
+                  <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Tema Musical (Canción)</label>
+                  <input type="text" id="inputSongTitle" value="Los 2 Gavilanes" oninput="actualizarTextosEnVivo(false)" placeholder="Título de la canción" class="w-full bg-black/70 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-400" />
+                </div>
+                <div class="sm:col-span-5">
+                  <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Género Musical</label>
+                  <input type="text" id="inputSongGenre" value="Merengue Larense" oninput="actualizarTextosEnVivo(false)" placeholder="Ej. Golpe Tocuyano" class="w-full bg-black/70 border border-white/15 rounded-xl px-3 py-2 text-xs font-semibold text-sky-300 focus:outline-none focus:border-sky-400" />
+                </div>
+                <div class="sm:col-span-12">
+                  <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Autor / Compositor</label>
+                  <input type="text" id="inputSongAuthor" value="Letra y Música de: Adelis Freitez" oninput="actualizarTextosEnVivo(false)" placeholder="Autor y compositor" class="w-full bg-black/70 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-400" />
+                </div>
+              </div>
+            </div>
+
+            <div class="flex gap-2 pt-1">
+              <button id="btn_songInfo" onclick="toggleLayer('songInfo')" class="flex-1 py-3 rounded-xl font-fox text-sm sm:text-base font-black uppercase tracking-wider bg-emerald-500 hover:bg-emerald-400 text-black transition cursor-pointer flex items-center justify-center gap-2">
+                <i class="fa-solid fa-play"></i>
+                <span>DAR ENTRADA FICHA MUSICAL (IN)</span>
+              </button>
+              <button type="button" onclick="alternarNombreYCancion()" title="Alterna automáticamente entre la Pleca del Nombre y la Ficha Musical" class="px-3.5 py-3 rounded-xl bg-sky-400/20 hover:bg-sky-400/30 border border-sky-400/40 text-sky-300 font-fox text-xs font-extrabold uppercase tracking-wider cursor-pointer flex items-center gap-1">
+                <i class="fa-solid fa-right-left"></i>
+                <span>Alternar</span>
+              </button>
+            </div>
           </div>
 
-          <div class="sm:col-span-2">
-            <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Categoría</label>
-            <select id="selectArtistCategory" onchange="cambiarCategoriaParticipanteActivo(this.value)" class="w-full bg-black/60 border border-white/15 rounded-xl px-2.5 py-2 text-xs font-bold text-[#f5b942] focus:outline-none focus:border-[#f5b942]">
-              <option value="Juvenil">Juvenil</option>
-              <option value="Infantil">Infantil</option>
-            </select>
-          </div>
-
-          <div class="sm:col-span-3">
-            <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Etapa / Tema</label>
-            <input type="text" id="inputArtistSong" value="SEMIFINALES 2026" oninput="actualizarTextosEnVivo(false)" placeholder="Tema / Obra" class="w-full bg-black/60 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#f5b942]" />
-          </div>
-        </div>
-
-        <div class="flex flex-col sm:flex-row gap-2.5">
-          <button id="btn_lowerArtist" onclick="toggleLayer('lowerArtist')" class="flex-1 py-3.5 rounded-xl font-fox text-base font-black uppercase tracking-wider bg-emerald-500 hover:bg-emerald-400 text-black transition cursor-pointer flex items-center justify-center gap-2">
-            <i class="fa-solid fa-play"></i>
-            <span>DAR ENTRADA PLECA PARTICIPANTE (IN)</span>
-          </button>
-
-          <button type="button" onclick="reanimarPlecaNombre()" title="Hace salir y volver a entrar la pleca con el nuevo participante" class="px-5 py-3.5 rounded-xl font-fox text-sm font-extrabold uppercase tracking-wider bg-amber-400/20 hover:bg-amber-400/30 border border-amber-400/40 text-amber-300 transition cursor-pointer flex items-center justify-center gap-1.5">
-            <i class="fa-solid fa-rotate"></i>
-            <span>Re-animar Cambio</span>
-          </button>
         </div>
       </div>
 
@@ -638,8 +710,8 @@
         </div>
       </div>
 
-      <!-- CAPA B: PLECA DE PARTICIPANTE CON CATEGORÍA (JUVENIL / INFANTIL) + ETAPA -->
-      <div id="layer_lowerArtist" class="anim-left-layer absolute bottom-[64px] left-[64px] z-30 max-w-[1060px]">
+      <!-- CAPA B1: PLECA DE PARTICIPANTE EN ESCENA (NOMBRE + ESTADO + CATEGORÍA) -->
+      <div id="layer_lowerArtist" class="anim-left-layer absolute bottom-[64px] left-[64px] z-30 max-w-[1080px]">
         <div class="presence-frame fox-shell rounded-md flex items-stretch">
           <div class="gold-pillar-alive w-3.5 shrink-0"></div>
           <div class="px-6 py-4 bg-[#08152e] flex items-center justify-center border-r border-white/15">
@@ -648,17 +720,49 @@
           <div class="px-7 py-4 flex flex-col justify-center">
             <div class="sub-reveal-text flex flex-wrap items-center gap-2.5">
               <span id="outArtistState" class="px-3 py-0.5 rounded-sm bg-[#e11d48] font-fox text-base font-black uppercase tracking-widest text-white">
-                MIRANDA
+                ZULIA
               </span>
-              <span id="outArtistCategory" class="px-3 py-0.5 rounded-sm bg-[#f5b942] font-fox text-base font-black uppercase tracking-widest text-black">
-                CATEGORÍA JUVENIL
+              <span id="outArtistCategory" class="px-3 py-0.5 rounded-sm bg-sky-400 font-fox text-base font-black uppercase tracking-widest text-slate-950">
+                CATEGORÍA INFANTIL
               </span>
               <span id="outArtistSong" class="font-fox text-base font-bold uppercase tracking-wider text-slate-200 pl-1">
-                SEMIFINALES 2026
+                ORDEN #01 &middot; SEMIFINALES
               </span>
             </div>
             <div id="outArtistName" class="name-reveal-text font-fox text-[42px] font-black uppercase text-white leading-none mt-2">
-              GABRIEL RAÚL SOLÓRZANO
+              GABRIELA GALILEA ANDRADE GUTIÉRREZ
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CAPA B2 (ALTERNA): FICHA MUSICAL EN ESCENA (TEMA + AUTOR + GÉNERO MUSICAL) -->
+      <div id="layer_songInfo" class="anim-left-layer absolute bottom-[64px] left-[64px] z-30 max-w-[1120px]">
+        <div class="presence-frame fox-shell rounded-md flex items-stretch">
+          <div class="cyan-pillar-alive w-3.5 shrink-0"></div>
+          <div class="px-6 py-4 bg-[#08152e] flex flex-col items-center justify-center border-r border-white/15 gap-1">
+            <img src="./logo_color.png" alt="Logo" style="-webkit-filter: brightness(0) invert(1); filter: brightness(0) invert(1);" class="h-14 w-auto object-contain logo-pure-white logo-alive" />
+          </div>
+          <div class="px-7 py-4 flex flex-col justify-center">
+            <!-- Fila Superior: Género Musical + Delegación -->
+            <div class="sub-reveal-text flex flex-wrap items-center gap-2.5">
+              <span class="px-3 py-0.5 rounded-sm bg-[#f5b942] font-fox text-base font-black uppercase tracking-widest text-black flex items-center gap-1.5">
+                <i class="fa-solid fa-music text-xs"></i>
+                <span id="outSongGenre">MERENGUE LARENSE</span>
+              </span>
+              <span id="outSongInterpreterBadge" class="px-3 py-0.5 rounded-sm bg-white/10 border border-white/15 font-fox text-sm font-bold uppercase tracking-wider text-sky-300">
+                ZULIA &middot; GABRIELA GALILEA ANDRADE
+              </span>
+            </div>
+
+            <!-- Título del Tema Musical -->
+            <div id="outSongTitle" class="name-reveal-text font-fox text-[40px] font-black uppercase text-white leading-none mt-2">
+              «LOS 2 GAVILANES»
+            </div>
+
+            <!-- Autor / Compositor -->
+            <div id="outSongAuthor" class="author-reveal-text font-fox text-xl font-bold uppercase tracking-wide text-sky-300 mt-1.5">
+              Letra y Música de: Adelis Freitez
             </div>
           </div>
         </div>
@@ -684,7 +788,6 @@
 
           <div id="outTowerRows" class="divide-y divide-white/10"></div>
 
-          <!-- Módulo QR Integrado en Torre Lateral -->
           <div class="px-5 py-3 bg-gradient-to-r from-[#071226] via-[#0e2042] to-[#071226] border-t-2 border-[#f5b942] flex items-center justify-between gap-4">
             <div class="space-y-0.5">
               <span class="inline-block px-2 py-0.5 rounded-sm bg-[#e11d48] font-fox text-[11px] font-black uppercase tracking-widest text-white">
@@ -704,12 +807,11 @@
         </div>
       </div>
 
-      <!-- CAPA D: TOP 5 ESTILO ELECCIONES FOX + ESTACIÓN QR DERECHA (16:9 INFERIOR) -->
+      <!-- CAPA D: TOP 5 ESTILO ELECCIONES FOX + ESTACIÓN QR DERECHA -->
       <div id="layer_foxElections" class="anim-bottom-layer absolute bottom-[52px] left-[64px] right-[64px] z-20">
         <div class="presence-frame w-full fox-shell rounded-md">
           <div class="accent-flow-bar h-1.5 w-full bg-gradient-to-r from-[#e11d48] via-[#f5b942] to-[#2563eb]"></div>
           <div class="flex flex-row items-stretch">
-            <!-- Bloque Izquierdo Identidad -->
             <div class="px-5 py-4 w-[245px] shrink-0 bg-gradient-to-br from-[#0d234a] to-[#061126] border-r-2 border-[#f5b942] flex flex-col justify-between gap-2">
               <img src="./logo_color.png" alt="Logo" style="-webkit-filter: brightness(0) invert(1); filter: brightness(0) invert(1);" class="h-11 w-auto object-contain self-start logo-pure-white logo-alive" />
               <div>
@@ -724,10 +826,8 @@
               </div>
             </div>
 
-            <!-- 5 Columnas Horizontales -->
             <div id="outElectionsGrid" class="flex-1 grid grid-cols-5 divide-x divide-white/15"></div>
 
-            <!-- Bloque Derecho: Estación QR Escanea y Vota -->
             <div class="px-4 py-3 w-[205px] shrink-0 bg-gradient-to-b from-[#0f244a] to-[#071124] border-l-2 border-[#f5b942] flex flex-col items-center justify-center text-center gap-1.5">
               <div class="qr-card-alive bg-white p-1.5 rounded-sm">
                 <div id="qrOutElections" class="qr-box-render w-[96px] h-[96px]"></div>
@@ -743,7 +843,6 @@
             </div>
           </div>
 
-          <!-- Cinta Inferior Totalizadora -->
           <div class="px-6 py-1.5 bg-[#040914] border-t border-white/15 flex items-center justify-between text-sm">
             <span class="font-fox font-bold uppercase tracking-wider text-slate-300">
               Fundación Nacional del Niño Simón &bull; <span id="outFooterStage" class="text-[#f5b942]">SEMIFINALES 2026</span> &bull; Teatro Juares, Barquisimeto
@@ -753,7 +852,7 @@
         </div>
       </div>
 
-      <!-- CAPA E: CINTILLO DE VOTACIÓN INFERIOR + QR INTEGRADO (TICKER 16:9) -->
+      <!-- CAPA E: CINTILLO DE VOTACIÓN INFERIOR + QR INTEGRADO -->
       <div id="layer_tickerBanner" class="anim-bottom-layer absolute bottom-[52px] left-[64px] right-[64px] z-25">
         <div class="presence-frame w-full fox-shell rounded-md flex items-center justify-between">
           <div class="flex items-center min-w-0 flex-1">
@@ -766,7 +865,6 @@
             </div>
           </div>
 
-          <!-- Bloque QR Derecho del Banner -->
           <div class="px-5 py-2 bg-[#0c1e3d] border-l-2 border-[#f5b942] flex items-center gap-3.5 shrink-0">
             <div class="text-right">
               <span class="block font-fox text-base font-black uppercase tracking-wider text-[#f5b942] leading-none">
@@ -789,46 +887,224 @@
   <script>
     const ENDPOINT_GOOGLE_SHEETS = "https://script.google.com/macros/s/AKfycbzH1tSBBdcN6gI5s7wQwAyifLzglIuMVjwbqBAQB5gVrfvIXZVTiMah9Dz01CQt4Ov1aA/exec";
 
-    const PARTICIPANTES_DEFAULT = [
-      { id: 1, nombre: "Tyler Colina", estado: "Mérida", categoria: "Infantil", shortId: "r_2LEocre14" },
-      { id: 2, nombre: "Thalía Meléndez", estado: "Bolívar", categoria: "Infantil", shortId: "cQM1QJoF4JA" },
-      { id: 3, nombre: "Ángel Sánchez", estado: "Carabobo", categoria: "Infantil", shortId: "BKrNX8sXLxQ" },
-      { id: 4, nombre: "Albenis Pérez", estado: "Carabobo", categoria: "Juvenil", shortId: "zGGRW8eMHNk" },
-      { id: 5, nombre: "Aimé García", estado: "Barinas", categoria: "Infantil", shortId: "3o0TQjPhKfU" },
-      { id: 6, nombre: "Antonio Urbina", estado: "Mérida", categoria: "Juvenil", shortId: "5KCJl2vTWpU" },
-      { id: 7, nombre: "Carlos Guaramata", estado: "Anzoátegui", categoria: "Infantil", shortId: "EO2tp1xoUT4" },
-      { id: 8, nombre: "Christal Díaz", estado: "Miranda", categoria: "Infantil", shortId: "Jn4ai5tgZ0Y" },
-      { id: 9, nombre: "Daniela Fontana", estado: "Trujillo", categoria: "Infantil", shortId: "SXODrGfMJ0E" },
-      { id: 10, nombre: "Enma Frías", estado: "Lara", categoria: "Infantil", shortId: "RLrVTJg_2S8" },
-      { id: 11, nombre: "Esthela Vázquez", estado: "Cojedes", categoria: "Infantil", shortId: "Q2w6w8BNT3w" },
-      { id: 12, nombre: "Fraivelis Parra", estado: "Lara", categoria: "Juvenil", shortId: "pdOQEE1sV7M" },
-      { id: 13, nombre: "Gabriela Andrade", estado: "Zulia", categoria: "Infantil", shortId: "uqfYsz2oKeA" },
-      { id: 14, nombre: "Gabriela González", estado: "Amazonas", categoria: "Infantil", shortId: "79nkO6SvvdY" },
-      { id: 15, nombre: "Isabella López", estado: "Distrito Capital", categoria: "Infantil", shortId: "fw238TK_nAA" },
-      { id: 16, nombre: "Iviangely Figueroa", estado: "Nueva Esparta", categoria: "Infantil", shortId: "ViHlHCqC5DE" },
-      { id: 17, nombre: "Jaarol Zambrano", estado: "Delta Amacuro", categoria: "Infantil", shortId: "CaQwei6Ae-I" },
-      { id: 18, nombre: "Jeremías Torres", estado: "Anzoátegui", categoria: "Juvenil", shortId: "iefvIVpKd-w" },
-      { id: 19, nombre: "Gabriel Raúl Solórzano Guevara", estado: "Miranda", categoria: "Juvenil", shortId: "b9JyOpp3cmU" },
-      { id: 20, nombre: "José Luces", estado: "Sucre", categoria: "Infantil", shortId: "WEUn5S3SjQc" },
-      { id: 21, nombre: "Katerine Moreno", estado: "Bolívar", categoria: "Juvenil", shortId: "jSniXY7y9Nc" },
-      { id: 22, nombre: "Marianolys Velázquez", estado: "Delta Amacuro", categoria: "Juvenil", shortId: "KiCBHQvwQ90" },
-      { id: 23, nombre: "Michell Meza", estado: "Táchira", categoria: "Infantil", shortId: "KarvJK7Eums" },
-      { id: 24, nombre: "Natalia Moreno", estado: "Zulia", categoria: "Juvenil", shortId: "cDC3j42em6k" },
-      { id: 25, nombre: "Ronaikel García", estado: "Distrito Capital", categoria: "Juvenil", shortId: "RJGE8CrrIVU" },
-      { id: 26, nombre: "Roshelen Rivas", estado: "Nueva Esparta", categoria: "Juvenil", shortId: "_G_7_hSKTZA" },
-      { id: 27, nombre: "Samuel Montilla", estado: "Barinas", categoria: "Juvenil", shortId: "iHgtqyPmn2s" },
-      { id: 28, nombre: "Santiago Uriño", estado: "Trujillo", categoria: "Juvenil", shortId: "qu3xSlgytI8" },
-      { id: 29, nombre: "Sebastián Sucre", estado: "Sucre", categoria: "Juvenil", shortId: "T1foDecyaz4" },
-      { id: 30, nombre: "Silvia de la Chiquinquirá", estado: "Amazonas", categoria: "Juvenil", shortId: "d9NLY3PM9EE" },
-      { id: 31, nombre: "Victoria Barrera", estado: "Táchira", categoria: "Juvenil", shortId: "6-34XsFqoFQ" }
+    // =========================================================================
+    // PLANILLA OFICIAL ELIMINATORIA INFANTIL (ORDEN #01 AL #16) + JUVENIL
+    // =========================================================================
+    const ESCALETA_INFANTIL = [
+      {
+        key: "inf_1",
+        voteId: 13,
+        orden: 1,
+        nombre: "Gabriela Galilea Andrade Gutiérrez",
+        estado: "Zulia",
+        categoria: "Infantil",
+        tema: "Los 2 Gavilanes",
+        autor: "Letra y Música de: Adelis Freitez",
+        genero: "Merengue Larense",
+        shortId: "uqfYsz2oKeA"
+      },
+      {
+        key: "inf_2",
+        voteId: 20,
+        orden: 2,
+        nombre: "José Pablo Luces Maurera",
+        estado: "Sucre",
+        categoria: "Infantil",
+        tema: "Lara es una Sola",
+        autor: "Letra y Música de: Virgilio Arrieta",
+        genero: "Golpe Tocuyano",
+        shortId: "WEUn5S3SjQc"
+      },
+      {
+        key: "inf_3",
+        voteId: 23,
+        orden: 3,
+        nombre: "Michell Saray Meza Villamizar",
+        estado: "Táchira",
+        categoria: "Infantil",
+        tema: "Suelo Larense",
+        autor: "Letra y Música de: Pastor Jiménez",
+        genero: "Vals Larense",
+        shortId: "KarvJK7Eums"
+      },
+      {
+        key: "inf_4",
+        voteId: 8,
+        orden: 4,
+        nombre: "Christal Esmeralda Díaz Rivas",
+        estado: "Miranda",
+        categoria: "Infantil",
+        tema: "El Morenito",
+        autor: "Letra y Música de: Don Pío Alvarado",
+        genero: "Golpe Tocuyano",
+        shortId: "Jn4ai5tgZ0Y"
+      },
+      {
+        key: "inf_5",
+        voteId: 7,
+        orden: 5,
+        nombre: "Carlos Manuel Guaramata Perfecto",
+        estado: "Anzoátegui",
+        categoria: "Infantil",
+        tema: "Guitarra Larense",
+        autor: "Letra y Música de: Gilberto Mejías Palazzi",
+        genero: "Vals Larense",
+        shortId: "EO2tp1xoUT4"
+      },
+      {
+        key: "inf_6",
+        voteId: 26,
+        orden: 6,
+        nombre: "Roshelen Victoria Rivas Valderrama",
+        estado: "Nueva Esparta",
+        categoria: "Infantil",
+        tema: "Lo que El Tocuyo me dio",
+        autor: "Letra y Música de: Omar Carrizales",
+        genero: "Golpe Tocuyano",
+        shortId: "_G_7_hSKTZA"
+      },
+      {
+        key: "inf_7",
+        voteId: 12,
+        orden: 7,
+        nombre: "Fraivelis Nicole Parra Sánchez",
+        estado: "Lara",
+        categoria: "Infantil",
+        tema: "Adelante Juventud (Tema Inédito)",
+        autor: "Letra y Música de: Juan Ramón Barrios",
+        genero: "Golpe Tocuyano",
+        shortId: "pdOQEE1sV7M"
+      },
+      {
+        key: "inf_8",
+        voteId: 27,
+        orden: 8,
+        nombre: "Samuel Andrés Montilla Cabanerio",
+        estado: "Barinas",
+        categoria: "Infantil",
+        tema: "Noches Larenses",
+        autor: "Letra y Música de: Juan Ramón Barrios",
+        genero: "Bambuco Larense",
+        shortId: "iHgtqyPmn2s"
+      },
+      {
+        key: "inf_9",
+        voteId: 22,
+        orden: 9,
+        nombre: "Marialnolys Velázquez",
+        estado: "Delta Amacuro",
+        categoria: "Infantil",
+        tema: "El Espanto",
+        autor: "Letra y Música de: Adelis Freitez",
+        genero: "Merengue Larense",
+        shortId: "KiCBHQvwQ90"
+      },
+      {
+        key: "inf_10",
+        voteId: 15,
+        orden: 10,
+        nombre: "Isabella Sofía López Márquez",
+        estado: "Distrito Capital",
+        categoria: "Infantil",
+        tema: "BARQUISIMETANA",
+        autor: "Letra y Música de: Avilés Castro",
+        genero: "Vals Larense",
+        shortId: "fw238TK_nAA"
+      },
+      {
+        key: "inf_11",
+        voteId: 2,
+        orden: 11,
+        nombre: "Talía de los Ángeles Meléndez Suárez",
+        estado: "Bolívar",
+        categoria: "Infantil",
+        tema: "Lara Tierra del Sol (Tema Inédito)",
+        autor: "Letra: Raquel Báez · Música: Hermanos Marín",
+        genero: "Merengue Larense",
+        shortId: "cQM1QJoF4JA"
+      },
+      {
+        key: "inf_12",
+        voteId: 28,
+        orden: 12,
+        nombre: "Santiago Gudiño",
+        estado: "Trujillo",
+        categoria: "Infantil",
+        tema: "Guitarra Larense",
+        autor: "Letra y Música de: Gilberto Mejías Palazzi",
+        genero: "Vals Larense",
+        shortId: "qu3xSlgytI8"
+      },
+      {
+        key: "inf_13",
+        voteId: 1,
+        orden: 13,
+        nombre: "Tyler Mathias Colina Yzarra",
+        estado: "Mérida",
+        categoria: "Infantil",
+        tema: "A TI DIVINA PASTORA",
+        autor: "Letra y Música de: Adal Carrizales",
+        genero: "Golpe Tocuyano",
+        shortId: "r_2LEocre14"
+      },
+      {
+        key: "inf_14",
+        voteId: 3,
+        orden: 14,
+        nombre: "Ángel Gabriel Sánchez",
+        estado: "Carabobo",
+        categoria: "Infantil",
+        tema: "Noches Larenses",
+        autor: "Letra y Música de: Juan Ramón Barrios",
+        genero: "Bambuco Larense",
+        shortId: "BKrNX8sXLxQ"
+      },
+      {
+        key: "inf_15",
+        voteId: 30,
+        orden: 15,
+        nombre: "Silvia Valeria Coro Beja",
+        estado: "Amazonas",
+        categoria: "Infantil",
+        tema: "Versos en alas de un tucán (Tema Inédito)",
+        autor: "Letra y Música de: Yaminson Payema",
+        genero: "Golpe Tocuyano",
+        shortId: "d9NLY3PM9EE"
+      },
+      {
+        key: "inf_16",
+        voteId: 0,
+        orden: 16,
+        nombre: "15 Participantes (Cierre Grupal)",
+        estado: "Todas las Regionales",
+        categoria: "Infantil",
+        tema: "VENEZUELA",
+        autor: "Letra y Música de: Pablo Herrero y José Luis Armenteros",
+        genero: "Vals Venezolano",
+        shortId: ""
+      }
     ];
 
-    const CAT_STORAGE_KEY = "fnns_categorias_custom_2026";
-    let categoriasCustom = JSON.parse(localStorage.getItem(CAT_STORAGE_KEY) || "{}");
-    let PARTICIPANTES_OFICIALES = PARTICIPANTES_DEFAULT.map(p => ({
-      ...p,
-      categoria: categoriasCustom[p.id] || p.categoria
-    }));
+    const ESCALETA_JUVENIL = [
+      { key: "juv_1", voteId: 4, orden: 1, nombre: "Albenis Pérez", estado: "Carabobo", categoria: "Juvenil", tema: "", autor: "", genero: "Música Venezolana", shortId: "zGGRW8eMHNk" },
+      { key: "juv_2", voteId: 5, orden: 2, nombre: "Aimé García", estado: "Barinas", categoria: "Juvenil", tema: "", autor: "", genero: "Música Venezolana", shortId: "3o0TQjPhKfU" },
+      { key: "juv_3", voteId: 6, orden: 3, nombre: "Antonio Urbina", estado: "Mérida", categoria: "Juvenil", tema: "", autor: "", genero: "Música Venezolana", shortId: "5KCJl2vTWpU" },
+      { key: "juv_4", voteId: 9, orden: 4, nombre: "Daniela Fontana", estado: "Trujillo", categoria: "Juvenil", tema: "", autor: "", genero: "Música Venezolana", shortId: "SXODrGfMJ0E" },
+      { key: "juv_5", voteId: 10, orden: 5, nombre: "Enma Frías", estado: "Lara", categoria: "Juvenil", tema: "", autor: "", genero: "Música Venezolana", shortId: "RLrVTJg_2S8" },
+      { key: "juv_6", voteId: 11, orden: 6, nombre: "Esthela Vázquez", estado: "Cojedes", categoria: "Juvenil", tema: "", autor: "", genero: "Música Venezolana", shortId: "Q2w6w8BNT3w" },
+      { key: "juv_7", voteId: 14, orden: 7, nombre: "Gabriela González", estado: "Amazonas", categoria: "Juvenil", tema: "", autor: "", genero: "Música Venezolana", shortId: "79nkO6SvvdY" },
+      { key: "juv_8", voteId: 16, orden: 8, nombre: "Iviangely Figueroa", estado: "Nueva Esparta", categoria: "Juvenil", tema: "", autor: "", genero: "Música Venezolana", shortId: "ViHlHCqC5DE" },
+      { key: "juv_9", voteId: 17, orden: 9, nombre: "Jaarol Zambrano", estado: "Delta Amacuro", categoria: "Juvenil", tema: "", autor: "", genero: "Música Venezolana", shortId: "CaQwei6Ae-I" },
+      { key: "juv_10", voteId: 18, orden: 10, nombre: "Jeremías Torres", estado: "Anzoátegui", categoria: "Juvenil", tema: "", autor: "", genero: "Música Venezolana", shortId: "iefvIVpKd-w" },
+      { key: "juv_11", voteId: 19, orden: 11, nombre: "Gabriel Raúl Solórzano Guevara", estado: "Miranda", categoria: "Juvenil", tema: "", autor: "", genero: "Música Venezolana", shortId: "b9JyOpp3cmU" },
+      { key: "juv_12", voteId: 21, orden: 12, nombre: "Katerine Moreno", estado: "Bolívar", categoria: "Juvenil", tema: "", autor: "", genero: "Música Venezolana", shortId: "jSniXY7y9Nc" },
+      { key: "juv_13", voteId: 24, orden: 13, nombre: "Natalia Moreno", estado: "Zulia", categoria: "Juvenil", tema: "", autor: "", genero: "Música Venezolana", shortId: "cDC3j42em6k" },
+      { key: "juv_14", voteId: 25, orden: 14, nombre: "Ronaikel García", estado: "Distrito Capital", categoria: "Juvenil", tema: "", autor: "", genero: "Música Venezolana", shortId: "RJGE8CrrIVU" },
+      { key: "juv_15", voteId: 29, orden: 15, nombre: "Sebastián Sucre", estado: "Sucre", categoria: "Juvenil", tema: "", autor: "", genero: "Música Venezolana", shortId: "T1foDecyaz4" },
+      { key: "juv_16", voteId: 31, orden: 16, nombre: "Victoria Barrera", estado: "Táchira", categoria: "Juvenil", tema: "", autor: "", genero: "Música Venezolana", shortId: "6-34XsFqoFQ" }
+    ];
+
+    const TODOS_PARTICIPANTES_VOTACION = [...ESCALETA_INFANTIL.filter(p => p.voteId > 0), ...ESCALETA_JUVENIL];
 
     function detectarUrlVotacionPorDefecto() {
       try {
@@ -851,7 +1127,7 @@
     const isOutputMode = params.get("mode") === "output";
     let canalId = (params.get("canal") || "FNNS2026").toUpperCase().replace(/[^A-Z0-9_-]/g, "");
     let safeGuidesVisible = true;
-    let participanteSeleccionadoId = 19;
+    let participanteActivoKey = "inf_1";
     let ultimaUrlQrRenderizada = "";
 
     let state = {
@@ -860,11 +1136,15 @@
       foxElections: false,
       foxTower: false,
       lowerArtist: false,
+      songInfo: false,
       tickerBanner: false,
-      artistName: "Gabriel Raúl Solórzano",
-      artistState: "Miranda",
-      artistCategory: "Juvenil",
-      artistSong: "SEMIFINALES 2026",
+      artistName: "Gabriela Galilea Andrade Gutiérrez",
+      artistState: "Zulia",
+      artistCategory: "Infantil",
+      artistSong: "ORDEN #01 · SEMIFINALES",
+      songTitle: "Los 2 Gavilanes",
+      songAuthor: "Letra y Música de: Adelis Freitez",
+      songGenre: "Merengue Larense",
       tickerText: "ESCANEA EL CÓDIGO QR Y VOTA POR TUS 5 FAVORITOS EN DIRECTO",
       voteUrl: detectarUrlVotacionPorDefecto()
     };
@@ -958,19 +1238,13 @@
       aplicarEstadoVisual();
     }
 
-    // Cambia entre SEMIFINALES y GALA FINAL en todas las capas al instante
     function setEventStage(nuevaEtapa) {
       state.eventStage = nuevaEtapa;
-
       const inputSong = document.getElementById("inputArtistSong");
       if (inputSong) {
-        const val = inputSong.value.trim().toUpperCase();
-        if (!val || val === "SEMIFINALES 2026" || val === "GALA FINAL 2026") {
-          inputSong.value = `${nuevaEtapa} 2026`;
-          state.artistSong = `${nuevaEtapa} 2026`;
-        }
+        inputSong.value = inputSong.value.replace(/SEMIFINALES|GALA FINAL/gi, nuevaEtapa);
+        state.artistSong = inputSong.value;
       }
-
       emitirCambioEstado();
     }
 
@@ -979,9 +1253,49 @@
       emitirCambioEstado();
     }
 
+    // Disparo IN/OUT con exclusión mutua entre Nombre y Ficha Musical para no encimarlas
     function toggleLayer(layerKey) {
-      state[layerKey] = !state[layerKey];
+      const nuevoValor = !state[layerKey];
+      state[layerKey] = nuevoValor;
+
+      if (nuevoValor && layerKey === "lowerArtist") {
+        state.songInfo = false;
+      } else if (nuevoValor && layerKey === "songInfo") {
+        state.lowerArtist = false;
+      }
+
       emitirCambioEstado();
+    }
+
+    // Alterna suavemente entre la Pleca del Participante y la Ficha Musical
+    function alternarNombreYCancion() {
+      if (state.lowerArtist) {
+        state.lowerArtist = false;
+        emitirCambioEstado();
+        setTimeout(() => {
+          state.songInfo = true;
+          emitirCambioEstado();
+        }, 380);
+      } else if (state.songInfo) {
+        state.songInfo = false;
+        emitirCambioEstado();
+        setTimeout(() => {
+          state.lowerArtist = true;
+          emitirCambioEstado();
+        }, 380);
+      } else {
+        state.songInfo = true;
+        emitirCambioEstado();
+      }
+    }
+
+    function reanimarCapa(layerKey) {
+      state[layerKey] = false;
+      emitirCambioEstado();
+      setTimeout(() => {
+        state[layerKey] = true;
+        emitirCambioEstado();
+      }, 380);
     }
 
     function sacarTodosLosOverlays() {
@@ -989,6 +1303,7 @@
       state.foxElections = false;
       state.foxTower = false;
       state.lowerArtist = false;
+      state.songInfo = false;
       state.tickerBanner = false;
       emitirCambioEstado();
     }
@@ -1004,87 +1319,90 @@
     function actualizarTextosEnVivo(reanimar = false) {
       state.artistName = document.getElementById("inputArtistName").value.trim() || "Participante";
       state.artistState = document.getElementById("inputArtistState").value.trim() || "Venezuela";
-      state.artistCategory = document.getElementById("selectArtistCategory").value || "Juvenil";
+      state.artistCategory = document.getElementById("selectArtistCategory").value || "Infantil";
       state.artistSong = document.getElementById("inputArtistSong").value.trim() || `${state.eventStage} 2026`;
+
+      state.songTitle = document.getElementById("inputSongTitle").value.trim() || "Tema Musical";
+      state.songGenre = document.getElementById("inputSongGenre").value.trim() || "Música Venezolana";
+      state.songAuthor = document.getElementById("inputSongAuthor").value.trim() || "Folklore Venezolano";
+
       state.tickerText = document.getElementById("inputTickerText").value.trim();
 
-      if (reanimar && state.lowerArtist) {
-        reanimarPlecaNombre();
+      if (reanimar) {
+        if (state.lowerArtist) reanimarCapa("lowerArtist");
+        else if (state.songInfo) reanimarCapa("songInfo");
+        else emitirCambioEstado();
       } else {
         emitirCambioEstado();
       }
     }
 
-    function cambiarCategoriaParticipanteActivo(nuevaCat) {
-      if (participanteSeleccionadoId) {
-        categoriasCustom[participanteSeleccionadoId] = nuevaCat;
-        localStorage.setItem(CAT_STORAGE_KEY, JSON.stringify(categoriasCustom));
-        PARTICIPANTES_OFICIALES = PARTICIPANTES_OFICIALES.map(p =>
-          p.id === participanteSeleccionadoId ? { ...p, categoria: nuevaCat } : p
-        );
-        renderizarListasCategorias();
-      }
-      actualizarTextosEnVivo(true);
-    }
-
-    function reanimarPlecaNombre() {
-      state.artistName = document.getElementById("inputArtistName").value.trim() || "Participante";
-      state.artistState = document.getElementById("inputArtistState").value.trim() || "Venezuela";
-      state.artistCategory = document.getElementById("selectArtistCategory").value || "Juvenil";
-      state.artistSong = document.getElementById("inputArtistSong").value.trim() || `${state.eventStage} 2026`;
-
-      state.lowerArtist = false;
-      emitirCambioEstado();
-      setTimeout(() => {
-        state.lowerArtist = true;
-        emitirCambioEstado();
-      }, 380);
-    }
-
-    function seleccionarParticipanteRapido(idNum) {
-      const p = PARTICIPANTES_OFICIALES.find(x => x.id === Number(idNum));
+    function seleccionarParticipantePorKey(key) {
+      const p = [...ESCALETA_INFANTIL, ...ESCALETA_JUVENIL].find(x => x.key === key);
       if (!p) return;
-      participanteSeleccionadoId = p.id;
+
+      participanteActivoKey = p.key;
+      const ordenTag = `ORDEN #${String(p.orden).padStart(2, "0")} · ${state.eventStage}`;
+
       document.getElementById("inputArtistName").value = p.nombre;
       document.getElementById("inputArtistState").value = p.estado;
       document.getElementById("selectArtistCategory").value = p.categoria;
+      document.getElementById("inputArtistSong").value = ordenTag;
+
+      document.getElementById("inputSongTitle").value = p.tema || "Tema por confirmar";
+      document.getElementById("inputSongGenre").value = p.genero || "Música Venezolana";
+      document.getElementById("inputSongAuthor").value = p.autor || "Autor por confirmar";
+
       renderizarListasCategorias();
       actualizarTextosEnVivo(true);
     }
 
     function renderizarListasCategorias() {
       const q = (document.getElementById("filtroRapidoParticipantes")?.value || "").toLowerCase().trim();
-      const infantiles = PARTICIPANTES_OFICIALES.filter(p =>
-        p.categoria === "Infantil" && `${p.nombre} ${p.estado}`.toLowerCase().includes(q)
+
+      const infantiles = ESCALETA_INFANTIL.filter(p =>
+        `${p.orden} ${p.nombre} ${p.estado} ${p.tema} ${p.genero}`.toLowerCase().includes(q)
       );
-      const juveniles = PARTICIPANTES_OFICIALES.filter(p =>
-        p.categoria === "Juvenil" && `${p.nombre} ${p.estado}`.toLowerCase().includes(q)
+      const juveniles = ESCALETA_JUVENIL.filter(p =>
+        `${p.orden} ${p.nombre} ${p.estado} ${p.tema}`.toLowerCase().includes(q)
       );
 
       document.getElementById("countInfantil").innerText = infantiles.length;
       document.getElementById("countJuvenil").innerText = juveniles.length;
 
-      const renderChip = (p, colorActive) => {
-        const activo = p.id === participanteSeleccionadoId;
+      document.getElementById("listaChipsInfantil").innerHTML = infantiles.map(p => {
+        const activo = p.key === participanteActivoKey;
+        const ord = String(p.orden).padStart(2, "0");
         return `
           <button
             type="button"
-            onclick="seleccionarParticipanteRapido(${p.id})"
-            class="text-left px-2.5 py-2 rounded-xl border text-xs transition cursor-pointer flex items-center justify-between gap-2 ${activo ? colorActive : "bg-white/[0.04] hover:bg-white/[0.1] border-white/10 text-slate-200"}"
+            onclick="seleccionarParticipantePorKey('${p.key}')"
+            class="text-left px-2.5 py-2 rounded-xl border text-xs transition cursor-pointer flex flex-col gap-0.5 ${activo ? "bg-sky-400 text-slate-950 border-sky-300 shadow-md" : "bg-white/[0.04] hover:bg-white/[0.1] border-white/10 text-slate-200"}"
+          >
+            <div class="flex items-center justify-between gap-1.5 w-full">
+              <span class="font-extrabold truncate">#${ord} ${p.nombre}</span>
+              <span class="text-[9px] font-black uppercase tracking-wider shrink-0 opacity-85">${p.estado}</span>
+            </div>
+            <div class="text-[10px] truncate ${activo ? "text-slate-900 font-bold" : "text-sky-300/80"}">
+              ♪ ${p.tema} &middot; ${p.genero}
+            </div>
+          </button>
+        `;
+      }).join("");
+
+      document.getElementById("listaChipsJuvenil").innerHTML = juveniles.map(p => {
+        const activo = p.key === participanteActivoKey;
+        return `
+          <button
+            type="button"
+            onclick="seleccionarParticipantePorKey('${p.key}')"
+            class="text-left px-3 py-2 rounded-xl border text-xs transition cursor-pointer flex items-center justify-between gap-2 ${activo ? "bg-[#f5b942] text-slate-950 border-amber-300 shadow-md" : "bg-white/[0.04] hover:bg-white/[0.1] border-white/10 text-slate-200"}"
           >
             <span class="font-bold truncate">${p.nombre}</span>
             <span class="text-[10px] font-extrabold uppercase tracking-wider shrink-0 opacity-80">${p.estado}</span>
           </button>
         `;
-      };
-
-      document.getElementById("listaChipsInfantil").innerHTML = infantiles.map(p =>
-        renderChip(p, "bg-sky-400 text-slate-950 border-sky-300 shadow-md")
-      ).join("");
-
-      document.getElementById("listaChipsJuvenil").innerHTML = juveniles.map(p =>
-        renderChip(p, "bg-[#f5b942] text-slate-950 border-amber-300 shadow-md")
-      ).join("");
+      }).join("");
     }
 
     function obtenerUrlSalida() {
@@ -1109,7 +1427,7 @@
     }
 
     function aplicarEstadoVisual() {
-      const capas = ["bugLive", "foxElections", "foxTower", "lowerArtist", "tickerBanner"];
+      const capas = ["bugLive", "foxElections", "foxTower", "lowerArtist", "songInfo", "tickerBanner"];
       const etapaActual = (state.eventStage || "SEMIFINALES").toUpperCase();
       renderizarCodigosQR(state.voteUrl);
 
@@ -1127,10 +1445,10 @@
         document.getElementById("outFooterStage").innerText = `${etapaActual} 2026`;
         document.getElementById("outTickerStage").innerText = etapaActual;
 
+        // Datos Pleca Participante
         document.getElementById("outArtistName").innerText = state.artistName;
         document.getElementById("outArtistState").innerText = state.artistState;
         document.getElementById("outArtistSong").innerText = state.artistSong || `${etapaActual} 2026`;
-        document.getElementById("outTickerText").innerText = state.tickerText;
 
         const catBadge = document.getElementById("outArtistCategory");
         const esInfantil = (state.artistCategory || "").toLowerCase() === "infantil";
@@ -1138,8 +1456,16 @@
         catBadge.className = esInfantil
           ? "px-3 py-0.5 rounded-sm bg-sky-400 font-fox text-base font-black uppercase tracking-widest text-slate-950"
           : "px-3 py-0.5 rounded-sm bg-[#f5b942] font-fox text-base font-black uppercase tracking-widest text-black";
+
+        // Datos Ficha Musical (Insert Alterno)
+        const tituloLimpio = (state.songTitle || "").replace(/^[«"]|[»"]$/g, "");
+        document.getElementById("outSongTitle").innerText = `«${tituloLimpio}»`;
+        document.getElementById("outSongGenre").innerText = state.songGenre || "MÚSICA VENEZOLANA";
+        document.getElementById("outSongAuthor").innerText = state.songAuthor || "";
+        document.getElementById("outSongInterpreterBadge").innerText = `${state.artistState} · ${state.artistName}`;
+
+        document.getElementById("outTickerText").innerText = state.tickerText;
       } else {
-        // Actualizar estilo de botones Semifinales vs Gala Final en el Director
         const btnSemi = document.getElementById("btnStage_SEMIFINALES");
         const btnFinal = document.getElementById("btnStage_GALA_FINAL");
         if (btnSemi && btnFinal) {
@@ -1158,20 +1484,27 @@
           const badge = document.getElementById(`badge_${key}`);
           if (!btn || !badge) return;
 
+          const esBotonGrande = key === "lowerArtist" || key === "songInfo";
+          const labelIn = key === "lowerArtist"
+            ? "DAR ENTRADA NOMBRE (IN)"
+            : key === "songInfo"
+              ? "DAR ENTRADA FICHA MUSICAL (IN)"
+              : "DAR ENTRADA (IN)";
+
           if (activo) {
-            badge.className = "px-2.5 py-1 rounded text-[10px] font-extrabold uppercase bg-red-500/20 text-red-400 border border-red-500/40 animate-pulse";
+            badge.className = "px-2.5 py-0.5 rounded text-[10px] font-extrabold uppercase bg-red-500/20 text-red-400 border border-red-500/40 animate-pulse";
             badge.innerText = "● AL AIRE";
-            btn.className = key === "lowerArtist"
-              ? "flex-1 py-3.5 rounded-xl font-fox text-base font-black uppercase tracking-wider bg-red-600 hover:bg-red-500 text-white transition cursor-pointer flex items-center justify-center gap-2 shadow-lg shadow-red-600/25"
+            btn.className = esBotonGrande
+              ? "flex-1 py-3 rounded-xl font-fox text-sm sm:text-base font-black uppercase tracking-wider bg-red-600 hover:bg-red-500 text-white transition cursor-pointer flex items-center justify-center gap-2 shadow-lg shadow-red-600/25"
               : "w-full py-3 rounded-xl font-fox text-sm font-black uppercase tracking-wider bg-red-600 hover:bg-red-500 text-white transition cursor-pointer flex items-center justify-center gap-2 shadow-lg shadow-red-600/25";
             btn.innerHTML = `<i class="fa-solid fa-stop"></i><span>SACAR DEL AIRE (OUT)</span>`;
           } else {
-            badge.className = "px-2.5 py-1 rounded text-[10px] font-extrabold uppercase bg-white/5 text-slate-400";
+            badge.className = "px-2.5 py-0.5 rounded text-[10px] font-extrabold uppercase bg-white/5 text-slate-400";
             badge.innerText = "OFF AIR";
-            btn.className = key === "lowerArtist"
-              ? "flex-1 py-3.5 rounded-xl font-fox text-base font-black uppercase tracking-wider bg-emerald-500 hover:bg-emerald-400 text-black transition cursor-pointer flex items-center justify-center gap-2"
+            btn.className = esBotonGrande
+              ? "flex-1 py-3 rounded-xl font-fox text-sm sm:text-base font-black uppercase tracking-wider bg-emerald-500 hover:bg-emerald-400 text-black transition cursor-pointer flex items-center justify-center gap-2"
               : "w-full py-3 rounded-xl font-fox text-sm font-black uppercase tracking-wider bg-emerald-500 hover:bg-emerald-400 text-black transition cursor-pointer flex items-center justify-center gap-2";
-            btn.innerHTML = `<i class="fa-solid fa-play"></i><span>DAR ENTRADA (IN)</span>`;
+            btn.innerHTML = `<i class="fa-solid fa-play"></i><span>${labelIn}</span>`;
           }
         });
       }
@@ -1207,22 +1540,23 @@
           }
         });
 
-        let lista = PARTICIPANTES_OFICIALES.map(p => ({
+        let lista = TODOS_PARTICIPANTES_VOTACION.map(p => ({
           ...p,
-          votos: votosPorId[p.id] !== undefined ? votosPorId[p.id] : 0
+          votos: votosPorId[p.voteId] !== undefined ? votosPorId[p.voteId] : 0
         }));
 
         if (lista.reduce((a, b) => a + b.votos, 0) === 0 && votantes.length > 0) {
-          lista = PARTICIPANTES_OFICIALES.map(p => ({
+          lista = TODOS_PARTICIPANTES_VOTACION.map(p => ({
             ...p,
             votos: votantes.filter(v => {
               const t = normalizarTexto(v.votosResumen || v.candidatosNombres || "");
-              return t.includes(normalizarTexto(p.nombre)) && t.includes(normalizarTexto(p.estado));
+              const primerNombre = normalizarTexto(p.nombre.split(" ")[0]);
+              return t.includes(primerNombre) && t.includes(normalizarTexto(p.estado));
             }).length
           }));
         }
 
-        lista.sort((a, b) => b.votos - a.votos || a.id - b.id);
+        lista.sort((a, b) => b.votos - a.votos || a.voteId - b.voteId);
         const top5 = lista.slice(0, 5);
         const totalVotos = lista.reduce((a, b) => a + b.votos, 0);
         const maxVotos = Math.max(1, top5[0]?.votos || 1);
@@ -1307,7 +1641,15 @@
         document.getElementById("directorUI").classList.remove("hidden");
         document.getElementById("inputCanalId").value = canalId;
         document.getElementById("inputVoteUrlQR").value = state.voteUrl;
-        document.getElementById("inputArtistSong").value = state.artistSong || `${state.eventStage} 2026`;
+
+        document.getElementById("inputArtistName").value = state.artistName;
+        document.getElementById("inputArtistState").value = state.artistState;
+        document.getElementById("selectArtistCategory").value = state.artistCategory;
+        document.getElementById("inputArtistSong").value = state.artistSong;
+
+        document.getElementById("inputSongTitle").value = state.songTitle;
+        document.getElementById("inputSongGenre").value = state.songGenre;
+        document.getElementById("inputSongAuthor").value = state.songAuthor;
 
         renderizarListasCategorias();
         document.getElementById("iframePreviewMonitor").src = obtenerUrlSalida();
