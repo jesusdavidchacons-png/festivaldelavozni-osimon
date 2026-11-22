@@ -189,6 +189,17 @@
       }
     }
 
+    @keyframes pipBorderAlive {
+      0%, 100% {
+        border-color: rgba(245, 185, 66, 0.65);
+        box-shadow: 0 22px 55px rgba(0, 0, 0, 0.85), 0 0 18px rgba(245, 185, 66, 0.2);
+      }
+      50% {
+        border-color: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 26px 65px rgba(0, 0, 0, 0.92), 0 0 30px rgba(245, 185, 66, 0.45);
+      }
+    }
+
     @keyframes diagonalLightSheen {
       0%, 48% {
         transform: translateX(-150%) skewX(-24deg);
@@ -268,6 +279,16 @@
       animation: diagonalLightSheen 4.8s ease-in-out infinite;
     }
 
+    .pip-chassis {
+      background: transparent !important;
+      border: 2.5px solid #f5b942;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .is-on-air .pip-chassis {
+      animation: pipBorderAlive 3.4s ease-in-out infinite;
+    }
+
     .is-on-air .logo-alive {
       animation: logoBreathe 4s ease-in-out infinite;
     }
@@ -333,7 +354,7 @@
               Realización 16:9 &middot; YoloBox Extreme
             </span>
             <h1 class="font-fox text-lg sm:text-xl font-black uppercase text-white leading-none">
-              Disparador de Overlays Alpha (1920&times;1080)
+              Consola Integral de Transmisión y Overlays
             </h1>
           </div>
         </div>
@@ -358,6 +379,124 @@
     </header>
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 pt-6 space-y-6">
+
+      <!-- =====================================================================
+           MÓDULO 0: ENLACE OFICIAL DE YOUTUBE LIVE (ACTUALIZA envivo.html EN DIRECTO)
+           ===================================================================== -->
+      <section class="bg-gradient-to-r from-[#140912] via-[#0d1629] to-[#0a101f] border border-red-500/35 rounded-2xl p-5 shadow-xl space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-3">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl bg-red-600/20 border border-red-500/40 text-red-400 flex items-center justify-center shrink-0">
+              <i class="fa-brands fa-youtube text-lg"></i>
+            </div>
+            <div>
+              <span class="text-[10px] font-bold uppercase tracking-widest text-red-400 block">
+                Señal Oficial Web &middot; Sincronizada con envivo.html
+              </span>
+              <h2 class="font-fox text-xl font-black uppercase text-white leading-none">
+                Enlace de la Transmisión Oficial de YouTube
+              </h2>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <span id="streamBackendSyncStatus" class="text-[11px] font-mono text-slate-400">Cargando enlace actual...</span>
+            <a id="linkAbrirWebPublica" href="envivo.html" target="_blank" class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-xs font-bold text-white flex items-center gap-1.5 transition">
+              <span>Ver Web Pública</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-[#f5b942]"></i>
+            </a>
+          </div>
+        </div>
+
+        <form onsubmit="publicarEnlaceYouTubeEnWeb(event)" class="grid grid-cols-1 lg:grid-cols-12 gap-3.5 items-end">
+          <!-- Enlace YouTube -->
+          <div class="lg:col-span-5 space-y-1">
+            <div class="flex items-center justify-between">
+              <label for="inputStreamYoutubeUrl" class="text-[10px] uppercase font-bold text-slate-300">
+                URL del Directo o YouTube Studio *
+              </label>
+              <span class="text-[10px] font-mono text-emerald-400">ID: <strong id="badgeStreamYoutubeId">—</strong></span>
+            </div>
+            <input
+              type="text"
+              id="inputStreamYoutubeUrl"
+              required
+              oninput="previsualizarEnlaceYouTube()"
+              placeholder="https://youtube.com/live/... o https://studio.youtube.com/video/..."
+              class="w-full bg-black/65 border border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-red-400"
+            />
+          </div>
+
+          <!-- Estado Emisión -->
+          <div class="lg:col-span-2 space-y-1">
+            <label for="selectStreamStatus" class="text-[10px] uppercase font-bold text-slate-300 block">
+              Estado en Web
+            </label>
+            <select id="selectStreamStatus" class="w-full bg-black/65 border border-white/20 rounded-xl px-3 py-2.5 text-xs font-bold text-white focus:outline-none focus:border-[#f5b942]">
+              <option value="EN_VIVO">● EN VIVO</option>
+              <option value="PROXIMAMENTE">⏳ Próximamente</option>
+              <option value="PAUSA">⏸ Intermedio</option>
+              <option value="FINALIZADO">🏁 Finalizado</option>
+            </select>
+          </div>
+
+          <!-- PIN + Interruptores -->
+          <div class="lg:col-span-2 space-y-1">
+            <label for="inputStreamAdminPin" class="text-[10px] uppercase font-bold text-slate-300 block">
+              PIN Backend *
+            </label>
+            <input
+              type="password"
+              id="inputStreamAdminPin"
+              value="2026"
+              required
+              class="w-full bg-black/65 border border-white/20 rounded-xl px-3 py-2.5 text-xs font-mono font-bold text-[#f5b942] text-center focus:outline-none focus:border-[#f5b942]"
+            />
+          </div>
+
+          <!-- Botón Publicar -->
+          <div class="lg:col-span-3 flex items-center gap-2.5">
+            <div class="w-16 h-10 rounded-lg overflow-hidden bg-black border border-white/15 shrink-0 hidden sm:block">
+              <img id="imgThumbStreamYT" src="" alt="Preview" class="w-full h-full object-cover opacity-80" />
+            </div>
+
+            <button
+              type="submit"
+              id="btnPublicarStreamYT"
+              class="flex-1 py-2.5 px-4 rounded-xl bg-red-600 hover:bg-red-500 text-white font-fox text-sm sm:text-base font-black uppercase tracking-wider shadow-lg shadow-red-600/25 transition cursor-pointer flex items-center justify-center gap-2"
+            >
+              <i class="fa-solid fa-satellite-dish"></i>
+              <span>ACTUALIZAR WEB</span>
+            </button>
+          </div>
+
+          <!-- Fila inferior opcional: Chat, Votación y Cintillo -->
+          <div class="lg:col-span-12 flex flex-wrap items-center justify-between gap-3 pt-1 border-t border-white/[0.06] text-xs">
+            <div class="flex flex-wrap items-center gap-4">
+              <label class="inline-flex items-center gap-2 cursor-pointer text-slate-300">
+                <input type="checkbox" id="checkStreamChatActivo" checked class="w-4 h-4 accent-[#f5b942] cursor-pointer" />
+                <span>Chat de YouTube Visible</span>
+              </label>
+
+              <label class="inline-flex items-center gap-2 cursor-pointer text-slate-300">
+                <input type="checkbox" id="checkStreamVotacionAbierta" checked class="w-4 h-4 accent-emerald-400 cursor-pointer" />
+                <span>Votaciones Abiertas en Web</span>
+              </label>
+            </div>
+
+            <div class="flex-1 max-w-md">
+              <input
+                type="text"
+                id="inputStreamAvisoBanner"
+                placeholder="Cintillo opcional arriba de envivo.html (dejar vacío para ocultar)..."
+                class="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-1.5 text-[11px] text-white placeholder-slate-500 focus:outline-none focus:border-[#f5b942]"
+              />
+            </div>
+          </div>
+        </form>
+
+        <div id="alertaStreamYouTube" class="hidden text-xs p-2.5 rounded-xl border text-center font-semibold"></div>
+      </section>
 
       <!-- SELECTOR DE ETAPA DE TRANSMISIÓN: SEMIFINALES VS GALA FINAL -->
       <div class="bg-gradient-to-r from-[#0d172c] via-[#111e38] to-[#0d172c] border border-[#f5b942]/40 rounded-2xl p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xl">
@@ -471,19 +610,17 @@
 
         <!-- DOS COLUMNAS DIRECTAS: INFANTIL (ORDEN #01-#16 OFICIAL) VS JUVENIL -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
-          <!-- Bloque Infantil (7 cols con orden de actuación y tema) -->
           <div class="lg:col-span-7 bg-black/40 border border-sky-400/30 rounded-2xl p-3.5 space-y-2.5">
             <div class="flex items-center justify-between">
               <span class="font-fox text-sm font-black uppercase tracking-wider text-sky-300 flex items-center gap-1.5">
                 <span class="w-2 h-2 rounded-full bg-sky-400"></span>
                 Orden Eliminatoria Infantil (<span id="countInfantil">0</span>)
               </span>
-              <span class="text-[10px] text-slate-400">Carga nombre + tema + autor + género</span>
+              <span class="text-[10px] text-slate-400">Carga nombre + tema + autor + género + PiP estado</span>
             </div>
             <div id="listaChipsInfantil" class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 max-h-60 overflow-y-auto custom-scroll pr-1"></div>
           </div>
 
-          <!-- Bloque Juvenil (5 cols) -->
           <div class="lg:col-span-5 bg-black/40 border border-[#f5b942]/30 rounded-2xl p-3.5 space-y-2.5">
             <div class="flex items-center justify-between">
               <span class="font-fox text-sm font-black uppercase tracking-wider text-[#f5b942] flex items-center gap-1.5">
@@ -543,7 +680,7 @@
             </div>
           </div>
 
-          <!-- INSERT 2 (ALTERNO): FICHA MUSICAL (CANCIÓN, AUTOR Y GÉNERO) -->
+          <!-- INSERT 2 (ALTERNO): FICHA MUSICAL -->
           <div class="lg:col-span-6 bg-black/45 border border-sky-400/25 rounded-2xl p-4 space-y-3 flex flex-col justify-between">
             <div class="space-y-3">
               <div class="flex items-center justify-between">
@@ -556,15 +693,15 @@
               <div class="grid grid-cols-1 sm:grid-cols-12 gap-2">
                 <div class="sm:col-span-7">
                   <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Tema Musical (Canción)</label>
-                  <input type="text" id="inputSongTitle" value="Los 2 Gavilanes" oninput="actualizarTextosEnVivo(false)" placeholder="Título de la canción" class="w-full bg-black/70 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-400" />
+                  <input type="text" id="inputSongTitle" value="Los 2 Gavilanes" oninput="actualizarTextosEnVivo(false)" class="w-full bg-black/70 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-400" />
                 </div>
                 <div class="sm:col-span-5">
                   <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Género Musical</label>
-                  <input type="text" id="inputSongGenre" value="Merengue Larense" oninput="actualizarTextosEnVivo(false)" placeholder="Ej. Golpe Tocuyano" class="w-full bg-black/70 border border-white/15 rounded-xl px-3 py-2 text-xs font-semibold text-sky-300 focus:outline-none focus:border-sky-400" />
+                  <input type="text" id="inputSongGenre" value="Merengue Larense" oninput="actualizarTextosEnVivo(false)" class="w-full bg-black/70 border border-white/15 rounded-xl px-3 py-2 text-xs font-semibold text-sky-300 focus:outline-none focus:border-sky-400" />
                 </div>
                 <div class="sm:col-span-12">
                   <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Autor / Compositor</label>
-                  <input type="text" id="inputSongAuthor" value="Letra y Música de: Adelis Freitez" oninput="actualizarTextosEnVivo(false)" placeholder="Autor y compositor" class="w-full bg-black/70 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-400" />
+                  <input type="text" id="inputSongAuthor" value="Letra y Música de: Adelis Freitez" oninput="actualizarTextosEnVivo(false)" class="w-full bg-black/70 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-400" />
                 </div>
               </div>
             </div>
@@ -574,7 +711,7 @@
                 <i class="fa-solid fa-play"></i>
                 <span>DAR ENTRADA FICHA MUSICAL (IN)</span>
               </button>
-              <button type="button" onclick="alternarNombreYCancion()" title="Alterna automáticamente entre la Pleca del Nombre y la Ficha Musical" class="px-3.5 py-3 rounded-xl bg-sky-400/20 hover:bg-sky-400/30 border border-sky-400/40 text-sky-300 font-fox text-xs font-extrabold uppercase tracking-wider cursor-pointer flex items-center gap-1">
+              <button type="button" onclick="alternarNombreYCancion()" title="Alterna automáticamente entre Nombre y Ficha Musical" class="px-3.5 py-3 rounded-xl bg-sky-400/20 hover:bg-sky-400/30 border border-sky-400/40 text-sky-300 font-fox text-xs font-extrabold uppercase tracking-wider cursor-pointer flex items-center gap-1">
                 <i class="fa-solid fa-right-left"></i>
                 <span>Alternar</span>
               </button>
@@ -582,6 +719,64 @@
           </div>
 
         </div>
+      </div>
+
+      <!-- =====================================================================
+           MÓDULO DE MARCO PiP DELEGACIÓN / PÚBLICO EN VIVO (YOLOBOX PiP)
+           ===================================================================== -->
+      <div class="bg-[#0a101f] border border-[#f5b942]/35 rounded-2xl p-5 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-3">
+          <div>
+            <span class="text-[10px] font-bold uppercase tracking-widest text-[#f5b942] block">
+              <i class="fa-solid fa-object-ungroup mr-1"></i> Cámara de Reacciones en Sala (Picture-in-Picture)
+            </span>
+            <h2 class="font-fox text-xl font-black uppercase text-white">
+              Marco Alpha para PiP de Delegación (Centro Transparente 16:9)
+            </h2>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button
+              type="button"
+              id="btnPipCalibrate"
+              onclick="togglePipCalibrate()"
+              class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-xs font-bold text-cyan-300 cursor-pointer transition"
+            >
+              <i class="fa-solid fa-crosshairs mr-1"></i> Guía Encuadre PiP: OFF
+            </button>
+
+            <span id="badge_pipDelegation" class="px-2.5 py-1.5 rounded text-[10px] font-extrabold uppercase bg-white/5 text-slate-400">OFF AIR</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-end">
+          <div class="md:col-span-4">
+            <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Etiqueta Delegación (Se sincroniza sola)</label>
+            <input type="text" id="inputPipState" value="DELEGACIÓN ZULIA" oninput="actualizarTextosEnVivo(false)" class="w-full bg-black/60 border border-white/15 rounded-xl px-3 py-2 text-xs font-bold text-[#f5b942] uppercase focus:outline-none focus:border-[#f5b942]" />
+          </div>
+
+          <div class="md:col-span-4">
+            <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Cintillo Inferior del PiP</label>
+            <input type="text" id="inputPipCaption" value="REACCIÓN EN SALA · APOYO FAMILIAR" oninput="actualizarTextosEnVivo(false)" class="w-full bg-black/60 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#f5b942]" />
+          </div>
+
+          <div class="md:col-span-4">
+            <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Ubicación en Pantalla 16:9</label>
+            <div class="grid grid-cols-2 gap-1.5">
+              <button type="button" id="btnPipPos_bottom" onclick="setPipPosition('bottom-right')" class="py-2 px-2 rounded-xl font-fox text-xs font-black uppercase tracking-wider bg-[#f5b942] text-black cursor-pointer">
+                Abajo Derecha
+              </button>
+              <button type="button" id="btnPipPos_top" onclick="setPipPosition('top-right')" class="py-2 px-2 rounded-xl font-fox text-xs font-bold uppercase tracking-wider bg-white/10 text-slate-300 cursor-pointer">
+                Arriba Derecha
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <button id="btn_pipDelegation" onclick="toggleLayer('pipDelegation')" class="w-full py-3.5 rounded-xl font-fox text-base font-black uppercase tracking-wider bg-emerald-500 hover:bg-emerald-400 text-black transition cursor-pointer flex items-center justify-center gap-2">
+          <i class="fa-solid fa-play"></i>
+          <span>DAR ENTRADA MARCO PiP DELEGACIÓN (IN)</span>
+        </button>
       </div>
 
       <!-- BOTONERA DE GRÁFICOS BROADCAST -->
@@ -710,8 +905,8 @@
         </div>
       </div>
 
-      <!-- CAPA B1: PLECA DE PARTICIPANTE EN ESCENA (NOMBRE + ESTADO + CATEGORÍA) -->
-      <div id="layer_lowerArtist" class="anim-left-layer absolute bottom-[64px] left-[64px] z-30 max-w-[1080px]">
+      <!-- CAPA B1: PLECA DE PARTICIPANTE EN ESCENA -->
+      <div id="layer_lowerArtist" class="anim-left-layer absolute bottom-[64px] left-[64px] z-30 max-w-[1060px]">
         <div class="presence-frame fox-shell rounded-md flex items-stretch">
           <div class="gold-pillar-alive w-3.5 shrink-0"></div>
           <div class="px-6 py-4 bg-[#08152e] flex items-center justify-center border-r border-white/15">
@@ -736,15 +931,14 @@
         </div>
       </div>
 
-      <!-- CAPA B2 (ALTERNA): FICHA MUSICAL EN ESCENA (TEMA + AUTOR + GÉNERO MUSICAL) -->
-      <div id="layer_songInfo" class="anim-left-layer absolute bottom-[64px] left-[64px] z-30 max-w-[1120px]">
+      <!-- CAPA B2 (ALTERNA): FICHA MUSICAL EN ESCENA -->
+      <div id="layer_songInfo" class="anim-left-layer absolute bottom-[64px] left-[64px] z-30 max-w-[1080px]">
         <div class="presence-frame fox-shell rounded-md flex items-stretch">
           <div class="cyan-pillar-alive w-3.5 shrink-0"></div>
           <div class="px-6 py-4 bg-[#08152e] flex flex-col items-center justify-center border-r border-white/15 gap-1">
             <img src="./logo_color.png" alt="Logo" style="-webkit-filter: brightness(0) invert(1); filter: brightness(0) invert(1);" class="h-14 w-auto object-contain logo-pure-white logo-alive" />
           </div>
           <div class="px-7 py-4 flex flex-col justify-center">
-            <!-- Fila Superior: Género Musical + Delegación -->
             <div class="sub-reveal-text flex flex-wrap items-center gap-2.5">
               <span class="px-3 py-0.5 rounded-sm bg-[#f5b942] font-fox text-base font-black uppercase tracking-widest text-black flex items-center gap-1.5">
                 <i class="fa-solid fa-music text-xs"></i>
@@ -755,15 +949,58 @@
               </span>
             </div>
 
-            <!-- Título del Tema Musical -->
             <div id="outSongTitle" class="name-reveal-text font-fox text-[40px] font-black uppercase text-white leading-none mt-2">
               «LOS 2 GAVILANES»
             </div>
 
-            <!-- Autor / Compositor -->
             <div id="outSongAuthor" class="author-reveal-text font-fox text-xl font-bold uppercase tracking-wide text-sky-300 mt-1.5">
               Letra y Música de: Adelis Freitez
             </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CAPA F: MARCO ALPHA PARA PiP DE DELEGACIÓN / PÚBLICO (CENTRO TRANSPARENTE 16:9) -->
+      <div id="layer_pipDelegation" class="anim-right-layer absolute bottom-[64px] right-[64px] w-[540px] z-25">
+        <div class="pip-chassis">
+          <div class="px-4 py-2 bg-gradient-to-r from-[#09152e] via-[#13264d] to-[#260b14] border-b-2 border-[#f5b942] flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2.5">
+              <img src="./logo_color.png" alt="Logo" style="-webkit-filter: brightness(0) invert(1); filter: brightness(0) invert(1);" class="h-6 w-auto object-contain logo-pure-white logo-alive" />
+              <div class="flex items-center gap-1.5 bg-[#e11d48] px-2 py-0.5 rounded-sm">
+                <span class="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span>
+                <span class="font-fox text-xs font-black uppercase tracking-widest text-white leading-none">EN SALA</span>
+              </div>
+            </div>
+
+            <span id="outPipState" class="font-fox text-base font-black uppercase tracking-wider text-[#f5b942] truncate">
+              DELEGACIÓN ZULIA
+            </span>
+          </div>
+
+          <div class="relative w-full aspect-video bg-transparent">
+            <span class="absolute top-2.5 left-2.5 w-4 h-4 border-t-2 border-l-2 border-[#f5b942]"></span>
+            <span class="absolute top-2.5 right-2.5 w-4 h-4 border-t-2 border-r-2 border-[#f5b942]"></span>
+            <span class="absolute bottom-2.5 left-2.5 w-4 h-4 border-b-2 border-l-2 border-[#f5b942]"></span>
+            <span class="absolute bottom-2.5 right-2.5 w-4 h-4 border-b-2 border-r-2 border-[#f5b942]"></span>
+
+            <div id="pipCalibrateGrid" class="hidden absolute inset-0 bg-cyan-500/20 border-2 border-dashed border-cyan-300 flex flex-col items-center justify-center text-center p-4">
+              <i class="fa-solid fa-crosshairs text-3xl text-cyan-300 mb-1"></i>
+              <span class="font-fox text-xl font-black uppercase text-white bg-black/75 px-3 py-1 rounded">
+                AJUSTA AQUÍ EL RECUADRO PiP EN TU YOLOBOX (16:9)
+              </span>
+            </div>
+          </div>
+
+          <div class="px-4 py-2 bg-[#050d1f]/95 border-t border-white/15 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2 min-w-0">
+              <span class="w-1.5 h-4 bg-[#f5b942] rounded-full shrink-0"></span>
+              <span id="outPipCaption" class="font-fox text-sm font-extrabold uppercase tracking-wider text-white truncate">
+                REACCIÓN EN SALA &middot; APOYO FAMILIAR
+              </span>
+            </div>
+            <span id="outPipCategory" class="px-2 py-0.5 rounded-sm bg-sky-400 font-fox text-xs font-black uppercase tracking-widest text-slate-950 shrink-0">
+              INFANTIL
+            </span>
           </div>
         </div>
       </div>
@@ -887,202 +1124,23 @@
   <script>
     const ENDPOINT_GOOGLE_SHEETS = "https://script.google.com/macros/s/AKfycbzH1tSBBdcN6gI5s7wQwAyifLzglIuMVjwbqBAQB5gVrfvIXZVTiMah9Dz01CQt4Ov1aA/exec";
 
-    // =========================================================================
-    // PLANILLA OFICIAL ELIMINATORIA INFANTIL (ORDEN #01 AL #16) + JUVENIL
-    // =========================================================================
     const ESCALETA_INFANTIL = [
-      {
-        key: "inf_1",
-        voteId: 13,
-        orden: 1,
-        nombre: "Gabriela Galilea Andrade Gutiérrez",
-        estado: "Zulia",
-        categoria: "Infantil",
-        tema: "Los 2 Gavilanes",
-        autor: "Letra y Música de: Adelis Freitez",
-        genero: "Merengue Larense",
-        shortId: "uqfYsz2oKeA"
-      },
-      {
-        key: "inf_2",
-        voteId: 20,
-        orden: 2,
-        nombre: "José Pablo Luces Maurera",
-        estado: "Sucre",
-        categoria: "Infantil",
-        tema: "Lara es una Sola",
-        autor: "Letra y Música de: Virgilio Arrieta",
-        genero: "Golpe Tocuyano",
-        shortId: "WEUn5S3SjQc"
-      },
-      {
-        key: "inf_3",
-        voteId: 23,
-        orden: 3,
-        nombre: "Michell Saray Meza Villamizar",
-        estado: "Táchira",
-        categoria: "Infantil",
-        tema: "Suelo Larense",
-        autor: "Letra y Música de: Pastor Jiménez",
-        genero: "Vals Larense",
-        shortId: "KarvJK7Eums"
-      },
-      {
-        key: "inf_4",
-        voteId: 8,
-        orden: 4,
-        nombre: "Christal Esmeralda Díaz Rivas",
-        estado: "Miranda",
-        categoria: "Infantil",
-        tema: "El Morenito",
-        autor: "Letra y Música de: Don Pío Alvarado",
-        genero: "Golpe Tocuyano",
-        shortId: "Jn4ai5tgZ0Y"
-      },
-      {
-        key: "inf_5",
-        voteId: 7,
-        orden: 5,
-        nombre: "Carlos Manuel Guaramata Perfecto",
-        estado: "Anzoátegui",
-        categoria: "Infantil",
-        tema: "Guitarra Larense",
-        autor: "Letra y Música de: Gilberto Mejías Palazzi",
-        genero: "Vals Larense",
-        shortId: "EO2tp1xoUT4"
-      },
-      {
-        key: "inf_6",
-        voteId: 26,
-        orden: 6,
-        nombre: "Roshelen Victoria Rivas Valderrama",
-        estado: "Nueva Esparta",
-        categoria: "Infantil",
-        tema: "Lo que El Tocuyo me dio",
-        autor: "Letra y Música de: Omar Carrizales",
-        genero: "Golpe Tocuyano",
-        shortId: "_G_7_hSKTZA"
-      },
-      {
-        key: "inf_7",
-        voteId: 12,
-        orden: 7,
-        nombre: "Fraivelis Nicole Parra Sánchez",
-        estado: "Lara",
-        categoria: "Infantil",
-        tema: "Adelante Juventud (Tema Inédito)",
-        autor: "Letra y Música de: Juan Ramón Barrios",
-        genero: "Golpe Tocuyano",
-        shortId: "pdOQEE1sV7M"
-      },
-      {
-        key: "inf_8",
-        voteId: 27,
-        orden: 8,
-        nombre: "Samuel Andrés Montilla Cabanerio",
-        estado: "Barinas",
-        categoria: "Infantil",
-        tema: "Noches Larenses",
-        autor: "Letra y Música de: Juan Ramón Barrios",
-        genero: "Bambuco Larense",
-        shortId: "iHgtqyPmn2s"
-      },
-      {
-        key: "inf_9",
-        voteId: 22,
-        orden: 9,
-        nombre: "Marialnolys Velázquez",
-        estado: "Delta Amacuro",
-        categoria: "Infantil",
-        tema: "El Espanto",
-        autor: "Letra y Música de: Adelis Freitez",
-        genero: "Merengue Larense",
-        shortId: "KiCBHQvwQ90"
-      },
-      {
-        key: "inf_10",
-        voteId: 15,
-        orden: 10,
-        nombre: "Isabella Sofía López Márquez",
-        estado: "Distrito Capital",
-        categoria: "Infantil",
-        tema: "BARQUISIMETANA",
-        autor: "Letra y Música de: Avilés Castro",
-        genero: "Vals Larense",
-        shortId: "fw238TK_nAA"
-      },
-      {
-        key: "inf_11",
-        voteId: 2,
-        orden: 11,
-        nombre: "Talía de los Ángeles Meléndez Suárez",
-        estado: "Bolívar",
-        categoria: "Infantil",
-        tema: "Lara Tierra del Sol (Tema Inédito)",
-        autor: "Letra: Raquel Báez · Música: Hermanos Marín",
-        genero: "Merengue Larense",
-        shortId: "cQM1QJoF4JA"
-      },
-      {
-        key: "inf_12",
-        voteId: 28,
-        orden: 12,
-        nombre: "Santiago Gudiño",
-        estado: "Trujillo",
-        categoria: "Infantil",
-        tema: "Guitarra Larense",
-        autor: "Letra y Música de: Gilberto Mejías Palazzi",
-        genero: "Vals Larense",
-        shortId: "qu3xSlgytI8"
-      },
-      {
-        key: "inf_13",
-        voteId: 1,
-        orden: 13,
-        nombre: "Tyler Mathias Colina Yzarra",
-        estado: "Mérida",
-        categoria: "Infantil",
-        tema: "A TI DIVINA PASTORA",
-        autor: "Letra y Música de: Adal Carrizales",
-        genero: "Golpe Tocuyano",
-        shortId: "r_2LEocre14"
-      },
-      {
-        key: "inf_14",
-        voteId: 3,
-        orden: 14,
-        nombre: "Ángel Gabriel Sánchez",
-        estado: "Carabobo",
-        categoria: "Infantil",
-        tema: "Noches Larenses",
-        autor: "Letra y Música de: Juan Ramón Barrios",
-        genero: "Bambuco Larense",
-        shortId: "BKrNX8sXLxQ"
-      },
-      {
-        key: "inf_15",
-        voteId: 30,
-        orden: 15,
-        nombre: "Silvia Valeria Coro Beja",
-        estado: "Amazonas",
-        categoria: "Infantil",
-        tema: "Versos en alas de un tucán (Tema Inédito)",
-        autor: "Letra y Música de: Yaminson Payema",
-        genero: "Golpe Tocuyano",
-        shortId: "d9NLY3PM9EE"
-      },
-      {
-        key: "inf_16",
-        voteId: 0,
-        orden: 16,
-        nombre: "15 Participantes (Cierre Grupal)",
-        estado: "Todas las Regionales",
-        categoria: "Infantil",
-        tema: "VENEZUELA",
-        autor: "Letra y Música de: Pablo Herrero y José Luis Armenteros",
-        genero: "Vals Venezolano",
-        shortId: ""
-      }
+      { key: "inf_1", voteId: 13, orden: 1, nombre: "Gabriela Galilea Andrade Gutiérrez", estado: "Zulia", categoria: "Infantil", tema: "Los 2 Gavilanes", autor: "Letra y Música de: Adelis Freitez", genero: "Merengue Larense", shortId: "uqfYsz2oKeA" },
+      { key: "inf_2", voteId: 20, orden: 2, nombre: "José Pablo Luces Maurera", estado: "Sucre", categoria: "Infantil", tema: "Lara es una Sola", autor: "Letra y Música de: Virgilio Arrieta", genero: "Golpe Tocuyano", shortId: "WEUn5S3SjQc" },
+      { key: "inf_3", voteId: 23, orden: 3, nombre: "Michell Saray Meza Villamizar", estado: "Táchira", categoria: "Infantil", tema: "Suelo Larense", autor: "Letra y Música de: Pastor Jiménez", genero: "Vals Larense", shortId: "KarvJK7Eums" },
+      { key: "inf_4", voteId: 8, orden: 4, nombre: "Christal Esmeralda Díaz Rivas", estado: "Miranda", categoria: "Infantil", tema: "El Morenito", autor: "Letra y Música de: Don Pío Alvarado", genero: "Golpe Tocuyano", shortId: "Jn4ai5tgZ0Y" },
+      { key: "inf_5", voteId: 7, orden: 5, nombre: "Carlos Manuel Guaramata Perfecto", estado: "Anzoátegui", categoria: "Infantil", tema: "Guitarra Larense", autor: "Letra y Música de: Gilberto Mejías Palazzi", genero: "Vals Larense", shortId: "EO2tp1xoUT4" },
+      { key: "inf_6", voteId: 26, orden: 6, nombre: "Roshelen Victoria Rivas Valderrama", estado: "Nueva Esparta", categoria: "Infantil", tema: "Lo que El Tocuyo me dio", autor: "Letra y Música de: Omar Carrizales", genero: "Golpe Tocuyano", shortId: "_G_7_hSKTZA" },
+      { key: "inf_7", voteId: 12, orden: 7, nombre: "Fraivelis Nicole Parra Sánchez", estado: "Lara", categoria: "Infantil", tema: "Adelante Juventud (Tema Inédito)", autor: "Letra y Música de: Juan Ramón Barrios", genero: "Golpe Tocuyano", shortId: "pdOQEE1sV7M" },
+      { key: "inf_8", voteId: 27, orden: 8, nombre: "Samuel Andrés Montilla Cabanerio", estado: "Barinas", categoria: "Infantil", tema: "Noches Larenses", autor: "Letra y Música de: Juan Ramón Barrios", genero: "Bambuco Larense", shortId: "iHgtqyPmn2s" },
+      { key: "inf_9", voteId: 22, orden: 9, nombre: "Marialnolys Velázquez", estado: "Delta Amacuro", categoria: "Infantil", tema: "El Espanto", autor: "Letra y Música de: Adelis Freitez", genero: "Merengue Larense", shortId: "KiCBHQvwQ90" },
+      { key: "inf_10", voteId: 15, orden: 10, nombre: "Isabella Sofía López Márquez", estado: "Distrito Capital", categoria: "Infantil", tema: "BARQUISIMETANA", autor: "Letra y Música de: Avilés Castro", genero: "Vals Larense", shortId: "fw238TK_nAA" },
+      { key: "inf_11", voteId: 2, orden: 11, nombre: "Talía de los Ángeles Meléndez Suárez", estado: "Bolívar", categoria: "Infantil", tema: "Lara Tierra del Sol (Tema Inédito)", autor: "Letra: Raquel Báez · Música: Hermanos Marín", genero: "Merengue Larense", shortId: "cQM1QJoF4JA" },
+      { key: "inf_12", voteId: 28, orden: 12, nombre: "Santiago Gudiño", estado: "Trujillo", categoria: "Infantil", tema: "Guitarra Larense", autor: "Letra y Música de: Gilberto Mejías Palazzi", genero: "Vals Larense", shortId: "qu3xSlgytI8" },
+      { key: "inf_13", voteId: 1, orden: 13, nombre: "Tyler Mathias Colina Yzarra", estado: "Mérida", categoria: "Infantil", tema: "A TI DIVINA PASTORA", autor: "Letra y Música de: Adal Carrizales", genero: "Golpe Tocuyano", shortId: "r_2LEocre14" },
+      { key: "inf_14", voteId: 3, orden: 14, nombre: "Ángel Gabriel Sánchez", estado: "Carabobo", categoria: "Infantil", tema: "Noches Larenses", autor: "Letra y Música de: Juan Ramón Barrios", genero: "Bambuco Larense", shortId: "BKrNX8sXLxQ" },
+      { key: "inf_15", voteId: 30, orden: 15, nombre: "Silvia Valeria Coro Beja", estado: "Amazonas", categoria: "Infantil", tema: "Versos en alas de un tucán (Tema Inédito)", autor: "Letra y Música de: Yaminson Payema", genero: "Golpe Tocuyano", shortId: "d9NLY3PM9EE" },
+      { key: "inf_16", voteId: 0, orden: 16, nombre: "15 Participantes (Cierre Grupal)", estado: "Todas las Regionales", categoria: "Infantil", tema: "VENEZUELA", autor: "Letra y Música de: Pablo Herrero y José Luis Armenteros", genero: "Vals Venezolano", shortId: "" }
     ];
 
     const ESCALETA_JUVENIL = [
@@ -1138,6 +1196,11 @@
       lowerArtist: false,
       songInfo: false,
       tickerBanner: false,
+      pipDelegation: false,
+      pipPosition: "bottom-right",
+      pipCalibrate: false,
+      pipState: "DELEGACIÓN ZULIA",
+      pipCaption: "REACCIÓN EN SALA · APOYO FAMILIAR",
       artistName: "Gabriela Galilea Andrade Gutiérrez",
       artistState: "Zulia",
       artistCategory: "Infantil",
@@ -1152,6 +1215,123 @@
     const localChannel = new BroadcastChannel("fnns_overlays_sync_" + canalId);
     let mqttClient = null;
 
+    // =========================================================================
+    // CONTROL DE ENLACE YOUTUBE LIVE -> ACTUALIZA envivo.html EN TIEMPO REAL
+    // =========================================================================
+    function extraerYoutubeId(input) {
+      if (!input) return "";
+      const str = String(input).trim();
+      if (/^[a-zA-Z0-9_-]{11}$/.test(str)) return str;
+      const match = str.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?.*v=|embed\/|v\/|live\/|shorts\/|video\/))([a-zA-Z0-9_-]{11})/);
+      return match ? match[1] : "";
+    }
+
+    function previsualizarEnlaceYouTube() {
+      const raw = document.getElementById("inputStreamYoutubeUrl").value;
+      const id = extraerYoutubeId(raw);
+      document.getElementById("badgeStreamYoutubeId").innerText = id || "—";
+      const thumbEl = document.getElementById("imgThumbStreamYT");
+      if (thumbEl) {
+        thumbEl.src = id ? `https://img.youtube.com/vi/${id}/mqdefault.jpg` : "";
+      }
+    }
+
+    async function cargarConfigYouTubeDesdeBackend() {
+      if (isOutputMode) return;
+      const statusEl = document.getElementById("streamBackendSyncStatus");
+      const savedPin = localStorage.getItem("fnns_stream_admin_pin");
+      if (savedPin) document.getElementById("inputStreamAdminPin").value = savedPin;
+
+      try {
+        const res = await fetch(ENDPOINT_GOOGLE_SHEETS, { cache: "no-store" });
+        const data = await res.json();
+        if (data.status === "success" && data.streamConfig) {
+          const c = data.streamConfig;
+          document.getElementById("inputStreamYoutubeUrl").value = c.youtubeUrl || c.youtubeId || "";
+          document.getElementById("selectStreamStatus").value = c.estadoTransmision || "EN_VIVO";
+          document.getElementById("checkStreamChatActivo").checked = c.chatActivo !== false;
+          document.getElementById("checkStreamVotacionAbierta").checked = c.votacionAbierta !== false;
+          document.getElementById("inputStreamAvisoBanner").value = c.avisoBanner || "";
+          previsualizarEnlaceYouTube();
+          statusEl.innerText = c.actualizadoEn ? `Activo (${c.youtubeId}) · ${c.actualizadoEn}` : `Activo (${c.youtubeId})`;
+        } else {
+          statusEl.innerText = "Listo para configurar";
+        }
+      } catch (e) {
+        statusEl.innerText = "Sin conexión al backend";
+      }
+    }
+
+    async function publicarEnlaceYouTubeEnWeb(e) {
+      e.preventDefault();
+      const youtubeUrl = document.getElementById("inputStreamYoutubeUrl").value.trim();
+      const youtubeId = extraerYoutubeId(youtubeUrl);
+      const pin = document.getElementById("inputStreamAdminPin").value.trim();
+      const estadoTransmision = document.getElementById("selectStreamStatus").value;
+      const chatActivo = document.getElementById("checkStreamChatActivo").checked;
+      const votacionAbierta = document.getElementById("checkStreamVotacionAbierta").checked;
+      const avisoBanner = document.getElementById("inputStreamAvisoBanner").value.trim();
+
+      const alerta = document.getElementById("alertaStreamYouTube");
+      const btn = document.getElementById("btnPublicarStreamYT");
+
+      if (!youtubeId || youtubeId.length !== 11) {
+        alerta.className = "text-xs p-2.5 rounded-xl border border-red-500/40 bg-red-500/15 text-red-300 text-center font-semibold";
+        alerta.innerText = "El enlace de YouTube no contiene un ID válido de 11 caracteres.";
+        alerta.classList.remove("hidden");
+        return;
+      }
+
+      localStorage.setItem("fnns_stream_admin_pin", pin);
+      alerta.classList.add("hidden");
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i><span>PUBLICANDO...</span>`;
+
+      const etapaTexto = state.eventStage === "GALA FINAL"
+        ? "Gala Final Nacional · Señal Oficial"
+        : "Semifinales Nacionales · Señal Oficial";
+
+      try {
+        const res = await fetch(ENDPOINT_GOOGLE_SHEETS, {
+          method: "POST",
+          body: JSON.stringify({
+            action: "updateStreamConfig",
+            pin,
+            youtubeUrl,
+            youtubeId,
+            estadoTransmision,
+            tituloGala: etapaTexto,
+            subtituloLugar: "Teatro Juares, Barquisimeto · Estado Lara",
+            avisoBanner,
+            chatActivo,
+            votacionAbierta
+          })
+        });
+
+        const data = await res.json();
+        if (data.status === "success") {
+          alerta.className = "text-xs p-2.5 rounded-xl border border-emerald-500/40 bg-emerald-500/15 text-emerald-300 text-center font-semibold";
+          alerta.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> ¡Listo! envivo.html ya está actualizado con el directo de YouTube (${youtubeId}).`;
+          alerta.classList.remove("hidden");
+          document.getElementById("streamBackendSyncStatus").innerText = `Activo (${youtubeId}) · Actualizado ahora`;
+        } else {
+          alerta.className = "text-xs p-2.5 rounded-xl border border-red-500/40 bg-red-500/15 text-red-300 text-center font-semibold";
+          alerta.innerText = data.message || "PIN incorrecto o error al actualizar.";
+          alerta.classList.remove("hidden");
+        }
+      } catch (err) {
+        alerta.className = "text-xs p-2.5 rounded-xl border border-red-500/40 bg-red-500/15 text-red-300 text-center font-semibold";
+        alerta.innerText = "Error de red al conectar con Google Apps Script.";
+        alerta.classList.remove("hidden");
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<i class="fa-solid fa-satellite-dish"></i><span>ACTUALIZAR WEB</span>`;
+      }
+    }
+
+    // =========================================================================
+    // MOTOR DE CÓDIGOS QR Y SINCRONIZACIÓN DE OVERLAYS 16:9
+    // =========================================================================
     function renderizarCodigosQR(urlDestino) {
       const urlLimpia = (urlDestino || "").trim() || detectarUrlVotacionPorDefecto();
       if (urlLimpia === ultimaUrlQrRenderizada) return;
@@ -1248,12 +1428,24 @@
       emitirCambioEstado();
     }
 
+    function setPipPosition(pos) {
+      state.pipPosition = pos;
+      emitirCambioEstado();
+    }
+
+    function togglePipCalibrate() {
+      state.pipCalibrate = !state.pipCalibrate;
+      if (state.pipCalibrate && !state.pipDelegation) {
+        state.pipDelegation = true;
+      }
+      emitirCambioEstado();
+    }
+
     function actualizarUrlQR(nuevaUrl) {
       state.voteUrl = nuevaUrl.trim() || detectarUrlVotacionPorDefecto();
       emitirCambioEstado();
     }
 
-    // Disparo IN/OUT con exclusión mutua entre Nombre y Ficha Musical para no encimarlas
     function toggleLayer(layerKey) {
       const nuevoValor = !state[layerKey];
       state[layerKey] = nuevoValor;
@@ -1267,7 +1459,6 @@
       emitirCambioEstado();
     }
 
-    // Alterna suavemente entre la Pleca del Participante y la Ficha Musical
     function alternarNombreYCancion() {
       if (state.lowerArtist) {
         state.lowerArtist = false;
@@ -1305,6 +1496,8 @@
       state.lowerArtist = false;
       state.songInfo = false;
       state.tickerBanner = false;
+      state.pipDelegation = false;
+      state.pipCalibrate = false;
       emitirCambioEstado();
     }
 
@@ -1325,6 +1518,9 @@
       state.songTitle = document.getElementById("inputSongTitle").value.trim() || "Tema Musical";
       state.songGenre = document.getElementById("inputSongGenre").value.trim() || "Música Venezolana";
       state.songAuthor = document.getElementById("inputSongAuthor").value.trim() || "Folklore Venezolano";
+
+      state.pipState = document.getElementById("inputPipState").value.trim() || `DELEGACIÓN ${state.artistState.toUpperCase()}`;
+      state.pipCaption = document.getElementById("inputPipCaption").value.trim() || "REACCIÓN EN SALA · APOYO FAMILIAR";
 
       state.tickerText = document.getElementById("inputTickerText").value.trim();
 
@@ -1352,6 +1548,8 @@
       document.getElementById("inputSongTitle").value = p.tema || "Tema por confirmar";
       document.getElementById("inputSongGenre").value = p.genero || "Música Venezolana";
       document.getElementById("inputSongAuthor").value = p.autor || "Autor por confirmar";
+
+      document.getElementById("inputPipState").value = `DELEGACIÓN ${p.estado.toUpperCase()}`;
 
       renderizarListasCategorias();
       actualizarTextosEnVivo(true);
@@ -1427,8 +1625,9 @@
     }
 
     function aplicarEstadoVisual() {
-      const capas = ["bugLive", "foxElections", "foxTower", "lowerArtist", "songInfo", "tickerBanner"];
+      const capas = ["bugLive", "foxElections", "foxTower", "lowerArtist", "songInfo", "tickerBanner", "pipDelegation"];
       const etapaActual = (state.eventStage || "SEMIFINALES").toUpperCase();
+      const esInfantil = (state.artistCategory || "").toLowerCase() === "infantil";
       renderizarCodigosQR(state.voteUrl);
 
       if (isOutputMode) {
@@ -1439,25 +1638,39 @@
           else el.classList.remove("is-on-air");
         });
 
+        const pipLayer = document.getElementById("layer_pipDelegation");
+        if (state.pipPosition === "top-right") {
+          pipLayer.className = `anim-right-layer ${state.pipDelegation ? "is-on-air" : ""} absolute top-[48px] right-[64px] w-[540px] z-25`;
+        } else {
+          pipLayer.className = `anim-right-layer ${state.pipDelegation ? "is-on-air" : ""} absolute bottom-[64px] right-[64px] w-[540px] z-25`;
+        }
+
+        document.getElementById("pipCalibrateGrid").classList.toggle("hidden", !state.pipCalibrate);
+
         document.getElementById("outBugStage").innerText = `${etapaActual} · 2026`;
         document.getElementById("outTowerStage").innerText = `${etapaActual} · EN VIVO`;
         document.getElementById("outElectionsStage").innerText = `${etapaActual} · VOTACIÓN`;
         document.getElementById("outFooterStage").innerText = `${etapaActual} 2026`;
         document.getElementById("outTickerStage").innerText = etapaActual;
 
-        // Datos Pleca Participante
         document.getElementById("outArtistName").innerText = state.artistName;
         document.getElementById("outArtistState").innerText = state.artistState;
         document.getElementById("outArtistSong").innerText = state.artistSong || `${etapaActual} 2026`;
 
         const catBadge = document.getElementById("outArtistCategory");
-        const esInfantil = (state.artistCategory || "").toLowerCase() === "infantil";
         catBadge.innerText = esInfantil ? "CATEGORÍA INFANTIL" : "CATEGORÍA JUVENIL";
         catBadge.className = esInfantil
           ? "px-3 py-0.5 rounded-sm bg-sky-400 font-fox text-base font-black uppercase tracking-widest text-slate-950"
           : "px-3 py-0.5 rounded-sm bg-[#f5b942] font-fox text-base font-black uppercase tracking-widest text-black";
 
-        // Datos Ficha Musical (Insert Alterno)
+        document.getElementById("outPipState").innerText = state.pipState || `DELEGACIÓN ${state.artistState.toUpperCase()}`;
+        document.getElementById("outPipCaption").innerText = state.pipCaption || "REACCIÓN EN SALA · APOYO FAMILIAR";
+        const pipCat = document.getElementById("outPipCategory");
+        pipCat.innerText = esInfantil ? "INFANTIL" : "JUVENIL";
+        pipCat.className = esInfantil
+          ? "px-2 py-0.5 rounded-sm bg-sky-400 font-fox text-xs font-black uppercase tracking-widest text-slate-950 shrink-0"
+          : "px-2 py-0.5 rounded-sm bg-[#f5b942] font-fox text-xs font-black uppercase tracking-widest text-black shrink-0";
+
         const tituloLimpio = (state.songTitle || "").replace(/^[«"]|[»"]$/g, "");
         document.getElementById("outSongTitle").innerText = `«${tituloLimpio}»`;
         document.getElementById("outSongGenre").innerText = state.songGenre || "MÚSICA VENEZOLANA";
@@ -1478,32 +1691,53 @@
           }
         }
 
+        const btnBot = document.getElementById("btnPipPos_bottom");
+        const btnTop = document.getElementById("btnPipPos_top");
+        if (btnBot && btnTop) {
+          btnBot.className = state.pipPosition !== "top-right"
+            ? "py-2 px-2 rounded-xl font-fox text-xs font-black uppercase tracking-wider bg-[#f5b942] text-black cursor-pointer"
+            : "py-2 px-2 rounded-xl font-fox text-xs font-bold uppercase tracking-wider bg-white/10 text-slate-300 cursor-pointer";
+          btnTop.className = state.pipPosition === "top-right"
+            ? "py-2 px-2 rounded-xl font-fox text-xs font-black uppercase tracking-wider bg-[#f5b942] text-black cursor-pointer"
+            : "py-2 px-2 rounded-xl font-fox text-xs font-bold uppercase tracking-wider bg-white/10 text-slate-300 cursor-pointer";
+        }
+
+        const btnCal = document.getElementById("btnPipCalibrate");
+        if (btnCal) {
+          btnCal.className = state.pipCalibrate
+            ? "px-3 py-1.5 rounded-xl bg-cyan-400 text-slate-950 text-xs font-extrabold cursor-pointer transition"
+            : "px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-xs font-bold text-cyan-300 cursor-pointer transition";
+          btnCal.innerHTML = `<i class="fa-solid fa-crosshairs mr-1"></i> Guía Encuadre PiP: ${state.pipCalibrate ? "ON" : "OFF"}`;
+        }
+
         capas.forEach(key => {
           const activo = Boolean(state[key]);
           const btn = document.getElementById(`btn_${key}`);
           const badge = document.getElementById(`badge_${key}`);
           if (!btn || !badge) return;
 
-          const esBotonGrande = key === "lowerArtist" || key === "songInfo";
+          const esBotonFlex = key === "lowerArtist" || key === "songInfo";
           const labelIn = key === "lowerArtist"
             ? "DAR ENTRADA NOMBRE (IN)"
             : key === "songInfo"
               ? "DAR ENTRADA FICHA MUSICAL (IN)"
-              : "DAR ENTRADA (IN)";
+              : key === "pipDelegation"
+                ? "DAR ENTRADA MARCO PiP DELEGACIÓN (IN)"
+                : "DAR ENTRADA (IN)";
 
           if (activo) {
             badge.className = "px-2.5 py-0.5 rounded text-[10px] font-extrabold uppercase bg-red-500/20 text-red-400 border border-red-500/40 animate-pulse";
             badge.innerText = "● AL AIRE";
-            btn.className = esBotonGrande
+            btn.className = esBotonFlex
               ? "flex-1 py-3 rounded-xl font-fox text-sm sm:text-base font-black uppercase tracking-wider bg-red-600 hover:bg-red-500 text-white transition cursor-pointer flex items-center justify-center gap-2 shadow-lg shadow-red-600/25"
-              : "w-full py-3 rounded-xl font-fox text-sm font-black uppercase tracking-wider bg-red-600 hover:bg-red-500 text-white transition cursor-pointer flex items-center justify-center gap-2 shadow-lg shadow-red-600/25";
+              : "w-full py-3.5 rounded-xl font-fox text-sm sm:text-base font-black uppercase tracking-wider bg-red-600 hover:bg-red-500 text-white transition cursor-pointer flex items-center justify-center gap-2 shadow-lg shadow-red-600/25";
             btn.innerHTML = `<i class="fa-solid fa-stop"></i><span>SACAR DEL AIRE (OUT)</span>`;
           } else {
             badge.className = "px-2.5 py-0.5 rounded text-[10px] font-extrabold uppercase bg-white/5 text-slate-400";
             badge.innerText = "OFF AIR";
-            btn.className = esBotonGrande
+            btn.className = esBotonFlex
               ? "flex-1 py-3 rounded-xl font-fox text-sm sm:text-base font-black uppercase tracking-wider bg-emerald-500 hover:bg-emerald-400 text-black transition cursor-pointer flex items-center justify-center gap-2"
-              : "w-full py-3 rounded-xl font-fox text-sm font-black uppercase tracking-wider bg-emerald-500 hover:bg-emerald-400 text-black transition cursor-pointer flex items-center justify-center gap-2";
+              : "w-full py-3.5 rounded-xl font-fox text-sm sm:text-base font-black uppercase tracking-wider bg-emerald-500 hover:bg-emerald-400 text-black transition cursor-pointer flex items-center justify-center gap-2";
             btn.innerHTML = `<i class="fa-solid fa-play"></i><span>${labelIn}</span>`;
           }
         });
@@ -1651,7 +1885,11 @@
         document.getElementById("inputSongGenre").value = state.songGenre;
         document.getElementById("inputSongAuthor").value = state.songAuthor;
 
+        document.getElementById("inputPipState").value = state.pipState;
+        document.getElementById("inputPipCaption").value = state.pipCaption;
+
         renderizarListasCategorias();
+        cargarConfigYouTubeDesdeBackend();
         document.getElementById("iframePreviewMonitor").src = obtenerUrlSalida();
         aplicarEstadoVisual();
       }
