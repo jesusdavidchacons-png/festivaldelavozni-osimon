@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>YoloBox Alpha Overlay — Top 5 Votaciones</title>
+  <title>Overlay FOX Elecciones — Festival de la Voz Niño Simón 2026</title>
   <link rel="icon" type="image/png" href="./logo_color.png" />
 
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=JetBrains+Mono:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;0,900;1,800&family=JetBrains+Mono:wght@600;700;800&display=swap" rel="stylesheet" />
 
   <style>
-    /* TRANSPARENCIA ALPHA OBLIGATORIA PARA YOLOBOX EXTREME */
+    /* CANAL ALPHA 100% TRANSPARENTE PARA YOLOBOX EXTREME */
     html, body {
       background: transparent !important;
       background-color: rgba(0, 0, 0, 0) !important;
@@ -26,7 +26,7 @@
 
     .font-fox {
       font-family: 'Barlow Condensed', sans-serif;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.03em;
     }
 
     .font-tnum {
@@ -34,304 +34,385 @@
       font-variant-numeric: tabular-nums;
     }
 
-    /* Chasis Broadcast estilo FOX */
-    .fox-chassis {
-      background: linear-gradient(165deg, rgba(6, 10, 18, 0.94) 0%, rgba(11, 17, 30, 0.91) 100%);
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      box-shadow: 0 22px 48px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    /* Chasis principal estilo FOX Election Night */
+    .fox-election-shell {
+      background: linear-gradient(180deg, #0a1936 0%, #050d1f 100%);
+      border: 1.5px solid rgba(255, 255, 255, 0.22);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.2);
     }
 
-    .fox-header-strip {
-      background: linear-gradient(90deg, #090e1a 0%, #131c31 65%, #1e1608 100%);
-      border-bottom: 2px solid #f5b942;
+    /* Bloque izquierdo de marca / Decision Desk */
+    .fox-brand-block {
+      background: linear-gradient(145deg, #0d234a 0%, #061126 60%, #1a0b12 100%);
+      border-right: 2px solid #f5b942;
     }
 
-    @keyframes slideInRight {
-      0% { opacity: 0; transform: translateX(36px); }
-      100% { opacity: 1; transform: translateX(0); }
+    /* Encabezado rojo estilo alerta electoral */
+    .fox-crimson-tag {
+      background: linear-gradient(90deg, #b91c1c 0%, #e11d48 100%);
     }
-    @keyframes slideInUp {
-      0% { opacity: 0; transform: translateY(32px); }
+
+    /* Tarjeta de candidato líder (#1) */
+    .fox-leader-card {
+      background: linear-gradient(180deg, rgba(245, 185, 66, 0.16) 0%, rgba(10, 25, 54, 0.92) 100%);
+    }
+
+    /* Barra inferior totalizadora */
+    .fox-bottom-ticker {
+      background: linear-gradient(90deg, #040914 0%, #091833 50%, #040914 100%);
+      border-top: 1px solid rgba(255, 255, 255, 0.14);
+    }
+
+    /* Animación de entrada desde abajo */
+    @keyframes foxSlideUp {
+      0% { opacity: 0; transform: translateY(45px); }
       100% { opacity: 1; transform: translateY(0); }
     }
-    .anim-side { animation: slideInRight 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-    .anim-bottom { animation: slideInUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .animate-fox-in {
+      animation: foxSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
 
-    @keyframes voteFlash {
-      0% { background-color: rgba(245, 185, 66, 0.32); }
+    /* Destello dorado cuando entra un voto nuevo */
+    @keyframes foxVotePulse {
+      0% { background-color: rgba(245, 185, 66, 0.42); }
       100% { background-color: transparent; }
     }
-    .row-vote-flash {
-      animation: voteFlash 1.2s ease-out;
+    .vote-flash {
+      animation: foxVotePulse 1.3s ease-out;
     }
 
-    .bar-smooth {
-      transition: width 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+    /* Barrido de brillo en la barra de porcentaje */
+    @keyframes barShine {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(250%); }
+    }
+    .fox-progress-fill {
+      position: relative;
+      overflow: hidden;
+      transition: width 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .fox-progress-fill::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      width: 45%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+      animation: barShine 3s infinite ease-in-out;
     }
   </style>
 </head>
 <body>
 
-  <!-- ================= MODO 1: TORRE LATERAL FOX (POR DEFECTO / ?layout=side) ================= -->
-  <div id="layoutSide" class="hidden fixed top-10 right-10 w-[410px] anim-side">
-    <div class="fox-chassis rounded-md overflow-hidden">
+  <!-- CONTENEDOR INFERIOR HORIZONTAL (LOWER-THIRD FOX ELECTION STYLE) -->
+  <div class="fixed bottom-6 left-6 right-6 z-50 animate-fox-in">
+    <div class="max-w-[1820px] mx-auto fox-election-shell rounded-md overflow-hidden">
       
-      <!-- Cabecera FOX con logo_color.png -->
-      <div class="fox-header-strip px-4 py-2.5 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <img src="./logo_color.png" alt="Festival de la Voz Niño Simón" class="h-8 w-auto object-contain" />
-          <div>
-            <div class="flex items-center gap-1.5">
-              <span class="w-2 h-2 rounded-full bg-[#e11d48] animate-ping"></span>
-              <span class="font-fox text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#f5b942]">
-                Votación en Directo
+      <!-- FRANA SUPERIOR DORADA DE ALTA VISIBILIDAD -->
+      <div class="h-1 w-full bg-gradient-to-r from-[#e11d48] via-[#f5b942] to-[#2563eb]"></div>
+
+      <!-- CUERPO PRINCIPAL: BLOQUE MARCA + COLUMNAS DE CANDIDATOS -->
+      <div class="flex flex-col lg:flex-row items-stretch">
+        
+        <!-- 1. BLOQUE IZQUIERDO: IDENTIDAD Y ESTADO EN VIVO -->
+        <div class="fox-brand-block px-4 py-3 lg:w-[255px] shrink-0 flex flex-row lg:flex-col items-center lg:items-start justify-between gap-2">
+          <div class="flex items-center gap-3">
+            <img src="./logo_color.png" alt="Festival de la Voz Niño Simón 2026" class="h-10 lg:h-11 w-auto object-contain drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]" />
+            <div class="lg:hidden">
+              <div class="font-fox text-base font-black uppercase text-white leading-none" id="mobileTituloOverlay">
+                TOP 5 VOTACIÓN
+              </div>
+              <div class="text-[10px] font-bold uppercase tracking-widest text-[#f5b942]">
+                Teatro Juares 2026
+              </div>
+            </div>
+          </div>
+
+          <div class="hidden lg:block w-full pt-1">
+            <div class="inline-flex items-center gap-1.5 fox-crimson-tag px-2 py-0.5 rounded-sm mb-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span>
+              <span class="font-fox text-[11px] font-black uppercase tracking-[0.15em] text-white">
+                EN DIRECTO
               </span>
             </div>
-            <div class="font-fox text-lg font-black uppercase tracking-wide text-white leading-none">
-              Top 5 Oficial
+            <div id="desktopTituloOverlay" class="font-fox text-xl font-black uppercase tracking-wide text-white leading-none">
+              TOP 5 NACIONAL
             </div>
+            <div class="font-fox text-xs font-bold uppercase tracking-widest text-[#f5b942] mt-0.5">
+              Votación Popular Oficial
+            </div>
+          </div>
+
+          <!-- Badge En Vivo para vista móvil/compacta -->
+          <div class="lg:hidden inline-flex items-center gap-1.5 fox-crimson-tag px-2.5 py-1 rounded-sm">
+            <span class="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span>
+            <span class="font-fox text-xs font-black uppercase tracking-widest text-white">EN VIVO</span>
           </div>
         </div>
 
-        <div class="text-right">
-          <span class="block text-[9px] font-bold uppercase tracking-widest text-slate-400">Total Votos</span>
-          <span id="sideTotalVotos" class="font-tnum text-sm font-extrabold text-white">0</span>
+        <!-- 2. CONTENEDOR HORIZONTAL DE LOS TOP 5 CANDIDATOS -->
+        <div id="foxCandidatesGrid" class="flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 divide-y sm:divide-y-0 sm:divide-x divide-white/15">
+          <!-- Se llena dinámicamente desde Google Sheets -->
+        </div>
+
+      </div>
+
+      <!-- 3. CINTA INFERIOR DE CONTEO TOTAL (TICKER ELECTORAL) -->
+      <div class="fox-bottom-ticker px-4 py-1.5 flex flex-wrap items-center justify-between gap-2 text-[11px]">
+        <div class="flex items-center gap-2.5">
+          <span class="px-1.5 py-0.2 bg-[#f5b942] text-black font-fox text-[10px] font-black uppercase tracking-wider rounded-sm">
+            ESCRUTINIO
+          </span>
+          <span class="font-fox font-bold uppercase tracking-wider text-slate-300">
+            Fundación Nacional del Niño Simón &bull; Teatro Juares, Barquisimeto
+          </span>
+        </div>
+
+        <div class="flex items-center gap-4">
+          <div class="flex items-center gap-1.5">
+            <span class="font-fox uppercase tracking-wider text-slate-400 font-bold">Votantes:</span>
+            <span id="foxTotalVotantes" class="font-tnum font-extrabold text-white">0</span>
+          </div>
+          <span class="text-white/20">|</span>
+          <div class="flex items-center gap-1.5">
+            <span class="font-fox uppercase tracking-wider text-[#f5b942] font-bold">Total Votos Emitidos:</span>
+            <span id="foxTotalVotos" class="font-tnum font-extrabold text-[#f5b942] text-xs">0</span>
+          </div>
         </div>
       </div>
 
-      <!-- Filas Top 5 -->
-      <div id="sideRowsContainer" class="divide-y divide-white/[0.08]"></div>
-
-      <!-- Pie Institucional -->
-      <div class="px-4 py-1.5 bg-black/70 border-t border-white/[0.06] flex items-center justify-between text-[9px] font-bold uppercase tracking-[0.16em] text-slate-400">
-        <span>Fundación Nacional del Niño Simón</span>
-        <span class="text-[#f5b942]">Teatro Juares</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- ================= MODO 2: LOWER-THIRD HORIZONTAL (?layout=bottom) ================= -->
-  <div id="layoutBottom" class="hidden fixed bottom-9 left-10 right-10 anim-bottom">
-    <div class="max-w-[1680px] mx-auto">
-      
-      <!-- Pestaña Superior Izquierda con logo_color.png -->
-      <div class="inline-flex items-center gap-3 px-4 py-1.5 bg-[#090e1a]/95 border-t border-x border-[#f5b942]/60 rounded-t-md">
-        <img src="./logo_color.png" alt="Festival de la Voz Niño Simón" class="h-5 w-auto object-contain" />
-        <span class="w-2 h-2 rounded-full bg-[#e11d48] animate-ping"></span>
-        <span class="font-fox text-xs font-black uppercase tracking-[0.16em] text-[#f5b942]">
-          Top 5 Votación Popular en Directo
-        </span>
-        <span class="text-white/25">|</span>
-        <span class="font-tnum text-xs font-bold text-white" id="bottomTotalVotos">0 VOTOS</span>
-      </div>
-
-      <!-- Franja de 5 Columnas -->
-      <div id="bottomColsContainer" class="fox-chassis rounded-b-md rounded-tr-md grid grid-cols-5 divide-x divide-white/10 overflow-hidden border-t-2 border-t-[#f5b942]"></div>
     </div>
   </div>
 
   <script>
     const ENDPOINT_GOOGLE_SHEETS = "https://script.google.com/macros/s/AKfycbzH1tSBBdcN6gI5s7wQwAyifLzglIuMVjwbqBAQB5gVrfvIXZVTiMah9Dz01CQt4Ov1aA/exec";
 
-    const PARTICIPANTES_BASE = [
-      { id: 1, nombre: "Tyler Colina", estado: "Mérida" },
-      { id: 2, nombre: "Thalía Meléndez", estado: "Bolívar" },
-      { id: 3, nombre: "Ángel Sánchez", estado: "Carabobo" },
-      { id: 4, nombre: "Albenis Pérez", estado: "Carabobo" },
-      { id: 5, nombre: "Aimé García", estado: "Barinas" },
-      { id: 6, nombre: "Antonio Urbina", estado: "Mérida" },
-      { id: 7, nombre: "Carlos Guaramata", estado: "Anzoátegui" },
-      { id: 8, nombre: "Christal Díaz", estado: "Miranda" },
-      { id: 9, nombre: "Daniela Fontana", estado: "Trujillo" },
-      { id: 10, nombre: "Enma Frías", estado: "Lara" },
-      { id: 11, nombre: "Esthela Vázquez", estado: "Cojedes" },
-      { id: 12, nombre: "Fraivelis Parra", estado: "Lara" },
-      { id: 13, nombre: "Gabriela Andrade", estado: "Zulia" },
-      { id: 14, nombre: "Gabriela González", estado: "Amazonas" },
-      { id: 15, nombre: "Isabella López", estado: "Distrito Capital" },
-      { id: 16, nombre: "Iviangely Figueroa", estado: "Nueva Esparta" },
-      { id: 17, nombre: "Jaarol Zambrano", estado: "Delta Amacuro" },
-      { id: 18, nombre: "Jeremías Torres", estado: "Anzoátegui" },
-      { id: 19, nombre: "Gabriel Raúl Solórzano Guevara", estado: "Miranda" },
-      { id: 20, nombre: "José Luces", estado: "Sucre" },
-      { id: 21, nombre: "Katerine Moreno", estado: "Bolívar" },
-      { id: 22, nombre: "Marianolys Velázquez", estado: "Delta Amacuro" },
-      { id: 23, nombre: "Michell Meza", estado: "Táchira" },
-      { id: 24, nombre: "Natalia Moreno", estado: "Zulia" },
-      { id: 25, nombre: "Ronaikel García", estado: "Distrito Capital" },
-      { id: 26, nombre: "Roshelen Rivas", estado: "Nueva Esparta" },
-      { id: 27, nombre: "Samuel Montilla", estado: "Barinas" },
-      { id: 28, nombre: "Santiago Uriño", estado: "Trujillo" },
-      { id: 29, nombre: "Sebastián Sucre", estado: "Sucre" },
-      { id: 30, nombre: "Silvia de la Chiquinquirá", estado: "Amazonas" },
-      { id: 31, nombre: "Victoria Barrera", estado: "Táchira" }
+    const PARTICIPANTES_OFICIALES = [
+      { id: 1, nombre: "Tyler Colina", estado: "Mérida", shortId: "r_2LEocre14" },
+      { id: 2, nombre: "Thalía Meléndez", estado: "Bolívar", shortId: "cQM1QJoF4JA" },
+      { id: 3, nombre: "Ángel Sánchez", estado: "Carabobo", shortId: "BKrNX8sXLxQ" },
+      { id: 4, nombre: "Albenis Pérez", estado: "Carabobo", shortId: "zGGRW8eMHNk" },
+      { id: 5, nombre: "Aimé García", estado: "Barinas", shortId: "3o0TQjPhKfU" },
+      { id: 6, nombre: "Antonio Urbina", estado: "Mérida", shortId: "5KCJl2vTWpU" },
+      { id: 7, nombre: "Carlos Guaramata", estado: "Anzoátegui", shortId: "EO2tp1xoUT4" },
+      { id: 8, nombre: "Christal Díaz", estado: "Miranda", shortId: "Jn4ai5tgZ0Y" },
+      { id: 9, nombre: "Daniela Fontana", estado: "Trujillo", shortId: "SXODrGfMJ0E" },
+      { id: 10, nombre: "Enma Frías", estado: "Lara", shortId: "RLrVTJg_2S8" },
+      { id: 11, nombre: "Esthela Vázquez", estado: "Cojedes", shortId: "Q2w6w8BNT3w" },
+      { id: 12, nombre: "Fraivelis Parra", estado: "Lara", shortId: "pdOQEE1sV7M" },
+      { id: 13, nombre: "Gabriela Andrade", estado: "Zulia", shortId: "uqfYsz2oKeA" },
+      { id: 14, nombre: "Gabriela González", estado: "Amazonas", shortId: "79nkO6SvvdY" },
+      { id: 15, nombre: "Isabella López", estado: "Distrito Capital", shortId: "fw238TK_nAA" },
+      { id: 16, nombre: "Iviangely Figueroa", estado: "Nueva Esparta", shortId: "ViHlHCqC5DE" },
+      { id: 17, nombre: "Jaarol Zambrano", estado: "Delta Amacuro", shortId: "CaQwei6Ae-I" },
+      { id: 18, nombre: "Jeremías Torres", estado: "Anzoátegui", shortId: "iefvIVpKd-w" },
+      { id: 19, nombre: "Gabriel Raúl Solórzano Guevara", estado: "Miranda", shortId: "b9JyOpp3cmU" },
+      { id: 20, nombre: "José Luces", estado: "Sucre", shortId: "WEUn5S3SjQc" },
+      { id: 21, nombre: "Katerine Moreno", estado: "Bolívar", shortId: "jSniXY7y9Nc" },
+      { id: 22, nombre: "Marianolys Velázquez", estado: "Delta Amacuro", shortId: "KiCBHQvwQ90" },
+      { id: 23, nombre: "Michell Meza", estado: "Táchira", shortId: "KarvJK7Eums" },
+      { id: 24, nombre: "Natalia Moreno", estado: "Zulia", shortId: "cDC3j42em6k" },
+      { id: 25, nombre: "Ronaikel García", estado: "Distrito Capital", shortId: "RJGE8CrrIVU" },
+      { id: 26, nombre: "Roshelen Rivas", estado: "Nueva Esparta", shortId: "_G_7_hSKTZA" },
+      { id: 27, nombre: "Samuel Montilla", estado: "Barinas", shortId: "iHgtqyPmn2s" },
+      { id: 28, nombre: "Santiago Uriño", estado: "Trujillo", shortId: "qu3xSlgytI8" },
+      { id: 29, nombre: "Sebastián Sucre", estado: "Sucre", shortId: "T1foDecyaz4" },
+      { id: 30, nombre: "Silvia de la Chiquinquirá", estado: "Amazonas", shortId: "d9NLY3PM9EE" },
+      { id: 31, nombre: "Victoria Barrera", estado: "Táchira", shortId: "6-34XsFqoFQ" }
     ];
 
+    // Parámetros opcionales por URL: ?limit=5 (o 3, 4) y ?titulo=FINAL%20NACIONAL
     const params = new URLSearchParams(window.location.search);
-    const layoutMode = (params.get("layout") || "side").toLowerCase();
-    const alignSide = (params.get("align") || "right").toLowerCase();
+    const maxCards = Math.min(5, Math.max(2, parseInt(params.get("limit") || "5", 10)));
+    const customTitle = params.get("titulo");
 
-    let votosPrevios = {};
-
-    function configurarLayout() {
-      const sideEl = document.getElementById("layoutSide");
-      const bottomEl = document.getElementById("layoutBottom");
-
-      if (layoutMode === "bottom") {
-        bottomEl.classList.remove("hidden");
-      } else {
-        sideEl.classList.remove("hidden");
-        if (alignSide === "left") {
-          sideEl.classList.remove("right-10");
-          sideEl.classList.add("left-10");
-        }
-      }
+    if (customTitle) {
+      document.getElementById("desktopTituloOverlay").innerText = customTitle.toUpperCase();
+      document.getElementById("mobileTituloOverlay").innerText = customTitle.toUpperCase();
     }
 
-    function acortarNombreBroadcast(nombre) {
-      if (nombre.length <= 24) return nombre;
+    const gridEl = document.getElementById("foxCandidatesGrid");
+    if (maxCards === 3) {
+      gridEl.className = "flex-1 grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-white/15";
+    } else if (maxCards === 4) {
+      gridEl.className = "flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-white/15";
+    }
+
+    let votosAnteriores = {};
+
+    function normalizarTexto(str) {
+      return String(str || "")
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim();
+    }
+
+    function acortarNombreFox(nombre) {
+      if (nombre.length <= 20) return nombre;
       const partes = nombre.split(" ");
       if (partes.length >= 3) return `${partes[0]} ${partes[2]}`;
-      return nombre.slice(0, 23) + ".";
+      return nombre.slice(0, 19) + ".";
     }
 
-    async function actualizarTop5() {
+    async function sincronizarOverlayFox() {
       try {
-        const res = await fetch(ENDPOINT_GOOGLE_SHEETS);
+        const res = await fetch(ENDPOINT_GOOGLE_SHEETS, { cache: "no-store" });
         const data = await res.json();
         if (data.status !== "success") return;
 
-        const listaVotantes = data.votantes || [];
-        const votosGabriel = listaVotantes.filter(v =>
-          (v.votosResumen || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes("gabriel raul solorzano")
-        ).length;
+        const listaVotantes = Array.isArray(data.votantes) ? data.votantes : [];
+        const resultadosSheet = Array.isArray(data.resultados) ? data.resultados : [];
 
-        const mapaVotos = {};
-        (data.resultados || []).forEach(r => {
+        // 1. Mapear votos desde la pestaña Resultados (por ID y por Nombre+Estado)
+        const votosPorId = {};
+        const votosPorNombreEstado = {};
+
+        resultadosSheet.forEach(r => {
           const idNum = Number(r.id);
-          const esAntiguoLara = idNum === 19 || (
-            (r.nombre || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes("jose luces") &&
-            (r.estado || "").toLowerCase().trim() === "lara"
-          );
-          mapaVotos[idNum] = esAntiguoLara ? votosGabriel : (Number(r.votos) || 0);
+          const nomNorm = normalizarTexto(r.nombre);
+          const estNorm = normalizarTexto(r.estado);
+          const cant = Number(r.votos) || 0;
+
+          // Si la fila 19 en el Sheet todavía dice "José Luces (Lara)", filtramos solo votos nuevos para Gabriel
+          if (idNum === 19 && nomNorm.includes("jose luces") && estNorm === "lara") {
+            const votosNuevosGabriel = listaVotantes.filter(v =>
+              normalizarTexto(v.votosResumen).includes("gabriel raul solorzano")
+            ).length;
+            votosPorId[19] = votosNuevosGabriel;
+          } else {
+            if (!isNaN(idNum) && idNum > 0) votosPorId[idNum] = cant;
+            if (nomNorm) votosPorNombreEstado[`${nomNorm}|${estNorm}`] = cant;
+          }
         });
 
-        const ordenados = PARTICIPANTES_BASE.map(p => ({
-          ...p,
-          votos: mapaVotos[p.id] !== undefined ? mapaVotos[p.id] : 0
-        })).sort((a, b) => b.votos - a.votos || a.id - b.id);
+        // 2. Construir listado con respaldo automático desde Votantes si Resultados viniera en 0
+        let participantesConVotos = PARTICIPANTES_OFICIALES.map(p => {
+          const keyNE = `${normalizarTexto(p.nombre)}|${normalizarTexto(p.estado)}`;
+          let votos = 0;
 
-        const totalVotos = ordenados.reduce((acc, p) => acc + p.votos, 0);
-        const top5 = ordenados.slice(0, 5);
-        const maxVotos = Math.max(1, top5[0]?.votos || 1);
+          if (votosPorId[p.id] !== undefined) {
+            votos = votosPorId[p.id];
+          } else if (votosPorNombreEstado[keyNE] !== undefined) {
+            votos = votosPorNombreEstado[keyNE];
+          }
 
-        document.getElementById("sideTotalVotos").innerText = totalVotos.toLocaleString("es-VE");
-        document.getElementById("bottomTotalVotos").innerText = `${totalVotos.toLocaleString("es-VE")} VOTOS`;
+          return { ...p, votos };
+        });
 
-        if (layoutMode === "bottom") {
-          renderizarBottom(top5, maxVotos, totalVotos);
-        } else {
-          renderizarSide(top5, maxVotos, totalVotos);
+        const sumaActual = participantesConVotos.reduce((acc, p) => acc + p.votos, 0);
+
+        // Respaldo: si Resultados está vacío/en 0 pero existen votantes en el libro, contar desde votantes
+        if (sumaActual === 0 && listaVotantes.length > 0) {
+          participantesConVotos = PARTICIPANTES_OFICIALES.map(p => {
+            const nomBuscado = normalizarTexto(p.nombre);
+            const estBuscado = normalizarTexto(p.estado);
+            const conteo = listaVotantes.filter(v => {
+              const resTxt = normalizarTexto(v.votosResumen || v.candidatosNombres || "");
+              return resTxt.includes(nomBuscado) && resTxt.includes(estBuscado);
+            }).length;
+            return { ...p, votos: conteo };
+          });
         }
 
-        const nuevoMapaPrevio = {};
-        top5.forEach(p => { nuevoMapaPrevio[p.id] = p.votos; });
-        votosPrevios = nuevoMapaPrevio;
-      } catch (e) {
-        // Mantiene en pantalla el último estado válido si hay microcorte de red
+        // Ordenar de mayor a menor
+        participantesConVotos.sort((a, b) => b.votos - a.votos || a.id - b.id);
+
+        const totalVotos = participantesConVotos.reduce((acc, p) => acc + p.votos, 0);
+        const totalVotantes = Number(data.totalVotantes) || listaVotantes.length || Math.round(totalVotos / 5);
+
+        document.getElementById("foxTotalVotos").innerText = totalVotos.toLocaleString("es-VE");
+        document.getElementById("foxTotalVotantes").innerText = totalVotantes.toLocaleString("es-VE");
+
+        renderizarTarjetasFox(participantesConVotos.slice(0, maxCards), totalVotos);
+
+        // Guardar estado para detectar incrementos en el próximo ciclo
+        const snapshot = {};
+        participantesConVotos.slice(0, maxCards).forEach(p => { snapshot[p.id] = p.votos; });
+        votosAnteriores = snapshot;
+
+      } catch (err) {
+        // Mantiene en pantalla el último marcador cargado
       }
     }
 
-    function renderizarSide(top5, maxVotos, totalVotos) {
-      const cont = document.getElementById("sideRowsContainer");
-      cont.innerHTML = top5.map((p, idx) => {
-        const rank = idx + 1;
-        const ancho = p.votos > 0 ? Math.max(5, Math.round((p.votos / maxVotos) * 100)) : 0;
-        const pct = totalVotos > 0 ? ((p.votos / totalVotos) * 100).toFixed(1) : "0.0";
-        const subio = votosPrevios[p.id] !== undefined && p.votos > votosPrevios[p.id];
+    function renderizarTarjetasFox(topList, totalVotos) {
+      const maxVotos = Math.max(1, topList[0]?.votos || 1);
 
-        const badgeRankClass = rank === 1
+      gridEl.innerHTML = topList.map((p, idx) => {
+        const rank = idx + 1;
+        const esLider = rank === 1;
+        const subioVoto = votosAnteriores[p.id] !== undefined && p.votos > votosAnteriores[p.id];
+        const pct = totalVotos > 0 ? ((p.votos / totalVotos) * 100).toFixed(1) : "0.0";
+        const barWidth = p.votos > 0 ? Math.max(6, Math.round((p.votos / maxVotos) * 100)) : 0;
+        const thumbUrl = `https://img.youtube.com/vi/${p.shortId}/hqdefault.jpg`;
+
+        const rankBadgeStyle = esLider
           ? "bg-[#f5b942] text-black"
           : rank === 2
-            ? "bg-slate-200 text-black"
-            : rank === 3
-              ? "bg-amber-700 text-white"
-              : "bg-white/10 text-white";
+            ? "bg-white text-[#061124]"
+            : "bg-[#1e3a6e] text-white border border-white/20";
 
-        const barColor = rank === 1 ? "bg-[#f5b942]" : "bg-sky-400";
-
-        return `
-          <div class="px-4 py-2.5 flex items-center gap-3 ${subio ? "row-vote-flash" : ""}">
-            <div class="w-7 h-7 rounded-sm font-fox text-base font-black flex items-center justify-center shrink-0 ${badgeRankClass}">
-              ${rank}
-            </div>
-
-            <div class="min-w-0 flex-1">
-              <div class="flex items-center justify-between gap-2">
-                <span class="font-fox text-base font-extrabold uppercase text-white truncate leading-none">
-                  ${acortarNombreBroadcast(p.nombre)}
-                </span>
-                <span class="font-tnum text-sm font-extrabold ${rank === 1 ? "text-[#f5b942]" : "text-white"} shrink-0">
-                  ${p.votos.toLocaleString("es-VE")}
-                </span>
-              </div>
-
-              <div class="flex items-center justify-between gap-2 mt-1">
-                <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">
-                  ${p.estado}
-                </span>
-                <span class="font-tnum text-[10px] text-slate-400">${pct}%</span>
-              </div>
-
-              <div class="mt-1.5 w-full h-1 bg-white/10 rounded-full overflow-hidden">
-                <div class="h-full ${barColor} bar-smooth" style="width: ${ancho}%"></div>
-              </div>
-            </div>
-          </div>
-        `;
-      }).join("");
-    }
-
-    function renderizarBottom(top5, maxVotos, totalVotos) {
-      const cont = document.getElementById("bottomColsContainer");
-      cont.innerHTML = top5.map((p, idx) => {
-        const rank = idx + 1;
-        const ancho = p.votos > 0 ? Math.max(6, Math.round((p.votos / maxVotos) * 100)) : 0;
-        const subio = votosPrevios[p.id] !== undefined && p.votos > votosPrevios[p.id];
-        const rankBg = rank === 1 ? "bg-[#f5b942] text-black" : "bg-white/12 text-white";
+        const barFillStyle = esLider
+          ? "bg-gradient-to-r from-[#d97706] via-[#f5b942] to-[#fde047]"
+          : rank === 2
+            ? "bg-gradient-to-r from-[#b91c1c] to-[#f43f5e]"
+            : "bg-gradient-to-r from-[#1d4ed8] to-[#38bdf8]";
 
         return `
-          <div class="px-3.5 py-2.5 flex flex-col justify-between ${subio ? "row-vote-flash" : ""}">
-            <div class="flex items-center justify-between gap-2">
-              <div class="flex items-center gap-2 min-w-0">
-                <span class="w-5 h-5 rounded-sm font-fox text-xs font-black flex items-center justify-center shrink-0 ${rankBg}">
+          <div class="px-3.5 py-2.5 flex flex-col justify-between relative ${esLider ? "fox-leader-card" : ""} ${subioVoto ? "vote-flash" : ""}">
+            
+            <!-- Fila Superior: Posición + Estado + Porcentaje -->
+            <div class="flex items-center justify-between gap-2 mb-1.5">
+              <div class="flex items-center gap-1.5 min-w-0">
+                <span class="w-5 h-5 rounded-sm font-fox text-xs font-black flex items-center justify-center shrink-0 ${rankBadgeStyle}">
                   ${rank}
                 </span>
-                <span class="text-[10px] font-bold uppercase tracking-widest text-[#f5b942] truncate">
+                <span class="font-fox text-xs font-extrabold uppercase tracking-wider ${esLider ? "text-[#f5b942]" : "text-sky-300"} truncate">
                   ${p.estado}
                 </span>
               </div>
-              <span class="font-tnum text-sm font-extrabold text-white shrink-0">
-                ${p.votos.toLocaleString("es-VE")}
+
+              <span class="font-tnum text-xs font-extrabold ${esLider ? "text-[#f5b942]" : "text-slate-300"} shrink-0">
+                ${pct}%
               </span>
             </div>
 
-            <div class="font-fox text-base font-extrabold uppercase text-white truncate mt-1">
-              ${acortarNombreBroadcast(p.nombre)}
+            <!-- Fila Central: Foto del Participante + Nombre + Cifra de Votos -->
+            <div class="flex items-center gap-2.5 my-0.5">
+              <div class="w-11 h-11 rounded-sm overflow-hidden bg-[#040914] border ${esLider ? "border-[#f5b942]" : "border-white/20"} shrink-0">
+                <img src="${thumbUrl}" alt="${p.nombre}" class="w-full h-full object-cover" />
+              </div>
+
+              <div class="min-w-0 flex-1">
+                <div class="font-fox text-base xl:text-lg font-black uppercase text-white truncate leading-tight">
+                  ${acortarNombreFox(p.nombre)}
+                </div>
+                <div class="flex items-baseline gap-1 mt-0.5">
+                  <span class="font-tnum text-base xl:text-lg font-extrabold ${esLider ? "text-[#f5b942]" : "text-white"} leading-none">
+                    ${p.votos.toLocaleString("es-VE")}
+                  </span>
+                  <span class="font-fox text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                    VOTOS
+                  </span>
+                </div>
+              </div>
             </div>
 
-            <div class="mt-1.5 w-full h-1 bg-white/10 rounded-full overflow-hidden">
-              <div class="h-full ${rank === 1 ? "bg-[#f5b942]" : "bg-sky-400"} bar-smooth" style="width: ${ancho}%"></div>
+            <!-- Barra Inferior de Progreso Electoral -->
+            <div class="mt-2 w-full h-1.5 bg-black/70 rounded-sm overflow-hidden border border-white/10">
+              <div class="h-full ${barFillStyle} fox-progress-fill" style="width: ${barWidth}%"></div>
             </div>
+
           </div>
         `;
       }).join("");
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-      configurarLayout();
-      actualizarTop5();
-      setInterval(actualizarTop5, 6000);
+      // Renderizado inicial inmediato antes de que responda la red
+      renderizarTarjetasFox(PARTICIPANTES_OFICIALES.slice(0, maxCards).map(p => ({ ...p, votos: 0 })), 0);
+      sincronizarOverlayFox();
+      setInterval(sincronizarOverlayFox, 5000);
     });
   </script>
 </body>
