@@ -95,7 +95,7 @@
 </head>
 <body class="min-h-full flex flex-col selection:bg-[#f5b942] selection:text-black pb-24">
 
-  <!-- Cintillo Superior de Aviso (desde el panel admin) -->
+  <!-- Cintillo Superior de Aviso (desde el panel de control) -->
   <div id="bannerAvisoGlobal" class="hidden bg-[#f5b942] text-black text-center py-1.5 px-4 font-fox text-xs sm:text-sm font-extrabold uppercase tracking-wider">
     <span id="textoBannerAviso"></span>
   </div>
@@ -104,7 +104,6 @@
   <header class="sticky top-0 z-40 bg-[#030508]/92 backdrop-blur-xl border-b border-white/[0.08]">
     <div class="max-w-[1520px] mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
       
-      <!-- Logo Oficial del Festival (logo_color.png) e Institución -->
       <div class="flex items-center gap-4">
         <a href="index.html" class="shrink-0 flex items-center">
           <img src="./logo_color.png" alt="Festival de la Voz Niño Simón 2026" class="h-9 sm:h-10 w-auto object-contain drop-shadow-[0_2px_10px_rgba(245,185,66,0.2)]" />
@@ -120,7 +119,6 @@
         </div>
       </div>
 
-      <!-- Telemetría y Acción Principal -->
       <div class="flex items-center gap-3">
         <div id="badgeEstadoEmision" class="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#e11d48]/15 border border-[#e11d48]/40">
           <span class="w-2 h-2 rounded-full bg-[#e11d48] animate-ping"></span>
@@ -174,7 +172,7 @@
             <span class="w-1.5 h-6 bg-[#f5b942] rounded-full"></span>
             <div>
               <h2 id="labelTituloGala" class="font-fox text-sm sm:text-base font-bold uppercase tracking-wide text-white leading-none">
-                Gala Final Nacional &bull; Señal Máster
+                Semifinales Nacionales &bull; Señal Oficial
               </h2>
               <span id="labelSubtituloLugar" class="text-[11px] text-slate-400">
                 Teatro Juares &middot; Barquisimeto, Estado Lara
@@ -223,7 +221,6 @@
   <!-- ================= ESCRUTINIO EN DIRECTO ESTILO FOX ================= -->
   <main id="escrutinioEnVivo" class="max-w-[1520px] w-full mx-auto px-4 sm:px-6 space-y-6">
     
-    <!-- Barra de Título y Telemetría -->
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/10 pb-4">
       <div>
         <div class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[#f5b942] mb-1">
@@ -419,7 +416,11 @@
   </footer>
 
   <script>
+    // 1. Backend original de VOTACIONES (no se toca)
     const ENDPOINT_GOOGLE_SHEETS = "https://script.google.com/macros/s/AKfycbzH1tSBBdcN6gI5s7wQwAyifLzglIuMVjwbqBAQB5gVrfvIXZVTiMah9Dz01CQt4Ov1aA/exec";
+
+    // 2. Backend independiente de STREAMING YOUTUBE LIVE
+    const ENDPOINT_STREAM_CONFIG = "https://script.google.com/macros/s/AKfycbzR-IPRu-qFuGHV8qVQjr2bOJ9NjGCWEcrCiOm3msHbZhPJHPKF8HY0neOnt8M4QiTw/exec";
 
     const PARTICIPANTES_OFICIALES = [
       { id: 1, nombre: "Tyler Colina", estado: "Mérida", shortId: "r_2LEocre14" },
@@ -471,7 +472,8 @@
 
     function aplicarConfigStream(cfg) {
       if (!cfg) return;
-      const nuevoId = cfg.youtubeId || "twQIz3bRm5g";
+      const urlOverride = new URLSearchParams(window.location.search).get("v");
+      const nuevoId = urlOverride || cfg.youtubeId || "sZTplvsYYHw";
       const chatActivo = cfg.chatActivo !== false;
       votacionAbiertaGlobal = cfg.votacionAbierta !== false;
 
@@ -504,7 +506,7 @@
         }
       }
 
-      document.getElementById("labelTituloGala").innerText = cfg.tituloGala || "Gala Final Nacional · Señal Máster";
+      document.getElementById("labelTituloGala").innerText = cfg.tituloGala || "Semifinales Nacionales · Señal Oficial";
       document.getElementById("labelSubtituloLugar").innerText = cfg.subtituloLugar || "Teatro Juares · Barquisimeto, Estado Lara";
 
       const banner = document.getElementById("bannerAvisoGlobal");
@@ -558,14 +560,33 @@
       }
     }
 
-    async function sincronizarTodoDesdeBackend() {
+    async function sincronizarStreamConfigAparte() {
       try {
-        const res = await fetch(ENDPOINT_GOOGLE_SHEETS);
+        const res = await fetch(ENDPOINT_STREAM_CONFIG, { cache: "no-store" });
+        const data = await res.json();
+        if (data.status === "success" && data.streamConfig) {
+          aplicarConfigStream(data.streamConfig);
+          return;
+        }
+      } catch (e) {}
+
+      if (!videoIdCargado) {
+        aplicarConfigStream({
+          youtubeId: "sZTplvsYYHw",
+          estadoTransmision: "EN_VIVO",
+          chatActivo: true,
+          votacionAbierta: true
+        });
+      }
+    }
+
+    async function sincronizarTodoDesdeBackend() {
+      sincronizarStreamConfigAparte();
+      try {
+        const res = await fetch(ENDPOINT_GOOGLE_SHEETS, { cache: "no-store" });
         const data = await res.json();
 
         if (data.status === "success") {
-          if (data.streamConfig) aplicarConfigStream(data.streamConfig);
-
           totalCiudadanosGlobal = Number(data.totalVotantes) || 0;
           totalVotosGlobal = Number(data.totalVotos) || (totalCiudadanosGlobal * 5);
 
