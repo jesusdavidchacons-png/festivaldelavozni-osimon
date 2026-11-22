@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full mode-output">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Salida Alpha 16:9 — Festival de la Voz Niño Simón 2026</title>
+  <link rel="icon" type="image/png" href="./logo_color.png" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=JetBrains+Mono:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    .font-fox {
+      font-family: 'Barlow Condensed', sans-serif;
+      letter-spacing: 0.04em;
+    }
+    .font-tnum {
+      font-family: 'JetBrains Mono', monospace;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* LOGO SIEMPRE EN BLANCO PURO (#FFFFFF) */
+    .logo-pure-white {
+      -webkit-filter: brightness(0) invert(1) drop-shadow(0 2px 10px rgba(255, 255, 255, 0.25)) !important;
+      filter: brightness(0) invert(1) drop-shadow(0 2px 10px rgba(255, 255, 255, 0.25)) !important;
+    }
+
+    /* CANAL ALPHA 100% TRANSPARENTE PARA YOLOBOX EXTREME */
+    html, html.mode-output, body, body.mode-output {
+      background: transparent !important;
+      background-color: rgba(0, 0, 0, 0) !important;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* LIENZO MAESTRO 16:9 (1920x1080) CON AUTOESCALADO */
+    #broadcastCanvas16x9 {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 1920px;
+      height: 1080px;
+      transform: translate(-50%, -50%) scale(1);
+      transform-origin: center center;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .qr-box-render img, .qr-box-render canvas {
+      width: 100% !important;
+      height: 100% !important;
+      display: block;
+    }
+
+    /* =====================================================================
+       1. ENTRADA (IN) Y SALIDA (OUT) DE CADA CAPA
+       ===================================================================== */
+    .anim-bottom-layer {
+      opacity: 0;
+      transform: translateY(85px) scale(0.98);
+      transition: transform 0.45s cubic-bezier(0.55, 0, 1, 0.45), opacity 0.32s ease;
+    }
+    .anim-bottom-layer.is-on-air {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      transition: transform 0.68s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.42s ease;
+    }
+
+    .anim-right-layer {
+      opacity: 0;
+      transform: translateX(95px);
+      transition: transform 0.42s cubic-bezier(0.55, 0, 1, 0.45), opacity 0.3s ease;
+    }
+    .anim-right-layer.is-on-air {
+      opacity: 1;
+      transform: translateX(0);
+      transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+    }
+
+    .anim-left-layer {
+      opacity: 0;
+      transform: translateX(-110px);
+      clip-path: inset(0 100% 0 0);
+      transition:
+        transform 0.45s cubic-bezier(0.55, 0, 1, 0.45),
+        clip-path 0.45s cubic-bezier(0.55, 0, 1, 0.45),
+        opacity 0.3s ease;
+    }
+    .anim-left-layer.is-on-air {
+      opacity: 1;
+      transform: translateX(0);
+      clip-path: inset(0 0% 0 0);
+      transition:
+        transform 0.72s cubic-bezier(0.16, 1, 0.3, 1),
+        clip-path 0.72s cubic-bezier(0.16, 1, 0.3, 1),
+        opacity 0.4s ease;
+    }
+
+    .anim-top-layer {
+      opacity: 0;
+      transform: translateY(-55px) scale(0.95);
+      transition: transform 0.38s ease-in, opacity 0.28s ease;
+    }
+    .anim-top-layer.is-on-air {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.38s ease;
+    }
+
+    /* =====================================================================
+       2. ANIMACIÓN INTERNA ESCALONADA
+       ===================================================================== */
+    .stagger-item {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s ease;
+    }
+    .is-on-air .stagger-item {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .is-on-air .stagger-1 { transition-delay: 0.08s; }
+    .is-on-air .stagger-2 { transition-delay: 0.16s; }
+    .is-on-air .stagger-3 { transition-delay: 0.24s; }
+    .is-on-air .stagger-4 { transition-delay: 0.32s; }
+    .is-on-air .stagger-5 { transition-delay: 0.40s; }
+
+    .name-reveal-text {
+      opacity: 0;
+      transform: translateX(-28px);
+      transition: transform 0.62s cubic-bezier(0.16, 1, 0.3, 1) 0.22s, opacity 0.45s ease 0.22s;
+    }
+    .is-on-air .name-reveal-text {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .sub-reveal-text {
+      opacity: 0;
+      transform: translateY(12px);
+      transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.14s, opacity 0.4s ease 0.14s;
+    }
+    .is-on-air .sub-reveal-text {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .author-reveal-text {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: transform 0.58s cubic-bezier(0.16, 1, 0.3, 1) 0.30s, opacity 0.45s ease 0.30s;
+    }
+    .is-on-air .author-reveal-text {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* =====================================================================
+       3. PRESENCIA CONTINUA AL AIRE
+       ===================================================================== */
+    @keyframes broadcastFloat {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-4px); }
+    }
+
+    @keyframes broadcastGlowPulse {
+      0%, 100% {
+        border-color: rgba(255, 255, 255, 0.24);
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.88), 0 0 0 1px rgba(245, 185, 66, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      }
+      50% {
+        border-color: rgba(245, 185, 66, 0.65);
+        box-shadow: 0 28px 70px rgba(0, 0, 0, 0.92), 0 0 32px rgba(245, 185, 66, 0.26), inset 0 1px 0 rgba(255, 255, 255, 0.38);
+      }
+    }
+
+    @keyframes pipBorderAlive {
+      0%, 100% {
+        border-color: rgba(245, 185, 66, 0.65);
+        box-shadow: 0 22px 55px rgba(0, 0, 0, 0.85), 0 0 18px rgba(245, 185, 66, 0.2);
+      }
+      50% {
+        border-color: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 26px 65px rgba(0, 0, 0, 0.92), 0 0 30px rgba(245, 185, 66, 0.45);
+      }
+    }
+
+    @keyframes diagonalLightSheen {
+      0%, 48% {
+        transform: translateX(-150%) skewX(-24deg);
+        opacity: 0;
+      }
+      60% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateX(280%) skewX(-24deg);
+        opacity: 0;
+      }
+    }
+
+    @keyframes verticalGoldBeam {
+      0% { background-position: 0% 0%; }
+      50% { background-position: 0% 100%; }
+      100% { background-position: 0% 0%; }
+    }
+
+    @keyframes verticalCyanBeam {
+      0% { background-position: 0% 0%; }
+      50% { background-position: 0% 100%; }
+      100% { background-position: 0% 0%; }
+    }
+
+    @keyframes horizontalGradientFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes logoBreathe {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.045); }
+    }
+
+    @keyframes qrFramePulse {
+      0%, 100% { box-shadow: 0 0 0 2px rgba(245, 185, 66, 0.55), 0 8px 20px rgba(0, 0, 0, 0.6); }
+      50% { box-shadow: 0 0 0 3px rgba(245, 185, 66, 1), 0 0 22px rgba(245, 185, 66, 0.5); }
+    }
+
+    @keyframes barBeamSweep {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(240%); }
+    }
+
+    .presence-frame {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .presence-frame::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 32%;
+      background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.14) 50%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      pointer-events: none;
+      opacity: 0;
+    }
+
+    .is-on-air .presence-frame {
+      animation:
+        broadcastFloat 4.2s ease-in-out infinite,
+        broadcastGlowPulse 3.6s ease-in-out infinite;
+    }
+
+    .is-on-air .presence-frame::after {
+      animation: diagonalLightSheen 4.8s ease-in-out infinite;
+    }
+
+    .pip-chassis {
+      background: transparent !important;
+      border: 2.5px solid #f5b942;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .is-on-air .pip-chassis {
+      animation: pipBorderAlive 3.4s ease-in-out infinite;
+    }
+
+    .is-on-air .logo-alive {
+      animation: logoBreathe 4s ease-in-out infinite;
+    }
+
+    .is-on-air .qr-card-alive {
+      animation: qrFramePulse 3s ease-in-out infinite;
+    }
+
+    .is-on-air .gold-pillar-alive {
+      background: linear-gradient(180deg, #fef08a, #f5b942, #b45309, #fde047);
+      background-size: 100% 250%;
+      animation: verticalGoldBeam 3.2s ease infinite;
+    }
+
+    .is-on-air .cyan-pillar-alive {
+      background: linear-gradient(180deg, #7dd3fc, #0ea5e9, #1d4ed8, #38bdf8);
+      background-size: 100% 250%;
+      animation: verticalCyanBeam 3.2s ease infinite;
+    }
+
+    .is-on-air .accent-flow-bar {
+      background-size: 200% 200%;
+      animation: horizontalGradientFlow 4s ease infinite;
+    }
+
+    .fox-shell {
+      background: linear-gradient(180deg, rgba(10, 25, 54, 0.96) 0%, rgba(5, 13, 31, 0.98) 100%);
+      border: 2px solid rgba(255, 255, 255, 0.22);
+    }
+
+    .fox-bar-smooth {
+      position: relative;
+      overflow: hidden;
+      transition: width 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .fox-bar-smooth::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      width: 45%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+      animation: barBeamSweep 2.8s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body class="mode-output">
+
+  <!-- =========================================================================
+       ESCENARIO DE SALIDA ALPHA 16:9 (1920x1080 PARA YOLOBOX EXTREME)
+       ========================================================================= -->
+  <div id="alphaStage" class="fixed inset-0 pointer-events-none overflow-hidden">
+    <div id="broadcastCanvas16x9">
+
+      <!-- CAPA A: BUG SUPERIOR IZQUIERDO (EN VIVO + ETAPA + LOGO BLANCO PURO) -->
+      <div id="layer_bugLive" class="anim-top-layer absolute top-[48px] left-[64px] z-30">
+        <div class="presence-frame inline-flex items-center gap-4 px-5 py-3 rounded-md bg-[#060d1f]/95 border-2 border-white/25">
+          <img src="./logo_color.png" alt="Logo" style="-webkit-filter: brightness(0) invert(1); filter: brightness(0) invert(1);" class="h-12 w-auto object-contain logo-pure-white logo-alive" />
+          <div class="h-9 w-[1px] bg-white/20"></div>
+          <div>
+            <div class="inline-flex items-center gap-2 bg-[#e11d48] px-2.5 py-0.5 rounded-sm">
+              <span class="w-2 h-2 rounded-full bg-white animate-ping"></span>
+              <span class="font-fox text-sm font-black uppercase tracking-widest text-white leading-none">EN VIVO</span>
+            </div>
+            <span id="outBugStage" class="block font-fox text-base font-extrabold uppercase tracking-wider text-[#f5b942] mt-1">
+              SEMIFINALES &middot; 2026
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CAPA B1: PLECA DE PARTICIPANTE EN ESCENA -->
+      <div id="layer_lowerArtist" class="anim-left-layer absolute bottom-[64px] left-[64px] z-30 max-w-[1060px]">
+        <div class="presence-frame fox-shell rounded-md flex items-stretch">
+          <div class="gold-pillar-alive w-3.5 shrink-0"></div>
+          <div class="px-6 py-4 bg-[#08152e] flex items-center justify-center border-r border-white/15">
+            <img src="./logo_color.png" alt="Logo" style="-webkit-filter: brightness(0) invert(1); filter: brightness(0) invert(1);" class="h-16 w-auto object-contain logo-pure-white logo-alive" />
+          </div>
+          <div class="px-7 py-4 flex flex-col justify-center">
+            <div class="sub-reveal-text flex flex-wrap items-center gap-2.5">
+              <span id="outArtistState" class="px-3 py-0.5 rounded-sm bg-[#e11d48] font-fox text-base font-black uppercase tracking-widest text-white">
+                ZULIA
+              </span>
+              <span id="outArtistCategory" class="px-3 py-0.5 rounded-sm bg-sky-400 font-fox text-base font-black uppercase tracking-widest text-slate-950">
+                CATEGORÍA INFANTIL
+              </span>
+              <span id="outArtistSong" class="font-fox text-base font-bold uppercase tracking-wider text-slate-200 pl-1">
+                ORDEN #01 &middot; SEMIFINALES
+              </span>
+            </div>
+            <div id="outArtistName" class="name-reveal-text font-fox text-[42px] font-black uppercase text-white leading-none mt-2">
+              GABRIELA GALILEA ANDRADE GUTIÉRREZ
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CAPA B2 (ALTERNA): FICHA MUSICAL EN ESCENA -->
+      <div id="layer_songInfo" class="anim-left-layer absolute bottom-[64px] left-[64px] z-30 max-w-[1080px]">
+        <div class="presence-frame fox-shell rounded-md flex items-stretch">
+          <div class="cyan-pillar-alive w-3.5 shrink-0"></div>
+          <div class="px-6 py-4 bg-[#08152e] flex flex-col items-center justify-center border-r border-white/15 gap-1">
+            <img src="./logo_color.png" alt="Logo" style="-webkit-filter: brightness(0) invert(1); filter: brightness(0) invert(1);" class="h-14 w-auto object-contain logo-pure-white logo-alive" />
+          </div>
+          <div class="px-7 py-4 flex flex-col justify-center">
+            <div class="sub-reveal-text flex flex-wrap items-center gap-2.5">
+              <span class="px-3 py-0.5 rounded-sm bg-[#f5b942] font-fox text-base font-black uppercase tracking-widest text-black flex items-center gap-1.5">
+                <i class="fa-solid fa-music text-xs"></i>
+                <span id="outSongGenre">MERENGUE LARENSE</span>
+              </span>
+              <span id="outSongInterpreterBadge" class="px-3 py-0.5 rounded-sm bg-white/10 border border-white/15 font-fox text-sm font-bold uppercase tracking-wider text-sky-300">
+                ZULIA &middot; GABRIELA GALILEA ANDRADE
+              </span>
+            </div>
+
+            <div id="outSongTitle" class="name-reveal-text font-fox text-[40px] font-black uppercase text-white leading-none mt-2">
+              «LOS 2 GAVILANES»
+            </div>
+
+            <div id="outSongAuthor" class="author-reveal-text font-fox text-xl font-bold uppercase tracking-wide text-sky-300 mt-1.5">
+              Letra y Música de: Adelis Freitez
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CAPA F: MARCO ALPHA PARA PiP DE DELEGACIÓN / PÚBLICO (CENTRO TRANSPARENTE 16:9) -->
+      <div id="layer_pipDelegation" class="anim-right-layer absolute bottom-[64px] right-[64px] w-[540px] z-25">
+        <div class="pip-chassis">
+          <div class="px-4 py-2 bg-gradient-to-r from-[#09152e] via-[#13264d] to-[#260b14] border-b-2 border-[#f5b942] flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2.5">
+              <img src="./logo_color.png" alt="Logo" style="-webkit-filter: brightness(0) invert(1); filter: brightness(0) invert(1);" class="h-6 w-auto object-contain logo-pure-white logo-alive" />
+              <div class="flex items-center gap-1.5 bg-[#e11d48] px-2 py-0.5 rounded-sm">
+                <span class="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span>
+                <span class="font-fox text-xs font-black uppercase tracking-widest text-white leading-none">EN SALA</span>
+              </div>
+            </div>
+
+            <span id="outPipState" class="font-fox text-base font-black uppercase tracking-wider text-[#f5b942] truncate">
+              DELEGACIÓN ZULIA
+            </span>
+          </div>
+
+          <div class="relative w-full aspect-video bg-transparent">
+            <span class="absolute top-2.5 left-2.5 w-4 h-4 border-t-2 border-l-2 border-[#f5b942]"></span>
+            <span class="absolute top-2.5 right-2.5 w-4 h-4 border-t-2 border-r-2 border-[#f5b942]"></span>
+            <span class="absolute bottom-2.5 left-2.5 w-4 h-4 border-b-2 border-l-2 border-[#f5b942]"></span>
+            <span class="absolute bottom-2.5 right-2.5 w-4 h-4 border-b-2 border-r-2 border-[#f5b942]"></span>
+
+            <div id="pipCalibrateGrid" class="hidden absolute inset-0 bg-cyan-500/20 border-2 border-dashed border-cyan-300 flex flex-col items-center justify-center text-center p-4">
+              <i class="fa-solid fa-crosshairs text-3xl text-cyan-300 mb-1"></i>
+              <span class="font-fox text-xl font-black uppercase text-white bg-black/75 px-3 py-1 rounded">
+                AJUSTA AQUÍ EL RECUADRO PiP EN TU YOLOBOX (16:9)
+              </span>
+            </div>
+          </div>
+
+          <div class="px-4 py-2 bg-[#050d1f]/95 border-t border-white/15 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2 min-w-0">
+              <span class="w-1.5 h-4 bg-[#f5b942] rounded-full shrink-0"></span>
+              <span id="outPipCaption" class="font-fox text-sm font-extrabold uppercase tracking-wider text-white truncate">
+                REACCIÓN EN SALA &middot; APOYO FAMILIAR
+              </span>
+            </div>
+            <span id="outPipCategory" class="px-2 py-0.5 rounded-sm bg-sky-400 font-fox text-xs font-black uppercase tracking-widest text-slate-950 shrink-0">
+              INFANTIL
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CAPA C: TORRE TOP 5 LATERAL DERECHA + BLOQUE QR DE VOTACIÓN -->
+      <div id="layer_foxTower" class="anim-right-layer absolute top-[48px] right-[64px] w-[475px] z-20">
+        <div class="presence-frame fox-shell rounded-md">
+          <div class="px-5 py-3 bg-gradient-to-r from-[#09152e] to-[#1a1208] border-b-2 border-[#f5b942] flex items-center justify-between">
+            <div class="flex items-center gap-3.5">
+              <img src="./logo_color.png" alt="Logo" style="-webkit-filter: brightness(0) invert(1); filter: brightness(0) invert(1);" class="h-10 w-auto object-contain logo-pure-white logo-alive" />
+              <div>
+                <span id="outTowerStage" class="font-fox text-xs font-extrabold uppercase tracking-widest text-[#f5b942] block leading-none">
+                  SEMIFINALES &middot; EN VIVO
+                </span>
+                <span class="font-fox text-2xl font-black uppercase text-white leading-none mt-0.5 block">
+                  Top 5 Nacional
+                </span>
+              </div>
+            </div>
+            <span id="outTowerTotal" class="font-tnum text-sm font-extrabold text-white bg-white/10 px-2.5 py-1 rounded">0</span>
+          </div>
+
+          <div id="outTowerRows" class="divide-y divide-white/10"></div>
+
+          <div class="px-5 py-3 bg-gradient-to-r from-[#071226] via-[#0e2042] to-[#071226] border-t-2 border-[#f5b942] flex items-center justify-between gap-4">
+            <div class="space-y-0.5">
+              <span class="inline-block px-2 py-0.5 rounded-sm bg-[#e11d48] font-fox text-[11px] font-black uppercase tracking-widest text-white">
+                ¡VOTA AHORA!
+              </span>
+              <div class="font-fox text-xl font-black uppercase text-white leading-tight">
+                ESCANEA EL QR Y ELIGE
+              </div>
+              <div class="font-fox text-xs font-bold uppercase tracking-wider text-[#f5b942]">
+                Tus 5 Participantes Favoritos
+              </div>
+            </div>
+            <div class="qr-card-alive bg-white p-1.5 rounded-sm shrink-0">
+              <div id="qrOutTower" class="qr-box-render w-[84px] h-[84px]"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CAPA D: TOP 5 ESTILO ELECCIONES FOX + ESTACIÓN QR DERECHA -->
+      <div id="layer_foxElections" class="anim-bottom-layer absolute bottom-[52px] left-[64px] right-[64px] z-20">
+        <div class="presence-frame w-full fox-shell rounded-md">
+          <div class="accent-flow-bar h-1.5 w-full bg-gradient-to-r from-[#e11d48] via-[#f5b942] to-[#2563eb]"></div>
+          <div class="flex flex-row items-stretch">
+            <div class="px-5 py-4 w-[245px] shrink-0 bg-gradient-to-br from-[#0d234a] to-[#061126] border-r-2 border-[#f5b942] flex flex-col justify-between gap-2">
+              <img src="./logo_color.png" alt="Logo" style="-webkit-filter: brightness(0) invert(1); filter: brightness(0) invert(1);" class="h-11 w-auto object-contain self-start logo-pure-white logo-alive" />
+              <div>
+                <div class="inline-flex items-center gap-2 bg-[#e11d48] px-2.5 py-0.5 rounded-sm mb-1.5">
+                  <span class="w-2 h-2 rounded-full bg-white animate-ping"></span>
+                  <span class="font-fox text-xs font-black uppercase tracking-widest text-white">EN DIRECTO</span>
+                </div>
+                <div class="font-fox text-2xl font-black uppercase text-white leading-none">TOP 5 NACIONAL</div>
+                <div id="outElectionsStage" class="font-fox text-xs font-extrabold uppercase tracking-widest text-[#f5b942] mt-1">
+                  SEMIFINALES &middot; VOTACIÓN
+                </div>
+              </div>
+            </div>
+
+            <div id="outElectionsGrid" class="flex-1 grid grid-cols-5 divide-x divide-white/15"></div>
+
+            <div class="px-4 py-3 w-[205px] shrink-0 bg-gradient-to-b from-[#0f244a] to-[#071124] border-l-2 border-[#f5b942] flex flex-col items-center justify-center text-center gap-1.5">
+              <div class="qr-card-alive bg-white p-1.5 rounded-sm">
+                <div id="qrOutElections" class="qr-box-render w-[96px] h-[96px]"></div>
+              </div>
+              <div>
+                <span class="block font-fox text-base font-black uppercase tracking-wider text-[#f5b942] leading-none">
+                  ESCANEA Y VOTA
+                </span>
+                <span class="block font-fox text-[11px] font-bold uppercase tracking-widest text-white/80 mt-0.5">
+                  Elige tus 5 favoritos
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="px-6 py-1.5 bg-[#040914] border-t border-white/15 flex items-center justify-between text-sm">
+            <span class="font-fox font-bold uppercase tracking-wider text-slate-300">
+              Fundación Nacional del Niño Simón &bull; <span id="outFooterStage" class="text-[#f5b942]">SEMIFINALES 2026</span> &bull; La Flor de Venezuela, Barquisimeto
+            </span>
+            <span class="font-tnum font-extrabold text-[#f5b942]" id="outElectionsTotal">0 VOTOS</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CAPA E: CINTILLO DE VOTACIÓN INFERIOR + QR INTEGRADO -->
+      <div id="layer_tickerBanner" class="anim-bottom-layer absolute bottom-[52px] left-[64px] right-[64px] z-25">
+        <div class="presence-frame w-full fox-shell rounded-md flex items-center justify-between">
+          <div class="flex items-center min-w-0 flex-1">
+            <div class="px-6 py-4 bg-[#e11d48] font-fox text-lg font-black uppercase tracking-widest text-white shrink-0 flex items-center gap-3 self-stretch">
+              <img src="./logo_color.png" alt="Logo" style="-webkit-filter: brightness(0) invert(1); filter: brightness(0) invert(1);" class="h-8 w-auto object-contain logo-pure-white logo-alive" />
+              <span id="outTickerStage">SEMIFINALES</span>
+            </div>
+            <div id="outTickerText" class="name-reveal-text px-6 py-3 font-fox text-2xl font-extrabold uppercase tracking-wide text-white truncate">
+              ESCANEA EL CÓDIGO QR Y VOTA POR TUS 5 FAVORITOS EN DIRECTO
+            </div>
+          </div>
+
+          <div class="px-5 py-2 bg-[#0c1e3d] border-l-2 border-[#f5b942] flex items-center gap-3.5 shrink-0">
+            <div class="text-right">
+              <span class="block font-fox text-base font-black uppercase tracking-wider text-[#f5b942] leading-none">
+                ESCANEA AQUÍ
+              </span>
+              <span class="block font-fox text-xs font-bold uppercase tracking-widest text-white mt-0.5">
+                Para Votar
+              </span>
+            </div>
+            <div class="qr-card-alive bg-white p-1 rounded-sm">
+              <div id="qrOutTicker" class="qr-box-render w-[66px] h-[66px]"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const ENDPOINT_GOOGLE_SHEETS = "https://script.google.com/macros/s/AKfycbzH1tSBBdcN6gI5s7wQwAyifLzglIuMVjwbqBAQB5gVrfvIXZVTiMah9Dz01CQt4Ov1aA/exec";
+
+    const ESCALETA_INFANTIL = [
+      { key: "inf_1", voteId: 13, orden: 1, nombre: "Gabriela Galilea Andrade Gutiérrez", estado: "Zulia", categoria: "Infantil", shortId: "uqfYsz2oKeA" },
+      { key: "inf_2", voteId: 20, orden: 2, nombre: "José Pablo Luces Maurera", estado: "Sucre", categoria: "Infantil", shortId: "WEUn5S3SjQc" },
+      { key: "inf_3", voteId: 23, orden: 3, nombre: "Michell Saray Meza Villamizar", estado: "Táchira", categoria: "Infantil", shortId: "KarvJK7Eums" },
+      { key: "inf_4", voteId: 8, orden: 4, nombre: "Christal Esmeralda Díaz Rivas", estado: "Miranda", categoria: "Infantil", shortId: "Jn4ai5tgZ0Y" },
+      { key: "inf_5", voteId: 7, orden: 5, nombre: "Carlos Manuel Guaramata Perfecto", estado: "Anzoátegui", categoria: "Infantil", shortId: "EO2tp1xoUT4" },
+      { key: "inf_6", voteId: 26, orden: 6, nombre: "Roshelen Victoria Rivas Valderrama", estado: "Nueva Esparta", categoria: "Infantil", shortId: "_G_7_hSKTZA" },
+      { key: "inf_7", voteId: 12, orden: 7, nombre: "Fraivelis Nicole Parra Sánchez", estado: "Lara", categoria: "Infantil", shortId: "pdOQEE1sV7M" },
+      { key: "inf_8", voteId: 27, orden: 8, nombre: "Samuel Andrés Montilla Cabanerio", estado: "Barinas", categoria: "Infantil", shortId: "iHgtqyPmn2s" },
+      { key: "inf_9", voteId: 22, orden: 9, nombre: "Marialnolys Velázquez", estado: "Delta Amacuro", categoria: "Infantil", shortId: "KiCBHQvwQ90" },
+      { key: "inf_10", voteId: 15, orden: 10, nombre: "Isabella Sofía López Márquez", estado: "Distrito Capital", categoria: "Infantil", shortId: "fw238TK_nAA" },
+      { key: "inf_11", voteId: 2, orden: 11, nombre: "Talía de los Ángeles Meléndez Suárez", estado: "Bolívar", categoria: "Infantil", shortId: "cQM1QJoF4JA" },
+      { key: "inf_12", voteId: 28, orden: 12, nombre: "Santiago Gudiño", estado: "Trujillo", categoria: "Infantil", shortId: "qu3xSlgytI8" },
+      { key: "inf_13", voteId: 1, orden: 13, nombre: "Tyler Mathias Colina Yzarra", estado: "Mérida", categoria: "Infantil", shortId: "r_2LEocre14" },
+      { key: "inf_14", voteId: 3, orden: 14, nombre: "Ángel Gabriel Sánchez", estado: "Carabobo", categoria: "Infantil", shortId: "BKrNX8sXLxQ" },
+      { key: "inf_15", voteId: 30, orden: 15, nombre: "Silvia Valeria Coro Beja", estado: "Amazonas", categoria: "Infantil", shortId: "d9NLY3PM9EE" }
+    ];
+
+    const ESCALETA_JUVENIL = [
+      { key: "juv_1", voteId: 4, orden: 1, nombre: "Albenis Pérez", estado: "Carabobo", categoria: "Juvenil", shortId: "zGGRW8eMHNk" },
+      { key: "juv_2", voteId: 5, orden: 2, nombre: "Aimé García", estado: "Barinas", categoria: "Juvenil", shortId: "3o0TQjPhKfU" },
+      { key: "juv_3", voteId: 6, orden: 3, nombre: "Antonio Urbina", estado: "Mérida", categoria: "Juvenil", shortId: "5KCJl2vTWpU" },
+      { key: "juv_4", voteId: 9, orden: 4, nombre: "Daniela Fontana", estado: "Trujillo", categoria: "Juvenil", shortId: "SXODrGfMJ0E" },
+      { key: "juv_5", voteId: 10, orden: 5, nombre: "Enma Frías", estado: "Lara", categoria: "Juvenil", shortId: "RLrVTJg_2S8" },
+      { key: "juv_6", voteId: 11, orden: 6, nombre: "Esthela Vázquez", estado: "Cojedes", categoria: "Juvenil", shortId: "Q2w6w8BNT3w" },
+      { key: "juv_7", voteId: 14, orden: 7, nombre: "Gabriela González", estado: "Amazonas", categoria: "Juvenil", shortId: "79nkO6SvvdY" },
+      { key: "juv_8", voteId: 16, orden: 8, nombre: "Iviangely Figueroa", estado: "Nueva Esparta", categoria: "Juvenil", shortId: "ViHlHCqC5DE" },
+      { key: "juv_9", voteId: 17, orden: 9, nombre: "Jaarol Zambrano", estado: "Delta Amacuro", categoria: "Juvenil", shortId: "CaQwei6Ae-I" },
+      { key: "juv_10", voteId: 18, orden: 10, nombre: "Jeremías Torres", estado: "Anzoátegui", categoria: "Juvenil", shortId: "iefvIVpKd-w" },
+      { key: "juv_11", voteId: 19, orden: 11, nombre: "Gabriel Raúl Solórzano Guevara", estado: "Miranda", categoria: "Juvenil", shortId: "b9JyOpp3cmU" },
+      { key: "juv_12", voteId: 21, orden: 12, nombre: "Katerine Moreno", estado: "Bolívar", categoria: "Juvenil", shortId: "jSniXY7y9Nc" },
+      { key: "juv_13", voteId: 24, orden: 13, nombre: "Natalia Moreno", estado: "Zulia", categoria: "Juvenil", shortId: "cDC3j42em6k" },
+      { key: "juv_14", voteId: 25, orden: 14, nombre: "Ronaikel García", estado: "Distrito Capital", categoria: "Juvenil", shortId: "RJGE8CrrIVU" },
+      { key: "juv_15", voteId: 29, orden: 15, nombre: "Sebastián Sucre", estado: "Sucre", categoria: "Juvenil", shortId: "T1foDecyaz4" },
+      { key: "juv_16", voteId: 31, orden: 16, nombre: "Victoria Barrera", estado: "Táchira", categoria: "Juvenil", shortId: "6-34XsFqoFQ" }
+    ];
+
+    const TODOS_PARTICIPANTES_VOTACION = [...ESCALETA_INFANTIL, ...ESCALETA_JUVENIL];
+
+    function detectarUrlVotacionPorDefecto() {
+      try {
+        const u = new URL(window.location.href);
+        u.search = "";
+        u.hash = "";
+        if (u.protocol === "file:") return "https://fvns.org/streaming.html";
+        u.pathname = u.pathname.replace(/\/[^\/]*$/, "/streaming.html");
+        return u.toString();
+      } catch (e) {
+        return "https://fvns.org/streaming.html";
+      }
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const canalId = (params.get("canal") || "FNNS2026").toUpperCase().replace(/[^A-Z0-9_-]/g, "");
+    let ultimaUrlQrRenderizada = "";
+
+    let state = {
+      eventStage: "SEMIFINALES",
+      bugLive: false,
+      foxElections: false,
+      foxTower: false,
+      lowerArtist: false,
+      songInfo: false,
+      tickerBanner: false,
+      pipDelegation: false,
+      pipPosition: "bottom-right",
+      pipCalibrate: false,
+      pipState: "DELEGACIÓN ZULIA",
+      pipCaption: "REACCIÓN EN SALA · APOYO FAMILIAR",
+      artistName: "Gabriela Galilea Andrade Gutiérrez",
+      artistState: "Zulia",
+      artistCategory: "Infantil",
+      artistSong: "ORDEN #01 · SEMIFINALES",
+      songTitle: "Los 2 Gavilanes",
+      songAuthor: "Letra y Música de: Adelis Freitez",
+      songGenre: "Merengue Larense",
+      tickerText: "ESCANEA EL CÓDIGO QR Y VOTA POR TUS 5 FAVORITOS EN DIRECTO",
+      voteUrl: detectarUrlVotacionPorDefecto()
+    };
+
+    const localChannel = new BroadcastChannel("fnns_overlays_sync_" + canalId);
+
+    function renderizarCodigosQR(urlDestino) {
+      const urlLimpia = (urlDestino || "").trim() || detectarUrlVotacionPorDefecto();
+      if (urlLimpia === ultimaUrlQrRenderizada) return;
+      ultimaUrlQrRenderizada = urlLimpia;
+
+      const contenedores = [
+        { id: "qrOutElections", size: 160 },
+        { id: "qrOutTower", size: 140 },
+        { id: "qrOutTicker", size: 120 }
+      ];
+
+      contenedores.forEach(item => {
+        const el = document.getElementById(item.id);
+        if (!el) return;
+        el.innerHTML = "";
+        new QRCode(el, {
+          text: urlLimpia,
+          width: item.size,
+          height: item.size,
+          colorDark: "#050d1f",
+          colorLight: "#ffffff",
+          correctLevel: QRCode.CorrectLevel.M
+        });
+      });
+    }
+
+    function ajustarLienzo16x9() {
+      const canvas16x9 = document.getElementById("broadcastCanvas16x9");
+      if (!canvas16x9) return;
+      const vw = window.innerWidth || 1920;
+      const vh = window.innerHeight || 1080;
+      const scale = Math.min(vw / 1920, vh / 1080);
+      canvas16x9.style.transform = `translate(-50%, -50%) scale(${scale})`;
+    }
+
+    function aplicarEstadoVisual() {
+      const capas = ["bugLive", "foxElections", "foxTower", "lowerArtist", "songInfo", "tickerBanner", "pipDelegation"];
+      const etapaActual = (state.eventStage || "SEMIFINALES").toUpperCase();
+      const esInfantil = (state.artistCategory || "").toLowerCase() === "infantil";
+      renderizarCodigosQR(state.voteUrl);
+
+      capas.forEach(key => {
+        const el = document.getElementById(`layer_${key}`);
+        if (!el) return;
+        if (state[key]) el.classList.add("is-on-air");
+        else el.classList.remove("is-on-air");
+      });
+
+      const pipLayer = document.getElementById("layer_pipDelegation");
+      if (state.pipPosition === "top-right") {
+        pipLayer.className = `anim-right-layer ${state.pipDelegation ? "is-on-air" : ""} absolute top-[48px] right-[64px] w-[540px] z-25`;
+      } else {
+        pipLayer.className = `anim-right-layer ${state.pipDelegation ? "is-on-air" : ""} absolute bottom-[64px] right-[64px] w-[540px] z-25`;
+      }
+
+      document.getElementById("pipCalibrateGrid").classList.toggle("hidden", !state.pipCalibrate);
+
+      document.getElement
