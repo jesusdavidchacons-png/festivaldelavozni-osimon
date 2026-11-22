@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>YoloBox Alpha Overlay — Top 5 Votaciones</title>
+  <link rel="icon" type="image/png" href="./logo_color.png" />
 
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -45,7 +46,6 @@
       border-bottom: 2px solid #f5b942;
     }
 
-    /* Animación de entrada broadcast */
     @keyframes slideInRight {
       0% { opacity: 0; transform: translateX(36px); }
       100% { opacity: 1; transform: translateX(0); }
@@ -57,7 +57,6 @@
     .anim-side { animation: slideInRight 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     .anim-bottom { animation: slideInUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
-    /* Destello dorado cuando entra un voto nuevo */
     @keyframes voteFlash {
       0% { background-color: rgba(245, 185, 66, 0.32); }
       100% { background-color: transparent; }
@@ -77,10 +76,10 @@
   <div id="layoutSide" class="hidden fixed top-10 right-10 w-[410px] anim-side">
     <div class="fox-chassis rounded-md overflow-hidden">
       
-      <!-- Cabecera FOX -->
+      <!-- Cabecera FOX con logo_color.png -->
       <div class="fox-header-strip px-4 py-2.5 flex items-center justify-between">
-        <div class="flex items-center gap-2.5">
-          <img src="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png" alt="Logo" class="h-6 w-auto object-contain" />
+        <div class="flex items-center gap-3">
+          <img src="./logo_color.png" alt="Festival de la Voz Niño Simón" class="h-8 w-auto object-contain" />
           <div>
             <div class="flex items-center gap-1.5">
               <span class="w-2 h-2 rounded-full bg-[#e11d48] animate-ping"></span>
@@ -115,8 +114,9 @@
   <div id="layoutBottom" class="hidden fixed bottom-9 left-10 right-10 anim-bottom">
     <div class="max-w-[1680px] mx-auto">
       
-      <!-- Pestaña Superior Izquierda -->
+      <!-- Pestaña Superior Izquierda con logo_color.png -->
       <div class="inline-flex items-center gap-3 px-4 py-1.5 bg-[#090e1a]/95 border-t border-x border-[#f5b942]/60 rounded-t-md">
+        <img src="./logo_color.png" alt="Festival de la Voz Niño Simón" class="h-5 w-auto object-contain" />
         <span class="w-2 h-2 rounded-full bg-[#e11d48] animate-ping"></span>
         <span class="font-fox text-xs font-black uppercase tracking-[0.16em] text-[#f5b942]">
           Top 5 Votación Popular en Directo
@@ -189,7 +189,6 @@
     }
 
     function acortarNombreBroadcast(nombre) {
-      // Mantiene nombres largos nítidos en barra broadcast sin desbordar
       if (nombre.length <= 24) return nombre;
       const partes = nombre.split(" ");
       if (partes.length >= 3) return `${partes[0]} ${partes[2]}`;
