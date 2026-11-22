@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>EN VIVO — Festival de la Voz Niño Simón 2026</title>
 
-  <meta name="description" content="Señal oficial en directo desde el Teatro Juares y votación popular auditada — Festival de la Voz Niño Simón 2026." />
+  <meta name="description" content="Señal oficial en directo desde La Flor de Venezuela y votación popular auditada — Festival de la Voz Niño Simón 2026." />
   <meta property="og:image" content="./logo_color.png" />
   <link rel="icon" type="image/png" href="./logo_color.png" />
 
@@ -51,9 +51,24 @@
       font-variant-numeric: tabular-nums;
     }
 
+    .logo-pure-white {
+      -webkit-filter: brightness(0) invert(1) drop-shadow(0 0 24px rgba(255, 255, 255, 0.14));
+      filter: brightness(0) invert(1) drop-shadow(0 0 24px rgba(255, 255, 255, 0.14));
+    }
+
     .fox-frame {
       background: var(--panel-dark);
       border: 1px solid var(--hairline);
+    }
+
+    /* Ecualizador minimalista de cabina para el telón previo */
+    @keyframes vuPulse {
+      0%, 100% { transform: scaleY(0.28); opacity: 0.45; }
+      50% { transform: scaleY(1); opacity: 1; }
+    }
+    .vu-bar {
+      transform-origin: bottom;
+      animation: vuPulse 1.15s ease-in-out infinite;
     }
 
     @keyframes foxSweep {
@@ -93,7 +108,87 @@
     .custom-scroll::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.16); border-radius: 2px; }
   </style>
 </head>
-<body class="min-h-full flex flex-col selection:bg-[#f5b942] selection:text-black pb-24">
+<body class="min-h-full flex flex-col selection:bg-[#f5b942] selection:text-black pb-24 overflow-hidden">
+
+  <!-- =========================================================================
+       TELÓN PREVIO CINEMATOGRÁFICO MINIMALISTA (SEÑAL TALLY / EN EL AIRE)
+       ========================================================================= -->
+  <div id="introCurtain" class="fixed inset-0 z-50 bg-[#000000] flex flex-col items-center justify-between px-6 py-8 sm:py-12 transition-opacity duration-700 ease-out">
+    <!-- Línea superior mínima de luz roja/ámbar -->
+    <div class="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#e11d48] to-[#f5b942] opacity-85"></div>
+
+    <!-- Halo radial sutil centrado -->
+    <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.045)_0%,rgba(0,0,0,0)_62%)]"></div>
+
+    <!-- Fila Superior: Tally de Cabina + Sede Semifinales -->
+    <div class="relative z-10 flex flex-col items-center gap-2 text-center">
+      <div class="inline-flex items-center gap-2.5 px-3.5 py-1 rounded-full border border-white/12 bg-white/[0.02]">
+        <span id="introTallyDot" class="w-2 h-2 rounded-full bg-[#e11d48] animate-ping"></span>
+        <span id="introTallyStatus" class="font-fox text-xs font-extrabold uppercase tracking-[0.22em] text-white">
+          EN DIRECTO
+        </span>
+        <span class="text-white/25">&bull;</span>
+        <span class="font-fox text-xs font-bold uppercase tracking-[0.18em] text-[#f5b942]">
+          SEMIFINALES
+        </span>
+      </div>
+    </div>
+
+    <!-- Centro: Logo Blanco Puro + Micro-Ecualizador + Botón de Entrada -->
+    <div class="relative z-10 flex flex-col items-center text-center max-w-md space-y-7">
+      <div class="space-y-4">
+        <img
+          src="./logo_color.png"
+          alt="Festival de la Voz Niño Simón 2026"
+          style="-webkit-filter: brightness(0) invert(1); filter: brightness(0) invert(1);"
+          class="h-24 sm:h-28 w-auto mx-auto object-contain logo-pure-white"
+        />
+
+        <div class="space-y-1">
+          <span class="block text-[10px] font-bold uppercase tracking-[0.28em] text-slate-400">
+            Fundación Nacional del Niño Simón
+          </span>
+          <h2 class="font-cinema text-sm sm:text-base font-bold uppercase tracking-[0.18em] text-white">
+            La Flor de Venezuela
+          </h2>
+        </div>
+      </div>
+
+      <!-- Micro-ecualizador de señal viva -->
+      <div class="flex flex-col items-center gap-2">
+        <div class="flex items-end justify-center gap-1 h-4" aria-hidden="true">
+          <span class="vu-bar w-[2px] h-full bg-[#f5b942]" style="animation-delay: 0.0s;"></span>
+          <span class="vu-bar w-[2px] h-full bg-white" style="animation-delay: 0.2s;"></span>
+          <span class="vu-bar w-[2px] h-full bg-[#f5b942]" style="animation-delay: 0.4s;"></span>
+          <span class="vu-bar w-[2px] h-full bg-white" style="animation-delay: 0.15s;"></span>
+          <span class="vu-bar w-[2px] h-full bg-[#e11d48]" style="animation-delay: 0.35s;"></span>
+        </div>
+        <span class="font-tnum text-[9px] uppercase tracking-[0.26em] text-slate-500">
+          Señal Máster &middot; Audio Activo
+        </span>
+      </div>
+
+      <!-- Botón único minimalista -->
+      <button
+        type="button"
+        id="btnEntrarTransmision"
+        onclick="entrarALaTransmision()"
+        class="group inline-flex items-center gap-3.5 px-8 py-3.5 rounded-sm bg-transparent hover:bg-white text-white hover:text-black border border-white/35 hover:border-white font-fox text-sm sm:text-base font-extrabold uppercase tracking-[0.22em] transition-all duration-300 cursor-pointer"
+      >
+        <span class="w-2 h-2 rounded-full bg-[#e11d48] group-hover:bg-black transition-colors"></span>
+        <span>ENTRAR A LA TRANSMISIÓN</span>
+        <i class="fa-solid fa-arrow-right text-xs transition-transform duration-300 group-hover:translate-x-1"></i>
+      </button>
+    </div>
+
+    <!-- Fila Inferior: Sede y Telemetría de Votos en Tiempo Real -->
+    <div class="relative z-10 w-full max-w-3xl flex flex-col sm:flex-row items-center justify-between gap-2 text-[10px] font-tnum uppercase tracking-[0.2em] text-slate-500 border-t border-white/[0.07] pt-4">
+      <span>La Flor de Venezuela &middot; Barquisimeto</span>
+      <span>
+        <strong id="introLiveVotesCount" class="text-white">0</strong> Votos Auditados en Vivo
+      </span>
+    </div>
+  </div>
 
   <!-- Cintillo Superior de Aviso (desde el panel de control) -->
   <div id="bannerAvisoGlobal" class="hidden bg-[#f5b942] text-black text-center py-1.5 px-4 font-fox text-xs sm:text-sm font-extrabold uppercase tracking-wider">
@@ -114,7 +209,7 @@
             Fundación Nacional del Niño Simón
           </span>
           <h1 class="font-cinema text-xs md:text-sm font-bold text-white uppercase">
-            Festival de la Voz 2026
+            Semifinales 2026 &middot; La Flor de Venezuela
           </h1>
         </div>
       </div>
@@ -161,7 +256,7 @@
               Próximamente
             </span>
             <h2 id="overlayTituloEstado" class="font-cinema text-lg sm:text-2xl font-bold text-white uppercase max-w-md">
-              Preparando Señal Oficial · Teatro Juares
+              Preparando Señal Oficial · La Flor de Venezuela
             </h2>
           </div>
         </div>
@@ -175,7 +270,7 @@
                 Semifinales Nacionales &bull; Señal Oficial
               </h2>
               <span id="labelSubtituloLugar" class="text-[11px] text-slate-400">
-                Teatro Juares &middot; Barquisimeto, Estado Lara
+                La Flor de Venezuela &middot; Barquisimeto, Estado Lara
               </span>
             </div>
           </div>
@@ -411,12 +506,12 @@
   <footer class="max-w-[1520px] w-full mx-auto px-4 sm:px-6 pt-12 pb-4 flex flex-col items-center gap-2 text-center">
     <img src="./logo_color.png" alt="Festival de la Voz Niño Simón 2026" class="h-7 w-auto object-contain opacity-80" />
     <span class="text-[10px] uppercase tracking-[0.22em] text-slate-600">
-      Organizado por la Fundación Nacional del Niño Simón &bull; Teatro Juares 2026
+      Organizado por la Fundación Nacional del Niño Simón &bull; Semifinales 2026 &bull; La Flor de Venezuela
     </span>
   </footer>
 
   <script>
-    // 1. Backend original de VOTACIONES (no se toca)
+    // 1. Backend original de VOTACIONES
     const ENDPOINT_GOOGLE_SHEETS = "https://script.google.com/macros/s/AKfycbzH1tSBBdcN6gI5s7wQwAyifLzglIuMVjwbqBAQB5gVrfvIXZVTiMah9Dz01CQt4Ov1aA/exec";
 
     // 2. Backend independiente de STREAMING YOUTUBE LIVE
@@ -456,6 +551,8 @@
       { id: 31, nombre: "Victoria Barrera", estado: "Táchira", shortId: "6-34XsFqoFQ" }
     ];
 
+    let usuarioEntroSala = false;
+    let videoIdPendiente = new URLSearchParams(window.location.search).get("v") || "sZTplvsYYHw";
     let videoIdCargado = "";
     let chatActivoCargado = null;
     let votacionAbiertaGlobal = true;
@@ -470,6 +567,40 @@
     let mediaStream = null;
     let cedulaVerificada = false;
 
+    function montarReproductorYChat(ytId) {
+      if (!ytId || ytId === videoIdCargado) return;
+      videoIdCargado = ytId;
+
+      // Al dispararse tras el clic en "ENTRAR A LA TRANSMISIÓN", el navegador permite audio activo
+      document.getElementById("iframeYoutubeLive").src = `https://www.youtube.com/embed/${ytId}?autoplay=1&mute=0&rel=0&modestbranding=1`;
+
+      const popoutUrl = `https://www.youtube.com/live_chat?is_popout=1&v=${ytId}`;
+      document.getElementById("linkPopoutChat").href = popoutUrl;
+      document.getElementById("btnAbrirChatExterno").href = popoutUrl;
+
+      const host = window.location.hostname;
+      if (!host || window.location.protocol === "file:") {
+        document.getElementById("avisoChatLocal").classList.remove("hidden");
+      } else {
+        document.getElementById("iframeYoutubeChat").src = `https://www.youtube.com/live_chat?v=${ytId}&embed_domain=${host}&dark_theme=1`;
+      }
+    }
+
+    function entrarALaTransmision() {
+      usuarioEntroSala = true;
+      document.body.classList.remove("overflow-hidden");
+
+      montarReproductorYChat(videoIdPendiente || "sZTplvsYYHw");
+
+      const curtain = document.getElementById("introCurtain");
+      if (curtain) {
+        curtain.classList.add("opacity-0", "pointer-events-none");
+        setTimeout(() => {
+          curtain.classList.add("hidden");
+        }, 720);
+      }
+    }
+
     function aplicarConfigStream(cfg) {
       if (!cfg) return;
       const urlOverride = new URLSearchParams(window.location.search).get("v");
@@ -477,20 +608,11 @@
       const chatActivo = cfg.chatActivo !== false;
       votacionAbiertaGlobal = cfg.votacionAbierta !== false;
 
-      if (nuevoId !== videoIdCargado) {
-        videoIdCargado = nuevoId;
-        document.getElementById("iframeYoutubeLive").src = `https://www.youtube.com/embed/${nuevoId}?autoplay=1&rel=0&modestbranding=1`;
+      videoIdPendiente = nuevoId;
 
-        const popoutUrl = `https://www.youtube.com/live_chat?is_popout=1&v=${nuevoId}`;
-        document.getElementById("linkPopoutChat").href = popoutUrl;
-        document.getElementById("btnAbrirChatExterno").href = popoutUrl;
-
-        const host = window.location.hostname;
-        if (!host || window.location.protocol === "file:") {
-          document.getElementById("avisoChatLocal").classList.remove("hidden");
-        } else {
-          document.getElementById("iframeYoutubeChat").src = `https://www.youtube.com/live_chat?v=${nuevoId}&embed_domain=${host}&dark_theme=1`;
-        }
+      // Solo cargamos el iframe cuando el espectador cruza el telón previo
+      if (usuarioEntroSala) {
+        montarReproductorYChat(nuevoId);
       }
 
       if (chatActivo !== chatActivoCargado) {
@@ -507,7 +629,12 @@
       }
 
       document.getElementById("labelTituloGala").innerText = cfg.tituloGala || "Semifinales Nacionales · Señal Oficial";
-      document.getElementById("labelSubtituloLugar").innerText = cfg.subtituloLugar || "Teatro Juares · Barquisimeto, Estado Lara";
+
+      const lugarRaw = (cfg.subtituloLugar || "").trim();
+      const lugarFinal = (lugarRaw && !lugarRaw.includes("Teatro Juares"))
+        ? lugarRaw
+        : "La Flor de Venezuela · Barquisimeto, Estado Lara";
+      document.getElementById("labelSubtituloLugar").innerText = lugarFinal;
 
       const banner = document.getElementById("bannerAvisoGlobal");
       if (cfg.avisoBanner && cfg.avisoBanner.trim()) {
@@ -520,18 +647,25 @@
       const overlay = document.getElementById("overlayEstadoPlayer");
       const badgeEmision = document.getElementById("badgeEstadoEmision");
       const textoEmision = document.getElementById("textoEstadoEmision");
+      const introTallyStatus = document.getElementById("introTallyStatus");
+      const introTallyDot = document.getElementById("introTallyDot");
 
       if (cfg.estadoTransmision === "EN_VIVO") {
         overlay.classList.add("hidden");
         badgeEmision.className = "inline-flex items-center gap-2 px-3 py-1 rounded bg-[#e11d48]/15 border border-[#e11d48]/40";
         textoEmision.className = "font-fox text-xs font-extrabold uppercase tracking-widest text-[#fb7185]";
         textoEmision.innerText = "EN VIVO";
+        if (introTallyStatus) introTallyStatus.innerText = "EN DIRECTO";
+        if (introTallyDot) introTallyDot.className = "w-2 h-2 rounded-full bg-[#e11d48] animate-ping";
       } else {
         overlay.classList.remove("hidden");
         badgeEmision.className = "inline-flex items-center gap-2 px-3 py-1 rounded bg-[#f5b942]/15 border border-[#f5b942]/40";
         textoEmision.className = "font-fox text-xs font-extrabold uppercase tracking-widest text-[#f5b942]";
-        textoEmision.innerText = cfg.estadoTransmision === "PROXIMAMENTE" ? "PRÓXIMAMENTE" : cfg.estadoTransmision === "PAUSA" ? "INTERMEDIO" : "FINALIZADO";
-        document.getElementById("overlayPillEstado").innerText = textoEmision.innerText;
+        const textoAlt = cfg.estadoTransmision === "PROXIMAMENTE" ? "PRÓXIMAMENTE" : cfg.estadoTransmision === "PAUSA" ? "INTERMEDIO" : "FINALIZADO";
+        textoEmision.innerText = textoAlt;
+        document.getElementById("overlayPillEstado").innerText = textoAlt;
+        if (introTallyStatus) introTallyStatus.innerText = textoAlt;
+        if (introTallyDot) introTallyDot.className = "w-2 h-2 rounded-full bg-[#f5b942]";
       }
 
       document.getElementById("labelEstadoVotacionHeader").innerText = votacionAbiertaGlobal
@@ -570,14 +704,12 @@
         }
       } catch (e) {}
 
-      if (!videoIdCargado) {
-        aplicarConfigStream({
-          youtubeId: "sZTplvsYYHw",
-          estadoTransmision: "EN_VIVO",
-          chatActivo: true,
-          votacionAbierta: true
-        });
-      }
+      aplicarConfigStream({
+        youtubeId: videoIdPendiente || "sZTplvsYYHw",
+        estadoTransmision: "EN_VIVO",
+        chatActivo: true,
+        votacionAbierta: true
+      });
     }
 
     async function sincronizarTodoDesdeBackend() {
@@ -612,9 +744,13 @@
 
           rankingEnVivo.sort((a, b) => b.votos - a.votos || a.id - b.id);
 
-          document.getElementById("headerTotalVotos").innerText = totalVotosGlobal.toLocaleString("es-VE");
-          document.getElementById("statTotalVotos").innerText = totalVotosGlobal.toLocaleString("es-VE");
+          const totalFormateado = totalVotosGlobal.toLocaleString("es-VE");
+          document.getElementById("headerTotalVotos").innerText = totalFormateado;
+          document.getElementById("statTotalVotos").innerText = totalFormateado;
           document.getElementById("statVotantesUnicos").innerText = totalCiudadanosGlobal.toLocaleString("es-VE");
+
+          const introVotes = document.getElementById("introLiveVotesCount");
+          if (introVotes) introVotes.innerText = totalFormateado;
 
           renderizarPodioTop3();
           renderizarLeaderboard();
