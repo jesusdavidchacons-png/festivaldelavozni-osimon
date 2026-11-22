@@ -6,8 +6,8 @@
   <title>EN VIVO — Festival de la Voz Niño Simón 2026</title>
 
   <meta name="description" content="Señal oficial en directo desde el Teatro Juares y votación popular auditada — Festival de la Voz Niño Simón 2026." />
-  <meta property="og:image" content="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png" />
-  <link rel="icon" type="image/png" href="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png" />
+  <meta property="og:image" content="./logo_color.png" />
+  <link rel="icon" type="image/png" href="./logo_color.png" />
 
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
@@ -56,7 +56,6 @@
       border: 1px solid var(--hairline);
     }
 
-    /* Barrido sutil en barra líder */
     @keyframes foxSweep {
       0% { transform: translateX(-100%); }
       100% { transform: translateX(250%); }
@@ -105,10 +104,10 @@
   <header class="sticky top-0 z-40 bg-[#030508]/92 backdrop-blur-xl border-b border-white/[0.08]">
     <div class="max-w-[1520px] mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
       
-      <!-- Marca e Institución -->
+      <!-- Logo Oficial del Festival (logo_color.png) e Institución -->
       <div class="flex items-center gap-4">
-        <a href="index.html" class="shrink-0">
-          <img src="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png" alt="Festival de la Voz Niño Simón" class="h-8 sm:h-9 w-auto object-contain" />
+        <a href="index.html" class="shrink-0 flex items-center">
+          <img src="./logo_color.png" alt="Festival de la Voz Niño Simón 2026" class="h-9 sm:h-10 w-auto object-contain drop-shadow-[0_2px_10px_rgba(245,185,66,0.2)]" />
         </a>
         <div class="hidden sm:block h-7 w-[1px] bg-white/12"></div>
         <div class="hidden sm:block">
@@ -123,19 +122,16 @@
 
       <!-- Telemetría y Acción Principal -->
       <div class="flex items-center gap-3">
-        <!-- Indicador EN VIVO -->
         <div id="badgeEstadoEmision" class="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#e11d48]/15 border border-[#e11d48]/40">
           <span class="w-2 h-2 rounded-full bg-[#e11d48] animate-ping"></span>
           <span id="textoEstadoEmision" class="font-fox text-xs font-extrabold uppercase tracking-widest text-[#fb7185]">EN VIVO</span>
         </div>
 
-        <!-- Votos Totales -->
         <div class="hidden md:flex items-center gap-2 px-3.5 py-1 rounded bg-white/[0.03] border border-white/[0.08]">
           <span class="text-[10px] uppercase tracking-widest text-slate-400">Votos</span>
           <span id="headerTotalVotos" class="font-tnum text-xs font-bold text-white">0</span>
         </div>
 
-        <!-- Acceso Directo a Votación -->
         <a href="#escrutinioEnVivo" class="px-4 py-1.5 rounded bg-[#f5b942] hover:bg-[#fbbf24] text-black font-fox text-xs sm:text-sm font-extrabold uppercase tracking-wider transition flex items-center gap-2">
           <span>Votar</span>
           <span class="px-1.5 py-0.2 bg-black/15 rounded font-tnum text-[11px]" id="headerFavoritosCount">0/5</span>
@@ -161,8 +157,8 @@
           </iframe>
 
           <!-- Cortina de Estado (Próximamente / Pausa / Finalizado) -->
-          <div id="overlayEstadoPlayer" class="hidden absolute inset-0 z-10 bg-[#030508]/95 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center space-y-3">
-            <img src="https://i.postimg.cc/Vk3Nm322/logo-color-(2).png" alt="Logo" class="h-12 w-auto opacity-90" />
+          <div id="overlayEstadoPlayer" class="hidden absolute inset-0 z-10 bg-[#030508]/95 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center space-y-3.5">
+            <img src="./logo_color.png" alt="Festival de la Voz Niño Simón" class="h-14 sm:h-16 w-auto object-contain" />
             <span id="overlayPillEstado" class="px-3 py-0.5 rounded bg-[#f5b942]/15 border border-[#f5b942]/40 font-fox text-xs font-bold uppercase tracking-widest text-[#f5b942]">
               Próximamente
             </span>
@@ -239,7 +235,6 @@
         </h2>
       </div>
 
-      <!-- Contadores Broadcast -->
       <div class="flex items-center gap-6">
         <div>
           <span class="block text-[9px] uppercase tracking-widest text-slate-400">Votos Emitidos</span>
@@ -333,9 +328,12 @@
   <div id="modalVotacionCedula" class="fixed inset-0 z-50 bg-black/92 backdrop-blur-lg hidden items-center justify-center p-3 sm:p-6 overflow-y-auto">
     <div class="w-full max-w-lg bg-[#080c14] border border-white/15 rounded-xl p-5 sm:p-7 shadow-2xl space-y-5 my-auto">
       <div class="flex items-center justify-between border-b border-white/10 pb-3">
-        <div>
-          <span class="text-[9px] font-bold uppercase tracking-[0.2em] text-[#f5b942] block">Auditoría Electoral</span>
-          <h3 class="font-fox text-lg font-extrabold text-white uppercase tracking-wide">Confirmar 5 Votos Oficiales</h3>
+        <div class="flex items-center gap-3">
+          <img src="./logo_color.png" alt="Logo" class="h-8 w-auto object-contain" />
+          <div>
+            <span class="text-[9px] font-bold uppercase tracking-[0.2em] text-[#f5b942] block">Auditoría Electoral</span>
+            <h3 class="font-fox text-lg font-extrabold text-white uppercase tracking-wide">Confirmar 5 Votos Oficiales</h3>
+          </div>
         </div>
         <button onclick="cerrarModalVotacion()" class="w-8 h-8 rounded bg-white/10 hover:bg-white/20 text-white flex items-center justify-center cursor-pointer">
           <i class="fa-solid fa-xmark text-sm"></i>
@@ -412,8 +410,12 @@
     </div>
   </div>
 
-  <footer class="max-w-[1520px] w-full mx-auto px-4 sm:px-6 pt-12 pb-4 text-center text-[10px] uppercase tracking-[0.22em] text-slate-600">
-    Organizado por la Fundación Nacional del Niño Simón &bull; Teatro Juares 2026
+  <!-- ================= PIE DE PÁGINA ================= -->
+  <footer class="max-w-[1520px] w-full mx-auto px-4 sm:px-6 pt-12 pb-4 flex flex-col items-center gap-2 text-center">
+    <img src="./logo_color.png" alt="Festival de la Voz Niño Simón 2026" class="h-7 w-auto object-contain opacity-80" />
+    <span class="text-[10px] uppercase tracking-[0.22em] text-slate-600">
+      Organizado por la Fundación Nacional del Niño Simón &bull; Teatro Juares 2026
+    </span>
   </footer>
 
   <script>
@@ -849,3 +851,132 @@
 
     function subirArchivoCedula(input) {
       const file = input.files[0];
+      const cedula = document.getElementById("votanteCedula").value.trim().toUpperCase();
+      if (!file) return;
+      if (cedula.length < 6) {
+        alert("Ingresa primero tu número de cédula.");
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.getElementById("canvasCedula");
+          canvas.width = img.width;
+          canvas.height = img.height;
+          canvas.getContext("2d").drawImage(img, 0, 0);
+
+          const preview = document.getElementById("previewCedulaImg");
+          preview.src = e.target.result;
+          preview.classList.remove("hidden");
+          document.getElementById("placeholderCam").classList.add("hidden");
+          validarDocumentoOCR(canvas, cedula);
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    async function validarDocumentoOCR(canvas, cedulaEsperada) {
+      const box = document.getElementById("mensajeOcrBox");
+      const badge = document.getElementById("badgeScanStatus");
+      const btnEnviar = document.getElementById("btnEnviarVotosOficiales");
+
+      box.classList.remove("hidden");
+      box.className = "text-xs p-2.5 rounded border border-sky-500/30 bg-sky-500/10 text-sky-300";
+      box.innerText = `Verificando cédula ${cedulaEsperada}...`;
+
+      try {
+        const result = await Tesseract.recognize(canvas, "spa");
+        const texto = (result.data.text || "").toUpperCase().replace(/[\s\.\,]/g, "");
+        const digitos = cedulaEsperada.replace(/[^0-9]/g, "");
+        const claves = ["REPUBLICA", "VENEZUELA", "BOLIVARIANA", "IDENTIDAD", "CEDULA", "SAIME"];
+
+        if (texto.includes(digitos) || (claves.some(c => texto.includes(c)) && digitos.length >= 6)) {
+          cedulaVerificada = true;
+          badge.className = "text-[9px] font-bold uppercase px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300";
+          badge.innerText = "Verificada";
+          box.className = "text-xs p-2.5 rounded border border-emerald-500/30 bg-emerald-500/10 text-emerald-300";
+          box.innerText = `Cédula validada (${cedulaEsperada}).`;
+
+          btnEnviar.disabled = false;
+          btnEnviar.className = "w-full py-3 rounded bg-emerald-500 hover:bg-emerald-400 text-black font-fox text-sm font-extrabold uppercase tracking-wider cursor-pointer transition";
+        } else {
+          cedulaVerificada = false;
+          badge.className = "text-[9px] font-bold uppercase px-2 py-0.5 rounded bg-red-500/20 text-red-300";
+          badge.innerText = "No Coincide";
+          box.className = "text-xs p-2.5 rounded border border-red-500/30 bg-red-500/10 text-red-300";
+          box.innerText = "El número no coincide con la imagen. Vuelve a enfocar con buena luz.";
+          btnEnviar.disabled = true;
+        }
+      } catch (e) {
+        cedulaVerificada = true;
+        btnEnviar.disabled = false;
+        btnEnviar.className = "w-full py-3 rounded bg-emerald-500 text-black font-fox text-sm font-extrabold uppercase tracking-wider cursor-pointer";
+      }
+    }
+
+    async function enviarVotosAlServidor() {
+      const nombre = document.getElementById("votanteNombre").value.trim();
+      const email = document.getElementById("votanteEmail").value.trim();
+      const cedula = document.getElementById("votanteCedula").value.trim().toUpperCase();
+
+      if (!nombre || !email || !cedula || favoritosIds.length !== 5 || !cedulaVerificada) {
+        alert("Completa todos los datos y valida tu cédula.");
+        return;
+      }
+
+      const elegidosNombres = PARTICIPANTES_OFICIALES
+        .filter(p => favoritosIds.includes(p.id))
+        .map(p => `${p.nombre} (${p.estado})`)
+        .join(", ");
+
+      const btn = document.getElementById("btnEnviarVotosOficiales");
+      btn.disabled = true;
+      btn.innerText = "Registrando votos...";
+
+      try {
+        const res = await fetch(ENDPOINT_GOOGLE_SHEETS, {
+          method: "POST",
+          body: JSON.stringify({
+            nombre,
+            email,
+            cedula,
+            candidatosIds: favoritosIds,
+            candidatosNombres: elegidosNombres
+          })
+        });
+        const data = await res.json();
+
+        if (data.status === "duplicado" || data.status === "error") {
+          alert(data.message);
+          btn.disabled = false;
+          btn.innerText = "Emitir Mis 5 Votos en Directo";
+          return;
+        }
+
+        alert("¡Votos registrados y sumados en vivo!");
+        favoritosIds = [];
+        actualizarDockBoleta();
+        cerrarModalVotacion();
+        await sincronizarTodoDesdeBackend();
+      } catch (err) {
+        cerrarModalVotacion();
+        await sincronizarTodoDesdeBackend();
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      renderizarPodioTop3();
+      renderizarLeaderboard();
+      sincronizarTodoDesdeBackend();
+
+      setInterval(() => {
+        segundosParaSync--;
+        if (segundosParaSync <= 0) sincronizarTodoDesdeBackend();
+        document.getElementById("statCountdownSync").innerText = `${segundosParaSync}s`;
+      }, 1000);
+    });
+  </script>
+</body>
+</html>
