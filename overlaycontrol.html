@@ -344,7 +344,7 @@
        INTERFAZ 1: MESA DE CONTROL DEL DIRECTOR (MODO CONTROL)
        ========================================================================= -->
   <div id="directorUI" class="hidden min-h-full pb-16">
-    
+
     <header class="sticky top-0 z-40 bg-[#050811]/95 backdrop-blur-xl border-b border-white/10">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3">
         <div class="flex items-center gap-3.5">
@@ -381,53 +381,51 @@
     <main class="max-w-7xl mx-auto px-4 sm:px-6 pt-6 space-y-6">
 
       <!-- =====================================================================
-           MÓDULO 0: ENLACE OFICIAL DE YOUTUBE LIVE (ACTUALIZA envivo.html EN DIRECTO)
+           MÓDULO 0: ENLACE OFICIAL DE STREAMING (YOLOLIV / YOLOCAST O YOUTUBE)
            ===================================================================== -->
-      <section class="bg-gradient-to-r from-[#140912] via-[#0d1629] to-[#0a101f] border border-red-500/35 rounded-2xl p-5 shadow-xl space-y-4">
+      <section class="bg-gradient-to-r from-[#140912] via-[#0d1629] to-[#0a101f] border border-[#f5b942]/35 rounded-2xl p-5 shadow-xl space-y-4">
         <div class="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-3">
           <div class="flex items-center gap-2.5">
-            <div class="w-9 h-9 rounded-xl bg-red-600/20 border border-red-500/40 text-red-400 flex items-center justify-center shrink-0">
-              <i class="fa-brands fa-youtube text-lg"></i>
+            <div class="w-9 h-9 rounded-xl bg-[#f5b942]/15 border border-[#f5b942]/40 text-[#f5b942] flex items-center justify-center shrink-0">
+              <i class="fa-solid fa-tower-broadcast text-base"></i>
             </div>
             <div>
-              <span class="text-[10px] font-bold uppercase tracking-widest text-red-400 block">
-                Señal Oficial Web &middot; Sincronizada con envivo.html
+              <span class="text-[10px] font-bold uppercase tracking-widest text-[#f5b942] block">
+                Señal Oficial Web &middot; YoloLiv / YoloCast o YouTube &middot; Sincronizada con streaming.html
               </span>
               <h2 class="font-fox text-xl font-black uppercase text-white leading-none">
-                Enlace de la Transmisión Oficial de YouTube
+                Enlace o Código de la Transmisión Oficial
               </h2>
             </div>
           </div>
 
           <div class="flex items-center gap-2">
             <span id="streamBackendSyncStatus" class="text-[11px] font-mono text-slate-400">Cargando enlace actual...</span>
-            <a id="linkAbrirWebPublica" href="envivo.html" target="_blank" class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-xs font-bold text-white flex items-center gap-1.5 transition">
+            <a id="linkAbrirWebPublica" href="streaming.html" target="_blank" class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-xs font-bold text-white flex items-center gap-1.5 transition">
               <span>Ver Web Pública</span>
               <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-[#f5b942]"></i>
             </a>
           </div>
         </div>
 
-        <form onsubmit="publicarEnlaceYouTubeEnWeb(event)" class="grid grid-cols-1 lg:grid-cols-12 gap-3.5 items-end">
-          <!-- Enlace YouTube -->
+        <form onsubmit="publicarEnlaceStreamEnWeb(event)" class="grid grid-cols-1 lg:grid-cols-12 gap-3.5 items-end">
           <div class="lg:col-span-5 space-y-1">
             <div class="flex items-center justify-between">
               <label for="inputStreamYoutubeUrl" class="text-[10px] uppercase font-bold text-slate-300">
-                URL del Directo o YouTube Studio *
+                Enlace o Embed de YoloLiv / YoloCast o YouTube *
               </label>
-              <span class="text-[10px] font-mono text-emerald-400">ID: <strong id="badgeStreamYoutubeId">—</strong></span>
+              <span class="text-[10px] font-mono text-emerald-400">Fuente: <strong id="badgeStreamYoutubeId">—</strong></span>
             </div>
             <input
               type="text"
               id="inputStreamYoutubeUrl"
               required
-              oninput="previsualizarEnlaceYouTube()"
-              placeholder="https://youtube.com/live/... o https://studio.youtube.com/video/..."
-              class="w-full bg-black/65 border border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-red-400"
+              oninput="previsualizarEnlaceStream()"
+              placeholder="Enlace o código embed de YoloLiv (yololiv.com) o URL/ID de YouTube..."
+              class="w-full bg-black/65 border border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#f5b942]"
             />
           </div>
 
-          <!-- Estado Emisión -->
           <div class="lg:col-span-2 space-y-1">
             <label for="selectStreamStatus" class="text-[10px] uppercase font-bold text-slate-300 block">
               Estado en Web
@@ -440,7 +438,6 @@
             </select>
           </div>
 
-          <!-- PIN -->
           <div class="lg:col-span-2 space-y-1">
             <label for="inputStreamAdminPin" class="text-[10px] uppercase font-bold text-slate-300 block">
               PIN Backend *
@@ -454,28 +451,27 @@
             />
           </div>
 
-          <!-- Botón Publicar -->
           <div class="lg:col-span-3 flex items-center gap-2.5">
-            <div class="w-16 h-10 rounded-lg overflow-hidden bg-black border border-white/15 shrink-0 hidden sm:block">
-              <img id="imgThumbStreamYT" src="" alt="Preview" class="w-full h-full object-cover opacity-80" />
+            <div class="w-16 h-10 rounded-lg overflow-hidden bg-black border border-white/15 shrink-0 hidden sm:flex items-center justify-center">
+              <img id="imgThumbStreamYT" src="" alt="Preview" class="hidden w-full h-full object-cover opacity-80" />
+              <span id="badgeProviderStream" class="font-fox text-[10px] font-black uppercase tracking-wider text-[#f5b942] px-1.5 text-center">STREAM</span>
             </div>
 
             <button
               type="submit"
               id="btnPublicarStreamYT"
-              class="flex-1 py-2.5 px-4 rounded-xl bg-red-600 hover:bg-red-500 text-white font-fox text-sm sm:text-base font-black uppercase tracking-wider shadow-lg shadow-red-600/25 transition cursor-pointer flex items-center justify-center gap-2"
+              class="flex-1 py-2.5 px-4 rounded-xl bg-[#f5b942] hover:bg-[#fbbf24] text-black font-fox text-sm sm:text-base font-black uppercase tracking-wider shadow-lg shadow-[#f5b942]/20 transition cursor-pointer flex items-center justify-center gap-2"
             >
               <i class="fa-solid fa-satellite-dish"></i>
               <span>ACTUALIZAR WEB</span>
             </button>
           </div>
 
-          <!-- Fila inferior opcional: Chat, Votación y Cintillo -->
           <div class="lg:col-span-12 flex flex-wrap items-center justify-between gap-3 pt-1 border-t border-white/[0.06] text-xs">
             <div class="flex flex-wrap items-center gap-4">
               <label class="inline-flex items-center gap-2 cursor-pointer text-slate-300">
                 <input type="checkbox" id="checkStreamChatActivo" checked class="w-4 h-4 accent-[#f5b942] cursor-pointer" />
-                <span>Chat de YouTube Visible</span>
+                <span>Chat de YouTube Visible (si aplica)</span>
               </label>
 
               <label class="inline-flex items-center gap-2 cursor-pointer text-slate-300">
@@ -488,7 +484,7 @@
               <input
                 type="text"
                 id="inputStreamAvisoBanner"
-                placeholder="Cintillo opcional arriba de envivo.html (dejar vacío para ocultar)..."
+                placeholder="Cintillo opcional arriba de streaming.html (dejar vacío para ocultar)..."
                 class="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-1.5 text-[11px] text-white placeholder-slate-500 focus:outline-none focus:border-[#f5b942]"
               />
             </div>
@@ -566,7 +562,7 @@
               type="url"
               id="inputVoteUrlQR"
               oninput="actualizarUrlQR(this.value)"
-              placeholder="https://tudominio.com/envivo.html"
+              placeholder="https://tudominio.com/streaming.html"
               class="w-full bg-black/60 border border-white/20 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-[#f5b942]"
             />
             <span class="text-[10px] text-slate-400 block">
@@ -608,7 +604,6 @@
           </div>
         </div>
 
-        <!-- DOS COLUMNAS DIRECTAS: INFANTIL (ORDEN #01-#16 OFICIAL) VS JUVENIL -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
           <div class="lg:col-span-7 bg-black/40 border border-sky-400/30 rounded-2xl p-3.5 space-y-2.5">
             <div class="flex items-center justify-between">
@@ -633,9 +628,8 @@
           </div>
         </div>
 
-        <!-- PANEL DUAL DE CONTROL: INSERT 1 (PARTICIPANTE) Y INSERT 2 (FICHA MUSICAL ALTERNA) -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 pt-1">
-          
+
           <!-- INSERT 1: PLECA DE PARTICIPANTE -->
           <div class="lg:col-span-6 bg-black/45 border border-white/10 rounded-2xl p-4 space-y-3 flex flex-col justify-between">
             <div class="space-y-3">
@@ -1125,7 +1119,7 @@
     // 1. Backend original de VOTACIONES (no se altera)
     const ENDPOINT_GOOGLE_SHEETS = "https://script.google.com/macros/s/AKfycbzH1tSBBdcN6gI5s7wQwAyifLzglIuMVjwbqBAQB5gVrfvIXZVTiMah9Dz01CQt4Ov1aA/exec";
 
-    // 2. Backend independiente de STREAMING YOUTUBE LIVE
+    // 2. Backend independiente de STREAMING (soporta YoloLiv / YoloCast o YouTube)
     const ENDPOINT_STREAM_CONFIG = "https://script.google.com/macros/s/AKfycbzR-IPRu-qFuGHV8qVQjr2bOJ9NjGCWEcrCiOm3msHbZhPJHPKF8HY0neOnt8M4QiTw/exec";
 
     const ESCALETA_INFANTIL = [
@@ -1173,15 +1167,15 @@
         const u = new URL(window.location.href);
         u.search = "";
         u.hash = "";
-        if (u.protocol === "file:") return "https://tudominio.com/envivo.html";
-        if (u.pathname.endsWith("overlays-control.html")) {
-          u.pathname = u.pathname.replace("overlays-control.html", "envivo.html");
+        if (u.protocol === "file:") return "https://tudominio.com/streaming.html";
+        if (u.pathname.endsWith("overlaycontrol.html")) {
+          u.pathname = u.pathname.replace("overlaycontrol.html", "streaming.html");
         } else {
-          u.pathname = u.pathname.replace(/\/[^\/]*$/, "/envivo.html");
+          u.pathname = u.pathname.replace(/\/[^\/]*$/, "/streaming.html");
         }
         return u.toString();
       } catch (e) {
-        return "https://tudominio.com/envivo.html";
+        return "https://tudominio.com/streaming.html";
       }
     }
 
@@ -1220,7 +1214,7 @@
     let mqttClient = null;
 
     // =========================================================================
-    // CONTROL DE ENLACE YOUTUBE LIVE -> ACTUALIZA envivo.html EN TIEMPO REAL
+    // CONTROL DE ENLACE DE STREAMING (YOLOLIV / YOLOCAST O YOUTUBE) -> streaming.html
     // =========================================================================
     function extraerYoutubeId(input) {
       if (!input) return "";
@@ -1230,17 +1224,71 @@
       return match ? match[1] : "";
     }
 
-    function previsualizarEnlaceYouTube() {
+    function detectarProveedorStream(rawInput) {
+      const val = String(rawInput || "").trim();
+      if (!val) return { type: "none", label: "—", badge: "STREAM", ytId: "" };
+
+      if (val.includes("yololiv.com") || val.includes("yolocast") || val.includes("yololiv-widget")) {
+        const esCodigo = val.includes("<") || val.includes("yololiv-widget") || val.includes("renderYoloLiv");
+        return {
+          type: "yololiv",
+          label: esCodigo ? "YoloLiv Embed" : "YoloLiv Link",
+          badge: "YOLOLIV",
+          ytId: ""
+        };
+      }
+
+      const ytId = extraerYoutubeId(val);
+      if (ytId) {
+        return {
+          type: "youtube",
+          label: ytId,
+          badge: "YOUTUBE",
+          ytId
+        };
+      }
+
+      if (/^https?:\/\//i.test(val)) {
+        return {
+          type: "custom-url",
+          label: "Enlace Directo",
+          badge: "LIVE URL",
+          ytId: ""
+        };
+      }
+
+      return {
+        type: "unknown",
+        label: "Revisar enlace",
+        badge: "STREAM",
+        ytId: ""
+      };
+    }
+
+    function previsualizarEnlaceStream() {
       const raw = document.getElementById("inputStreamYoutubeUrl").value;
-      const id = extraerYoutubeId(raw);
-      document.getElementById("badgeStreamYoutubeId").innerText = id || "—";
+      const info = detectarProveedorStream(raw);
+      document.getElementById("badgeStreamYoutubeId").innerText = info.label;
+
+      const badgeProv = document.getElementById("badgeProviderStream");
       const thumbEl = document.getElementById("imgThumbStreamYT");
+
+      if (badgeProv) badgeProv.innerText = info.badge;
+
       if (thumbEl) {
-        thumbEl.src = id ? `https://img.youtube.com/vi/${id}/mqdefault.jpg` : "";
+        if (info.ytId) {
+          thumbEl.src = `https://img.youtube.com/vi/${info.ytId}/mqdefault.jpg`;
+          thumbEl.classList.remove("hidden");
+          if (badgeProv) badgeProv.classList.add("hidden");
+        } else {
+          thumbEl.src = "";
+          thumbEl.classList.add("hidden");
+          if (badgeProv) badgeProv.classList.remove("hidden");
+        }
       }
     }
 
-    async function cargarConfigYouTubeDesdeBackend() {
+    async function cargarConfigStreamDesdeBackend() {
       if (isOutputMode) return;
       const statusEl = document.getElementById("streamBackendSyncStatus");
       const savedPin = localStorage.getItem("fnns_stream_admin_pin");
@@ -1251,13 +1299,15 @@
         const data = await res.json();
         if (data.status === "success" && data.streamConfig) {
           const c = data.streamConfig;
-          document.getElementById("inputStreamYoutubeUrl").value = c.youtubeUrl || c.youtubeId || "";
+          const valorActual = c.streamCode || c.streamUrl || c.youtubeUrl || c.youtubeId || "";
+          document.getElementById("inputStreamYoutubeUrl").value = valorActual;
           document.getElementById("selectStreamStatus").value = c.estadoTransmision || "EN_VIVO";
           document.getElementById("checkStreamChatActivo").checked = c.chatActivo !== false;
           document.getElementById("checkStreamVotacionAbierta").checked = c.votacionAbierta !== false;
           document.getElementById("inputStreamAvisoBanner").value = c.avisoBanner || "";
-          previsualizarEnlaceYouTube();
-          statusEl.innerText = c.actualizadoEn ? `Activo (${c.youtubeId}) · ${c.actualizadoEn}` : `Activo (${c.youtubeId})`;
+          previsualizarEnlaceStream();
+          const info = detectarProveedorStream(valorActual);
+          statusEl.innerText = c.actualizadoEn ? `Activo (${info.label}) · ${c.actualizadoEn}` : `Activo (${info.label})`;
         } else {
           statusEl.innerText = "Listo para configurar";
         }
@@ -1266,22 +1316,22 @@
       }
     }
 
-    async function publicarEnlaceYouTubeEnWeb(e) {
+    async function publicarEnlaceStreamEnWeb(e) {
       e.preventDefault();
-      const youtubeUrl = document.getElementById("inputStreamYoutubeUrl").value.trim();
-      const youtubeId = extraerYoutubeId(youtubeUrl);
+      const streamInput = document.getElementById("inputStreamYoutubeUrl").value.trim();
+      const info = detectarProveedorStream(streamInput);
       const pin = document.getElementById("inputStreamAdminPin").value.trim();
       const estadoTransmision = document.getElementById("selectStreamStatus").value;
-      const chatActivo = document.getElementById("checkStreamChatActivo").checked;
+      const chatActivo = info.type === "youtube" ? document.getElementById("checkStreamChatActivo").checked : false;
       const votacionAbierta = document.getElementById("checkStreamVotacionAbierta").checked;
       const avisoBanner = document.getElementById("inputStreamAvisoBanner").value.trim();
 
       const alerta = document.getElementById("alertaStreamYouTube");
       const btn = document.getElementById("btnPublicarStreamYT");
 
-      if (!youtubeId || youtubeId.length !== 11) {
+      if (!streamInput || info.type === "unknown") {
         alerta.className = "text-xs p-2.5 rounded-xl border border-red-500/40 bg-red-500/15 text-red-300 text-center font-semibold";
-        alerta.innerText = "El enlace de YouTube no contiene un ID válido de 11 caracteres.";
+        alerta.innerText = "Ingresa un enlace o código válido de YoloLiv / YoloCast o una URL/ID de YouTube.";
         alerta.classList.remove("hidden");
         return;
       }
@@ -1301,11 +1351,13 @@
           body: JSON.stringify({
             action: "updateStreamConfig",
             pin,
-            youtubeUrl,
-            youtubeId,
+            streamCode: streamInput,
+            streamUrl: /^https?:\/\//i.test(streamInput) ? streamInput : "",
+            youtubeUrl: info.type === "youtube" ? streamInput : "",
+            youtubeId: info.ytId || streamInput,
             estadoTransmision,
             tituloGala: etapaTexto,
-            subtituloLugar: "Teatro Juares, Barquisimeto · Estado Lara",
+            subtituloLugar: "La Flor de Venezuela · Barquisimeto, Estado Lara",
             avisoBanner,
             chatActivo,
             votacionAbierta
@@ -1315,9 +1367,9 @@
         const data = await res.json();
         if (data.status === "success") {
           alerta.className = "text-xs p-2.5 rounded-xl border border-emerald-500/40 bg-emerald-500/15 text-emerald-300 text-center font-semibold";
-          alerta.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> ¡Listo! envivo.html ya está actualizado con el directo de YouTube (${youtubeId}).`;
+          alerta.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> ¡Listo! streaming.html ya está actualizado (${info.label}).`;
           alerta.classList.remove("hidden");
-          document.getElementById("streamBackendSyncStatus").innerText = `Activo (${youtubeId}) · Actualizado ahora`;
+          document.getElementById("streamBackendSyncStatus").innerText = `Activo (${info.label}) · Actualizado ahora`;
         } else {
           alerta.className = "text-xs p-2.5 rounded-xl border border-red-500/40 bg-red-500/15 text-red-300 text-center font-semibold";
           alerta.innerText = data.message || "PIN incorrecto o error al actualizar.";
@@ -1893,7 +1945,7 @@
         document.getElementById("inputPipCaption").value = state.pipCaption;
 
         renderizarListasCategorias();
-        cargarConfigYouTubeDesdeBackend();
+        cargarConfigStreamDesdeBackend();
         document.getElementById("iframePreviewMonitor").src = obtenerUrlSalida();
         aplicarEstadoVisual();
       }
