@@ -577,7 +577,7 @@
       </div>
 
       <!-- =====================================================================
-           SECCIÓN PRINCIPAL: ESCALETA INFANTIL + PLECA NOMBRE + FICHA MUSICAL
+           SECCIÓN PRINCIPAL: ESCALETA INFANTIL Y JUVENIL + PLECA + FICHA MUSICAL
            ===================================================================== -->
       <div class="bg-[#0a101f] border border-white/10 rounded-2xl p-5 space-y-5">
         <div class="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-3">
@@ -605,7 +605,7 @@
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
-          <div class="lg:col-span-7 bg-black/40 border border-sky-400/30 rounded-2xl p-3.5 space-y-2.5">
+          <div class="lg:col-span-6 bg-black/40 border border-sky-400/30 rounded-2xl p-3.5 space-y-2.5">
             <div class="flex items-center justify-between">
               <span class="font-fox text-sm font-black uppercase tracking-wider text-sky-300 flex items-center gap-1.5">
                 <span class="w-2 h-2 rounded-full bg-sky-400"></span>
@@ -613,18 +613,18 @@
               </span>
               <span class="text-[10px] text-slate-400">Carga nombre + tema + autor + género + PiP estado</span>
             </div>
-            <div id="listaChipsInfantil" class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 max-h-60 overflow-y-auto custom-scroll pr-1"></div>
+            <div id="listaChipsInfantil" class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 max-h-64 overflow-y-auto custom-scroll pr-1"></div>
           </div>
 
-          <div class="lg:col-span-5 bg-black/40 border border-[#f5b942]/30 rounded-2xl p-3.5 space-y-2.5">
+          <div class="lg:col-span-6 bg-black/40 border border-[#f5b942]/30 rounded-2xl p-3.5 space-y-2.5">
             <div class="flex items-center justify-between">
               <span class="font-fox text-sm font-black uppercase tracking-wider text-[#f5b942] flex items-center gap-1.5">
                 <span class="w-2 h-2 rounded-full bg-[#f5b942]"></span>
-                Categoría Juvenil (<span id="countJuvenil">0</span>)
+                Orden Eliminatoria Juvenil (<span id="countJuvenil">0</span>)
               </span>
-              <span class="text-[10px] text-slate-400">Clic para cargar</span>
+              <span class="text-[10px] text-slate-400">Carga nombre + tema + autor + género + tono</span>
             </div>
-            <div id="listaChipsJuvenil" class="grid grid-cols-1 gap-1.5 max-h-60 overflow-y-auto custom-scroll pr-1"></div>
+            <div id="listaChipsJuvenil" class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 max-h-64 overflow-y-auto custom-scroll pr-1"></div>
           </div>
         </div>
 
@@ -1142,22 +1142,22 @@
     ];
 
     const ESCALETA_JUVENIL = [
-      { key: "juv_1", voteId: 4, orden: 1, nombre: "Albenis Pérez", estado: "Carabobo", categoria: "Juvenil", tema: "", autor: "", genero: "Música Venezolana", shortId: "zGGRW8eMHNk" },
-      { key: "juv_2", voteId: 5, orden: 2, nombre: "Aimé García", estado: "Barinas", categoria: "Juvenil", tema: "", autor: "", genero: "Música Venezolana", shortId: "3o0TQjPhKfU" },
-      { key: "juv_3", voteId: 6, orden: 3, nombre: "Antonio Urbina", estado: "Mérida", categoria: "Juvenil", tema: "", autor: "", genero: "Música Venezolana", shortId: "5KCJl2vTWpU" },
-      { key: "juv_4", voteId: 9, orden: 4, nombre: "Daniela Fontana", estado: "Trujillo", categoria: "Juvenil", tema: "", autor: "", genero: "Música Venezolana", shortId: "SXODrGfMJ0E" },
-      { key: "juv_5", voteId: 10, orden: 5, nombre: "Enma Frías", estado: "Lara", categoria: "Juvenil", tema: "", autor: "", genero: "Música Venezolana", shortId: "RLrVTJg_2S8" },
-      { key: "juv_6", voteId: 11, orden: 6, nombre: "Esthela Vázquez", estado: "Cojedes", categoria: "Juvenil", tema: "", autor: "", genero: "Música Venezolana", shortId: "Q2w6w8BNT3w" },
-      { key: "juv_7", voteId: 14, orden: 7, nombre: "Gabriela González", estado: "Amazonas", categoria: "Juvenil", tema: "", autor: "", genero: "Música Venezolana", shortId: "79nkO6SvvdY" },
-      { key: "juv_8", voteId: 16, orden: 8, nombre: "Iviangely Figueroa", estado: "Nueva Esparta", categoria: "Juvenil", tema: "", autor: "", genero: "Música Venezolana", shortId: "ViHlHCqC5DE" },
-      { key: "juv_9", voteId: 17, orden: 9, nombre: "Jaarol Zambrano", estado: "Delta Amacuro", categoria: "Juvenil", tema: "", autor: "", genero: "Música Venezolana", shortId: "CaQwei6Ae-I" },
-      { key: "juv_10", voteId: 18, orden: 10, nombre: "Jeremías Torres", estado: "Anzoátegui", categoria: "Juvenil", tema: "", autor: "", genero: "Música Venezolana", shortId: "iefvIVpKd-w" },
-      { key: "juv_11", voteId: 19, orden: 11, nombre: "Gabriel Raúl Solórzano Guevara", estado: "Miranda", categoria: "Juvenil", tema: "", autor: "", genero: "Música Venezolana", shortId: "b9JyOpp3cmU" },
-      { key: "juv_12", voteId: 21, orden: 12, nombre: "Katerine Moreno", estado: "Bolívar", categoria: "Juvenil", tema: "", autor: "", genero: "Música Venezolana", shortId: "jSniXY7y9Nc" },
-      { key: "juv_13", voteId: 24, orden: 13, nombre: "Natalia Moreno", estado: "Zulia", categoria: "Juvenil", tema: "", autor: "", genero: "Música Venezolana", shortId: "cDC3j42em6k" },
-      { key: "juv_14", voteId: 25, orden: 14, nombre: "Ronaikel García", estado: "Distrito Capital", categoria: "Juvenil", tema: "", autor: "", genero: "Música Venezolana", shortId: "RJGE8CrrIVU" },
-      { key: "juv_15", voteId: 29, orden: 15, nombre: "Sebastián Sucre", estado: "Sucre", categoria: "Juvenil", tema: "", autor: "", genero: "Música Venezolana", shortId: "T1foDecyaz4" },
-      { key: "juv_16", voteId: 31, orden: 16, nombre: "Victoria Barrera", estado: "Táchira", categoria: "Juvenil", tema: "", autor: "", genero: "Música Venezolana", shortId: "6-34XsFqoFQ" }
+      { key: "juv_1", voteId: 9, orden: 1, nombre: "Daniela Alejandra Fontana", estado: "Trujillo", edad: 13, categoria: "Juvenil", tema: "Un Barquisimetano", autor: "Letra y Música de: Pilar García", genero: "Golpe Tocuyano", tono: "C", shortId: "SXODrGfMJ0E" },
+      { key: "juv_2", voteId: 25, orden: 2, nombre: "Ronaikell Javier García Venegas", estado: "Distrito Capital", edad: 13, categoria: "Juvenil", tema: "Mi Regreso", autor: "Letra y Música de: Isaac del Moral", genero: "Vals Larense", tono: "Em", shortId: "RJGE8CrrIVU" },
+      { key: "juv_3", voteId: 14, orden: 3, nombre: "Gabriela González", estado: "Amazonas", edad: 13, categoria: "Juvenil", tema: "El Espanto", autor: "Letra y Música de: Adelis Freitez", genero: "Merengue Larense", tono: "D", shortId: "79nkO6SvvdY" },
+      { key: "juv_4", voteId: 4, orden: 4, nombre: "Albelíz Pérez (Arbeliz Pérez)", estado: "Carabobo", edad: 16, categoria: "Juvenil", tema: "Cómo Llora una Estrella", autor: "Letra: Arnaldo Vivas Toledo · Música: Antonio Carrillo", genero: "Vals Larense", tono: "Am", shortId: "zGGRW8eMHNk" },
+      { key: "juv_5", voteId: 31, orden: 5, nombre: "Victoria Chekina Barrera Álvarez", estado: "Táchira", edad: 13, categoria: "Juvenil", tema: "Ramoncito en Cimarrona", autor: "Letra y Música de: José María Giménez", genero: "Golpe Tocuyano", tono: "A", shortId: "6-34XsFqoFQ" },
+      { key: "juv_6", voteId: 24, orden: 6, nombre: "Natalia Moreno", estado: "Zulia", edad: 14, categoria: "Juvenil", tema: "Los Griñafitos", autor: "Letra y Música de: Henry Martínez", genero: "Golpe Tocuyano", tono: "G", shortId: "cDC3j42em6k" },
+      { key: "juv_7", voteId: 17, orden: 7, nombre: "Jaarol Zambrano", estado: "Delta Amacuro", edad: 16, categoria: "Juvenil", tema: "Golpe Tocuyano", autor: "Letra y Música de: Celestino Carrasco", genero: "Golpe Tocuyano", tono: "D", shortId: "CaQwei6Ae-I" },
+      { key: "juv_8", voteId: 16, orden: 8, nombre: "Iviangelis Carolina Figueroa Rodríguez", estado: "Nueva Esparta", edad: 16, categoria: "Juvenil", tema: "Guitarra Larense", autor: "Letra y Música de: Gilberto Mejías Palazzi", genero: "Vals Larense", tono: "A", shortId: "ViHlHCqC5DE" },
+      { key: "juv_9", voteId: 6, orden: 9, nombre: "Antoham Richael Urbina Ocanto", estado: "Mérida", edad: 14, categoria: "Juvenil", tema: "Lara es una sola", autor: "Letra y Música de: Virgilio Arrieta", genero: "Golpe Tocuyano", tono: "C", shortId: "5KCJl2vTWpU" },
+      { key: "juv_10", voteId: 10, orden: 10, nombre: "Enma Antonella Frías Evies", estado: "Lara", edad: 12, categoria: "Juvenil", tema: "Ah mundo Na'guará (Tema Inédito)", autor: "Letra y Música de: Celia Alviárez", genero: "Golpe Tocuyano", tono: "G", shortId: "RLrVTJg_2S8" },
+      { key: "juv_11", voteId: 18, orden: 11, nombre: "Jeremías Andrés Torres Yegues", estado: "Anzoátegui", edad: 14, categoria: "Juvenil", tema: "Acidito", autor: "Letra y Música de: Adelis Freitez", genero: "Merengue Larense", tono: "D", shortId: "iefvIVpKd-w" },
+      { key: "juv_12", voteId: 21, orden: 12, nombre: "Katherine Moreno", estado: "Bolívar", edad: 12, categoria: "Juvenil", tema: "Tierra Larense (Tema Inédito)", autor: "Letra: María Andreina Gascón · Música: Alfredo Pastor Yaguaral", genero: "Vals Larense", tono: "A", shortId: "jSniXY7y9Nc" },
+      { key: "juv_13", voteId: 19, orden: 13, nombre: "Gabriel Raúl Solórzano Guevara", estado: "Miranda", edad: 16, categoria: "Juvenil", tema: "El espanto", autor: "Letra y Música de: Adelis Freitez", genero: "Merengue Larense", tono: "E", shortId: "b9JyOpp3cmU" },
+      { key: "juv_14", voteId: 11, orden: 14, nombre: "Esthela Vázquez", estado: "Cojedes", edad: 15, categoria: "Juvenil", tema: "Cómo Llora una Estrella", autor: "Letra: Eliseo Jiménez · Música: Antonio Carrillo", genero: "Vals Larense", tono: "Am", shortId: "Q2w6w8BNT3w" },
+      { key: "juv_15", voteId: 29, orden: 15, nombre: "Sebastián Omar Sucre Lafaurie", estado: "Sucre", edad: 14, categoria: "Juvenil", tema: "Reflexión", autor: "Letra y Música de: Virgilio Arrieta", genero: "Golpe Tocuyano", tono: "F", shortId: "T1foDecyaz4" },
+      { key: "juv_16", voteId: 5, orden: 16, nombre: "Aimee Valentina García Colmenares", estado: "Barinas", edad: 12, categoria: "Juvenil", tema: "Ramoncito en Cimarrona", autor: "Letra y Música de: José María Giménez", genero: "Golpe Tocuyano", tono: "F", shortId: "3o0TQjPhKfU" }
     ];
 
     const TODOS_PARTICIPANTES_VOTACION = [...ESCALETA_INFANTIL.filter(p => p.voteId > 0), ...ESCALETA_JUVENIL];
@@ -1183,7 +1183,7 @@
     const isOutputMode = params.get("mode") === "output";
     let canalId = (params.get("canal") || "FNNS2026").toUpperCase().replace(/[^A-Z0-9_-]/g, "");
     let safeGuidesVisible = true;
-    let participanteActivoKey = "inf_1";
+    let participanteActivoKey = "juv_1";
     let ultimaUrlQrRenderizada = "";
 
     let state = {
@@ -1197,15 +1197,15 @@
       pipDelegation: false,
       pipPosition: "bottom-right",
       pipCalibrate: false,
-      pipState: "DELEGACIÓN ZULIA",
+      pipState: "DELEGACIÓN TRUJILLO",
       pipCaption: "REACCIÓN EN SALA · APOYO FAMILIAR",
-      artistName: "Gabriela Galilea Andrade Gutiérrez",
-      artistState: "Zulia",
-      artistCategory: "Infantil",
+      artistName: "Daniela Alejandra Fontana",
+      artistState: "Trujillo",
+      artistCategory: "Juvenil",
       artistSong: "ORDEN #01 · SEMIFINALES",
-      songTitle: "Los 2 Gavilanes",
-      songAuthor: "Letra y Música de: Adelis Freitez",
-      songGenre: "Merengue Larense",
+      songTitle: "Un Barquisimetano",
+      songAuthor: "Letra y Música de: Pilar García",
+      songGenre: "Golpe Tocuyano · Tono C",
       tickerText: "ESCANEA EL CÓDIGO QR Y VOTA POR TUS 5 FAVORITOS EN DIRECTO",
       voteUrl: detectarUrlVotacionPorDefecto()
     };
@@ -1595,6 +1595,9 @@
 
       participanteActivoKey = p.key;
       const ordenTag = `ORDEN #${String(p.orden).padStart(2, "0")} · ${state.eventStage}`;
+      const generoConTono = p.tono
+        ? `${p.genero || "Música Venezolana"} · Tono ${p.tono}`
+        : (p.genero || "Música Venezolana");
 
       document.getElementById("inputArtistName").value = p.nombre;
       document.getElementById("inputArtistState").value = p.estado;
@@ -1602,7 +1605,7 @@
       document.getElementById("inputArtistSong").value = ordenTag;
 
       document.getElementById("inputSongTitle").value = p.tema || "Tema por confirmar";
-      document.getElementById("inputSongGenre").value = p.genero || "Música Venezolana";
+      document.getElementById("inputSongGenre").value = generoConTono;
       document.getElementById("inputSongAuthor").value = p.autor || "Autor por confirmar";
 
       document.getElementById("inputPipState").value = `DELEGACIÓN ${p.estado.toUpperCase()}`;
@@ -1618,7 +1621,7 @@
         `${p.orden} ${p.nombre} ${p.estado} ${p.tema} ${p.genero}`.toLowerCase().includes(q)
       );
       const juveniles = ESCALETA_JUVENIL.filter(p =>
-        `${p.orden} ${p.nombre} ${p.estado} ${p.tema}`.toLowerCase().includes(q)
+        `${p.orden} ${p.nombre} ${p.estado} ${p.edad || ""} ${p.tema} ${p.genero} ${p.tono || ""}`.toLowerCase().includes(q)
       );
 
       document.getElementById("countInfantil").innerText = infantiles.length;
@@ -1646,14 +1649,21 @@
 
       document.getElementById("listaChipsJuvenil").innerHTML = juveniles.map(p => {
         const activo = p.key === participanteActivoKey;
+        const ord = String(p.orden).padStart(2, "0");
+        const detalleJuvenil = `${p.tema || "Tema por confirmar"} · ${p.genero}${p.tono ? ` (${p.tono})` : ""}`;
         return `
           <button
             type="button"
             onclick="seleccionarParticipantePorKey('${p.key}')"
-            class="text-left px-3 py-2 rounded-xl border text-xs transition cursor-pointer flex items-center justify-between gap-2 ${activo ? "bg-[#f5b942] text-slate-950 border-amber-300 shadow-md" : "bg-white/[0.04] hover:bg-white/[0.1] border-white/10 text-slate-200"}"
+            class="text-left px-2.5 py-2 rounded-xl border text-xs transition cursor-pointer flex flex-col gap-0.5 ${activo ? "bg-[#f5b942] text-slate-950 border-amber-300 shadow-md" : "bg-white/[0.04] hover:bg-white/[0.1] border-white/10 text-slate-200"}"
           >
-            <span class="font-bold truncate">${p.nombre}</span>
-            <span class="text-[10px] font-extrabold uppercase tracking-wider shrink-0 opacity-80">${p.estado}</span>
+            <div class="flex items-center justify-between gap-1.5 w-full">
+              <span class="font-extrabold truncate">#${ord} ${p.nombre}</span>
+              <span class="text-[9px] font-black uppercase tracking-wider shrink-0 opacity-85">${p.estado}</span>
+            </div>
+            <div class="text-[10px] truncate ${activo ? "text-slate-950 font-bold" : "text-amber-200/80"}">
+              ♪ ${detalleJuvenil}
+            </div>
           </button>
         `;
       }).join("");
