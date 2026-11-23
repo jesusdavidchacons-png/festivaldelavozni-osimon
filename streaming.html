@@ -61,7 +61,14 @@
       border: 1px solid var(--hairline);
     }
 
-    /* Ecualizador minimalista de cabina para el telón previo */
+    /* Reproductor dinámico para YoloCast / YoloLiv */
+    #contenedorYololivPlayer > div[id^="yololiv-widget"],
+    #contenedorYololivPlayer > iframe {
+      width: 100% !important;
+      height: 100% !important;
+      min-height: 100% !important;
+    }
+
     @keyframes vuPulse {
       0%, 100% { transform: scaleY(0.28); opacity: 0.45; }
       50% { transform: scaleY(1); opacity: 1; }
@@ -114,13 +121,9 @@
        TELÓN PREVIO CINEMATOGRÁFICO MINIMALISTA (SEÑAL TALLY / EN EL AIRE)
        ========================================================================= -->
   <div id="introCurtain" class="fixed inset-0 z-50 bg-[#000000] flex flex-col items-center justify-between px-6 py-8 sm:py-12 transition-opacity duration-700 ease-out">
-    <!-- Línea superior mínima de luz roja/ámbar -->
     <div class="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#e11d48] to-[#f5b942] opacity-85"></div>
-
-    <!-- Halo radial sutil centrado -->
     <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.045)_0%,rgba(0,0,0,0)_62%)]"></div>
 
-    <!-- Fila Superior: Tally de Cabina + Sede Semifinales -->
     <div class="relative z-10 flex flex-col items-center gap-2 text-center">
       <div class="inline-flex items-center gap-2.5 px-3.5 py-1 rounded-full border border-white/12 bg-white/[0.02]">
         <span id="introTallyDot" class="w-2 h-2 rounded-full bg-[#e11d48] animate-ping"></span>
@@ -134,7 +137,6 @@
       </div>
     </div>
 
-    <!-- Centro: Logo Blanco Puro + Micro-Ecualizador + Botón de Entrada -->
     <div class="relative z-10 flex flex-col items-center text-center max-w-md space-y-7">
       <div class="space-y-4">
         <img
@@ -154,7 +156,6 @@
         </div>
       </div>
 
-      <!-- Micro-ecualizador de señal viva -->
       <div class="flex flex-col items-center gap-2">
         <div class="flex items-end justify-center gap-1 h-4" aria-hidden="true">
           <span class="vu-bar w-[2px] h-full bg-[#f5b942]" style="animation-delay: 0.0s;"></span>
@@ -168,7 +169,6 @@
         </span>
       </div>
 
-      <!-- Botón único minimalista -->
       <button
         type="button"
         id="btnEntrarTransmision"
@@ -181,7 +181,6 @@
       </button>
     </div>
 
-    <!-- Fila Inferior: Sede y Telemetría de Votos en Tiempo Real -->
     <div class="relative z-10 w-full max-w-3xl flex flex-col sm:flex-row items-center justify-between gap-2 text-[10px] font-tnum uppercase tracking-[0.2em] text-slate-500 border-t border-white/[0.07] pt-4">
       <span>La Flor de Venezuela &middot; Barquisimeto</span>
       <span>
@@ -198,7 +197,6 @@
   <!-- ================= MASTHEAD MINIMALISTA ESTILO BROADCAST ================= -->
   <header class="sticky top-0 z-40 bg-[#030508]/92 backdrop-blur-xl border-b border-white/[0.08]">
     <div class="max-w-[1520px] mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
-      
       <div class="flex items-center gap-4">
         <a href="index.html" class="shrink-0 flex items-center">
           <img src="./logo_color.png" alt="Festival de la Voz Niño Simón 2026" class="h-9 sm:h-10 w-auto object-contain drop-shadow-[0_2px_10px_rgba(245,185,66,0.2)]" />
@@ -233,13 +231,14 @@
     </div>
   </header>
 
-  <!-- ================= CONSOLA PRINCIPAL: SEÑAL 16:9 + CHAT YOUTUBE ================= -->
+  <!-- ================= CONSOLA PRINCIPAL: SEÑAL 16:9 (YOLOCAST / YOUTUBE) + CHAT ================= -->
   <section class="max-w-[1520px] w-full mx-auto px-4 sm:px-6 pt-5 pb-8">
     <div id="gridBroadcast" class="grid grid-cols-1 lg:grid-cols-12 border border-white/[0.09] rounded-lg overflow-hidden bg-[#060911] shadow-[0_28px_80px_rgba(0,0,0,0.85)]">
-      
-      <!-- BLOQUE VIDEO (8 COLS) -->
+
+      <!-- BLOQUE VIDEO -->
       <div id="colVideoStream" class="lg:col-span-8 flex flex-col border-b lg:border-b-0 lg:border-r border-white/[0.08]">
         <div class="relative w-full aspect-video bg-black">
+          <!-- Reproductor YouTube -->
           <iframe
             id="iframeYoutubeLive"
             class="absolute inset-0 w-full h-full border-0"
@@ -248,6 +247,9 @@
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowfullscreen>
           </iframe>
+
+          <!-- Reproductor YoloCast / YoloLiv (URL / Inline Frame / JavaScript Widget) -->
+          <div id="contenedorYololivPlayer" class="hidden absolute inset-0 w-full h-full bg-black"></div>
 
           <!-- Cortina de Estado (Próximamente / Pausa / Finalizado) -->
           <div id="overlayEstadoPlayer" class="hidden absolute inset-0 z-10 bg-[#030508]/95 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center space-y-3.5">
@@ -315,7 +317,6 @@
 
   <!-- ================= ESCRUTINIO EN DIRECTO ESTILO FOX ================= -->
   <main id="escrutinioEnVivo" class="max-w-[1520px] w-full mx-auto px-4 sm:px-6 space-y-6">
-    
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/10 pb-4">
       <div>
         <div class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[#f5b942] mb-1">
@@ -345,10 +346,8 @@
       </div>
     </div>
 
-    <!-- PODIO TOP 3 MINIMALISTA -->
     <div id="gridPodioTop3" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
 
-    <!-- BARRA DE BÚSQUEDA Y FILTRO DE VISTA -->
     <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
       <div class="relative flex-1 max-w-md">
         <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
@@ -374,7 +373,6 @@
       </div>
     </div>
 
-    <!-- LISTA DE POSICIONES EN VIVO -->
     <div id="contenedorBarrasEnVivo" class="border border-white/[0.08] rounded-lg overflow-hidden divide-y divide-white/[0.06] bg-[#070b13]"></div>
   </main>
 
@@ -514,7 +512,7 @@
     // 1. Backend original de VOTACIONES
     const ENDPOINT_GOOGLE_SHEETS = "https://script.google.com/macros/s/AKfycbzH1tSBBdcN6gI5s7wQwAyifLzglIuMVjwbqBAQB5gVrfvIXZVTiMah9Dz01CQt4Ov1aA/exec";
 
-    // 2. Backend independiente de STREAMING YOUTUBE LIVE
+    // 2. Backend independiente de STREAMING (soporta YoloCast / YoloLiv o YouTube)
     const ENDPOINT_STREAM_CONFIG = "https://script.google.com/macros/s/AKfycbzR-IPRu-qFuGHV8qVQjr2bOJ9NjGCWEcrCiOm3msHbZhPJHPKF8HY0neOnt8M4QiTw/exec";
 
     const PARTICIPANTES_OFICIALES = [
@@ -552,9 +550,9 @@
     ];
 
     let usuarioEntroSala = false;
-    let videoIdPendiente = new URLSearchParams(window.location.search).get("v") || "sZTplvsYYHw";
-    let videoIdCargado = "";
-    let chatActivoCargado = null;
+    let fuentePendiente = new URLSearchParams(window.location.search).get("v") || "sZTplvsYYHw";
+    let fuenteCargadaClave = "";
+    let chatYoutubeHabilitado = true;
     let votacionAbiertaGlobal = true;
     let rankingEnVivo = PARTICIPANTES_OFICIALES.map(p => ({ ...p, votos: 0 }));
     let totalVotosGlobal = 0;
@@ -567,22 +565,114 @@
     let mediaStream = null;
     let cedulaVerificada = false;
 
-    function montarReproductorYChat(ytId) {
-      if (!ytId || ytId === videoIdCargado) return;
-      videoIdCargado = ytId;
+    function analizarFuenteStream(rawInput) {
+      const val = (rawInput || "").trim();
+      if (!val) {
+        return { provider: "youtube", youtubeId: "sZTplvsYYHw", key: "yt:sZTplvsYYHw" };
+      }
 
-      // Al dispararse tras el clic en "ENTRAR A LA TRANSMISIÓN", el navegador permite audio activo
-      document.getElementById("iframeYoutubeLive").src = `https://www.youtube.com/embed/${ytId}?autoplay=1&mute=0&rel=0&modestbranding=1`;
+      // YoloCast / YoloLiv (URL, Inline Frame o snippet JavaScript)
+      if (val.includes("yololiv.com") || val.includes("yolocast") || val.includes("yololiv-widget")) {
+        if (/^https?:\/\//i.test(val) && !val.includes("<")) {
+          return { provider: "yololiv-url", url: val, key: `yl-url:${val}` };
+        }
+        return { provider: "yololiv-code", code: val, key: `yl-code:${val}` };
+      }
 
-      const popoutUrl = `https://www.youtube.com/live_chat?is_popout=1&v=${ytId}`;
-      document.getElementById("linkPopoutChat").href = popoutUrl;
-      document.getElementById("btnAbrirChatExterno").href = popoutUrl;
+      // YouTube (URL o ID)
+      const ytMatch = val.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|live\/|shorts\/))([^?&"'>\s]+)/i);
+      const ytId = ytMatch ? ytMatch[1] : val;
+      return { provider: "youtube", youtubeId: ytId, key: `yt:${ytId}` };
+    }
 
-      const host = window.location.hostname;
-      if (!host || window.location.protocol === "file:") {
-        document.getElementById("avisoChatLocal").classList.remove("hidden");
+    function actualizarLayoutColumnas() {
+      const colChat = document.getElementById("colChatYoutube");
+      const colVideo = document.getElementById("colVideoStream");
+
+      if (modoTeatroActivo) {
+        colVideo.className = "lg:col-span-12 flex flex-col border-b border-white/[0.08]";
+        if (chatYoutubeHabilitado) {
+          colChat.classList.remove("hidden");
+          colChat.className = "lg:col-span-12 flex flex-col bg-[#060a12] h-[400px]";
+        } else {
+          colChat.classList.add("hidden");
+        }
+        return;
+      }
+
+      if (chatYoutubeHabilitado) {
+        colChat.classList.remove("hidden");
+        colChat.className = "lg:col-span-4 flex flex-col bg-[#060a12] min-h-[420px] lg:min-h-0";
+        colVideo.className = "lg:col-span-8 flex flex-col border-b lg:border-b-0 lg:border-r border-white/[0.08]";
       } else {
-        document.getElementById("iframeYoutubeChat").src = `https://www.youtube.com/live_chat?v=${ytId}&embed_domain=${host}&dark_theme=1`;
+        colChat.classList.add("hidden");
+        colVideo.className = "lg:col-span-12 flex flex-col";
+      }
+    }
+
+    function montarReproductorYChat(rawInput, permitirChatYouTube = true) {
+      const info = analizarFuenteStream(rawInput);
+      const mostrarChat = info.provider === "youtube" && permitirChatYouTube;
+
+      if (info.key === fuenteCargadaClave && mostrarChat === chatYoutubeHabilitado) return;
+      fuenteCargadaClave = info.key;
+      chatYoutubeHabilitado = mostrarChat;
+      actualizarLayoutColumnas();
+
+      const ytIframe = document.getElementById("iframeYoutubeLive");
+      const yololivBox = document.getElementById("contenedorYololivPlayer");
+
+      if (info.provider === "youtube") {
+        yololivBox.innerHTML = "";
+        yololivBox.classList.add("hidden");
+        ytIframe.classList.remove("hidden");
+        ytIframe.src = `https://www.youtube.com/embed/${info.youtubeId}?autoplay=1&mute=0&rel=0&modestbranding=1`;
+
+        const popoutUrl = `https://www.youtube.com/live_chat?is_popout=1&v=${info.youtubeId}`;
+        document.getElementById("linkPopoutChat").href = popoutUrl;
+        document.getElementById("btnAbrirChatExterno").href = popoutUrl;
+
+        const host = window.location.hostname;
+        if (!host || window.location.protocol === "file:") {
+          document.getElementById("avisoChatLocal").classList.remove("hidden");
+        } else {
+          document.getElementById("avisoChatLocal").classList.add("hidden");
+          document.getElementById("iframeYoutubeChat").src = `https://www.youtube.com/live_chat?v=${info.youtubeId}&embed_domain=${host}&dark_theme=1`;
+        }
+      } else {
+        ytIframe.src = "";
+        ytIframe.classList.add("hidden");
+        document.getElementById("iframeYoutubeChat").src = "";
+        yololivBox.classList.remove("hidden");
+        yololivBox.innerHTML = "";
+
+        if (info.provider === "yololiv-url") {
+          const iframe = document.createElement("iframe");
+          iframe.src = info.url;
+          iframe.className = "w-full h-full border-0";
+          iframe.allow = "autoplay; fullscreen; picture-in-picture; encrypted-media";
+          iframe.allowFullscreen = true;
+          yololivBox.appendChild(iframe);
+        } else if (info.provider === "yololiv-code") {
+          const temp = document.createElement("div");
+          temp.innerHTML = info.code;
+
+          const scripts = Array.from(temp.querySelectorAll("script"));
+          scripts.forEach(s => s.remove());
+
+          yololivBox.innerHTML = temp.innerHTML;
+
+          scripts.forEach(oldScript => {
+            const newScript = document.createElement("script");
+            Array.from(oldScript.attributes).forEach(attr => {
+              newScript.setAttribute(attr.name, attr.value);
+            });
+            if (oldScript.textContent) {
+              newScript.textContent = oldScript.textContent;
+            }
+            yololivBox.appendChild(newScript);
+          });
+        }
       }
     }
 
@@ -590,7 +680,7 @@
       usuarioEntroSala = true;
       document.body.classList.remove("overflow-hidden");
 
-      montarReproductorYChat(videoIdPendiente || "sZTplvsYYHw");
+      montarReproductorYChat(fuentePendiente || "sZTplvsYYHw", chatYoutubeHabilitado);
 
       const curtain = document.getElementById("introCurtain");
       if (curtain) {
@@ -604,28 +694,18 @@
     function aplicarConfigStream(cfg) {
       if (!cfg) return;
       const urlOverride = new URLSearchParams(window.location.search).get("v");
-      const nuevoId = urlOverride || cfg.youtubeId || "sZTplvsYYHw";
+      const fuenteConfig = cfg.streamCode || cfg.streamUrl || cfg.youtubeUrl || cfg.youtubeId || "sZTplvsYYHw";
+      const nuevoFuente = urlOverride || fuenteConfig;
       const chatActivo = cfg.chatActivo !== false;
       votacionAbiertaGlobal = cfg.votacionAbierta !== false;
 
-      videoIdPendiente = nuevoId;
+      fuentePendiente = nuevoFuente;
+      chatYoutubeHabilitado = chatActivo;
 
-      // Solo cargamos el iframe cuando el espectador cruza el telón previo
       if (usuarioEntroSala) {
-        montarReproductorYChat(nuevoId);
-      }
-
-      if (chatActivo !== chatActivoCargado) {
-        chatActivoCargado = chatActivo;
-        const colChat = document.getElementById("colChatYoutube");
-        const colVideo = document.getElementById("colVideoStream");
-        if (chatActivo) {
-          colChat.classList.remove("hidden");
-          if (!modoTeatroActivo) colVideo.className = "lg:col-span-8 flex flex-col border-b lg:border-b-0 lg:border-r border-white/[0.08]";
-        } else {
-          colChat.classList.add("hidden");
-          colVideo.className = "lg:col-span-12 flex flex-col";
-        }
+        montarReproductorYChat(nuevoFuente, chatActivo);
+      } else {
+        actualizarLayoutColumnas();
       }
 
       document.getElementById("labelTituloGala").innerText = cfg.tituloGala || "Semifinales Nacionales · Señal Oficial";
@@ -677,21 +757,11 @@
 
     function toggleModoTeatro() {
       modoTeatroActivo = !modoTeatroActivo;
-      const colVideo = document.getElementById("colVideoStream");
-      const colChat = document.getElementById("colChatYoutube");
       const btn = document.getElementById("btnModoTeatro");
-
-      if (modoTeatroActivo) {
-        colVideo.className = "lg:col-span-12 flex flex-col border-b border-white/[0.08]";
-        if (chatActivoCargado) colChat.className = "lg:col-span-12 flex flex-col bg-[#060a12] h-[400px]";
-        btn.innerHTML = `<i class="fa-solid fa-compress text-[10px]"></i><span>Vista Dividida</span>`;
-      } else {
-        colVideo.className = chatActivoCargado
-          ? "lg:col-span-8 flex flex-col border-b lg:border-b-0 lg:border-r border-white/[0.08]"
-          : "lg:col-span-12 flex flex-col";
-        if (chatActivoCargado) colChat.className = "lg:col-span-4 flex flex-col bg-[#060a12] min-h-[420px] lg:min-h-0";
-        btn.innerHTML = `<i class="fa-solid fa-expand text-[10px]"></i><span>Modo Cine</span>`;
-      }
+      actualizarLayoutColumnas();
+      btn.innerHTML = modoTeatroActivo
+        ? `<i class="fa-solid fa-compress text-[10px]"></i><span>Vista Dividida</span>`
+        : `<i class="fa-solid fa-expand text-[10px]"></i><span>Modo Cine</span>`;
     }
 
     async function sincronizarStreamConfigAparte() {
@@ -705,7 +775,7 @@
       } catch (e) {}
 
       aplicarConfigStream({
-        youtubeId: videoIdPendiente || "sZTplvsYYHw",
+        youtubeId: fuentePendiente || "sZTplvsYYHw",
         estadoTransmision: "EN_VIVO",
         chatActivo: true,
         votacionAbierta: true
