@@ -61,7 +61,7 @@
       border: 1px solid var(--hairline);
     }
 
-    /* Reproductor dinámico para YoloCast / YoloLiv */
+    /* Reproductor dinámico para YoloLiv / YoloCast */
     #contenedorYololivPlayer > div[id^="yololiv-widget"],
     #contenedorYololivPlayer > iframe {
       width: 100% !important;
@@ -69,6 +69,7 @@
       min-height: 100% !important;
     }
 
+    /* Ecualizador minimalista de cabina para el telón previo */
     @keyframes vuPulse {
       0%, 100% { transform: scaleY(0.28); opacity: 0.45; }
       50% { transform: scaleY(1); opacity: 1; }
@@ -231,14 +232,13 @@
     </div>
   </header>
 
-  <!-- ================= CONSOLA PRINCIPAL: SEÑAL 16:9 (YOLOCAST / YOUTUBE) + CHAT ================= -->
+  <!-- ================= CONSOLA PRINCIPAL: SEÑAL 16:9 (YOLOLIV / YOUTUBE) + CHAT ================= -->
   <section class="max-w-[1520px] w-full mx-auto px-4 sm:px-6 pt-5 pb-8">
     <div id="gridBroadcast" class="grid grid-cols-1 lg:grid-cols-12 border border-white/[0.09] rounded-lg overflow-hidden bg-[#060911] shadow-[0_28px_80px_rgba(0,0,0,0.85)]">
 
       <!-- BLOQUE VIDEO -->
       <div id="colVideoStream" class="lg:col-span-8 flex flex-col border-b lg:border-b-0 lg:border-r border-white/[0.08]">
         <div class="relative w-full aspect-video bg-black">
-          <!-- Reproductor YouTube -->
           <iframe
             id="iframeYoutubeLive"
             class="absolute inset-0 w-full h-full border-0"
@@ -248,7 +248,6 @@
             allowfullscreen>
           </iframe>
 
-          <!-- Reproductor YoloCast / YoloLiv (URL / Inline Frame / JavaScript Widget) -->
           <div id="contenedorYololivPlayer" class="hidden absolute inset-0 w-full h-full bg-black"></div>
 
           <!-- Cortina de Estado (Próximamente / Pausa / Finalizado) -->
@@ -317,6 +316,7 @@
 
   <!-- ================= ESCRUTINIO EN DIRECTO ESTILO FOX ================= -->
   <main id="escrutinioEnVivo" class="max-w-[1520px] w-full mx-auto px-4 sm:px-6 space-y-6">
+
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/10 pb-4">
       <div>
         <div class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[#f5b942] mb-1">
@@ -512,7 +512,7 @@
     // 1. Backend original de VOTACIONES
     const ENDPOINT_GOOGLE_SHEETS = "https://script.google.com/macros/s/AKfycbzH1tSBBdcN6gI5s7wQwAyifLzglIuMVjwbqBAQB5gVrfvIXZVTiMah9Dz01CQt4Ov1aA/exec";
 
-    // 2. Backend independiente de STREAMING (soporta YoloCast / YoloLiv o YouTube)
+    // 2. Backend independiente de STREAMING (soporta YoloLiv / YoloCast o YouTube)
     const ENDPOINT_STREAM_CONFIG = "https://script.google.com/macros/s/AKfycbzR-IPRu-qFuGHV8qVQjr2bOJ9NjGCWEcrCiOm3msHbZhPJHPKF8HY0neOnt8M4QiTw/exec";
 
     const PARTICIPANTES_OFICIALES = [
@@ -552,7 +552,7 @@
     let usuarioEntroSala = false;
     let fuentePendiente = new URLSearchParams(window.location.search).get("v") || "sZTplvsYYHw";
     let fuenteCargadaClave = "";
-    let chatYoutubeHabilitado = true;
+    let chatActivoCargado = null;
     let votacionAbiertaGlobal = true;
     let rankingEnVivo = PARTICIPANTES_OFICIALES.map(p => ({ ...p, votos: 0 }));
     let totalVotosGlobal = 0;
@@ -571,7 +571,6 @@
         return { provider: "youtube", youtubeId: "sZTplvsYYHw", key: "yt:sZTplvsYYHw" };
       }
 
-      // YoloCast / YoloLiv (URL, Inline Frame o snippet JavaScript)
       if (val.includes("yololiv.com") || val.includes("yolocast") || val.includes("yololiv-widget")) {
         if (/^https?:\/\//i.test(val) && !val.includes("<")) {
           return { provider: "yololiv-url", url: val, key: `yl-url:${val}` };
@@ -579,19 +578,18 @@
         return { provider: "yololiv-code", code: val, key: `yl-code:${val}` };
       }
 
-      // YouTube (URL o ID)
       const ytMatch = val.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|live\/|shorts\/))([^?&"'>\s]+)/i);
       const ytId = ytMatch ? ytMatch[1] : val;
       return { provider: "youtube", youtubeId: ytId, key: `yt:${ytId}` };
     }
 
-    function actualizarLayoutColumnas() {
+    function actualizarColumnasVideoChat(chatVisible) {
       const colChat = document.getElementById("colChatYoutube");
       const colVideo = document.getElementById("colVideoStream");
 
       if (modoTeatroActivo) {
         colVideo.className = "lg:col-span-12 flex flex-col border-b border-white/[0.08]";
-        if (chatYoutubeHabilitado) {
+        if (chatVisible) {
           colChat.classList.remove("hidden");
           colChat.className = "lg:col-span-12 flex flex-col bg-[#060a12] h-[400px]";
         } else {
@@ -600,7 +598,7 @@
         return;
       }
 
-      if (chatYoutubeHabilitado) {
+      if (chatVisible) {
         colChat.classList.remove("hidden");
         colChat.className = "lg:col-span-4 flex flex-col bg-[#060a12] min-h-[420px] lg:min-h-0";
         colVideo.className = "lg:col-span-8 flex flex-col border-b lg:border-b-0 lg:border-r border-white/[0.08]";
@@ -610,14 +608,14 @@
       }
     }
 
-    function montarReproductorYChat(rawInput, permitirChatYouTube = true) {
+    function montarReproductorYChat(rawInput, permitirChat = true) {
       const info = analizarFuenteStream(rawInput);
-      const mostrarChat = info.provider === "youtube" && permitirChatYouTube;
+      const mostrarChat = info.provider === "youtube" && permitirChat;
 
-      if (info.key === fuenteCargadaClave && mostrarChat === chatYoutubeHabilitado) return;
+      if (info.key === fuenteCargadaClave && mostrarChat === chatActivoCargado) return;
       fuenteCargadaClave = info.key;
-      chatYoutubeHabilitado = mostrarChat;
-      actualizarLayoutColumnas();
+      chatActivoCargado = mostrarChat;
+      actualizarColumnasVideoChat(mostrarChat);
 
       const ytIframe = document.getElementById("iframeYoutubeLive");
       const yololivBox = document.getElementById("contenedorYololivPlayer");
@@ -680,7 +678,7 @@
       usuarioEntroSala = true;
       document.body.classList.remove("overflow-hidden");
 
-      montarReproductorYChat(fuentePendiente || "sZTplvsYYHw", chatYoutubeHabilitado);
+      montarReproductorYChat(fuentePendiente || "sZTplvsYYHw", chatActivoCargado !== false);
 
       const curtain = document.getElementById("introCurtain");
       if (curtain) {
@@ -700,12 +698,16 @@
       votacionAbiertaGlobal = cfg.votacionAbierta !== false;
 
       fuentePendiente = nuevoFuente;
-      chatYoutubeHabilitado = chatActivo;
 
       if (usuarioEntroSala) {
         montarReproductorYChat(nuevoFuente, chatActivo);
       } else {
-        actualizarLayoutColumnas();
+        const info = analizarFuenteStream(nuevoFuente);
+        const mostrarChat = info.provider === "youtube" && chatActivo;
+        if (mostrarChat !== chatActivoCargado) {
+          chatActivoCargado = mostrarChat;
+          actualizarColumnasVideoChat(mostrarChat);
+        }
       }
 
       document.getElementById("labelTituloGala").innerText = cfg.tituloGala || "Semifinales Nacionales · Señal Oficial";
@@ -758,7 +760,7 @@
     function toggleModoTeatro() {
       modoTeatroActivo = !modoTeatroActivo;
       const btn = document.getElementById("btnModoTeatro");
-      actualizarLayoutColumnas();
+      actualizarColumnasVideoChat(Boolean(chatActivoCargado));
       btn.innerHTML = modoTeatroActivo
         ? `<i class="fa-solid fa-compress text-[10px]"></i><span>Vista Dividida</span>`
         : `<i class="fa-solid fa-expand text-[10px]"></i><span>Modo Cine</span>`;
