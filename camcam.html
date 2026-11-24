@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cara a Cara Jurado / Participante 16:9 — Festival de la Voz Niño Simón 2026</title>
+  <link rel="icon" type="image/png" href="./logo_color.png" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=JetBrains+Mono:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    .font-fox {
+      font-family: 'Barlow Condensed', sans-serif;
+      letter-spacing: 0.04em;
+    }
+    .font-tnum {
+      font-family: 'JetBrains Mono', monospace;
+      font-variant-numeric: tabular-nums;
+    }
+    body.mode-director {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #050811;
+      color: #f8fafc;
+    }
+
+    .logo-pure-white {
+      -webkit-filter: brightness(0) invert(1) drop-shadow(0 2px 10px rgba(255, 255, 255, 0.25)) !important;
+      filter: brightness(0) invert(1) drop-shadow(0 2px 10px rgba(255, 255, 255, 0.25)) !important;
+    }
+
+    /* Canal Alpha 100% transparente para salida (?mode=output) */
+    html.mode-output,
+    body.mode-output {
+      background: transparent !important;
+      background-color: rgba(0, 0, 0, 0) !important;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Lienzo maestro 16:9 (1920x1080) autoescalado */
+    #splitCanvas16x9 {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 1920px;
+      height: 1080px;
+      transform: translate(-50%, -50%) scale(1);
+      transform-origin: center center;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    /* Entrada y salida limpia de la pantalla dividida */
+    .split-layer {
+      opacity: 0;
+      transform: scale(0.985);
+      transition: transform 0.42s cubic-bezier(0.55, 0, 1, 0.45), opacity 0.3s ease;
+    }
+    .split-layer.is-on-air {
+      opacity: 1;
+      transform: scale(1);
+      transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+    }
+
+    .panel-left-anim {
+      opacity: 0;
+      transform: translateX(-60px);
+      transition: transform 0.4s ease-in, opacity 0.28s ease;
+    }
+    .is-on-air .panel-left-anim {
+      opacity: 1;
+      transform: translateX(0);
+      transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.08s, opacity 0.4s ease 0.08s;
+    }
+
+    .panel-right-anim {
+      opacity: 0;
+      transform: translateX(60px);
+      transition: transform 0.4s ease-in, opacity 0.28s ease;
+    }
+    .is-on-air .panel-right-anim {
+      opacity: 1;
+      transform: translateX(0);
+      transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.14s, opacity 0.4s ease 0.14s;
+    }
+
+    .cam-window {
+      background: transparent !important;
+      border: 3px solid #f5b942;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85), 0 0 24px rgba(245, 185, 66, 0.2);
+    }
+
+    .cam-window-child {
+      background: transparent !important;
+      border: 3px solid #38bdf8;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85), 0 0 24px rgba(56, 189, 248, 0.2);
+    }
+
+    .fox-shell {
+      background: linear-gradient(180deg, rgba(10, 25, 54, 0.96) 0%, rgba(5, 13, 31, 0.98) 100%);
+      border: 2px solid rgba(255, 255, 255, 0.22);
+    }
+  </style>
+</head>
+<body class="h-full">
+
+  <!-- =========================================================================
+       MODO CONTROL: MESA PARA CUADRAR Y DISPARAR CARA A CARA
+       ========================================================================= -->
+  <div id="directorSplitUI" class="hidden min-h-full pb-14">
+    <header class="sticky top-0 z-40 bg-[#050811]/95 backdrop-blur-xl border-b border-white/10">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <img src="./logo_color.png" alt="Logo" class="h-8 w-auto object-contain logo-pure-white" />
+          <div>
+            <span class="text-[10px] font-bold uppercase tracking-widest text-[#f5b942] block">
+              Split-Screen 16:9 &middot; Jurado vs Participante
+            </span>
+            <h1 class="font-fox text-lg sm:text-xl font-black uppercase text-white leading-none">
+              Overlay Cara a Cara (Opinión del Jurado)
+            </h1>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2">
+          <div id="splitSyncBadge" class="px-3 py-1.5 rounded-lg bg-emerald-500/15 border border-emerald-500/35 text-emerald-300 text-xs font-bold flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+            <span id="splitSyncText">Canal Activo</span>
+          </div>
+
+          <button onclick="copiarUrlSplit()" class="px-3.5 py-2 rounded-xl bg-[#f5b942] hover:bg-[#fbbf24] text-black font-bold text-xs flex items-center gap-1.5 cursor-pointer transition">
+            <i class="fa-solid fa-copy"></i>
+            <span>Copiar URL 16:9</span>
+          </button>
+
+          <button onclick="abrirVentanaSplit()" class="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-xs font-bold text-white flex items-center gap-1.5 cursor-pointer transition">
+            <i class="fa-solid fa-up-right-from-square text-[#f5b942]"></i>
+            <span>Abrir Salida</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 pt-6 space-y-6">
+
+      <!-- Botón principal IN/OUT + Guía de encuadre de cámaras -->
+      <section class="bg-[#0a101f] border border-[#f5b942]/35 rounded-2xl p-5 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-3">
+          <div>
+            <span class="text-[10px] font-bold uppercase tracking-widest text-[#f5b942] block">Disparo en Vivo</span>
+            <h2 class="font-fox text-xl font-black uppercase text-white">Pantalla Dividida: Jurado (Izquierda) &middot; Participante (Derecha)</h2>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button
+              type="button"
+              id="btnToggleGuides"
+              onclick="toggleCamGuides()"
+              class="px-3.5 py-2 rounded-xl bg-cyan-400 text-slate-950 font-bold text-xs cursor-pointer transition"
+            >
+              <i class="fa-solid fa-crosshairs mr-1"></i> Guías Cámaras: ON
+            </button>
+            <span id="badge_splitOnAir" class="px-2.5 py-1.5 rounded text-[10px] font-extrabold uppercase bg-white/5 text-slate-400">OFF AIR</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-3">
+          <div class="md:col-span-4">
+            <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Jurado (Ventana Izquierda)</label>
+            <input type="text" id="inJuradoNombre" value="JURADO CALIFICADOR" oninput="actualizarSplit()" class="w-full bg-black/65 border border-white/15 rounded-xl px-3 py-2 text-xs font-bold text-[#f5b942] uppercase" />
+          </div>
+          <div class="md:col-span-4">
+            <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Rol / Cintillo Jurado</label>
+            <input type="text" id="inJuradoRol" value="DEVOLUCIÓN Y OPINIÓN EN DIRECTO" oninput="actualizarSplit()" class="w-full bg-black/65 border border-white/15 rounded-xl px-3 py-2 text-xs text-white" />
+          </div>
+          <div class="md:col-span-4">
+            <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Etapa del Festival</label>
+            <select id="inSplitStage" onchange="actualizarSplit()" class="w-full bg-black/65 border border-white/15 rounded-xl px-3 py-2 text-xs font-bold text-white">
+              <option value="SEMIFINALES">SEMIFINALES</option>
+              <option value="GALA FINAL">GALA FINAL</option>
+            </select>
+          </div>
+
+          <div class="md:col-span-5">
+            <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Participante (Ventana Derecha)</label>
+            <input type="text" id="inParticipanteNombre" value="Daniela Alejandra Fontana" oninput="actualizarSplit()" class="w-full bg-black/65 border border-white/15 rounded-xl px-3 py-2 text-xs font-bold text-white" />
+          </div>
+          <div class="md:col-span-4">
+            <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Estado / Regional</label>
+            <input type="text" id="inParticipanteEstado" value="Trujillo" oninput="actualizarSplit()" class="w-full bg-black/65 border border-white/15 rounded-xl px-3 py-2 text-xs text-sky-300" />
+          </div>
+          <div class="md:col-span-3">
+            <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Categoría</label>
+            <select id="inParticipanteCat" onchange="actualizarSplit()" class="w-full bg-black/65 border border-white/15 rounded-xl px-3 py-2 text-xs font-bold text-[#f5b942]">
+              <option value="Juvenil">Juvenil</option>
+              <option value="Infantil">Infantil</option>
+            </select>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          id="btn_toggleSplit"
+          onclick="toggleSplitOnAir()"
+          class="w-full py-3.5 rounded-xl font-fox text-base sm:text-lg font-black uppercase tracking-wider bg-emerald-500 hover:bg-emerald-400 text-black transition cursor-pointer flex items-center justify-center gap-2"
+        >
+          <i class="fa-solid fa-play"></i>
+          <span>DAR ENTRADA CARA A CARA (IN)</span>
+        </button>
+      </section>
+
+      <!-- Monitor de vista previa 16:9 -->
+      <section class="bg-[#0a101f] border border-white/10 rounded-2xl p-4 space-y-2.5">
+        <span class="text-xs font-bold uppercase tracking-wider text-slate-300 block">
+          <i class="fa-solid fa-tv text-[#f5b942] mr-1.5"></i> Monitor de Encuadre 16:9 (1920&times;1080)
+        </span>
+        <div class="relative w-full aspect-video rounded-xl overflow-hidden border border-white/15 bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:18px_18px] bg-[#070b14]">
+          <iframe id="iframeSplitPreview" src="" class="w-full h-full border-0 pointer-events-none"></iframe>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- =========================================================================
+       SALIDA TRANSPARENTE 16:9 (1920x1080) PARA CUADRAR AMBAS CÁMARAS
+       ========================================================================= -->
+  <div id="splitOutputRoot" class="hidden fixed inset-0 pointer-events-none overflow-hidden">
+    <div id="splitCanvas16x9">
+      <div id="layer_splitScreen" class="split-layer absolute inset-0 flex flex-col justify-between px-[64px] py-[44px]">
+
+        <!-- Cabecera superior compacta -->
+        <div class="fox-shell rounded-md px-6 py-3 flex items-center justify-between gap-4">
+          <div class="flex items-center gap-4">
+            <img src="./logo_color.png" alt="Logo" style="-webkit-filter: brightness(0) invert(1); filter: brightness(0) invert(1);" class="h-10 w-auto object-contain logo-pure-white" />
+            <div class="h-7 w-[1px] bg-white/20"></div>
+            <span class="inline-flex items-center gap-2 bg-[#e11d48] px-3 py-1 rounded-sm font-fox text-sm font-black uppercase tracking-widest text-white">
+              <span class="w-2 h-2 rounded-full bg-white animate-ping"></span>
+              <span>CARA A CARA</span>
+            </span>
+            <span id="outSplitStage" class="font-fox text-lg font-extrabold uppercase tracking-wider text-[#f5b942]">
+              SEMIFINALES &middot; 2026
+            </span>
+          </div>
+
+          <span class="font-fox text-base font-bold uppercase tracking-widest text-slate-300">
+            Fundación Nacional del Niño Simón
+          </span>
+        </div>
+
+        <!-- Zona central: Cámara Jurado (Izquierda) + Divisor + Cámara Participante (Derecha) -->
+        <div class="flex items-center justify-between gap-[36px] my-auto">
+
+          <!-- VENTANA IZQUIERDA: JURADO -->
+          <div class="panel-left-anim w-[876px] shrink-0 flex flex-col gap-3">
+            <div class="fox-shell rounded-md px-5 py-2.5 flex items-center justify-between border-l-4 border-l-[#f5b942]">
+              <div class="flex items-center gap-3 min-w-0">
+                <span class="px-2.5 py-0.5 rounded-sm bg-[#f5b942] font-fox text-sm font-black uppercase tracking-widest text-black shrink-0">
+                  JURADO
+                </span>
+                <span id="outJuradoNombre" class="font-fox text-2xl font-black uppercase text-white truncate">
+                  JURADO CALIFICADOR
+                </span>
+              </div>
+              <span class="font-fox text-xs font-extrabold uppercase tracking-widest text-[#f5b942] shrink-0">
+                EN OPINIÓN
+              </span>
+            </div>
+
+            <!-- Hueco transparente 16:9 para cámara del jurado -->
+            <div class="cam-window relative w-full aspect-video bg-transparent">
+              <span class="absolute top-3 left-3 w-5 h-5 border-t-2 border-l-2 border-[#f5b942]"></span>
+              <span class="absolute top-3 right-3 w-5 h-5 border-t-2 border-r-2 border-[#f5b942]"></span>
+              <span class="absolute bottom-3 left-3 w-5 h-5 border-b-2 border-l-2 border-[#f5b942]"></span>
+              <span class="absolute bottom-3 right-3 w-5 h-5 border-b-2 border-r-2 border-[#f5b942]"></span>
+
+              <div class="guide-box absolute inset-0 bg-[#f5b942]/12 border-2 border-dashed border-[#f5b942]/80 flex flex-col items-center justify-center text-center p-4">
+                <i class="fa-solid fa-video text-3xl text-[#f5b942] mb-1.5"></i>
+                <span class="font-fox text-2xl font-black uppercase text-white bg-black/75 px-4 py-1 rounded">
+                  CÁMARA JURADO (IZQUIERDA · 16:9)
+                </span>
+              </div>
+            </div>
+
+            <div class="fox-shell rounded-md px-5 py-2 flex items-center justify-between">
+              <span id="outJuradoRol" class="font-fox text-base font-bold uppercase tracking-wider text-slate-200 truncate">
+                DEVOLUCIÓN Y OPINIÓN EN DIRECTO
+              </span>
+              <span class="w-2 h-2 rounded-full bg-[#f5b942]"></span>
+            </div>
+          </div>
+
+          <!-- DIVISOR CENTRAL -->
+          <div class="h-[460px] w-[4px] rounded-full bg-gradient-to-b from-[#e11d48] via-[#f5b942] to-[#38bdf8] shrink-0 opacity-85"></div>
+
+          <!-- VENTANA DERECHA: PARTICIPANTE ESCUCHANDO -->
+          <div class="panel-right-anim w-[876px] shrink-0 flex flex-col gap-3">
+            <div class="fox-shell rounded-md px-5 py-2.5 flex items-center justify-between border-l-4 border-l-sky-400">
+              <div class="flex items-center gap-3 min-w-0">
+                <span class="px-2.5 py-0.5 rounded-sm bg-sky-400 font-fox text-sm font-black uppercase tracking-widest text-slate-950 shrink-0">
+                  PARTICIPANTE
+                </span>
+                <span id="outParticipanteNombre" class="font-fox text-2xl font-black uppercase text-white truncate">
+                  DANIELA ALEJANDRA FONTANA
+                </span>
+              </div>
+              <span class="font-fox text-xs font-extrabold uppercase tracking-widest text-sky-300 shrink-0">
+                ESCUCHANDO
+              </span>
+            </div>
+
+            <!-- Hueco transparente 16:9 para cámara del participante -->
+            <div class="cam-window-child relative w-full aspect-video bg-transparent">
+              <span class="absolute top-3 left-3 w-5 h-5 border-t-2 border-l-2 border-sky-400"></span>
+              <span class="absolute top-3 right-3 w-5 h-5 border-t-2 border-r-2 border-sky-400"></span>
+              <span class="absolute bottom-3 left-3 w-5 h-5 border-b-2 border-l-2 border-sky-400"></span>
+              <span class="absolute bottom-3 right-3 w-5 h-5 border-b-2 border-r-2 border-sky-400"></span>
+
+              <div class="guide-box absolute inset-0 bg-sky-400/12 border-2 border-dashed border-sky-400/80 flex flex-col items-center justify-center text-center p-4">
+                <i class="fa-solid fa-user text-3xl text-sky-300 mb-1.5"></i>
+                <span class="font-fox text-2xl font-black uppercase text-white bg-black/75 px-4 py-1 rounded">
+                  CÁMARA PARTICIPANTE (DERECHA · 16:9)
+                </span>
+              </div>
+            </div>
+
+            <div class="fox-shell rounded-md px-5 py-2 flex items-center justify-between gap-2">
+              <span id="outParticipanteEstado" class="font-fox text-base font-extrabold uppercase tracking-wider text-sky-300 truncate">
+                TRUJILLO
+              </span>
+              <span id="outParticipanteCat" class="px-2.5 py-0.5 rounded-sm bg-[#f5b942] font-fox text-xs font-black uppercase tracking-widest text-black shrink-0">
+                CATEGORÍA JUVENIL
+              </span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Pie inferior limpio -->
+        <div class="h-1"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const isOutputMode = params.get("mode") === "output";
+    const canalId = (params.get("canal") || "FNNS2026").toUpperCase().replace(/[^A-Z0-9_-]/g, "");
+
+    let splitState = {
+      onAir: false,
+      showGuides: true,
+      stage: "SEMIFINALES",
+      juradoNombre: "JURADO CALIFICADOR",
+      juradoRol: "DEVOLUCIÓN Y OPINIÓN EN DIRECTO",
+      participanteNombre: "Daniela Alejandra Fontana",
+      participanteEstado: "Trujillo",
+      participanteCat: "Juvenil"
+    };
+
+    const bc = new BroadcastChannel("fnns_split_sync_" + canalId);
+    let mqttClient = null;
+
+    function ajustarLienzo16x9() {
+      const canvas = document.getElementById("splitCanvas16x9");
+      if (!canvas) return;
+      const scale = Math.min((window.innerWidth || 1920) / 1920, (window.innerHeight || 1080) / 1080);
+      canvas.style.transform = `translate(-50%, -50%) scale(${scale})`;
+    }
+
+    function aplicarVisualSplit() {
+      if (isOutputMode) {
+        const layer = document.getElementById("layer_splitScreen");
+        layer.classList.toggle("is-on-air", Boolean(splitState.onAir));
+
+        document.querySelectorAll(".guide-box").forEach(el => {
+          el.classList.toggle("hidden", !splitState.showGuides);
+        });
+
+        document.getElementById("outSplitStage").innerText = `${(splitState.stage || "SEMIFINALES").toUpperCase()} · 2026`;
+        document.getElementById("outJuradoNombre").innerText = (splitState.juradoNombre || "JURADO CALIFICADOR").toUpperCase();
+        document.getElementById("outJuradoRol").innerText = (splitState.juradoRol || "").toUpperCase();
+        document.getElementById("outParticipanteNombre").innerText = (splitState.participanteNombre || "").toUpperCase();
+        document.getElementById("outParticipanteEstado").innerText = (splitState.participanteEstado || "").toUpperCase();
+
+        const esInf = (splitState.participanteCat || "").toLowerCase() === "infantil";
+        const catEl = document.getElementById("outParticipanteCat");
+        catEl.innerText = esInf ? "CATEGORÍA INFANTIL" : "CATEGORÍA JUVENIL";
+        catEl.className = esInf
+          ? "px-2.5 py-0.5 rounded-sm bg-sky-400 font-fox text-xs font-black uppercase tracking-widest text-slate-950 shrink-0"
+          : "px-2.5 py-0.5 rounded-sm bg-[#f5b942] font-fox text-xs font-black uppercase tracking-widest text-black shrink-0";
+      } else {
+        const btnGuide = document.getElementById("btnToggleGuides");
+        if (btnGuide) {
+          btnGuide.innerHTML = `<i class="fa-solid fa-crosshairs mr-1"></i> Guías Cámaras: ${splitState.showGuides ? "ON" : "OFF"}`;
+          btnGuide.className = splitState.showGuides
+            ? "px-3.5 py-2 rounded-xl bg-cyan-400 text-slate-950 font-bold text-xs cursor-pointer transition"
+            : "px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-xs font-bold text-cyan-300 cursor-pointer transition";
+        }
+
+        const btn = document.getElementById("btn_toggleSplit");
+        const badge = document.getElementById("badge_splitOnAir");
+        if (btn && badge) {
+          if (splitState.onAir) {
+            badge.className = "px-2.5 py-1.5 rounded text-[10px] font-extrabold uppercase bg-red-500/20 text-red-400 border border-red-500/40 animate-pulse";
+            badge.innerText = "● AL AIRE";
+            btn.className = "w-full py-3.5 rounded-xl font-fox text-base sm:text-lg font-black uppercase tracking-wider bg-red-600 hover:bg-red-500 text-white transition cursor-pointer flex items-center justify-center gap-2 shadow-lg shadow-red-600/25";
+            btn.innerHTML = `<i class="fa-solid fa-stop"></i><span>SACAR CARA A CARA DEL AIRE (OUT)</span>`;
+          } else {
+            badge.className = "px-2.5 py-1.5 rounded text-[10px] font-extrabold uppercase bg-white/5 text-slate-400";
+            badge.innerText = "OFF AIR";
+            btn.className = "w-full py-3.5 rounded-xl font-fox text-base sm:text-lg font-black uppercase tracking-wider bg-emerald-500 hover:bg-emerald-400 text-black transition cursor-pointer flex items-center justify-center gap-2";
+            btn.innerHTML = `<i class="fa-solid fa-play"></i><span>DAR ENTRADA CARA A CARA (IN)</span>`;
+          }
+        }
+      }
+    }
+
+    function emitirSplit() {
+      localStorage.setItem("fnns_split_state_" + canalId, JSON.stringify(splitState));
+      bc.postMessage(splitState);
+      if (mqttClient && mqttClient.connected) {
+        mqttClient.publish(`fnns/festival2026/split/${canalId}`, JSON.stringify(splitState), { qos: 1, retain: true });
+      }
+      aplicarVisualSplit();
+    }
+
+    function actualizarSplit() {
+      splitState.juradoNombre = document.getElementById("inJuradoNombre").value.trim();
+      splitState.juradoRol = document.getElementById("inJuradoRol").value.trim();
+      splitState.stage = document.getElementById("inSplitStage").value;
+      splitState.participanteNombre = document.getElementById("inParticipanteNombre").value.trim();
+      splitState.participanteEstado = document.getElementById("inParticipanteEstado").value.trim();
+      splitState.participanteCat = document.getElementById("inParticipanteCat").value;
+      emitirSplit();
+    }
+
+    function toggleSplitOnAir() {
+      splitState.onAir = !splitState.onAir;
+      emitirSplit();
+    }
+
+    function toggleCamGuides() {
+      splitState.showGuides = !splitState.showGuides;
+      emitirSplit();
+    }
+
+    function obtenerUrlSplitOutput() {
+      const base = window.location.href.split("?")[0];
+      return `${base}?mode=output&canal=${encodeURIComponent(canalId)}`;
+    }
+
+    function copiarUrlSplit() {
+      navigator.clipboard.writeText(obtenerUrlSplitOutput()).then(() => {
+        alert("URL Cara a Cara 16:9 copiada:\n\n" + obtenerUrlSplitOutput());
+      });
+    }
+
+    function abrirVentanaSplit() {
+      window.open(obtenerUrlSplitOutput(), "CaraACara16x9", "width=1280,height=720");
+    }
+
+    bc.onmessage = (ev) => {
+      splitState = { ...splitState, ...ev.data };
+      aplicarVisualSplit();
+    };
+
+    function conectarMqttSplit() {
+      const topic = `fnns/festival2026/split/${canalId}`;
+      try {
+        mqttClient = mqtt.connect("wss://broker.emqx.io:8084/mqtt", {
+          clientId: "fnns_sp_" + Math.random().toString(16).slice(2, 10),
+          clean: true,
+          reconnectPeriod: 2000
+        });
+        mqttClient.on("connect", () => {
+          if (!isOutputMode) document.getElementById("splitSyncText").innerText = `Conectado (${canalId})`;
+          mqttClient.subscribe(topic);
+        });
+        mqttClient.on("message", (t, msg) => {
+          if (t !== topic) return;
+          try {
+            splitState = { ...splitState, ...JSON.parse(msg.toString()) };
+            aplicarVisualSplit();
+          } catch (e) {}
+        });
+      } catch (e) {}
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const saved = localStorage.getItem("fnns_split_state_" + canalId);
+      if (saved) {
+        try { splitState = { ...splitState, ...JSON.parse(saved) }; } catch (e) {}
+      }
+
+      if (isOutputMode) {
+        document.documentElement.classList.add("mode-output");
+        document.body.classList.add("mode-output");
+        document.getElementById("splitOutputRoot").classList.remove("hidden");
+        ajustarLienzo16x9();
+        window.addEventListener("resize", ajustarLienzo16x9);
+        aplicarVisualSplit();
+      } else {
+        document.body.classList.add("mode-director");
+        document.getElementById("directorSplitUI").classList.remove("hidden");
+        document.getElementById("inJuradoNombre").value = splitState.juradoNombre;
+        document.getElementById("inJuradoRol").value = splitState.juradoRol;
+        document.getElementById("inSplitStage").value = splitState.stage;
+        document.getElementById("inParticipanteNombre").value = splitState.participanteNombre;
+        document.getElementById("inParticipanteEstado").value = splitState.participanteEstado;
+        document.getElementById("inParticipanteCat").value = splitState.participanteCat;
+        document.getElementById("iframeSplitPreview").src = obtenerUrlSplitOutput();
+        aplicarVisualSplit();
+      }
+
+      conectarMqttSplit();
+    });
+  </script>
+</body>
+</html>
