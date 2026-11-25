@@ -706,21 +706,6 @@
   <script>
     const ENDPOINT_GOOGLE_SHEETS = "https://script.google.com/macros/s/AKfycbzH1tSBBdcN6gI5s7wQwAyifLzglIuMVjwbqBAQB5gVrfvIXZVTiMah9Dz01CQt4Ov1aA/exec";
 
-    const ESCALETA_GRAN_FINAL = [
-      { key: "fin_1", voteId: 26, orden: 1, nombre: "Roshelen Victoria Rivas Valderrama", estado: "Nueva Esparta", edad: 11, categoria: "Infantil", tema: "Lo que El Tocuyo me dio", autor: "Letra y Música de: Omar Carrizales", genero: "Golpe Tocuyano", tono: "A", shortId: "_G_7_hSKTZA" },
-      { key: "fin_2", voteId: 29, orden: 2, nombre: "Sebastián Omar Sucre Lafaurie", estado: "Sucre", edad: 14, categoria: "Juvenil", tema: "Reflexión", autor: "Letra y Música de: Virgilio Arrieta", genero: "Golpe Tocuyano", tono: "F", shortId: "T1foDecyaz4" },
-      { key: "fin_3", voteId: 23, orden: 3, nombre: "Michell Saray Meza Villamizar", estado: "Táchira", edad: 8, categoria: "Infantil", tema: "Suelo Larense", autor: "Letra y Música de: Pastor Jiménez", genero: "Vals Larense", tono: "Em", shortId: "KarvJK7Eums" },
-      { key: "fin_4", voteId: 14, orden: 4, nombre: "Gabriela González", estado: "Amazonas", edad: 13, categoria: "Juvenil", tema: "El espanto", autor: "Letra y Música de: Adelis Freitez", genero: "Merengue Larense", tono: "D", shortId: "79nkO6SvvdY" },
-      { key: "fin_5", voteId: 3, orden: 5, nombre: "Ángel Gabriel Sánchez", estado: "Carabobo", edad: 11, categoria: "Infantil", tema: "Noches Larenses", autor: "Letra y Música de: Juan Ramón Barrios", genero: "Bambuco Larense", tono: "A", shortId: "BKrNX8sXLxQ" },
-      { key: "fin_6", voteId: 24, orden: 6, nombre: "Natalia Moreno", estado: "Zulia", edad: 14, categoria: "Juvenil", tema: "Los Griñafitos", autor: "Letra y Música de: Henry Martínez", genero: "Golpe Tocuyano", tono: "G", shortId: "cDC3j42em6k" },
-      { key: "fin_7", voteId: 20, orden: 7, nombre: "José Pablo Luces Maurera", estado: "Sucre", edad: 10, categoria: "Infantil", tema: "Lara es una Sola", autor: "Letra y Música de: Virgilio Arrieta", genero: "Golpe Tocuyano", tono: "D", shortId: "WEUn5S3SjQc" },
-      { key: "fin_8", voteId: 16, orden: 8, nombre: "Iviangelis Carolina Figueroa Rodríguez", estado: "Nueva Esparta", edad: 16, categoria: "Juvenil", tema: "Guitarra Larense", autor: "Letra y Música de: Gilberto Mejías Palazzi", genero: "Vals Larense", tono: "A", shortId: "ViHlHCqC5DE" },
-      { key: "fin_9", voteId: 13, orden: 9, nombre: "Gabriela Galilea Andrade Gutiérrez", estado: "Zulia", edad: 11, categoria: "Infantil", tema: "Los 2 Gavilanes", autor: "Letra y Música de: Adelis Freitez", genero: "Merengue Larense", tono: "A", shortId: "uqfYsz2oKeA" },
-      { key: "fin_10", voteId: 18, orden: 10, nombre: "Jeremías Andrés Torres Yegues", estado: "Anzoátegui", edad: 14, categoria: "Juvenil", tema: "Acidito", autor: "Letra y Música de: Adelis Freitez", genero: "Merengue Larense", tono: "D", shortId: "iefvIVpKd-w" },
-      { key: "fin_11", voteId: 22, orden: 11, nombre: "Marialnolys Velázquez", estado: "Delta Amacuro", edad: 9, categoria: "Infantil", tema: "El Espanto", autor: "Letra y Música de: Adelis Freitez", genero: "Merengue Larense", tono: "E", shortId: "KiCBHQvwQ90" },
-      { key: "fin_12", voteId: 9, orden: 12, nombre: "Daniela Alejandra Fontana", estado: "Trujillo", edad: 13, categoria: "Juvenil", tema: "Un Barquisimetano", autor: "Letra y Música de: Pilar García", genero: "Golpe Tocuyano", tono: "C", shortId: "SXODrGfMJ0E" }
-    ];
-
     const ESCALETA_INFANTIL = [
       { key: "inf_1", voteId: 13, orden: 1, nombre: "Gabriela Galilea Andrade Gutiérrez", estado: "Zulia", categoria: "Infantil", shortId: "uqfYsz2oKeA" },
       { key: "inf_2", voteId: 20, orden: 2, nombre: "José Pablo Luces Maurera", estado: "Sucre", categoria: "Infantil", shortId: "WEUn5S3SjQc" },
@@ -736,29 +721,31 @@
       { key: "inf_12", voteId: 28, orden: 12, nombre: "Santiago Gudiño", estado: "Trujillo", categoria: "Infantil", shortId: "qu3xSlgytI8" },
       { key: "inf_13", voteId: 1, orden: 13, nombre: "Tyler Mathias Colina Yzarra", estado: "Mérida", categoria: "Infantil", shortId: "r_2LEocre14" },
       { key: "inf_14", voteId: 3, orden: 14, nombre: "Ángel Gabriel Sánchez", estado: "Carabobo", categoria: "Infantil", shortId: "BKrNX8sXLxQ" },
-      { key: "inf_15", voteId: 30, orden: 15, nombre: "Silvia Valeria Coro Beja", estado: "Amazonas", categoria: "Infantil", shortId: "d9NLY3PM9EE" }
+      { key: "inf_15", voteId: 30, orden: 15, nombre: "Silvia Valeria Coro Beja", estado: "Amazonas", categoria: "Infantil", shortId: "d9NLY3PM9EE" },
+      { key: "inf_16", voteId: 0, orden: 16, nombre: "15 Participantes (Cierre Grupal)", estado: "Todas las Regionales", categoria: "Infantil", shortId: "" }
     ];
 
     const ESCALETA_JUVENIL = [
-      { key: "juv_1", voteId: 4, orden: 1, nombre: "Albenis Pérez", estado: "Carabobo", categoria: "Juvenil", shortId: "zGGRW8eMHNk" },
-      { key: "juv_2", voteId: 5, orden: 2, nombre: "Aimé García", estado: "Barinas", categoria: "Juvenil", shortId: "3o0TQjPhKfU" },
-      { key: "juv_3", voteId: 6, orden: 3, nombre: "Antonio Urbina", estado: "Mérida", categoria: "Juvenil", shortId: "5KCJl2vTWpU" },
-      { key: "juv_4", voteId: 9, orden: 4, nombre: "Daniela Fontana", estado: "Trujillo", categoria: "Juvenil", shortId: "SXODrGfMJ0E" },
-      { key: "juv_5", voteId: 10, orden: 5, nombre: "Enma Frías", estado: "Lara", categoria: "Juvenil", shortId: "RLrVTJg_2S8" },
-      { key: "juv_6", voteId: 11, orden: 6, nombre: "Esthela Vázquez", estado: "Cojedes", categoria: "Juvenil", shortId: "Q2w6w8BNT3w" },
-      { key: "juv_7", voteId: 14, orden: 7, nombre: "Gabriela González", estado: "Amazonas", categoria: "Juvenil", shortId: "79nkO6SvvdY" },
-      { key: "juv_8", voteId: 16, orden: 8, nombre: "Iviangely Figueroa", estado: "Nueva Esparta", categoria: "Juvenil", shortId: "ViHlHCqC5DE" },
-      { key: "juv_9", voteId: 17, orden: 9, nombre: "Jaarol Zambrano", estado: "Delta Amacuro", categoria: "Juvenil", shortId: "CaQwei6Ae-I" },
-      { key: "juv_10", voteId: 18, orden: 10, nombre: "Jeremías Torres", estado: "Anzoátegui", categoria: "Juvenil", shortId: "iefvIVpKd-w" },
-      { key: "juv_11", voteId: 19, orden: 11, nombre: "Gabriel Raúl Solórzano Guevara", estado: "Miranda", categoria: "Juvenil", shortId: "b9JyOpp3cmU" },
-      { key: "juv_12", voteId: 21, orden: 12, nombre: "Katerine Moreno", estado: "Bolívar", categoria: "Juvenil", shortId: "jSniXY7y9Nc" },
-      { key: "juv_13", voteId: 24, orden: 13, nombre: "Natalia Moreno", estado: "Zulia", categoria: "Juvenil", shortId: "cDC3j42em6k" },
-      { key: "juv_14", voteId: 25, orden: 14, nombre: "Ronaikel García", estado: "Distrito Capital", categoria: "Juvenil", shortId: "RJGE8CrrIVU" },
-      { key: "juv_15", voteId: 29, orden: 15, nombre: "Sebastián Sucre", estado: "Sucre", categoria: "Juvenil", shortId: "T1foDecyaz4" },
-      { key: "juv_16", voteId: 31, orden: 16, nombre: "Victoria Barrera", estado: "Táchira", categoria: "Juvenil", shortId: "6-34XsFqoFQ" }
+      { key: "juv_1", voteId: 9, orden: 1, nombre: "Daniela Alejandra Fontana", estado: "Trujillo", categoria: "Juvenil", shortId: "SXODrGfMJ0E" },
+      { key: "juv_2", voteId: 25, orden: 2, nombre: "Ronaikell Javier García Venegas", estado: "Distrito Capital", categoria: "Juvenil", shortId: "RJGE8CrrIVU" },
+      { key: "juv_3", voteId: 14, orden: 3, nombre: "Gabriela González", estado: "Amazonas", categoria: "Juvenil", shortId: "79nkO6SvvdY" },
+      { key: "juv_4", voteId: 4, orden: 4, nombre: "Albelíz Pérez (Arbeliz Pérez)", estado: "Carabobo", categoria: "Juvenil", shortId: "zGGRW8eMHNk" },
+      { key: "juv_5", voteId: 31, orden: 5, nombre: "Victoria Chekina Barrera Álvarez", estado: "Táchira", categoria: "Juvenil", shortId: "6-34XsFqoFQ" },
+      { key: "juv_6", voteId: 24, orden: 6, nombre: "Natalia Moreno", estado: "Zulia", categoria: "Juvenil", shortId: "cDC3j42em6k" },
+      { key: "juv_7", voteId: 17, orden: 7, nombre: "Jaarol Zambrano", estado: "Delta Amacuro", categoria: "Juvenil", shortId: "CaQwei6Ae-I" },
+      { key: "juv_8", voteId: 16, orden: 8, nombre: "Iviangelis Carolina Figueroa Rodríguez", estado: "Nueva Esparta", categoria: "Juvenil", shortId: "ViHlHCqC5DE" },
+      { key: "juv_9", voteId: 6, orden: 9, nombre: "Antoham Richael Urbina Ocanto", estado: "Mérida", categoria: "Juvenil", shortId: "5KCJl2vTWpU" },
+      { key: "juv_10", voteId: 10, orden: 10, nombre: "Enma Antonella Frías Evies", estado: "Lara", categoria: "Juvenil", shortId: "RLrVTJg_2S8" },
+      { key: "juv_11", voteId: 18, orden: 11, nombre: "Jeremías Andrés Torres Yegues", estado: "Anzoátegui", categoria: "Juvenil", shortId: "iefvIVpKd-w" },
+      { key: "juv_12", voteId: 21, orden: 12, nombre: "Katherine Moreno", estado: "Bolívar", categoria: "Juvenil", shortId: "jSniXY7y9Nc" },
+      { key: "juv_13", voteId: 19, orden: 13, nombre: "Gabriel Raúl Solórzano Guevara", estado: "Miranda", categoria: "Juvenil", shortId: "b9JyOpp3cmU" },
+      { key: "juv_14", voteId: 11, orden: 14, nombre: "Esthela Vázquez", estado: "Cojedes", categoria: "Juvenil", shortId: "Q2w6w8BNT3w" },
+      { key: "juv_15", voteId: 29, orden: 15, nombre: "Sebastián Omar Sucre Lafaurie", estado: "Sucre", categoria: "Juvenil", shortId: "T1foDecyaz4" },
+      { key: "juv_16", voteId: 5, orden: 16, nombre: "Aimee Valentina García Colmenares", estado: "Barinas", categoria: "Juvenil", shortId: "3o0TQjPhKfU" }
     ];
 
-    const TODOS_PARTICIPANTES_VOTACION = [...ESCALETA_GRAN_FINAL, ...ESCALETA_INFANTIL, ...ESCALETA_JUVENIL];
+    // Misma base única que overlaycontrol.html (evita duplicar votos de la Gran Final)
+    const TODOS_PARTICIPANTES_VOTACION = [...ESCALETA_INFANTIL.filter(p => p.voteId > 0), ...ESCALETA_JUVENIL];
 
     function detectarUrlVotacionPorDefecto() {
       try {
@@ -1001,6 +988,17 @@
           ...p,
           votos: votosPorId[p.voteId] !== undefined ? votosPorId[p.voteId] : 0
         }));
+
+        if (lista.reduce((a, b) => a + b.votos, 0) === 0 && votantes.length > 0) {
+          lista = TODOS_PARTICIPANTES_VOTACION.map(p => ({
+            ...p,
+            votos: votantes.filter(v => {
+              const t = normalizarTexto(v.votosResumen || v.candidatosNombres || "");
+              const primerNombre = normalizarTexto(p.nombre.split(" ")[0]);
+              return t.includes(primerNombre) && t.includes(normalizarTexto(p.estado));
+            }).length
+          }));
+        }
 
         lista.sort((a, b) => b.votos - a.votos || a.voteId - b.voteId);
         const top5 = lista.slice(0, 5);
