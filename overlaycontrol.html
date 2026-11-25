@@ -123,52 +123,48 @@
     }
 
     /* =====================================================================
-       TRANSICIÓN DIAGONAL CINEMÁTICA DE GALA (~4s · SIN RECUADRO)
+       TRANSICIÓN CINEMÁTICA DE GALA (~4s · ENCUADRE LIMPIO SIN CORTES)
        ===================================================================== */
-    .gala-diagonal-layer {
+    .gala-wipe-layer {
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.32s ease;
     }
-    .gala-diagonal-layer.is-tr-playing {
+    .gala-wipe-layer.is-tr-playing {
       opacity: 1;
     }
-    .gala-diagonal-layer.is-tr-exiting {
+    .gala-wipe-layer.is-tr-exiting {
       opacity: 0;
       transition: opacity 0.42s ease;
     }
 
-    /* Banda diagonal translúcida que cruza la pantalla en ángulo */
-    .gala-band-sheet {
+    .gala-strip-box {
       position: absolute;
-      left: -12%;
-      right: -12%;
-      top: 18%;
-      bottom: 18%;
-      transform: skewY(-5deg) translateX(-110%);
+      left: 0;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%) translateX(-100%);
+      height: 540px;
       background: linear-gradient(
-        105deg,
-        rgba(4, 10, 24, calc(var(--tr-opacidad, 0.62) * 1.15)) 0%,
-        rgba(10, 25, 54, var(--tr-opacidad, 0.62)) 52%,
-        rgba(24, 8, 20, calc(var(--tr-opacidad, 0.62) * 1.05)) 100%
+        90deg,
+        rgba(4, 10, 24, calc(var(--tr-opacidad, 0.65) * 1.15)) 0%,
+        rgba(10, 25, 54, var(--tr-opacidad, 0.65)) 52%,
+        rgba(24, 8, 20, calc(var(--tr-opacidad, 0.65) * 1.05)) 100%
       );
-      backdrop-filter: blur(3px);
-      border-top: 3px solid rgba(245, 185, 66, 0.85);
-      border-bottom: 3px solid rgba(225, 29, 72, 0.85);
-      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.72);
-      transition: transform 0.58s cubic-bezier(0.16, 1, 0.3, 1);
+      border-top: 3px solid rgba(245, 185, 66, 0.9);
+      border-bottom: 3px solid rgba(225, 29, 72, 0.9);
+      transition: transform 0.56s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .gala-diagonal-layer.is-tr-playing:not(.is-tr-exiting) .gala-band-sheet {
-      transform: skewY(-5deg) translateX(0%);
+    .gala-wipe-layer.is-tr-playing:not(.is-tr-exiting) .gala-strip-box {
+      transform: translateY(-50%) translateX(0%);
     }
 
-    .gala-diagonal-layer.is-tr-exiting .gala-band-sheet {
-      transform: skewY(-5deg) translateX(110%);
-      transition: transform 0.48s cubic-bezier(0.55, 0, 1, 0.45);
+    .gala-wipe-layer.is-tr-exiting .gala-strip-box {
+      transform: translateY(-50%) translateX(100%);
+      transition: transform 0.46s cubic-bezier(0.55, 0, 1, 0.45);
     }
 
-    /* Destello dorado que corre por el borde superior de la banda */
     @keyframes galaEdgeFlash {
       0% { transform: translateX(-120%); opacity: 0; }
       25% { opacity: 1; }
@@ -184,38 +180,26 @@
       box-shadow: 0 0 18px #f5b942;
       opacity: 0;
     }
-    .gala-diagonal-layer.is-tr-playing:not(.is-tr-exiting) .gala-edge-shine {
+    .gala-wipe-layer.is-tr-playing:not(.is-tr-exiting) .gala-edge-shine {
       animation: galaEdgeFlash 1.45s cubic-bezier(0.22, 1, 0.36, 1) 0.15s forwards;
-    }
-
-    /* Contenido interior compensado del skew para mantener tipografía firme */
-    .gala-band-content {
-      transform: skewY(5deg);
-      height: 100%;
-      width: 100%;
-      padding: 46px 190px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 48px;
     }
 
     .tr-stagger {
       opacity: 0;
-      transform: translateY(20px);
-      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+      transform: translateY(18px);
+      transition: transform 0.48s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.38s ease;
     }
-    .gala-diagonal-layer.is-tr-playing:not(.is-tr-exiting) .tr-stagger {
+    .gala-wipe-layer.is-tr-playing:not(.is-tr-exiting) .tr-stagger {
       opacity: 1;
       transform: translateY(0);
     }
-    .gala-diagonal-layer.is-tr-playing:not(.is-tr-exiting) .tr-d1 { transition-delay: 0.16s; }
-    .gala-diagonal-layer.is-tr-playing:not(.is-tr-exiting) .tr-d2 { transition-delay: 0.25s; }
-    .gala-diagonal-layer.is-tr-playing:not(.is-tr-exiting) .tr-d3 { transition-delay: 0.34s; }
-    .gala-diagonal-layer.is-tr-playing:not(.is-tr-exiting) .tr-d4 { transition-delay: 0.42s; }
+    .gala-wipe-layer.is-tr-playing:not(.is-tr-exiting) .tr-d1 { transition-delay: 0.14s; }
+    .gala-wipe-layer.is-tr-playing:not(.is-tr-exiting) .tr-d2 { transition-delay: 0.22s; }
+    .gala-wipe-layer.is-tr-playing:not(.is-tr-exiting) .tr-d3 { transition-delay: 0.30s; }
+    .gala-wipe-layer.is-tr-playing:not(.is-tr-exiting) .tr-d4 { transition-delay: 0.38s; }
 
     .tr-shadow {
-      text-shadow: 0 4px 22px rgba(0, 0, 0, 0.92), 0 1px 4px rgba(0, 0, 0, 0.95);
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.92), 0 1px 4px rgba(0, 0, 0, 0.95);
     }
 
     @keyframes trProgressFill {
@@ -227,7 +211,7 @@
       height: 100%;
       background: linear-gradient(90deg, #e11d48, #f5b942, #38bdf8);
     }
-    .gala-diagonal-layer.is-tr-playing:not(.is-tr-exiting) .tr-progress-bar {
+    .gala-wipe-layer.is-tr-playing:not(.is-tr-exiting) .tr-progress-bar {
       animation: trProgressFill var(--tr-duracion-ms, 4000ms) linear forwards;
     }
 
@@ -805,18 +789,18 @@
       </div>
 
       <!-- =====================================================================
-           MÓDULO DE TRANSICIÓN DIAGONAL DE GALA (~4s)
+           MÓDULO DE TRANSICIÓN DE GALA (~4s · ENCUADRE RECTO SIN CORTES)
            ===================================================================== -->
       <div class="bg-gradient-to-r from-[#0a1429] via-[#101f3d] to-[#0a1429] border border-[#f5b942]/45 rounded-2xl p-5 flex flex-col lg:flex-row lg:items-center justify-between gap-4 shadow-xl">
         <div class="space-y-1">
           <span class="text-[10px] font-bold uppercase tracking-widest text-[#f5b942] block">
-            <i class="fa-solid fa-wand-magic-sparkles mr-1"></i> Barrido Diagonal de Gala (~4s · Sin Recuadro)
+            <i class="fa-solid fa-wand-magic-sparkles mr-1"></i> Barrido de Gala (~4s · Sin Recuadro ni Cortes)
           </span>
           <h2 class="font-fox text-xl font-black uppercase text-white leading-none">
-            Transición Diagonal de Presentación
+            Transición de Presentación
           </h2>
           <p class="text-xs text-slate-300">
-            Cruza el encuadre en diagonal con opacidad regulable, presenta al finalista y su repertorio, y se retira sola al terminar.
+            Cruza la pantalla con opacidad regulable, muestra al finalista y su repertorio con encuadre limpio y se retira sola al terminar.
           </p>
         </div>
 
@@ -1016,14 +1000,14 @@
   <div id="alphaStage" class="hidden fixed inset-0 pointer-events-none overflow-hidden">
     <div id="broadcastCanvas16x9">
 
-      <!-- TRANSICIÓN DIAGONAL DE GALA (~4s · SIN RECUADRO) -->
-      <div id="layer_transition4s" class="gala-diagonal-layer absolute inset-0 z-40 w-full h-full">
-        <div class="gala-band-sheet">
+      <!-- TRANSICIÓN DE GALA (~4s · ENCUADRE RECTO SIN CORTES) -->
+      <div id="layer_transition4s" class="gala-wipe-layer absolute inset-0 z-40 w-full h-full">
+        <div class="gala-strip-box">
           <div class="gala-edge-shine"></div>
 
-          <div class="gala-band-content">
+          <div class="h-full w-full px-24 py-8 flex items-center justify-between gap-12">
             <!-- Columna izquierda: Identidad, Regional y Nombre -->
-            <div class="flex-1 min-w-0 space-y-3 tr-shadow">
+            <div class="w-[1060px] shrink-0 space-y-3.5 tr-shadow">
               <div class="tr-stagger tr-d1 flex flex-wrap items-center gap-3">
                 <img src="./logo_color.png" alt="Logo" style="-webkit-filter: brightness(0) invert(1); filter: brightness(0) invert(1);" class="h-11 w-auto object-contain logo-pure-white mr-1" />
                 <span id="outTrOrderPill" class="px-3.5 py-1 rounded-sm bg-[#e11d48] font-fox text-lg font-black uppercase tracking-widest text-white">
@@ -1037,7 +1021,7 @@
                 </span>
               </div>
 
-              <h2 id="outTrName" class="tr-stagger tr-d2 font-fox text-[82px] font-black uppercase text-white leading-[0.95] tracking-wide truncate">
+              <h2 id="outTrName" class="tr-stagger tr-d2 font-fox text-[64px] font-black uppercase text-white leading-[1.02] tracking-wide">
                 ROSHELEN VICTORIA RIVAS VALDERRAMA
               </h2>
 
@@ -1049,10 +1033,10 @@
             </div>
 
             <!-- Divisor vertical -->
-            <div class="tr-stagger tr-d3 h-44 w-[3px] bg-gradient-to-b from-transparent via-[#f5b942] to-transparent shrink-0"></div>
+            <div class="tr-stagger tr-d3 h-48 w-[3px] bg-gradient-to-b from-transparent via-[#f5b942] to-transparent shrink-0"></div>
 
             <!-- Columna derecha: Repertorio Musical -->
-            <div class="w-[540px] shrink-0 space-y-2.5 tr-shadow">
+            <div class="flex-1 min-w-0 space-y-2.5 tr-shadow">
               <div class="tr-stagger tr-d2 flex items-center gap-2.5">
                 <i class="fa-solid fa-music text-[#f5b942] text-lg"></i>
                 <span id="outTrGenre" class="font-fox text-xl font-black uppercase tracking-wider text-[#f5b942]">
@@ -1060,7 +1044,7 @@
                 </span>
               </div>
 
-              <div id="outTrSong" class="tr-stagger tr-d3 font-fox text-[40px] font-black uppercase text-white leading-tight">
+              <div id="outTrSong" class="tr-stagger tr-d3 font-fox text-[38px] font-black uppercase text-white leading-tight">
                 «LO QUE EL TOCUYO ME DIO»
               </div>
 
@@ -1070,7 +1054,7 @@
             </div>
           </div>
 
-          <!-- Barra de progreso de ~4s en la base de la banda -->
+          <!-- Barra de progreso de ~4s en la base de la franja -->
           <div class="absolute bottom-0 left-0 right-0 h-2 bg-black/50 overflow-hidden">
             <div id="outTrProgressBar" class="tr-progress-bar"></div>
           </div>
