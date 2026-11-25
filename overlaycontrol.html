@@ -68,7 +68,7 @@
     }
 
     /* =====================================================================
-       1. ENTRADA (IN) Y SALIDA (OUT) DE CADA CAPA
+1. ENTRADA (IN) Y SALIDA (OUT) DE CADA CAPA
        ===================================================================== */
     .anim-bottom-layer {
       opacity: 0;
@@ -216,7 +216,7 @@
     }
 
     /* =====================================================================
-       2. ANIMACIÓN INTERNA ESCALONADA
+2. ANIMACIÓN INTERNA ESCALONADA
        ===================================================================== */
     .stagger-item {
       opacity: 0;
@@ -264,7 +264,7 @@
     }
 
     /* =====================================================================
-       3. PRESENCIA CONTINUA AL AIRE
+3. PRESENCIA CONTINUA AL AIRE
        ===================================================================== */
     @keyframes broadcastFloat {
       0%, 100% { transform: translateY(0px); }
@@ -834,16 +834,16 @@
       </div>
 
       <!-- =====================================================================
-           MÓDULO DE MARCO PiP DELEGACIÓN / PÚBLICO EN VIVO (YOLOBOX PiP)
+           MÓDULO DE MARCO PiP BACKSTAGE / CÁMARA EN CAMERINOS (YOLOBOX PiP)
            ===================================================================== -->
       <div class="bg-[#0a101f] border border-[#f5b942]/35 rounded-2xl p-5 space-y-4">
         <div class="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-3">
           <div>
             <span class="text-[10px] font-bold uppercase tracking-widest text-[#f5b942] block">
-              <i class="fa-solid fa-object-ungroup mr-1"></i> Cámara de Reacciones en Sala (Picture-in-Picture)
+              <i class="fa-solid fa-video mr-1"></i> Cámara en Camerinos (Picture-in-Picture)
             </span>
             <h2 class="font-fox text-xl font-black uppercase text-white">
-              Marco Alpha para PiP de Delegación (Centro Transparente 16:9)
+              Marco Alpha para PiP Backstage · Cámara en Camerinos (Centro Transparente 16:9)
             </h2>
           </div>
 
@@ -863,13 +863,13 @@
 
         <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-end">
           <div class="md:col-span-4">
-            <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Etiqueta Delegación (Se sincroniza sola)</label>
-            <input type="text" id="inputPipState" value="DELEGACIÓN NUEVA ESPARTA" oninput="actualizarTextosEnVivo(false)" class="w-full bg-black/60 border border-white/15 rounded-xl px-3 py-2 text-xs font-bold text-[#f5b942] uppercase focus:outline-none focus:border-[#f5b942]" />
+            <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Etiqueta Backstage / Camerino</label>
+            <input type="text" id="inputPipState" value="BACKSTAGE · CAMERINOS" oninput="actualizarTextosEnVivo(false)" class="w-full bg-black/60 border border-white/15 rounded-xl px-3 py-2 text-xs font-bold text-[#f5b942] uppercase focus:outline-none focus:border-[#f5b942]" />
           </div>
 
           <div class="md:col-span-4">
             <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Cintillo Inferior del PiP</label>
-            <input type="text" id="inputPipCaption" value="REACCIÓN EN SALA · APOYO FAMILIAR" oninput="actualizarTextosEnVivo(false)" class="w-full bg-black/60 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#f5b942]" />
+            <input type="text" id="inputPipCaption" value="CÁMARA EN CAMERINOS · PREPARACIÓN EN VIVO" oninput="actualizarTextosEnVivo(false)" class="w-full bg-black/60 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#f5b942]" />
           </div>
 
           <div class="md:col-span-4">
@@ -887,7 +887,7 @@
 
         <button id="btn_pipDelegation" onclick="toggleLayer('pipDelegation')" class="w-full py-3.5 rounded-xl font-fox text-base font-black uppercase tracking-wider bg-emerald-500 hover:bg-emerald-400 text-black transition cursor-pointer flex items-center justify-center gap-2">
           <i class="fa-solid fa-play"></i>
-          <span>DAR ENTRADA MARCO PiP DELEGACIÓN (IN)</span>
+          <span>DAR ENTRADA PiP BACKSTAGE · CAMERINOS (IN)</span>
         </button>
       </div>
 
@@ -1133,7 +1133,7 @@
         </div>
       </div>
 
-      <!-- CAPA F: MARCO ALPHA PARA PiP DE DELEGACIÓN / PÚBLICO (CENTRO TRANSPARENTE 16:9) -->
+      <!-- CAPA F: MARCO ALPHA PARA PiP BACKSTAGE / CÁMARA EN CAMERINOS (CENTRO TRANSPARENTE 16:9) -->
       <div id="layer_pipDelegation" class="anim-right-layer absolute bottom-[64px] right-[64px] w-[540px] z-25">
         <div class="pip-chassis">
           <div class="px-4 py-2 bg-gradient-to-r from-[#09152e] via-[#13264d] to-[#260b14] border-b-2 border-[#f5b942] flex items-center justify-between gap-2">
@@ -1141,12 +1141,12 @@
               <img src="./logo_color.png" alt="Logo" style="-webkit-filter: brightness(0) invert(1); filter: brightness(0) invert(1);" class="h-6 w-auto object-contain logo-pure-white logo-alive" />
               <div class="flex items-center gap-1.5 bg-[#e11d48] px-2 py-0.5 rounded-sm">
                 <span class="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span>
-                <span class="font-fox text-xs font-black uppercase tracking-widest text-white leading-none">EN SALA</span>
+                <span class="font-fox text-xs font-black uppercase tracking-widest text-white leading-none">BACKSTAGE</span>
               </div>
             </div>
 
             <span id="outPipState" class="font-fox text-base font-black uppercase tracking-wider text-[#f5b942] truncate">
-              DELEGACIÓN NUEVA ESPARTA
+              BACKSTAGE · CAMERINOS
             </span>
           </div>
 
@@ -1159,7 +1159,7 @@
             <div id="pipCalibrateGrid" class="hidden absolute inset-0 bg-cyan-500/20 border-2 border-dashed border-cyan-300 flex flex-col items-center justify-center text-center p-4">
               <i class="fa-solid fa-crosshairs text-3xl text-cyan-300 mb-1"></i>
               <span class="font-fox text-xl font-black uppercase text-white bg-black/75 px-3 py-1 rounded">
-                AJUSTA AQUÍ EL RECUADRO PiP EN TU YOLOBOX (16:9)
+                AJUSTA AQUÍ EL RECUADRO PiP BACKSTAGE EN TU YOLOBOX (16:9)
               </span>
             </div>
           </div>
@@ -1168,11 +1168,11 @@
             <div class="flex items-center gap-2 min-w-0">
               <span class="w-1.5 h-4 bg-[#f5b942] rounded-full shrink-0"></span>
               <span id="outPipCaption" class="font-fox text-sm font-extrabold uppercase tracking-wider text-white truncate">
-                REACCIÓN EN SALA &middot; APOYO FAMILIAR
+                CÁMARA EN CAMERINOS &middot; PREPARACIÓN EN VIVO
               </span>
             </div>
             <span id="outPipCategory" class="px-2 py-0.5 rounded-sm bg-sky-400 font-fox text-xs font-black uppercase tracking-widest text-slate-950 shrink-0">
-              INFANTIL
+              CAMERINOS
             </span>
           </div>
         </div>
@@ -1387,8 +1387,8 @@
       pipDelegation: false,
       pipPosition: "bottom-right",
       pipCalibrate: false,
-      pipState: "DELEGACIÓN NUEVA ESPARTA",
-      pipCaption: "REACCIÓN EN SALA · APOYO FAMILIAR",
+      pipState: "BACKSTAGE · CAMERINOS",
+      pipCaption: "CÁMARA EN CAMERINOS · PREPARACIÓN EN VIVO",
       artistName: "Roshelen Victoria Rivas Valderrama",
       artistState: "Nueva Esparta",
       artistCategory: "Infantil",
@@ -1816,8 +1816,8 @@
       state.songGenre = document.getElementById("inputSongGenre").value.trim() || "Música Venezolana";
       state.songAuthor = document.getElementById("inputSongAuthor").value.trim() || "Folklore Venezolano";
 
-      state.pipState = document.getElementById("inputPipState").value.trim() || `DELEGACIÓN ${state.artistState.toUpperCase()}`;
-      state.pipCaption = document.getElementById("inputPipCaption").value.trim() || "REACCIÓN EN SALA · APOYO FAMILIAR";
+      state.pipState = document.getElementById("inputPipState").value.trim() || "BACKSTAGE · CAMERINOS";
+      state.pipCaption = document.getElementById("inputPipCaption").value.trim() || "CÁMARA EN CAMERINOS · PREPARACIÓN EN VIVO";
 
       state.tickerText = document.getElementById("inputTickerText").value.trim();
 
@@ -1849,8 +1849,6 @@
       document.getElementById("inputSongTitle").value = p.tema || "Tema por confirmar";
       document.getElementById("inputSongGenre").value = generoConTono;
       document.getElementById("inputSongAuthor").value = p.autor || "Autor por confirmar";
-
-      document.getElementById("inputPipState").value = `DELEGACIÓN ${p.estado.toUpperCase()}`;
 
       renderizarListasCategorias();
       actualizarTextosEnVivo(true);
@@ -1952,13 +1950,11 @@
           ? "px-3 py-0.5 rounded-sm bg-sky-400 font-fox text-base font-black uppercase tracking-widest text-slate-950"
           : "px-3 py-0.5 rounded-sm bg-[#f5b942] font-fox text-base font-black uppercase tracking-widest text-black";
 
-        document.getElementById("outPipState").innerText = state.pipState || `DELEGACIÓN ${state.artistState.toUpperCase()}`;
-        document.getElementById("outPipCaption").innerText = state.pipCaption || "REACCIÓN EN SALA · APOYO FAMILIAR";
+        document.getElementById("outPipState").innerText = state.pipState || "BACKSTAGE · CAMERINOS";
+        document.getElementById("outPipCaption").innerText = state.pipCaption || "CÁMARA EN CAMERINOS · PREPARACIÓN EN VIVO";
         const pipCat = document.getElementById("outPipCategory");
-        pipCat.innerText = esInfantil ? "INFANTIL" : "JUVENIL";
-        pipCat.className = esInfantil
-          ? "px-2 py-0.5 rounded-sm bg-sky-400 font-fox text-xs font-black uppercase tracking-widest text-slate-950 shrink-0"
-          : "px-2 py-0.5 rounded-sm bg-[#f5b942] font-fox text-xs font-black uppercase tracking-widest text-black shrink-0";
+        pipCat.innerText = "CAMERINOS";
+        pipCat.className = "px-2 py-0.5 rounded-sm bg-[#f5b942] font-fox text-xs font-black uppercase tracking-widest text-black shrink-0";
 
         const tituloLimpio = (state.songTitle || "").replace(/^[«"]|[»"]$/g, "");
         document.getElementById("outSongTitle").innerText = `«${tituloLimpio}»`;
@@ -2018,7 +2014,7 @@
             : key === "songInfo"
               ? "DAR ENTRADA FICHA MUSICAL (IN)"
               : key === "pipDelegation"
-                ? "DAR ENTRADA MARCO PiP DELEGACIÓN (IN)"
+                ? "DAR ENTRADA PiP BACKSTAGE · CAMERINOS (IN)"
                 : "DAR ENTRADA (IN)";
 
           if (activo) {
