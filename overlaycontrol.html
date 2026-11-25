@@ -123,7 +123,7 @@
     }
 
     /* =====================================================================
-       TRANSICIÓN DE PRESENTACIÓN (~4 SEGUNDOS)
+       TRANSICIÓN DE PRESENTACIÓN EN PANTALLA COMPLETA (~4 SEGUNDOS · SIN RECUADRO)
        ===================================================================== */
     .anim-transition-4s {
       opacity: 0;
@@ -151,7 +151,7 @@
 
     .tr-stagger {
       opacity: 0;
-      transform: translateY(22px);
+      transform: translateY(24px);
       transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s ease;
     }
     .is-tr-playing:not(.is-tr-exiting) .tr-stagger {
@@ -165,13 +165,13 @@
 
     @keyframes trLightSweep {
       0% { transform: translateX(-140%) skewX(-22deg); }
-      100% { transform: translateX(260%) skewX(-22deg); }
+      100% { transform: translateX(280%) skewX(-22deg); }
     }
     .tr-sweep-beam {
       position: absolute;
       inset: 0;
-      width: 34%;
-      background: linear-gradient(90deg, transparent, rgba(245, 185, 66, 0.16), rgba(255, 255, 255, 0.12), transparent);
+      width: 36%;
+      background: linear-gradient(90deg, transparent, rgba(245, 185, 66, 0.18), rgba(255, 255, 255, 0.14), transparent);
       pointer-events: none;
     }
     .is-tr-playing:not(.is-tr-exiting) .tr-sweep-beam {
@@ -563,39 +563,29 @@
         <div id="alertaStreamYouTube" class="hidden text-xs p-2.5 rounded-xl border text-center font-semibold"></div>
       </section>
 
-      <!-- SELECTOR DE ETAPA DE TRANSMISIÓN: SEMIFINALES VS GALA FINAL -->
+      <!-- ETAPA ACTIVA: GALA FINAL (TEATRO JUARES) -->
       <div class="bg-gradient-to-r from-[#0d172c] via-[#111e38] to-[#0d172c] border border-[#f5b942]/40 rounded-2xl p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xl">
         <div>
           <span class="text-[10px] font-bold uppercase tracking-widest text-[#f5b942] block">
-            <i class="fa-solid fa-trophy mr-1"></i> Etapa del Festival (Cambia en todos los Overlays)
+            <i class="fa-solid fa-crown mr-1"></i> Etapa Oficial &middot; Teatro Juares, Barquisimeto
           </span>
           <h2 class="font-fox text-xl sm:text-2xl font-black uppercase text-white leading-tight">
-            Selecciona la Transmisión Actual
+            Gran Final — Festival de la Voz Niño Simón 2026
           </h2>
           <p class="text-xs text-slate-300">
-            Actualiza automáticamente el título de fase en el Bug superior, pleca de participantes y marcadores en vivo.
+            Escaleta de finalistas configurada para la Gran Final en el Bug superior, plecas, transición y marcadores en vivo.
           </p>
         </div>
 
-        <div class="grid grid-cols-2 gap-2.5 shrink-0">
-          <button
-            type="button"
-            id="btnStage_SEMIFINALES"
-            onclick="setEventStage('SEMIFINALES')"
-            class="px-5 py-3 rounded-xl font-fox text-base sm:text-lg font-black uppercase tracking-wider border transition cursor-pointer flex items-center justify-center gap-2"
-          >
-            <i class="fa-solid fa-microphone-lines"></i>
-            <span>SEMIFINALES</span>
-          </button>
-
+        <div class="shrink-0">
           <button
             type="button"
             id="btnStage_GALA_FINAL"
             onclick="setEventStage('GALA FINAL')"
-            class="px-5 py-3 rounded-xl font-fox text-base sm:text-lg font-black uppercase tracking-wider border transition cursor-pointer flex items-center justify-center gap-2"
+            class="px-6 py-3 rounded-xl font-fox text-base sm:text-lg font-black uppercase tracking-wider border border-amber-300 bg-[#f5b942] text-slate-950 shadow-lg shadow-amber-400/25 transition cursor-pointer flex items-center justify-center gap-2"
           >
             <i class="fa-solid fa-crown"></i>
-            <span>GALA FINAL</span>
+            <span>GALA FINAL ACTIVA</span>
           </button>
         </div>
       </div>
@@ -646,16 +636,16 @@
       </div>
 
       <!-- =====================================================================
-           SECCIÓN PRINCIPAL: ESCALETA GRAN FINAL + JUVENIL + INFANTIL + PLECAS
+           SECCIÓN PRINCIPAL: ESCALETA GRAN FINAL + PLECA + FICHA MUSICAL
            ===================================================================== -->
       <div class="bg-[#0a101f] border border-white/10 rounded-2xl p-5 space-y-5">
         <div class="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-3">
           <div>
             <span class="text-[10px] font-bold uppercase tracking-widest text-[#f5b942] block">
-              Escaleta Oficial &middot; Lower-Thirds 16:9 &middot; Teatro Juares
+              Escaleta Gran Final &middot; Lower-Thirds 16:9 &middot; Teatro Juares
             </span>
             <h2 class="font-fox text-xl font-black uppercase text-white">
-              Selección de Participante y Repertorio Musical
+              Participantes de la Gran Final y Repertorio Musical
             </h2>
           </div>
 
@@ -673,42 +663,18 @@
           </div>
         </div>
 
-        <!-- BLOQUE DESTACADO: FINAL INFANTIL / JUVENIL (TEATRO JUARES · 12 PRESENTACIONES) -->
+        <!-- BLOQUE ÚNICO: PARTICIPANTES GRAN FINAL (TEATRO JUARES · 12 PRESENTACIONES) -->
         <div class="bg-gradient-to-r from-[#171105] via-[#0d1930] to-[#171105] border border-[#f5b942]/50 rounded-2xl p-3.5 space-y-2.5">
           <div class="flex flex-wrap items-center justify-between gap-2">
             <span class="font-fox text-base font-black uppercase tracking-wider text-[#f5b942] flex items-center gap-2">
               <i class="fa-solid fa-crown"></i>
-              Final Infantil / Juvenil · Teatro Juares (<span id="countGranFinal">0</span>)
+              Participantes Gran Final · Teatro Juares (<span id="countGranFinal">0</span>)
             </span>
             <span class="text-[10px] font-bold uppercase tracking-wider text-amber-200/80">
               Orden #01–#12 · Carga nombre, categoría, regional, tema, autor y género/tono
             </span>
           </div>
           <div id="listaChipsGranFinal" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5 max-h-64 overflow-y-auto custom-scroll pr-1"></div>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
-          <div class="lg:col-span-6 bg-black/40 border border-sky-400/30 rounded-2xl p-3.5 space-y-2.5">
-            <div class="flex items-center justify-between">
-              <span class="font-fox text-sm font-black uppercase tracking-wider text-sky-300 flex items-center gap-1.5">
-                <span class="w-2 h-2 rounded-full bg-sky-400"></span>
-                Orden Eliminatoria Infantil (<span id="countInfantil">0</span>)
-              </span>
-              <span class="text-[10px] text-slate-400">Carga nombre + tema + autor + género + PiP estado</span>
-            </div>
-            <div id="listaChipsInfantil" class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 max-h-56 overflow-y-auto custom-scroll pr-1"></div>
-          </div>
-
-          <div class="lg:col-span-6 bg-black/40 border border-[#f5b942]/30 rounded-2xl p-3.5 space-y-2.5">
-            <div class="flex items-center justify-between">
-              <span class="font-fox text-sm font-black uppercase tracking-wider text-[#f5b942] flex items-center gap-1.5">
-                <span class="w-2 h-2 rounded-full bg-[#f5b942]"></span>
-                Orden Eliminatoria Juvenil (<span id="countJuvenil">0</span>)
-              </span>
-              <span class="text-[10px] text-slate-400">Carga nombre + tema + autor + género + tono</span>
-            </div>
-            <div id="listaChipsJuvenil" class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 max-h-56 overflow-y-auto custom-scroll pr-1"></div>
-          </div>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 pt-1">
@@ -799,18 +765,18 @@
       </div>
 
       <!-- =====================================================================
-           MÓDULO DE TRANSICIÓN DE PRESENTACIÓN (~4 SEGUNDOS)
+           MÓDULO DE TRANSICIÓN DE PRESENTACIÓN EN PANTALLA COMPLETA (~4s)
            ===================================================================== -->
       <div class="bg-gradient-to-r from-[#0a1429] via-[#101f3d] to-[#0a1429] border border-[#f5b942]/45 rounded-2xl p-5 flex flex-col lg:flex-row lg:items-center justify-between gap-4 shadow-xl">
         <div class="space-y-1">
           <span class="text-[10px] font-bold uppercase tracking-widest text-[#f5b942] block">
-            <i class="fa-solid fa-wand-magic-sparkles mr-1"></i> Cortina Automática de Entrada por Presentación
+            <i class="fa-solid fa-wand-magic-sparkles mr-1"></i> Cortina Fullscreen Sin Recuadro (~4s)
           </span>
           <h2 class="font-fox text-xl font-black uppercase text-white leading-none">
-            Transición de Presentación con Ficha Completa
+            Transición de Presentación en Pantalla Completa
           </h2>
           <p class="text-xs text-slate-300">
-            Muestra nombre, estado, orden/etapa, categoría y repertorio del participante seleccionado y se oculta sola al terminar el ciclo.
+            Ocupa el lienzo 16:9 completo sin recuadro con los datos del finalista seleccionado y se oculta sola al terminar el ciclo.
           </p>
         </div>
 
@@ -1002,67 +968,68 @@
   <div id="alphaStage" class="hidden fixed inset-0 pointer-events-none overflow-hidden">
     <div id="broadcastCanvas16x9">
 
-      <!-- CAPA TRANSICIÓN DE PRESENTACIÓN (~4 SEGUNDOS) -->
-      <div id="layer_transition4s" class="anim-transition-4s absolute inset-0 z-40 flex items-center justify-center p-[84px]">
-        <div class="relative w-full h-full rounded-xl overflow-hidden border-2 border-[#f5b942]/70 bg-gradient-to-br from-[#061026]/96 via-[#0a1936]/96 to-[#140918]/95 shadow-[0_32px_90px_rgba(0,0,0,0.92)] flex flex-col justify-between">
-          <div class="tr-sweep-beam"></div>
+      <!-- CAPA TRANSICIÓN DE PRESENTACIÓN EN PANTALLA COMPLETA (~4s · SIN RECUADRO) -->
+      <div id="layer_transition4s" class="anim-transition-4s absolute inset-0 z-40 w-full h-full bg-gradient-to-br from-[#061026] via-[#0a1936] to-[#140918] flex flex-col justify-between overflow-hidden">
+        <div class="tr-sweep-beam"></div>
 
-          <div class="relative z-10 px-12 py-6 bg-[#040914]/90 border-b-2 border-[#f5b942] flex items-center justify-between gap-6">
-            <div class="flex items-center gap-5">
-              <img src="./logo_color.png" alt="Logo" style="-webkit-filter: brightness(0) invert(1); filter: brightness(0) invert(1);" class="h-14 w-auto object-contain logo-pure-white" />
-              <div class="h-10 w-[1px] bg-white/20"></div>
-              <div>
-                <span class="block text-xs font-bold uppercase tracking-[0.26em] text-slate-400">
-                  Fundación Nacional del Niño Simón
-                </span>
-                <span id="outTrStage" class="font-fox text-2xl font-black uppercase tracking-wider text-[#f5b942] leading-none">
-                  GALA FINAL &middot; 2026
-                </span>
-              </div>
-            </div>
-
-            <div class="flex items-center gap-3">
-              <span id="outTrCategoryPill" class="px-4 py-1.5 rounded-sm bg-sky-400 font-fox text-xl font-black uppercase tracking-widest text-slate-950">
-                CATEGORÍA INFANTIL
+        <!-- Franja superior fullscreen -->
+        <div class="relative z-10 w-full px-16 py-8 bg-[#040914]/75 border-b-2 border-[#f5b942] flex items-center justify-between gap-6">
+          <div class="flex items-center gap-6">
+            <img src="./logo_color.png" alt="Logo" style="-webkit-filter: brightness(0) invert(1); filter: brightness(0) invert(1);" class="h-16 w-auto object-contain logo-pure-white" />
+            <div class="h-11 w-[1px] bg-white/20"></div>
+            <div>
+              <span class="block text-xs font-bold uppercase tracking-[0.28em] text-slate-400">
+                Fundación Nacional del Niño Simón
               </span>
-              <span id="outTrOrderPill" class="px-4 py-1.5 rounded-sm bg-[#e11d48] font-fox text-xl font-black uppercase tracking-widest text-white">
-                ORDEN #01
+              <span id="outTrStage" class="font-fox text-2xl font-black uppercase tracking-wider text-[#f5b942] leading-none">
+                GALA FINAL &middot; 2026
               </span>
             </div>
           </div>
 
-          <div class="relative z-10 px-14 py-8 flex-1 flex flex-col justify-center space-y-6">
-            <div class="tr-stagger tr-d1 flex items-center gap-4">
-              <span class="w-3 h-10 bg-[#e11d48] rounded-sm"></span>
-              <span id="outTrState" class="font-fox text-3xl font-black uppercase tracking-[0.16em] text-[#f5b942]">
-                NUEVA ESPARTA
+          <div class="flex items-center gap-3">
+            <span id="outTrCategoryPill" class="px-5 py-2 rounded-sm bg-sky-400 font-fox text-xl font-black uppercase tracking-widest text-slate-950">
+              CATEGORÍA INFANTIL
+            </span>
+            <span id="outTrOrderPill" class="px-5 py-2 rounded-sm bg-[#e11d48] font-fox text-xl font-black uppercase tracking-widest text-white">
+              ORDEN #01 · GALA FINAL
+            </span>
+          </div>
+        </div>
+
+        <!-- Cuerpo central fullscreen sin recuadro -->
+        <div class="relative z-10 w-full px-20 py-10 flex-1 flex flex-col justify-center space-y-7">
+          <div class="tr-stagger tr-d1 flex items-center gap-4">
+            <span class="w-4 h-12 bg-[#e11d48] rounded-sm"></span>
+            <span id="outTrState" class="font-fox text-4xl font-black uppercase tracking-[0.18em] text-[#f5b942]">
+              NUEVA ESPARTA
+            </span>
+          </div>
+
+          <h2 id="outTrName" class="tr-stagger tr-d2 font-fox text-[96px] font-black uppercase text-white leading-[0.95] tracking-wide">
+            ROSHELEN VICTORIA RIVAS VALDERRAMA
+          </h2>
+
+          <div class="tr-stagger tr-d3 pt-6 border-t border-white/15 flex flex-col gap-3">
+            <div class="flex flex-wrap items-center gap-5">
+              <span class="px-4 py-1.5 rounded-sm bg-sky-400 font-fox text-2xl font-black uppercase tracking-wider text-slate-950 inline-flex items-center gap-2.5">
+                <i class="fa-solid fa-music text-base"></i>
+                <span id="outTrSong">«LO QUE EL TOCUYO ME DIO»</span>
+              </span>
+              <span id="outTrGenre" class="font-fox text-3xl font-extrabold uppercase tracking-wider text-[#f5b942]">
+                Golpe Tocuyano &middot; Tono A
               </span>
             </div>
 
-            <h2 id="outTrName" class="tr-stagger tr-d2 font-fox text-[84px] font-black uppercase text-white leading-[0.96] tracking-wide">
-              ROSHELEN VICTORIA RIVAS VALDERRAMA
-            </h2>
-
-            <div class="tr-stagger tr-d3 pt-4 border-t border-white/15 flex flex-col gap-2">
-              <div class="flex flex-wrap items-center gap-4">
-                <span class="px-3.5 py-1 rounded-sm bg-sky-400 font-fox text-xl font-black uppercase tracking-wider text-slate-950 inline-flex items-center gap-2">
-                  <i class="fa-solid fa-music text-sm"></i>
-                  <span id="outTrSong">«LO QUE EL TOCUYO ME DIO»</span>
-                </span>
-                <span id="outTrGenre" class="font-fox text-2xl font-extrabold uppercase tracking-wider text-[#f5b942]">
-                  Golpe Tocuyano &middot; Tono A
-                </span>
-              </div>
-
-              <div id="outTrAuthor" class="tr-stagger tr-d4 font-fox text-2xl font-bold uppercase tracking-wide text-slate-300">
-                Letra y Música de: Omar Carrizales
-              </div>
+            <div id="outTrAuthor" class="tr-stagger tr-d4 font-fox text-2xl font-bold uppercase tracking-wide text-slate-300">
+              Letra y Música de: Omar Carrizales
             </div>
           </div>
+        </div>
 
-          <div class="relative z-10 h-2.5 w-full bg-black/75 overflow-hidden">
-            <div id="outTrProgressBar" class="tr-progress-bar"></div>
-          </div>
+        <!-- Barra inferior fullscreen de ~4s -->
+        <div class="relative z-10 h-3 w-full bg-black/75 overflow-hidden">
+          <div id="outTrProgressBar" class="tr-progress-bar"></div>
         </div>
       </div>
 
@@ -1321,45 +1288,7 @@
       { key: "fin_12", voteId: 9, orden: 12, nombre: "Daniela Alejandra Fontana", estado: "Trujillo", edad: 13, categoria: "Juvenil", tema: "Un Barquisimetano", autor: "Letra y Música de: Pilar García", genero: "Golpe Tocuyano", tono: "C", shortId: "SXODrGfMJ0E" }
     ];
 
-    const ESCALETA_INFANTIL = [
-      { key: "inf_1", voteId: 13, orden: 1, nombre: "Gabriela Galilea Andrade Gutiérrez", estado: "Zulia", categoria: "Infantil", tema: "Los 2 Gavilanes", autor: "Letra y Música de: Adelis Freitez", genero: "Merengue Larense", shortId: "uqfYsz2oKeA" },
-      { key: "inf_2", voteId: 20, orden: 2, nombre: "José Pablo Luces Maurera", estado: "Sucre", categoria: "Infantil", tema: "Lara es una Sola", autor: "Letra y Música de: Virgilio Arrieta", genero: "Golpe Tocuyano", shortId: "WEUn5S3SjQc" },
-      { key: "inf_3", voteId: 23, orden: 3, nombre: "Michell Saray Meza Villamizar", estado: "Táchira", categoria: "Infantil", tema: "Suelo Larense", autor: "Letra y Música de: Pastor Jiménez", genero: "Vals Larense", shortId: "KarvJK7Eums" },
-      { key: "inf_4", voteId: 8, orden: 4, nombre: "Christal Esmeralda Díaz Rivas", estado: "Miranda", categoria: "Infantil", tema: "El Morenito", autor: "Letra y Música de: Don Pío Alvarado", genero: "Golpe Tocuyano", shortId: "Jn4ai5tgZ0Y" },
-      { key: "inf_5", voteId: 7, orden: 5, nombre: "Carlos Manuel Guaramata Perfecto", estado: "Anzoátegui", categoria: "Infantil", tema: "Guitarra Larense", autor: "Letra y Música de: Gilberto Mejías Palazzi", genero: "Vals Larense", shortId: "EO2tp1xoUT4" },
-      { key: "inf_6", voteId: 26, orden: 6, nombre: "Roshelen Victoria Rivas Valderrama", estado: "Nueva Esparta", categoria: "Infantil", tema: "Lo que El Tocuyo me dio", autor: "Letra y Música de: Omar Carrizales", genero: "Golpe Tocuyano", shortId: "_G_7_hSKTZA" },
-      { key: "inf_7", voteId: 12, orden: 7, nombre: "Fraivelis Nicole Parra Sánchez", estado: "Lara", categoria: "Infantil", tema: "Adelante Juventud (Tema Inédito)", autor: "Letra y Música de: Juan Ramón Barrios", genero: "Golpe Tocuyano", shortId: "pdOQEE1sV7M" },
-      { key: "inf_8", voteId: 27, orden: 8, nombre: "Samuel Andrés Montilla Cabanerio", estado: "Barinas", categoria: "Infantil", tema: "Noches Larenses", autor: "Letra y Música de: Juan Ramón Barrios", genero: "Bambuco Larense", shortId: "iHgtqyPmn2s" },
-      { key: "inf_9", voteId: 22, orden: 9, nombre: "Marialnolys Velázquez", estado: "Delta Amacuro", categoria: "Infantil", tema: "El Espanto", autor: "Letra y Música de: Adelis Freitez", genero: "Merengue Larense", shortId: "KiCBHQvwQ90" },
-      { key: "inf_10", voteId: 15, orden: 10, nombre: "Isabella Sofía López Márquez", estado: "Distrito Capital", categoria: "Infantil", tema: "BARQUISIMETANA", autor: "Letra y Música de: Avilés Castro", genero: "Vals Larense", shortId: "fw238TK_nAA" },
-      { key: "inf_11", voteId: 2, orden: 11, nombre: "Talía de los Ángeles Meléndez Suárez", estado: "Bolívar", categoria: "Infantil", tema: "Lara Tierra del Sol (Tema Inédito)", autor: "Letra: Raquel Báez · Música: Hermanos Marín", genero: "Merengue Larense", shortId: "cQM1QJoF4JA" },
-      { key: "inf_12", voteId: 28, orden: 12, nombre: "Santiago Gudiño", estado: "Trujillo", categoria: "Infantil", tema: "Guitarra Larense", autor: "Letra y Música de: Gilberto Mejías Palazzi", genero: "Vals Larense", shortId: "qu3xSlgytI8" },
-      { key: "inf_13", voteId: 1, orden: 13, nombre: "Tyler Mathias Colina Yzarra", estado: "Mérida", categoria: "Infantil", tema: "A TI DIVINA PASTORA", autor: "Letra y Música de: Adal Carrizales", genero: "Golpe Tocuyano", shortId: "r_2LEocre14" },
-      { key: "inf_14", voteId: 3, orden: 14, nombre: "Ángel Gabriel Sánchez", estado: "Carabobo", categoria: "Infantil", tema: "Noches Larenses", autor: "Letra y Música de: Juan Ramón Barrios", genero: "Bambuco Larense", shortId: "BKrNX8sXLxQ" },
-      { key: "inf_15", voteId: 30, orden: 15, nombre: "Silvia Valeria Coro Beja", estado: "Amazonas", categoria: "Infantil", tema: "Versos en alas de un tucán (Tema Inédito)", autor: "Letra y Música de: Yaminson Payema", genero: "Golpe Tocuyano", shortId: "d9NLY3PM9EE" },
-      { key: "inf_16", voteId: 0, orden: 16, nombre: "15 Participantes (Cierre Grupal)", estado: "Todas las Regionales", categoria: "Infantil", tema: "VENEZUELA", autor: "Letra y Música de: Pablo Herrero y José Luis Armenteros", genero: "Vals Venezolano", shortId: "" }
-    ];
-
-    const ESCALETA_JUVENIL = [
-      { key: "juv_1", voteId: 9, orden: 1, nombre: "Daniela Alejandra Fontana", estado: "Trujillo", edad: 13, categoria: "Juvenil", tema: "Un Barquisimetano", autor: "Letra y Música de: Pilar García", genero: "Golpe Tocuyano", tono: "C", shortId: "SXODrGfMJ0E" },
-      { key: "juv_2", voteId: 25, orden: 2, nombre: "Ronaikell Javier García Venegas", estado: "Distrito Capital", edad: 13, categoria: "Juvenil", tema: "Mi Regreso", autor: "Letra y Música de: Isaac del Moral", genero: "Vals Larense", tono: "Em", shortId: "RJGE8CrrIVU" },
-      { key: "juv_3", voteId: 14, orden: 3, nombre: "Gabriela González", estado: "Amazonas", edad: 13, categoria: "Juvenil", tema: "El Espanto", autor: "Letra y Música de: Adelis Freitez", genero: "Merengue Larense", tono: "D", shortId: "79nkO6SvvdY" },
-      { key: "juv_4", voteId: 4, orden: 4, nombre: "Albelíz Pérez (Arbeliz Pérez)", estado: "Carabobo", edad: 16, categoria: "Juvenil", tema: "Cómo Llora una Estrella", autor: "Letra: Arnaldo Vivas Toledo · Música: Antonio Carrillo", genero: "Vals Larense", tono: "Am", shortId: "zGGRW8eMHNk" },
-      { key: "juv_5", voteId: 31, orden: 5, nombre: "Victoria Chekina Barrera Álvarez", estado: "Táchira", edad: 13, categoria: "Juvenil", tema: "Ramoncito en Cimarrona", autor: "Letra y Música de: José María Giménez", genero: "Golpe Tocuyano", tono: "A", shortId: "6-34XsFqoFQ" },
-      { key: "juv_6", voteId: 24, orden: 6, nombre: "Natalia Moreno", estado: "Zulia", edad: 14, categoria: "Juvenil", tema: "Los Griñafitos", autor: "Letra y Música de: Henry Martínez", genero: "Golpe Tocuyano", tono: "G", shortId: "cDC3j42em6k" },
-      { key: "juv_7", voteId: 17, orden: 7, nombre: "Jaarol Zambrano", estado: "Delta Amacuro", edad: 16, categoria: "Juvenil", tema: "Golpe Tocuyano", autor: "Letra y Música de: Celestino Carrasco", genero: "Golpe Tocuyano", tono: "D", shortId: "CaQwei6Ae-I" },
-      { key: "juv_8", voteId: 16, orden: 8, nombre: "Iviangelis Carolina Figueroa Rodríguez", estado: "Nueva Esparta", edad: 16, categoria: "Juvenil", tema: "Guitarra Larense", autor: "Letra y Música de: Gilberto Mejías Palazzi", genero: "Vals Larense", tono: "A", shortId: "ViHlHCqC5DE" },
-      { key: "juv_9", voteId: 6, orden: 9, nombre: "Antoham Richael Urbina Ocanto", estado: "Mérida", edad: 14, categoria: "Juvenil", tema: "Lara es una sola", autor: "Letra y Música de: Virgilio Arrieta", genero: "Golpe Tocuyano", tono: "C", shortId: "5KCJl2vTWpU" },
-      { key: "juv_10", voteId: 10, orden: 10, nombre: "Enma Antonella Frías Evies", estado: "Lara", edad: 12, categoria: "Juvenil", tema: "Ah mundo Na'guará (Tema Inédito)", autor: "Letra y Música de: Celia Alviárez", genero: "Golpe Tocuyano", tono: "G", shortId: "RLrVTJg_2S8" },
-      { key: "juv_11", voteId: 18, orden: 11, nombre: "Jeremías Andrés Torres Yegues", estado: "Anzoátegui", edad: 14, categoria: "Juvenil", tema: "Acidito", autor: "Letra y Música de: Adelis Freitez", genero: "Merengue Larense", tono: "D", shortId: "iefvIVpKd-w" },
-      { key: "juv_12", voteId: 21, orden: 12, nombre: "Katherine Moreno", estado: "Bolívar", edad: 12, categoria: "Juvenil", tema: "Tierra Larense (Tema Inédito)", autor: "Letra: María Andreina Gascón · Música: Alfredo Pastor Yaguaral", genero: "Vals Larense", tono: "A", shortId: "jSniXY7y9Nc" },
-      { key: "juv_13", voteId: 19, orden: 13, nombre: "Gabriel Raúl Solórzano Guevara", estado: "Miranda", edad: 16, categoria: "Juvenil", tema: "El espanto", autor: "Letra y Música de: Adelis Freitez", genero: "Merengue Larense", tono: "E", shortId: "b9JyOpp3cmU" },
-      { key: "juv_14", voteId: 11, orden: 14, nombre: "Esthela Vázquez", estado: "Cojedes", edad: 15, categoria: "Juvenil", tema: "Cómo Llora una Estrella", autor: "Letra: Eliseo Jiménez · Música: Antonio Carrillo", genero: "Vals Larense", tono: "Am", shortId: "Q2w6w8BNT3w" },
-      { key: "juv_15", voteId: 29, orden: 15, nombre: "Sebastián Omar Sucre Lafaurie", estado: "Sucre", edad: 14, categoria: "Juvenil", tema: "Reflexión", autor: "Letra y Música de: Virgilio Arrieta", genero: "Golpe Tocuyano", tono: "F", shortId: "T1foDecyaz4" },
-      { key: "juv_16", voteId: 5, orden: 16, nombre: "Aimee Valentina García Colmenares", estado: "Barinas", edad: 12, categoria: "Juvenil", tema: "Ramoncito en Cimarrona", autor: "Letra y Música de: José María Giménez", genero: "Golpe Tocuyano", tono: "F", shortId: "3o0TQjPhKfU" }
-    ];
-
-    const TODOS_PARTICIPANTES_VOTACION = [...ESCALETA_INFANTIL.filter(p => p.voteId > 0), ...ESCALETA_JUVENIL];
+    const TODOS_PARTICIPANTES_VOTACION = [...ESCALETA_GRAN_FINAL];
 
     function detectarUrlVotacionPorDefecto() {
       try {
@@ -1545,9 +1474,7 @@
       btn.disabled = true;
       btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i><span>PUBLICANDO...</span>`;
 
-      const etapaTexto = state.eventStage === "GALA FINAL"
-        ? "Gala Final Nacional · Teatro Juares"
-        : "Semifinales Nacionales · Señal Oficial";
+      const etapaTexto = "Gala Final Nacional · Teatro Juares";
 
       try {
         const res = await fetch(ENDPOINT_STREAM_CONFIG, {
@@ -1633,7 +1560,7 @@
 
     function manejarPayloadEntrante(incoming) {
       if (!incoming) return;
-      state = { ...state, ...incoming };
+      state = { ...state, ...incoming, eventStage: "GALA FINAL" };
       aplicarEstadoVisual();
       if (isOutputMode && incoming.transitionTrigger && Number(incoming.transitionTrigger) !== ultimoTransitionTrigger) {
         ultimoTransitionTrigger = Number(incoming.transitionTrigger);
@@ -1675,6 +1602,7 @@
     };
 
     function emitirCambioEstado() {
+      state.eventStage = "GALA FINAL";
       localStorage.setItem("fnns_overlay_state_" + canalId, JSON.stringify(state));
       localChannel.postMessage(state);
 
@@ -1725,11 +1653,11 @@
       }, duracion);
     }
 
-    function setEventStage(nuevaEtapa) {
-      state.eventStage = nuevaEtapa;
+    function setEventStage() {
+      state.eventStage = "GALA FINAL";
       const inputSong = document.getElementById("inputArtistSong");
       if (inputSong) {
-        inputSong.value = inputSong.value.replace(/SEMIFINALES|GALA FINAL/gi, nuevaEtapa);
+        inputSong.value = inputSong.value.replace(/SEMIFINALES/gi, "GALA FINAL");
         state.artistSong = inputSong.value;
       }
       emitirCambioEstado();
@@ -1817,10 +1745,11 @@
     }
 
     function actualizarTextosEnVivo(reanimar = false) {
+      state.eventStage = "GALA FINAL";
       state.artistName = document.getElementById("inputArtistName").value.trim() || "Participante";
       state.artistState = document.getElementById("inputArtistState").value.trim() || "Venezuela";
       state.artistCategory = document.getElementById("selectArtistCategory").value || "Infantil";
-      state.artistSong = document.getElementById("inputArtistSong").value.trim() || `${state.eventStage} 2026`;
+      state.artistSong = document.getElementById("inputArtistSong").value.trim() || "GALA FINAL 2026";
 
       state.songTitle = document.getElementById("inputSongTitle").value.trim() || "Tema Musical";
       state.songGenre = document.getElementById("inputSongGenre").value.trim() || "Música Venezolana";
@@ -1841,16 +1770,13 @@
     }
 
     function seleccionarParticipantePorKey(key) {
-      const p = [...ESCALETA_GRAN_FINAL, ...ESCALETA_INFANTIL, ...ESCALETA_JUVENIL].find(x => x.key === key);
+      const p = ESCALETA_GRAN_FINAL.find(x => x.key === key);
       if (!p) return;
 
       participanteActivoKey = p.key;
-      const etapaParaOrden = p.key.startsWith("fin_") ? "GALA FINAL" : state.eventStage;
-      if (p.key.startsWith("fin_")) {
-        state.eventStage = "GALA FINAL";
-      }
+      state.eventStage = "GALA FINAL";
 
-      const ordenTag = `ORDEN #${String(p.orden).padStart(2, "0")} · ${etapaParaOrden}`;
+      const ordenTag = `ORDEN #${String(p.orden).padStart(2, "0")} · GALA FINAL`;
       const generoConTono = p.tono
         ? `${p.genero || "Música Venezolana"} · Tono ${p.tono}`
         : (p.genero || "Música Venezolana");
@@ -1876,16 +1802,8 @@
       const granFinal = ESCALETA_GRAN_FINAL.filter(p =>
         `${p.orden} ${p.nombre} ${p.estado} ${p.categoria} ${p.edad || ""} ${p.tema} ${p.genero} ${p.tono || ""}`.toLowerCase().includes(q)
       );
-      const infantiles = ESCALETA_INFANTIL.filter(p =>
-        `${p.orden} ${p.nombre} ${p.estado} ${p.tema} ${p.genero}`.toLowerCase().includes(q)
-      );
-      const juveniles = ESCALETA_JUVENIL.filter(p =>
-        `${p.orden} ${p.nombre} ${p.estado} ${p.edad || ""} ${p.tema} ${p.genero} ${p.tono || ""}`.toLowerCase().includes(q)
-      );
 
       document.getElementById("countGranFinal").innerText = granFinal.length;
-      document.getElementById("countInfantil").innerText = infantiles.length;
-      document.getElementById("countJuvenil").innerText = juveniles.length;
 
       document.getElementById("listaChipsGranFinal").innerHTML = granFinal.map(p => {
         const activo = p.key === participanteActivoKey;
@@ -1904,47 +1822,6 @@
             </div>
             <div class="text-[10px] truncate ${activo ? "text-slate-950 font-bold" : "text-slate-300"}">
               ♪ ${detalle}
-            </div>
-          </button>
-        `;
-      }).join("");
-
-      document.getElementById("listaChipsInfantil").innerHTML = infantiles.map(p => {
-        const activo = p.key === participanteActivoKey;
-        const ord = String(p.orden).padStart(2, "0");
-        return `
-          <button
-            type="button"
-            onclick="seleccionarParticipantePorKey('${p.key}')"
-            class="text-left px-2.5 py-2 rounded-xl border text-xs transition cursor-pointer flex flex-col gap-0.5 ${activo ? "bg-sky-400 text-slate-950 border-sky-300 shadow-md" : "bg-white/[0.04] hover:bg-white/[0.1] border-white/10 text-slate-200"}"
-          >
-            <div class="flex items-center justify-between gap-1.5 w-full">
-              <span class="font-extrabold truncate">#${ord} ${p.nombre}</span>
-              <span class="text-[9px] font-black uppercase tracking-wider shrink-0 opacity-85">${p.estado}</span>
-            </div>
-            <div class="text-[10px] truncate ${activo ? "text-slate-900 font-bold" : "text-sky-300/80"}">
-              ♪ ${p.tema} &middot; ${p.genero}
-            </div>
-          </button>
-        `;
-      }).join("");
-
-      document.getElementById("listaChipsJuvenil").innerHTML = juveniles.map(p => {
-        const activo = p.key === participanteActivoKey;
-        const ord = String(p.orden).padStart(2, "0");
-        const detalleJuvenil = `${p.tema || "Tema por confirmar"} · ${p.genero}${p.tono ? ` (${p.tono})` : ""}`;
-        return `
-          <button
-            type="button"
-            onclick="seleccionarParticipantePorKey('${p.key}')"
-            class="text-left px-2.5 py-2 rounded-xl border text-xs transition cursor-pointer flex flex-col gap-0.5 ${activo ? "bg-[#f5b942] text-slate-950 border-amber-300 shadow-md" : "bg-white/[0.04] hover:bg-white/[0.1] border-white/10 text-slate-200"}"
-          >
-            <div class="flex items-center justify-between gap-1.5 w-full">
-              <span class="font-extrabold truncate">#${ord} ${p.nombre}</span>
-              <span class="text-[9px] font-black uppercase tracking-wider shrink-0 opacity-85">${p.estado}</span>
-            </div>
-            <div class="text-[10px] truncate ${activo ? "text-slate-950 font-bold" : "text-amber-200/80"}">
-              ♪ ${detalleJuvenil}
             </div>
           </button>
         `;
@@ -1974,7 +1851,7 @@
 
     function aplicarEstadoVisual() {
       const capas = ["bugLive", "foxElections", "foxTower", "lowerArtist", "songInfo", "tickerBanner", "pipDelegation"];
-      const etapaActual = (state.eventStage || "GALA FINAL").toUpperCase();
+      const etapaActual = "GALA FINAL";
       const esInfantil = (state.artistCategory || "").toLowerCase() === "infantil";
       renderizarCodigosQR(state.voteUrl);
 
@@ -2028,7 +1905,7 @@
         document.getElementById("outTickerText").innerText = state.tickerText;
 
         document.getElementById("outTrStage").innerText = `${etapaActual} · 2026`;
-        document.getElementById("outTrOrderPill").innerText = state.artistSong || `ORDEN #01`;
+        document.getElementById("outTrOrderPill").innerText = state.artistSong || "ORDEN #01 · GALA FINAL";
         document.getElementById("outTrState").innerText = (state.artistState || "VENEZUELA").toUpperCase();
         document.getElementById("outTrName").innerText = (state.artistName || "PARTICIPANTE").toUpperCase();
         document.getElementById("outTrSong").innerText = `«${tituloLimpio.toUpperCase()}»`;
@@ -2037,23 +1914,11 @@
         const trPill = document.getElementById("outTrCategoryPill");
         trPill.innerText = esInfantil ? "CATEGORÍA INFANTIL" : "CATEGORÍA JUVENIL";
         trPill.className = esInfantil
-          ? "px-4 py-1.5 rounded-sm bg-sky-400 font-fox text-xl font-black uppercase tracking-widest text-slate-950"
-          : "px-4 py-1.5 rounded-sm bg-[#f5b942] font-fox text-xl font-black uppercase tracking-widest text-black";
+          ? "px-5 py-2 rounded-sm bg-sky-400 font-fox text-xl font-black uppercase tracking-widest text-slate-950"
+          : "px-5 py-2 rounded-sm bg-[#f5b942] font-fox text-xl font-black uppercase tracking-widest text-black";
       } else {
         const selTrDur = document.getElementById("selectTrDuration");
         if (selTrDur) selTrDur.value = String(state.trDurationMs || 4000);
-
-        const btnSemi = document.getElementById("btnStage_SEMIFINALES");
-        const btnFinal = document.getElementById("btnStage_GALA_FINAL");
-        if (btnSemi && btnFinal) {
-          if (etapaActual === "SEMIFINALES") {
-            btnSemi.className = "px-5 py-3 rounded-xl font-fox text-base sm:text-lg font-black uppercase tracking-wider border border-sky-300 bg-sky-400 text-slate-950 shadow-lg shadow-sky-400/25 transition cursor-pointer flex items-center justify-center gap-2";
-            btnFinal.className = "px-5 py-3 rounded-xl font-fox text-base sm:text-lg font-bold uppercase tracking-wider border border-white/15 bg-white/5 hover:bg-white/10 text-slate-300 transition cursor-pointer flex items-center justify-center gap-2";
-          } else {
-            btnFinal.className = "px-5 py-3 rounded-xl font-fox text-base sm:text-lg font-black uppercase tracking-wider border border-amber-300 bg-[#f5b942] text-slate-950 shadow-lg shadow-amber-400/25 transition cursor-pointer flex items-center justify-center gap-2";
-            btnSemi.className = "px-5 py-3 rounded-xl font-fox text-base sm:text-lg font-bold uppercase tracking-wider border border-white/15 bg-white/5 hover:bg-white/10 text-slate-300 transition cursor-pointer flex items-center justify-center gap-2";
-          }
-        }
 
         const btnBot = document.getElementById("btnPipPos_bottom");
         const btnTop = document.getElementById("btnPipPos_top");
@@ -2227,7 +2092,7 @@
         } catch (e) {}
       }
       if (!state.voteUrl) state.voteUrl = detectarUrlVotacionPorDefecto();
-      if (!state.eventStage) state.eventStage = "GALA FINAL";
+      state.eventStage = "GALA FINAL";
 
       if (isOutputMode) {
         document.documentElement.classList.add("mode-output");
