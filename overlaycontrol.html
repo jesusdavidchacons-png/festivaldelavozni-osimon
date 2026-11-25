@@ -123,73 +123,99 @@
     }
 
     /* =====================================================================
-       TRANSICIÓN DE PRESENTACIÓN EN PANTALLA COMPLETA (~4s · CON OPACIDAD)
+       TRANSICIÓN DIAGONAL CINEMÁTICA DE GALA (~4s · SIN RECUADRO)
        ===================================================================== */
-    .anim-transition-4s {
+    .gala-diagonal-layer {
       opacity: 0;
-      transform: scale(1.03);
-      clip-path: inset(0 0 100% 0);
-      transition:
-        clip-path 0.55s cubic-bezier(0.22, 1, 0.36, 1),
-        transform 0.65s cubic-bezier(0.22, 1, 0.36, 1),
-        opacity 0.35s ease;
+      pointer-events: none;
+      transition: opacity 0.32s ease;
     }
-    .anim-transition-4s.is-tr-playing {
+    .gala-diagonal-layer.is-tr-playing {
       opacity: 1;
-      transform: scale(1);
-      clip-path: inset(0 0 0% 0);
     }
-    .anim-transition-4s.is-tr-exiting {
+    .gala-diagonal-layer.is-tr-exiting {
       opacity: 0;
-      transform: scale(0.985);
-      clip-path: inset(100% 0 0 0);
-      transition:
-        clip-path 0.5s cubic-bezier(0.55, 0, 1, 0.45),
-        transform 0.5s cubic-bezier(0.55, 0, 1, 0.45),
-        opacity 0.42s ease;
+      transition: opacity 0.42s ease;
     }
 
-    .tr-veil-bg {
+    /* Banda diagonal translúcida que cruza la pantalla en ángulo */
+    .gala-band-sheet {
+      position: absolute;
+      left: -12%;
+      right: -12%;
+      top: 18%;
+      bottom: 18%;
+      transform: skewY(-5deg) translateX(-110%);
       background: linear-gradient(
-        135deg,
-        rgba(6, 16, 38, var(--tr-opacidad, 0.62)) 0%,
-        rgba(10, 25, 54, calc(var(--tr-opacidad, 0.62) * 0.85)) 55%,
-        rgba(20, 9, 24, var(--tr-opacidad, 0.62)) 100%
+        105deg,
+        rgba(4, 10, 24, calc(var(--tr-opacidad, 0.62) * 1.15)) 0%,
+        rgba(10, 25, 54, var(--tr-opacidad, 0.62)) 52%,
+        rgba(24, 8, 20, calc(var(--tr-opacidad, 0.62) * 1.05)) 100%
       );
-      backdrop-filter: blur(2px);
+      backdrop-filter: blur(3px);
+      border-top: 3px solid rgba(245, 185, 66, 0.85);
+      border-bottom: 3px solid rgba(225, 29, 72, 0.85);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.72);
+      transition: transform 0.58s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .tr-text-shadow {
-      text-shadow: 0 4px 24px rgba(0, 0, 0, 0.92), 0 1px 4px rgba(0, 0, 0, 0.95);
+    .gala-diagonal-layer.is-tr-playing:not(.is-tr-exiting) .gala-band-sheet {
+      transform: skewY(-5deg) translateX(0%);
+    }
+
+    .gala-diagonal-layer.is-tr-exiting .gala-band-sheet {
+      transform: skewY(-5deg) translateX(110%);
+      transition: transform 0.48s cubic-bezier(0.55, 0, 1, 0.45);
+    }
+
+    /* Destello dorado que corre por el borde superior de la banda */
+    @keyframes galaEdgeFlash {
+      0% { transform: translateX(-120%); opacity: 0; }
+      25% { opacity: 1; }
+      100% { transform: translateX(260%); opacity: 0; }
+    }
+    .gala-edge-shine {
+      position: absolute;
+      top: -3px;
+      left: 0;
+      width: 28%;
+      height: 4px;
+      background: linear-gradient(90deg, transparent, #ffffff, #f5b942, transparent);
+      box-shadow: 0 0 18px #f5b942;
+      opacity: 0;
+    }
+    .gala-diagonal-layer.is-tr-playing:not(.is-tr-exiting) .gala-edge-shine {
+      animation: galaEdgeFlash 1.45s cubic-bezier(0.22, 1, 0.36, 1) 0.15s forwards;
+    }
+
+    /* Contenido interior compensado del skew para mantener tipografía firme */
+    .gala-band-content {
+      transform: skewY(5deg);
+      height: 100%;
+      width: 100%;
+      padding: 46px 190px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 48px;
     }
 
     .tr-stagger {
       opacity: 0;
-      transform: translateY(24px);
-      transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s ease;
+      transform: translateY(20px);
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
     }
-    .is-tr-playing:not(.is-tr-exiting) .tr-stagger {
+    .gala-diagonal-layer.is-tr-playing:not(.is-tr-exiting) .tr-stagger {
       opacity: 1;
       transform: translateY(0);
     }
-    .is-tr-playing:not(.is-tr-exiting) .tr-d1 { transition-delay: 0.12s; }
-    .is-tr-playing:not(.is-tr-exiting) .tr-d2 { transition-delay: 0.22s; }
-    .is-tr-playing:not(.is-tr-exiting) .tr-d3 { transition-delay: 0.32s; }
-    .is-tr-playing:not(.is-tr-exiting) .tr-d4 { transition-delay: 0.42s; }
+    .gala-diagonal-layer.is-tr-playing:not(.is-tr-exiting) .tr-d1 { transition-delay: 0.16s; }
+    .gala-diagonal-layer.is-tr-playing:not(.is-tr-exiting) .tr-d2 { transition-delay: 0.25s; }
+    .gala-diagonal-layer.is-tr-playing:not(.is-tr-exiting) .tr-d3 { transition-delay: 0.34s; }
+    .gala-diagonal-layer.is-tr-playing:not(.is-tr-exiting) .tr-d4 { transition-delay: 0.42s; }
 
-    @keyframes trLightSweep {
-      0% { transform: translateX(-140%) skewX(-22deg); }
-      100% { transform: translateX(280%) skewX(-22deg); }
-    }
-    .tr-sweep-beam {
-      position: absolute;
-      inset: 0;
-      width: 36%;
-      background: linear-gradient(90deg, transparent, rgba(245, 185, 66, 0.18), rgba(255, 255, 255, 0.14), transparent);
-      pointer-events: none;
-    }
-    .is-tr-playing:not(.is-tr-exiting) .tr-sweep-beam {
-      animation: trLightSweep 2.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    .tr-shadow {
+      text-shadow: 0 4px 22px rgba(0, 0, 0, 0.92), 0 1px 4px rgba(0, 0, 0, 0.95);
     }
 
     @keyframes trProgressFill {
@@ -201,7 +227,7 @@
       height: 100%;
       background: linear-gradient(90deg, #e11d48, #f5b942, #38bdf8);
     }
-    .is-tr-playing:not(.is-tr-exiting) .tr-progress-bar {
+    .gala-diagonal-layer.is-tr-playing:not(.is-tr-exiting) .tr-progress-bar {
       animation: trProgressFill var(--tr-duracion-ms, 4000ms) linear forwards;
     }
 
@@ -779,28 +805,28 @@
       </div>
 
       <!-- =====================================================================
-           MÓDULO DE TRANSICIÓN DE PRESENTACIÓN EN PANTALLA COMPLETA (~4s)
+           MÓDULO DE TRANSICIÓN DIAGONAL DE GALA (~4s)
            ===================================================================== -->
       <div class="bg-gradient-to-r from-[#0a1429] via-[#101f3d] to-[#0a1429] border border-[#f5b942]/45 rounded-2xl p-5 flex flex-col lg:flex-row lg:items-center justify-between gap-4 shadow-xl">
         <div class="space-y-1">
           <span class="text-[10px] font-bold uppercase tracking-widest text-[#f5b942] block">
-            <i class="fa-solid fa-wand-magic-sparkles mr-1"></i> Cortina Fullscreen Semitransparente (~4s)
+            <i class="fa-solid fa-wand-magic-sparkles mr-1"></i> Barrido Diagonal de Gala (~4s · Sin Recuadro)
           </span>
           <h2 class="font-fox text-xl font-black uppercase text-white leading-none">
-            Transición de Presentación en Pantalla Completa
+            Transición Diagonal de Presentación
           </h2>
           <p class="text-xs text-slate-300">
-            Deja ver la toma de fondo con opacidad regulable mientras presenta al finalista y se oculta sola al terminar el ciclo.
+            Cruza el encuadre en diagonal con opacidad regulable, presenta al finalista y su repertorio, y se retira sola al terminar.
           </p>
         </div>
 
         <div class="flex flex-wrap items-center gap-2.5 shrink-0">
           <label for="selectTrOpacity" class="text-xs font-semibold text-slate-300">Opacidad:</label>
           <select id="selectTrOpacity" onchange="cambiarTrOpacity(this.value)" class="bg-black/65 border border-white/20 rounded-xl px-3 py-2 text-xs font-tnum font-bold text-sky-300">
-            <option value="0.42">42% (Muy transparente)</option>
-            <option value="0.55">55% (Equilibrada)</option>
-            <option value="0.62" selected>62% (Recomendada)</option>
-            <option value="0.75">75% (Más contraste)</option>
+            <option value="0.45">45% (Suave)</option>
+            <option value="0.58">58% (Equilibrada)</option>
+            <option value="0.65" selected>65% (Recomendada)</option>
+            <option value="0.78">78% (Mayor contraste)</option>
           </select>
 
           <label for="selectTrDuration" class="text-xs font-semibold text-slate-300">Duración:</label>
@@ -990,68 +1016,64 @@
   <div id="alphaStage" class="hidden fixed inset-0 pointer-events-none overflow-hidden">
     <div id="broadcastCanvas16x9">
 
-      <!-- CAPA TRANSICIÓN DE PRESENTACIÓN EN PANTALLA COMPLETA (~4s · CON OPACIDAD) -->
-      <div id="layer_transition4s" class="anim-transition-4s tr-veil-bg absolute inset-0 z-40 w-full h-full flex flex-col justify-between overflow-hidden">
-        <div class="tr-sweep-beam"></div>
+      <!-- TRANSICIÓN DIAGONAL DE GALA (~4s · SIN RECUADRO) -->
+      <div id="layer_transition4s" class="gala-diagonal-layer absolute inset-0 z-40 w-full h-full">
+        <div class="gala-band-sheet">
+          <div class="gala-edge-shine"></div>
 
-        <!-- Franja superior fullscreen semitransparente -->
-        <div class="relative z-10 w-full px-16 py-7 bg-[#040914]/55 border-b-2 border-[#f5b942]/80 flex items-center justify-between gap-6">
-          <div class="flex items-center gap-6">
-            <img src="./logo_color.png" alt="Logo" style="-webkit-filter: brightness(0) invert(1); filter: brightness(0) invert(1);" class="h-16 w-auto object-contain logo-pure-white" />
-            <div class="h-11 w-[1px] bg-white/25"></div>
-            <div class="tr-text-shadow">
-              <span class="block text-xs font-bold uppercase tracking-[0.28em] text-slate-300">
-                Fundación Nacional del Niño Simón
-              </span>
-              <span id="outTrStage" class="font-fox text-2xl font-black uppercase tracking-wider text-[#f5b942] leading-none">
-                GALA FINAL &middot; 2026
-              </span>
+          <div class="gala-band-content">
+            <!-- Columna izquierda: Identidad, Regional y Nombre -->
+            <div class="flex-1 min-w-0 space-y-3 tr-shadow">
+              <div class="tr-stagger tr-d1 flex flex-wrap items-center gap-3">
+                <img src="./logo_color.png" alt="Logo" style="-webkit-filter: brightness(0) invert(1); filter: brightness(0) invert(1);" class="h-11 w-auto object-contain logo-pure-white mr-1" />
+                <span id="outTrOrderPill" class="px-3.5 py-1 rounded-sm bg-[#e11d48] font-fox text-lg font-black uppercase tracking-widest text-white">
+                  ORDEN #01 · GALA FINAL
+                </span>
+                <span id="outTrCategoryPill" class="px-3.5 py-1 rounded-sm bg-sky-400 font-fox text-lg font-black uppercase tracking-widest text-slate-950">
+                  CATEGORÍA INFANTIL
+                </span>
+                <span id="outTrState" class="font-fox text-2xl font-black uppercase tracking-[0.16em] text-[#f5b942] pl-1">
+                  NUEVA ESPARTA
+                </span>
+              </div>
+
+              <h2 id="outTrName" class="tr-stagger tr-d2 font-fox text-[82px] font-black uppercase text-white leading-[0.95] tracking-wide truncate">
+                ROSHELEN VICTORIA RIVAS VALDERRAMA
+              </h2>
+
+              <div class="tr-stagger tr-d3 flex items-center gap-3 text-sm font-fox font-bold uppercase tracking-[0.2em] text-slate-300">
+                <span id="outTrStage" class="text-[#f5b942]">GALA FINAL · 2026</span>
+                <span>&middot;</span>
+                <span>TEATRO JUARES · BARQUISIMETO</span>
+              </div>
+            </div>
+
+            <!-- Divisor vertical -->
+            <div class="tr-stagger tr-d3 h-44 w-[3px] bg-gradient-to-b from-transparent via-[#f5b942] to-transparent shrink-0"></div>
+
+            <!-- Columna derecha: Repertorio Musical -->
+            <div class="w-[540px] shrink-0 space-y-2.5 tr-shadow">
+              <div class="tr-stagger tr-d2 flex items-center gap-2.5">
+                <i class="fa-solid fa-music text-[#f5b942] text-lg"></i>
+                <span id="outTrGenre" class="font-fox text-xl font-black uppercase tracking-wider text-[#f5b942]">
+                  Golpe Tocuyano · Tono A
+                </span>
+              </div>
+
+              <div id="outTrSong" class="tr-stagger tr-d3 font-fox text-[40px] font-black uppercase text-white leading-tight">
+                «LO QUE EL TOCUYO ME DIO»
+              </div>
+
+              <div id="outTrAuthor" class="tr-stagger tr-d4 font-fox text-xl font-bold uppercase tracking-wide text-sky-300">
+                Letra y Música de: Omar Carrizales
+              </div>
             </div>
           </div>
 
-          <div class="flex items-center gap-3">
-            <span id="outTrCategoryPill" class="px-5 py-2 rounded-sm bg-sky-400 font-fox text-xl font-black uppercase tracking-widest text-slate-950 shadow-lg">
-              CATEGORÍA INFANTIL
-            </span>
-            <span id="outTrOrderPill" class="px-5 py-2 rounded-sm bg-[#e11d48] font-fox text-xl font-black uppercase tracking-widest text-white shadow-lg">
-              ORDEN #01 · GALA FINAL
-            </span>
+          <!-- Barra de progreso de ~4s en la base de la banda -->
+          <div class="absolute bottom-0 left-0 right-0 h-2 bg-black/50 overflow-hidden">
+            <div id="outTrProgressBar" class="tr-progress-bar"></div>
           </div>
-        </div>
-
-        <!-- Cuerpo central fullscreen sin recuadro sobre imagen visible -->
-        <div class="relative z-10 w-full px-20 py-10 flex-1 flex flex-col justify-center space-y-7 tr-text-shadow">
-          <div class="tr-stagger tr-d1 flex items-center gap-4">
-            <span class="w-4 h-12 bg-[#e11d48] rounded-sm shadow"></span>
-            <span id="outTrState" class="font-fox text-4xl font-black uppercase tracking-[0.18em] text-[#f5b942]">
-              NUEVA ESPARTA
-            </span>
-          </div>
-
-          <h2 id="outTrName" class="tr-stagger tr-d2 font-fox text-[96px] font-black uppercase text-white leading-[0.95] tracking-wide">
-            ROSHELEN VICTORIA RIVAS VALDERRAMA
-          </h2>
-
-          <div class="tr-stagger tr-d3 pt-6 border-t border-white/20 flex flex-col gap-3">
-            <div class="flex flex-wrap items-center gap-5">
-              <span class="px-4 py-1.5 rounded-sm bg-sky-400 font-fox text-2xl font-black uppercase tracking-wider text-slate-950 inline-flex items-center gap-2.5 shadow-lg">
-                <i class="fa-solid fa-music text-base"></i>
-                <span id="outTrSong">«LO QUE EL TOCUYO ME DIO»</span>
-              </span>
-              <span id="outTrGenre" class="font-fox text-3xl font-extrabold uppercase tracking-wider text-[#f5b942]">
-                Golpe Tocuyano &middot; Tono A
-              </span>
-            </div>
-
-            <div id="outTrAuthor" class="tr-stagger tr-d4 font-fox text-2xl font-bold uppercase tracking-wide text-slate-200">
-              Letra y Música de: Omar Carrizales
-            </div>
-          </div>
-        </div>
-
-        <!-- Barra inferior fullscreen de ~4s -->
-        <div class="relative z-10 h-3 w-full bg-black/55 overflow-hidden">
-          <div id="outTrProgressBar" class="tr-progress-bar"></div>
         </div>
       </div>
 
@@ -1359,7 +1381,7 @@
       tickerText: "ESCANEA EL CÓDIGO QR Y VOTA POR TUS 5 FAVORITOS EN DIRECTO",
       voteUrl: detectarUrlVotacionPorDefecto(),
       trDurationMs: 4000,
-      trOpacity: 0.62,
+      trOpacity: 0.65,
       transitionTrigger: 0
     };
 
@@ -1633,7 +1655,7 @@
     }
 
     function cambiarTrOpacity(val) {
-      state.trOpacity = Number(val) || 0.62;
+      state.trOpacity = Number(val) || 0.65;
       emitirCambioEstado();
     }
 
@@ -1650,7 +1672,7 @@
       if (!el || !bar) return;
 
       const duracion = Number(state.trDurationMs) || 4000;
-      const opacidad = Number(state.trOpacity) || 0.62;
+      const opacidad = Number(state.trOpacity) || 0.65;
       el.style.setProperty("--tr-duracion-ms", `${duracion}ms`);
       el.style.setProperty("--tr-opacidad", `${opacidad}`);
 
@@ -1886,7 +1908,7 @@
 
         const trEl = document.getElementById("layer_transition4s");
         if (trEl) {
-          trEl.style.setProperty("--tr-opacidad", `${Number(state.trOpacity) || 0.62}`);
+          trEl.style.setProperty("--tr-opacidad", `${Number(state.trOpacity) || 0.65}`);
         }
 
         const pipLayer = document.getElementById("layer_pipDelegation");
@@ -1940,14 +1962,14 @@
         const trPill = document.getElementById("outTrCategoryPill");
         trPill.innerText = esInfantil ? "CATEGORÍA INFANTIL" : "CATEGORÍA JUVENIL";
         trPill.className = esInfantil
-          ? "px-5 py-2 rounded-sm bg-sky-400 font-fox text-xl font-black uppercase tracking-widest text-slate-950 shadow-lg"
-          : "px-5 py-2 rounded-sm bg-[#f5b942] font-fox text-xl font-black uppercase tracking-widest text-black shadow-lg";
+          ? "px-3.5 py-1 rounded-sm bg-sky-400 font-fox text-lg font-black uppercase tracking-widest text-slate-950"
+          : "px-3.5 py-1 rounded-sm bg-[#f5b942] font-fox text-lg font-black uppercase tracking-widest text-black";
       } else {
         const selTrDur = document.getElementById("selectTrDuration");
         if (selTrDur) selTrDur.value = String(state.trDurationMs || 4000);
 
         const selTrOp = document.getElementById("selectTrOpacity");
-        if (selTrOp) selTrOp.value = String(state.trOpacity || 0.62);
+        if (selTrOp) selTrOp.value = String(state.trOpacity || 0.65);
 
         const btnBot = document.getElementById("btnPipPos_bottom");
         const btnTop = document.getElementById("btnPipPos_top");
