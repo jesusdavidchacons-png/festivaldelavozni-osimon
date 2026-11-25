@@ -123,7 +123,7 @@
     }
 
     /* =====================================================================
-       TRANSICIÓN CINEMÁTICA DE GALA (~4s · ENCUADRE LIMPIO SIN CORTES)
+       TRANSICIÓN DE GALA (~4s · ENCUADRE LIMPIO SIN CORTES)
        ===================================================================== */
     .gala-wipe-layer {
       opacity: 0;
@@ -144,7 +144,7 @@
       right: 0;
       top: 50%;
       transform: translateY(-50%) translateX(-100%);
-      height: 540px;
+      height: 500px;
       background: linear-gradient(
         90deg,
         rgba(4, 10, 24, calc(var(--tr-opacidad, 0.65) * 1.15)) 0%,
@@ -680,7 +680,7 @@
                 type="text"
                 id="filtroRapidoParticipantes"
                 oninput="renderizarListasCategorias()"
-                placeholder="Filtrar orden, nombre, estado, categoría o tema..."
+                placeholder="Filtrar nombre, estado, categoría o tema..."
                 class="bg-black/60 border border-white/15 rounded-xl pl-8 pr-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#f5b942]"
               />
             </div>
@@ -695,7 +695,7 @@
               Participantes Gran Final · Teatro Juares (<span id="countGranFinal">0</span>)
             </span>
             <span class="text-[10px] font-bold uppercase tracking-wider text-amber-200/80">
-              Orden #01–#12 · Carga nombre, categoría, regional, tema, autor y género/tono
+              Carga nombre, categoría, regional, tema, autor y género/tono
             </span>
           </div>
           <div id="listaChipsGranFinal" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5 max-h-64 overflow-y-auto custom-scroll pr-1"></div>
@@ -730,8 +730,8 @@
                   </select>
                 </div>
                 <div class="sm:col-span-7">
-                  <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Etapa / Orden</label>
-                  <input type="text" id="inputArtistSong" value="ORDEN #01 · GALA FINAL" oninput="actualizarTextosEnVivo(false)" class="w-full bg-black/70 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#f5b942]" />
+                  <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Etapa</label>
+                  <input type="text" id="inputArtistSong" value="GRAN FINAL" oninput="actualizarTextosEnVivo(false)" class="w-full bg-black/70 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#f5b942]" />
                 </div>
               </div>
             </div>
@@ -789,7 +789,7 @@
       </div>
 
       <!-- =====================================================================
-           MÓDULO DE TRANSICIÓN DE GALA (~4s · ENCUADRE RECTO SIN CORTES)
+           MÓDULO DE TRANSICIÓN DE GALA (~4s · ENCUADRE LIMPIO SIN CORTES)
            ===================================================================== -->
       <div class="bg-gradient-to-r from-[#0a1429] via-[#101f3d] to-[#0a1429] border border-[#f5b942]/45 rounded-2xl p-5 flex flex-col lg:flex-row lg:items-center justify-between gap-4 shadow-xl">
         <div class="space-y-1">
@@ -1000,18 +1000,18 @@
   <div id="alphaStage" class="hidden fixed inset-0 pointer-events-none overflow-hidden">
     <div id="broadcastCanvas16x9">
 
-      <!-- TRANSICIÓN DE GALA (~4s · ENCUADRE RECTO SIN CORTES) -->
+      <!-- TRANSICIÓN DE GALA (~4s · ENCUADRE LIMPIO SIN CORTES) -->
       <div id="layer_transition4s" class="gala-wipe-layer absolute inset-0 z-40 w-full h-full">
         <div class="gala-strip-box">
           <div class="gala-edge-shine"></div>
 
-          <div class="h-full w-full px-24 py-8 flex items-center justify-between gap-12">
+          <div class="h-full w-full px-32 py-10 flex items-center justify-between gap-12">
             <!-- Columna izquierda: Identidad, Regional y Nombre -->
-            <div class="w-[1060px] shrink-0 space-y-3.5 tr-shadow">
+            <div class="flex-1 min-w-0 space-y-4 tr-shadow">
               <div class="tr-stagger tr-d1 flex flex-wrap items-center gap-3">
                 <img src="./logo_color.png" alt="Logo" style="-webkit-filter: brightness(0) invert(1); filter: brightness(0) invert(1);" class="h-11 w-auto object-contain logo-pure-white mr-1" />
                 <span id="outTrOrderPill" class="px-3.5 py-1 rounded-sm bg-[#e11d48] font-fox text-lg font-black uppercase tracking-widest text-white">
-                  ORDEN #01 · GALA FINAL
+                  GRAN FINAL
                 </span>
                 <span id="outTrCategoryPill" class="px-3.5 py-1 rounded-sm bg-sky-400 font-fox text-lg font-black uppercase tracking-widest text-slate-950">
                   CATEGORÍA INFANTIL
@@ -1021,22 +1021,22 @@
                 </span>
               </div>
 
-              <h2 id="outTrName" class="tr-stagger tr-d2 font-fox text-[64px] font-black uppercase text-white leading-[1.02] tracking-wide">
+              <h2 id="outTrName" class="tr-stagger tr-d2 font-fox text-[54px] font-black uppercase text-white leading-[1.04] tracking-wide">
                 ROSHELEN VICTORIA RIVAS VALDERRAMA
               </h2>
 
-              <div class="tr-stagger tr-d3 flex items-center gap-3 text-sm font-fox font-bold uppercase tracking-[0.2em] text-slate-300">
-                <span id="outTrStage" class="text-[#f5b942]">GALA FINAL · 2026</span>
+              <div class="tr-stagger tr-d3 flex flex-wrap items-center gap-3 text-sm font-fox font-bold uppercase tracking-[0.18em] text-slate-300">
+                <span id="outTrStage" class="text-[#f5b942]">GRAN FINAL · 2026</span>
                 <span>&middot;</span>
                 <span>TEATRO JUARES · BARQUISIMETO</span>
               </div>
             </div>
 
             <!-- Divisor vertical -->
-            <div class="tr-stagger tr-d3 h-48 w-[3px] bg-gradient-to-b from-transparent via-[#f5b942] to-transparent shrink-0"></div>
+            <div class="tr-stagger tr-d3 h-44 w-[2px] bg-gradient-to-b from-transparent via-[#f5b942]/80 to-transparent shrink-0"></div>
 
             <!-- Columna derecha: Repertorio Musical -->
-            <div class="flex-1 min-w-0 space-y-2.5 tr-shadow">
+            <div class="w-[540px] shrink-0 space-y-2.5 tr-shadow">
               <div class="tr-stagger tr-d2 flex items-center gap-2.5">
                 <i class="fa-solid fa-music text-[#f5b942] text-lg"></i>
                 <span id="outTrGenre" class="font-fox text-xl font-black uppercase tracking-wider text-[#f5b942]">
@@ -1044,11 +1044,11 @@
                 </span>
               </div>
 
-              <div id="outTrSong" class="tr-stagger tr-d3 font-fox text-[38px] font-black uppercase text-white leading-tight">
+              <div id="outTrSong" class="tr-stagger tr-d3 font-fox text-[34px] font-black uppercase text-white leading-tight">
                 «LO QUE EL TOCUYO ME DIO»
               </div>
 
-              <div id="outTrAuthor" class="tr-stagger tr-d4 font-fox text-xl font-bold uppercase tracking-wide text-sky-300">
+              <div id="outTrAuthor" class="tr-stagger tr-d4 font-fox text-lg font-bold uppercase tracking-wide text-sky-300">
                 Letra y Música de: Omar Carrizales
               </div>
             </div>
@@ -1072,7 +1072,7 @@
               <span class="font-fox text-sm font-black uppercase tracking-widest text-white leading-none">EN VIVO</span>
             </div>
             <span id="outBugStage" class="block font-fox text-base font-extrabold uppercase tracking-wider text-[#f5b942] mt-1">
-              GALA FINAL &middot; 2026
+              GRAN FINAL &middot; 2026
             </span>
           </div>
         </div>
@@ -1094,7 +1094,7 @@
                 CATEGORÍA INFANTIL
               </span>
               <span id="outArtistSong" class="font-fox text-base font-bold uppercase tracking-wider text-slate-200 pl-1">
-                ORDEN #01 &middot; GALA FINAL
+                GRAN FINAL
               </span>
             </div>
             <div id="outArtistName" class="name-reveal-text font-fox text-[42px] font-black uppercase text-white leading-none mt-2">
@@ -1358,7 +1358,7 @@
       artistName: "Roshelen Victoria Rivas Valderrama",
       artistState: "Nueva Esparta",
       artistCategory: "Infantil",
-      artistSong: "ORDEN #01 · GALA FINAL",
+      artistSong: "GRAN FINAL",
       songTitle: "Lo que El Tocuyo me dio",
       songAuthor: "Letra y Música de: Omar Carrizales",
       songGenre: "Golpe Tocuyano · Tono A",
@@ -1684,8 +1684,8 @@
       state.eventStage = "GALA FINAL";
       const inputSong = document.getElementById("inputArtistSong");
       if (inputSong) {
-        inputSong.value = inputSong.value.replace(/SEMIFINALES/gi, "GALA FINAL");
-        state.artistSong = inputSong.value;
+        inputSong.value = "GRAN FINAL";
+        state.artistSong = "GRAN FINAL";
       }
       emitirCambioEstado();
     }
@@ -1776,7 +1776,7 @@
       state.artistName = document.getElementById("inputArtistName").value.trim() || "Participante";
       state.artistState = document.getElementById("inputArtistState").value.trim() || "Venezuela";
       state.artistCategory = document.getElementById("selectArtistCategory").value || "Infantil";
-      state.artistSong = document.getElementById("inputArtistSong").value.trim() || "GALA FINAL 2026";
+      state.artistSong = document.getElementById("inputArtistSong").value.trim() || "GRAN FINAL";
 
       state.songTitle = document.getElementById("inputSongTitle").value.trim() || "Tema Musical";
       state.songGenre = document.getElementById("inputSongGenre").value.trim() || "Música Venezolana";
@@ -1803,7 +1803,6 @@
       participanteActivoKey = p.key;
       state.eventStage = "GALA FINAL";
 
-      const ordenTag = `ORDEN #${String(p.orden).padStart(2, "0")} · GALA FINAL`;
       const generoConTono = p.tono
         ? `${p.genero || "Música Venezolana"} · Tono ${p.tono}`
         : (p.genero || "Música Venezolana");
@@ -1811,7 +1810,7 @@
       document.getElementById("inputArtistName").value = p.nombre;
       document.getElementById("inputArtistState").value = p.estado;
       document.getElementById("selectArtistCategory").value = p.categoria;
-      document.getElementById("inputArtistSong").value = ordenTag;
+      document.getElementById("inputArtistSong").value = "GRAN FINAL";
 
       document.getElementById("inputSongTitle").value = p.tema || "Tema por confirmar";
       document.getElementById("inputSongGenre").value = generoConTono;
@@ -1827,14 +1826,13 @@
       const q = (document.getElementById("filtroRapidoParticipantes")?.value || "").toLowerCase().trim();
 
       const granFinal = ESCALETA_GRAN_FINAL.filter(p =>
-        `${p.orden} ${p.nombre} ${p.estado} ${p.categoria} ${p.edad || ""} ${p.tema} ${p.genero} ${p.tono || ""}`.toLowerCase().includes(q)
+        `${p.nombre} ${p.estado} ${p.categoria} ${p.edad || ""} ${p.tema} ${p.genero} ${p.tono || ""}`.toLowerCase().includes(q)
       );
 
       document.getElementById("countGranFinal").innerText = granFinal.length;
 
       document.getElementById("listaChipsGranFinal").innerHTML = granFinal.map(p => {
         const activo = p.key === participanteActivoKey;
-        const ord = String(p.orden).padStart(2, "0");
         const esInf = p.categoria === "Infantil";
         const detalle = `${p.categoria} · ${p.tema} · ${p.genero}${p.tono ? ` (${p.tono})` : ""}`;
         return `
@@ -1844,7 +1842,7 @@
             class="text-left px-3 py-2 rounded-xl border text-xs transition cursor-pointer flex flex-col gap-0.5 ${activo ? "bg-[#f5b942] text-slate-950 border-amber-300 shadow-md" : "bg-white/[0.04] hover:bg-white/[0.1] border-white/10 text-slate-200"}"
           >
             <div class="flex items-center justify-between gap-1.5 w-full">
-              <span class="font-extrabold truncate">#${ord} ${p.nombre}</span>
+              <span class="font-extrabold truncate">${p.nombre}</span>
               <span class="text-[9px] font-black uppercase tracking-wider shrink-0 px-1.5 py-0.5 rounded ${activo ? "bg-black/15 text-slate-950" : esInf ? "bg-sky-400/20 text-sky-300" : "bg-[#f5b942]/20 text-[#f5b942]"}">${p.estado}</span>
             </div>
             <div class="text-[10px] truncate ${activo ? "text-slate-950 font-bold" : "text-slate-300"}">
@@ -1912,7 +1910,7 @@
 
         document.getElementById("outArtistName").innerText = state.artistName;
         document.getElementById("outArtistState").innerText = state.artistState;
-        document.getElementById("outArtistSong").innerText = state.artistSong || `${etapaActual} 2026`;
+        document.getElementById("outArtistSong").innerText = state.artistSong || etapaActual;
 
         const catBadge = document.getElementById("outArtistCategory");
         catBadge.innerText = esInfantil ? "CATEGORÍA INFANTIL" : "CATEGORÍA JUVENIL";
@@ -1937,7 +1935,7 @@
         document.getElementById("outTickerText").innerText = state.tickerText;
 
         document.getElementById("outTrStage").innerText = `${etapaActual} · 2026`;
-        document.getElementById("outTrOrderPill").innerText = state.artistSong || "ORDEN #01 · GALA FINAL";
+        document.getElementById("outTrOrderPill").innerText = state.artistSong || etapaActual;
         document.getElementById("outTrState").innerText = (state.artistState || "VENEZUELA").toUpperCase();
         document.getElementById("outTrName").innerText = (state.artistName || "PARTICIPANTE").toUpperCase();
         document.getElementById("outTrSong").innerText = `«${tituloLimpio.toUpperCase()}»`;
