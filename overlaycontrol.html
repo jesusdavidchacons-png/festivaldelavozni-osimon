@@ -1313,7 +1313,41 @@
       { key: "fin_12", voteId: 9, orden: 12, nombre: "Daniela Alejandra Fontana", estado: "Trujillo", edad: 13, categoria: "Juvenil", tema: "Un Barquisimetano", autor: "Letra y Música de: Pilar García", genero: "Golpe Tocuyano", tono: "C", shortId: "SXODrGfMJ0E" }
     ];
 
-    const TODOS_PARTICIPANTES_VOTACION = [...ESCALETA_GRAN_FINAL];
+    const BASE_VOTANTES_OFICIAL = [
+      { voteId: 13, nombre: "Gabriela Galilea Andrade Gutiérrez", estado: "Zulia", categoria: "Infantil", shortId: "uqfYsz2oKeA" },
+      { voteId: 20, nombre: "José Pablo Luces Maurera", estado: "Sucre", categoria: "Infantil", shortId: "WEUn5S3SjQc" },
+      { voteId: 23, nombre: "Michell Saray Meza Villamizar", estado: "Táchira", categoria: "Infantil", shortId: "KarvJK7Eums" },
+      { voteId: 8, nombre: "Christal Esmeralda Díaz Rivas", estado: "Miranda", categoria: "Infantil", shortId: "Jn4ai5tgZ0Y" },
+      { voteId: 7, nombre: "Carlos Manuel Guaramata Perfecto", estado: "Anzoátegui", categoria: "Infantil", shortId: "EO2tp1xoUT4" },
+      { voteId: 26, nombre: "Roshelen Victoria Rivas Valderrama", estado: "Nueva Esparta", categoria: "Infantil", shortId: "_G_7_hSKTZA" },
+      { voteId: 12, nombre: "Fraivelis Nicole Parra Sánchez", estado: "Lara", categoria: "Infantil", shortId: "pdOQEE1sV7M" },
+      { voteId: 27, nombre: "Samuel Andrés Montilla Cabanerio", estado: "Barinas", categoria: "Infantil", shortId: "iHgtqyPmn2s" },
+      { voteId: 22, nombre: "Marialnolys Velázquez", estado: "Delta Amacuro", categoria: "Infantil", shortId: "KiCBHQvwQ90" },
+      { voteId: 15, nombre: "Isabella Sofía López Márquez", estado: "Distrito Capital", categoria: "Infantil", shortId: "fw238TK_nAA" },
+      { voteId: 2, nombre: "Talía de los Ángeles Meléndez Suárez", estado: "Bolívar", categoria: "Infantil", shortId: "cQM1QJoF4JA" },
+      { voteId: 28, nombre: "Santiago Gudiño", estado: "Trujillo", categoria: "Infantil", shortId: "qu3xSlgytI8" },
+      { voteId: 1, nombre: "Tyler Mathias Colina Yzarra", estado: "Mérida", categoria: "Infantil", shortId: "r_2LEocre14" },
+      { voteId: 3, nombre: "Ángel Gabriel Sánchez", estado: "Carabobo", categoria: "Infantil", shortId: "BKrNX8sXLxQ" },
+      { voteId: 30, nombre: "Silvia Valeria Coro Beja", estado: "Amazonas", categoria: "Infantil", shortId: "d9NLY3PM9EE" },
+      { voteId: 4, nombre: "Albenis Pérez", estado: "Carabobo", categoria: "Juvenil", shortId: "zGGRW8eMHNk" },
+      { voteId: 5, nombre: "Aimé García", estado: "Barinas", categoria: "Juvenil", shortId: "3o0TQjPhKfU" },
+      { voteId: 6, nombre: "Antonio Urbina", estado: "Mérida", categoria: "Juvenil", shortId: "5KCJl2vTWpU" },
+      { voteId: 9, nombre: "Daniela Fontana", estado: "Trujillo", categoria: "Juvenil", shortId: "SXODrGfMJ0E" },
+      { voteId: 10, nombre: "Enma Frías", estado: "Lara", categoria: "Juvenil", shortId: "RLrVTJg_2S8" },
+      { voteId: 11, nombre: "Esthela Vázquez", estado: "Cojedes", categoria: "Juvenil", shortId: "Q2w6w8BNT3w" },
+      { voteId: 14, nombre: "Gabriela González", estado: "Amazonas", categoria: "Juvenil", shortId: "79nkO6SvvdY" },
+      { voteId: 16, nombre: "Iviangely Figueroa", estado: "Nueva Esparta", categoria: "Juvenil", shortId: "ViHlHCqC5DE" },
+      { voteId: 17, nombre: "Jaarol Zambrano", estado: "Delta Amacuro", categoria: "Juvenil", shortId: "CaQwei6Ae-I" },
+      { voteId: 18, nombre: "Jeremías Torres", estado: "Anzoátegui", categoria: "Juvenil", shortId: "iefvIVpKd-w" },
+      { voteId: 19, nombre: "Gabriel Raúl Solórzano Guevara", estado: "Miranda", categoria: "Juvenil", shortId: "b9JyOpp3cmU" },
+      { voteId: 21, nombre: "Katerine Moreno", estado: "Bolívar", categoria: "Juvenil", shortId: "jSniXY7y9Nc" },
+      { voteId: 24, nombre: "Natalia Moreno", estado: "Zulia", categoria: "Juvenil", shortId: "cDC3j42em6k" },
+      { voteId: 25, nombre: "Ronaikel García", estado: "Distrito Capital", categoria: "Juvenil", shortId: "RJGE8CrrIVU" },
+      { voteId: 29, nombre: "Sebastián Sucre", estado: "Sucre", categoria: "Juvenil", shortId: "T1foDecyaz4" },
+      { voteId: 31, nombre: "Victoria Barrera", estado: "Táchira", categoria: "Juvenil", shortId: "6-34XsFqoFQ" }
+    ];
+
+    const TODOS_PARTICIPANTES_VOTACION = [...BASE_VOTANTES_OFICIAL];
 
     function detectarUrlVotacionPorDefecto() {
       try {
@@ -2036,13 +2070,20 @@
           }
         });
 
-        let lista = TODOS_PARTICIPANTES_VOTACION.map(p => ({
-          ...p,
-          votos: votosPorId[p.voteId] !== undefined ? votosPorId[p.voteId] : 0
-        }));
+        const mapaUnicos = new Map();
+        TODOS_PARTICIPANTES_VOTACION.forEach(p => {
+          if (p.voteId > 0 && !mapaUnicos.has(p.voteId)) {
+            mapaUnicos.set(p.voteId, {
+              ...p,
+              votos: votosPorId[p.voteId] !== undefined ? votosPorId[p.voteId] : 0
+            });
+          }
+        });
+
+        let lista = Array.from(mapaUnicos.values());
 
         if (lista.reduce((a, b) => a + b.votos, 0) === 0 && votantes.length > 0) {
-          lista = TODOS_PARTICIPANTES_VOTACION.map(p => ({
+          lista = lista.map(p => ({
             ...p,
             votos: votantes.filter(v => {
               const t = normalizarTexto(v.votosResumen || v.candidatosNombres || "");
