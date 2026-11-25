@@ -646,13 +646,13 @@
       </div>
 
       <!-- =====================================================================
-           SECCIÓN PRINCIPAL: ESCALETA INFANTIL Y JUVENIL + PLECA + FICHA MUSICAL
+           SECCIÓN PRINCIPAL: ESCALETA GRAN FINAL + JUVENIL + INFANTIL + PLECAS
            ===================================================================== -->
       <div class="bg-[#0a101f] border border-white/10 rounded-2xl p-5 space-y-5">
         <div class="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-3">
           <div>
             <span class="text-[10px] font-bold uppercase tracking-widest text-[#f5b942] block">
-              Escaleta Oficial &middot; Lower-Thirds 16:9
+              Escaleta Oficial &middot; Lower-Thirds 16:9 &middot; Teatro Juares
             </span>
             <h2 class="font-fox text-xl font-black uppercase text-white">
               Selección de Participante y Repertorio Musical
@@ -666,11 +666,25 @@
                 type="text"
                 id="filtroRapidoParticipantes"
                 oninput="renderizarListasCategorias()"
-                placeholder="Filtrar orden, nombre, estado o tema..."
+                placeholder="Filtrar orden, nombre, estado, categoría o tema..."
                 class="bg-black/60 border border-white/15 rounded-xl pl-8 pr-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#f5b942]"
               />
             </div>
           </div>
+        </div>
+
+        <!-- BLOQUE DESTACADO: FINAL INFANTIL / JUVENIL (TEATRO JUARES · 12 PRESENTACIONES) -->
+        <div class="bg-gradient-to-r from-[#171105] via-[#0d1930] to-[#171105] border border-[#f5b942]/50 rounded-2xl p-3.5 space-y-2.5">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <span class="font-fox text-base font-black uppercase tracking-wider text-[#f5b942] flex items-center gap-2">
+              <i class="fa-solid fa-crown"></i>
+              Final Infantil / Juvenil · Teatro Juares (<span id="countGranFinal">0</span>)
+            </span>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-amber-200/80">
+              Orden #01–#12 · Carga nombre, categoría, regional, tema, autor y género/tono
+            </span>
+          </div>
+          <div id="listaChipsGranFinal" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5 max-h-64 overflow-y-auto custom-scroll pr-1"></div>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
@@ -682,7 +696,7 @@
               </span>
               <span class="text-[10px] text-slate-400">Carga nombre + tema + autor + género + PiP estado</span>
             </div>
-            <div id="listaChipsInfantil" class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 max-h-64 overflow-y-auto custom-scroll pr-1"></div>
+            <div id="listaChipsInfantil" class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 max-h-56 overflow-y-auto custom-scroll pr-1"></div>
           </div>
 
           <div class="lg:col-span-6 bg-black/40 border border-[#f5b942]/30 rounded-2xl p-3.5 space-y-2.5">
@@ -693,7 +707,7 @@
               </span>
               <span class="text-[10px] text-slate-400">Carga nombre + tema + autor + género + tono</span>
             </div>
-            <div id="listaChipsJuvenil" class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 max-h-64 overflow-y-auto custom-scroll pr-1"></div>
+            <div id="listaChipsJuvenil" class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 max-h-56 overflow-y-auto custom-scroll pr-1"></div>
           </div>
         </div>
 
@@ -712,22 +726,22 @@
               <div class="grid grid-cols-1 sm:grid-cols-12 gap-2">
                 <div class="sm:col-span-8">
                   <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Nombre en Pantalla</label>
-                  <input type="text" id="inputArtistName" value="Daniela Alejandra Fontana" oninput="actualizarTextosEnVivo(false)" class="w-full bg-black/70 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#f5b942]" />
+                  <input type="text" id="inputArtistName" value="Roshelen Victoria Rivas Valderrama" oninput="actualizarTextosEnVivo(false)" class="w-full bg-black/70 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#f5b942]" />
                 </div>
                 <div class="sm:col-span-4">
                   <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Estado / Regional</label>
-                  <input type="text" id="inputArtistState" value="Trujillo" oninput="actualizarTextosEnVivo(false)" class="w-full bg-black/70 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#f5b942]" />
+                  <input type="text" id="inputArtistState" value="Nueva Esparta" oninput="actualizarTextosEnVivo(false)" class="w-full bg-black/70 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#f5b942]" />
                 </div>
                 <div class="sm:col-span-5">
                   <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Categoría</label>
                   <select id="selectArtistCategory" onchange="actualizarTextosEnVivo(false)" class="w-full bg-black/70 border border-white/15 rounded-xl px-2.5 py-2 text-xs font-bold text-[#f5b942] focus:outline-none focus:border-[#f5b942]">
-                    <option value="Juvenil">Juvenil</option>
                     <option value="Infantil">Infantil</option>
+                    <option value="Juvenil">Juvenil</option>
                   </select>
                 </div>
                 <div class="sm:col-span-7">
                   <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Etapa / Orden</label>
-                  <input type="text" id="inputArtistSong" value="ORDEN #01 · SEMIFINALES" oninput="actualizarTextosEnVivo(false)" class="w-full bg-black/70 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#f5b942]" />
+                  <input type="text" id="inputArtistSong" value="ORDEN #01 · GALA FINAL" oninput="actualizarTextosEnVivo(false)" class="w-full bg-black/70 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#f5b942]" />
                 </div>
               </div>
             </div>
@@ -756,15 +770,15 @@
               <div class="grid grid-cols-1 sm:grid-cols-12 gap-2">
                 <div class="sm:col-span-7">
                   <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Tema Musical (Canción)</label>
-                  <input type="text" id="inputSongTitle" value="Un Barquisimetano" oninput="actualizarTextosEnVivo(false)" class="w-full bg-black/70 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-400" />
+                  <input type="text" id="inputSongTitle" value="Lo que El Tocuyo me dio" oninput="actualizarTextosEnVivo(false)" class="w-full bg-black/70 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-400" />
                 </div>
                 <div class="sm:col-span-5">
                   <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Género Musical</label>
-                  <input type="text" id="inputSongGenre" value="Golpe Tocuyano · Tono C" oninput="actualizarTextosEnVivo(false)" class="w-full bg-black/70 border border-white/15 rounded-xl px-3 py-2 text-xs font-semibold text-sky-300 focus:outline-none focus:border-sky-400" />
+                  <input type="text" id="inputSongGenre" value="Golpe Tocuyano · Tono A" oninput="actualizarTextosEnVivo(false)" class="w-full bg-black/70 border border-white/15 rounded-xl px-3 py-2 text-xs font-semibold text-sky-300 focus:outline-none focus:border-sky-400" />
                 </div>
                 <div class="sm:col-span-12">
                   <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Autor / Compositor</label>
-                  <input type="text" id="inputSongAuthor" value="Letra y Música de: Pilar García" oninput="actualizarTextosEnVivo(false)" class="w-full bg-black/70 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-400" />
+                  <input type="text" id="inputSongAuthor" value="Letra y Música de: Omar Carrizales" oninput="actualizarTextosEnVivo(false)" class="w-full bg-black/70 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-400" />
                 </div>
               </div>
             </div>
@@ -852,7 +866,7 @@
         <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-end">
           <div class="md:col-span-4">
             <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Etiqueta Delegación (Se sincroniza sola)</label>
-            <input type="text" id="inputPipState" value="DELEGACIÓN TRUJILLO" oninput="actualizarTextosEnVivo(false)" class="w-full bg-black/60 border border-white/15 rounded-xl px-3 py-2 text-xs font-bold text-[#f5b942] uppercase focus:outline-none focus:border-[#f5b942]" />
+            <input type="text" id="inputPipState" value="DELEGACIÓN NUEVA ESPARTA" oninput="actualizarTextosEnVivo(false)" class="w-full bg-black/60 border border-white/15 rounded-xl px-3 py-2 text-xs font-bold text-[#f5b942] uppercase focus:outline-none focus:border-[#f5b942]" />
           </div>
 
           <div class="md:col-span-4">
@@ -1002,14 +1016,14 @@
                   Fundación Nacional del Niño Simón
                 </span>
                 <span id="outTrStage" class="font-fox text-2xl font-black uppercase tracking-wider text-[#f5b942] leading-none">
-                  SEMIFINALES &middot; 2026
+                  GALA FINAL &middot; 2026
                 </span>
               </div>
             </div>
 
             <div class="flex items-center gap-3">
-              <span id="outTrCategoryPill" class="px-4 py-1.5 rounded-sm bg-[#f5b942] font-fox text-xl font-black uppercase tracking-widest text-black">
-                CATEGORÍA JUVENIL
+              <span id="outTrCategoryPill" class="px-4 py-1.5 rounded-sm bg-sky-400 font-fox text-xl font-black uppercase tracking-widest text-slate-950">
+                CATEGORÍA INFANTIL
               </span>
               <span id="outTrOrderPill" class="px-4 py-1.5 rounded-sm bg-[#e11d48] font-fox text-xl font-black uppercase tracking-widest text-white">
                 ORDEN #01
@@ -1021,27 +1035,27 @@
             <div class="tr-stagger tr-d1 flex items-center gap-4">
               <span class="w-3 h-10 bg-[#e11d48] rounded-sm"></span>
               <span id="outTrState" class="font-fox text-3xl font-black uppercase tracking-[0.16em] text-[#f5b942]">
-                TRUJILLO
+                NUEVA ESPARTA
               </span>
             </div>
 
             <h2 id="outTrName" class="tr-stagger tr-d2 font-fox text-[84px] font-black uppercase text-white leading-[0.96] tracking-wide">
-              DANIELA ALEJANDRA FONTANA
+              ROSHELEN VICTORIA RIVAS VALDERRAMA
             </h2>
 
             <div class="tr-stagger tr-d3 pt-4 border-t border-white/15 flex flex-col gap-2">
               <div class="flex flex-wrap items-center gap-4">
                 <span class="px-3.5 py-1 rounded-sm bg-sky-400 font-fox text-xl font-black uppercase tracking-wider text-slate-950 inline-flex items-center gap-2">
                   <i class="fa-solid fa-music text-sm"></i>
-                  <span id="outTrSong">«UN BARQUISIMETANO»</span>
+                  <span id="outTrSong">«LO QUE EL TOCUYO ME DIO»</span>
                 </span>
                 <span id="outTrGenre" class="font-fox text-2xl font-extrabold uppercase tracking-wider text-[#f5b942]">
-                  Golpe Tocuyano &middot; Tono C
+                  Golpe Tocuyano &middot; Tono A
                 </span>
               </div>
 
               <div id="outTrAuthor" class="tr-stagger tr-d4 font-fox text-2xl font-bold uppercase tracking-wide text-slate-300">
-                Letra y Música de: Pilar García
+                Letra y Música de: Omar Carrizales
               </div>
             </div>
           </div>
@@ -1063,7 +1077,7 @@
               <span class="font-fox text-sm font-black uppercase tracking-widest text-white leading-none">EN VIVO</span>
             </div>
             <span id="outBugStage" class="block font-fox text-base font-extrabold uppercase tracking-wider text-[#f5b942] mt-1">
-              SEMIFINALES &middot; 2026
+              GALA FINAL &middot; 2026
             </span>
           </div>
         </div>
@@ -1079,17 +1093,17 @@
           <div class="px-7 py-4 flex flex-col justify-center">
             <div class="sub-reveal-text flex flex-wrap items-center gap-2.5">
               <span id="outArtistState" class="px-3 py-0.5 rounded-sm bg-[#e11d48] font-fox text-base font-black uppercase tracking-widest text-white">
-                TRUJILLO
+                NUEVA ESPARTA
               </span>
-              <span id="outArtistCategory" class="px-3 py-0.5 rounded-sm bg-[#f5b942] font-fox text-base font-black uppercase tracking-widest text-black">
-                CATEGORÍA JUVENIL
+              <span id="outArtistCategory" class="px-3 py-0.5 rounded-sm bg-sky-400 font-fox text-base font-black uppercase tracking-widest text-slate-950">
+                CATEGORÍA INFANTIL
               </span>
               <span id="outArtistSong" class="font-fox text-base font-bold uppercase tracking-wider text-slate-200 pl-1">
-                ORDEN #01 &middot; SEMIFINALES
+                ORDEN #01 &middot; GALA FINAL
               </span>
             </div>
             <div id="outArtistName" class="name-reveal-text font-fox text-[42px] font-black uppercase text-white leading-none mt-2">
-              DANIELA ALEJANDRA FONTANA
+              ROSHELEN VICTORIA RIVAS VALDERRAMA
             </div>
           </div>
         </div>
@@ -1106,19 +1120,19 @@
             <div class="sub-reveal-text flex flex-wrap items-center gap-2.5">
               <span class="px-3 py-0.5 rounded-sm bg-[#f5b942] font-fox text-base font-black uppercase tracking-widest text-black flex items-center gap-1.5">
                 <i class="fa-solid fa-music text-xs"></i>
-                <span id="outSongGenre">GOLPE TOCUYANO · TONO C</span>
+                <span id="outSongGenre">GOLPE TOCUYANO · TONO A</span>
               </span>
               <span id="outSongInterpreterBadge" class="px-3 py-0.5 rounded-sm bg-white/10 border border-white/15 font-fox text-sm font-bold uppercase tracking-wider text-sky-300">
-                TRUJILLO &middot; DANIELA ALEJANDRA FONTANA
+                NUEVA ESPARTA &middot; ROSHELEN VICTORIA RIVAS VALDERRAMA
               </span>
             </div>
 
             <div id="outSongTitle" class="name-reveal-text font-fox text-[40px] font-black uppercase text-white leading-none mt-2">
-              «UN BARQUISIMETANO»
+              «LO QUE EL TOCUYO ME DIO»
             </div>
 
             <div id="outSongAuthor" class="author-reveal-text font-fox text-xl font-bold uppercase tracking-wide text-sky-300 mt-1.5">
-              Letra y Música de: Pilar García
+              Letra y Música de: Omar Carrizales
             </div>
           </div>
         </div>
@@ -1137,7 +1151,7 @@
             </div>
 
             <span id="outPipState" class="font-fox text-base font-black uppercase tracking-wider text-[#f5b942] truncate">
-              DELEGACIÓN TRUJILLO
+              DELEGACIÓN NUEVA ESPARTA
             </span>
           </div>
 
@@ -1162,8 +1176,8 @@
                 REACCIÓN EN SALA &middot; APOYO FAMILIAR
               </span>
             </div>
-            <span id="outPipCategory" class="px-2 py-0.5 rounded-sm bg-[#f5b942] font-fox text-xs font-black uppercase tracking-widest text-black shrink-0">
-              JUVENIL
+            <span id="outPipCategory" class="px-2 py-0.5 rounded-sm bg-sky-400 font-fox text-xs font-black uppercase tracking-widest text-slate-950 shrink-0">
+              INFANTIL
             </span>
           </div>
         </div>
@@ -1177,7 +1191,7 @@
               <img src="./logo_color.png" alt="Logo" style="-webkit-filter: brightness(0) invert(1); filter: brightness(0) invert(1);" class="h-10 w-auto object-contain logo-pure-white logo-alive" />
               <div>
                 <span id="outTowerStage" class="font-fox text-xs font-extrabold uppercase tracking-widest text-[#f5b942] block leading-none">
-                  SEMIFINALES &middot; EN VIVO
+                  GALA FINAL &middot; EN VIVO
                 </span>
                 <span class="font-fox text-2xl font-black uppercase text-white leading-none mt-0.5 block">
                   Top 5 Nacional
@@ -1222,7 +1236,7 @@
                 </div>
                 <div class="font-fox text-2xl font-black uppercase text-white leading-none">TOP 5 NACIONAL</div>
                 <div id="outElectionsStage" class="font-fox text-xs font-extrabold uppercase tracking-widest text-[#f5b942] mt-1">
-                  SEMIFINALES &middot; VOTACIÓN
+                  GALA FINAL &middot; VOTACIÓN
                 </div>
               </div>
             </div>
@@ -1246,7 +1260,7 @@
 
           <div class="px-6 py-1.5 bg-[#040914] border-t border-white/15 flex items-center justify-between text-sm">
             <span class="font-fox font-bold uppercase tracking-wider text-slate-300">
-              Fundación Nacional del Niño Simón &bull; <span id="outFooterStage" class="text-[#f5b942]">SEMIFINALES 2026</span> &bull; Teatro Juares, Barquisimeto
+              Fundación Nacional del Niño Simón &bull; <span id="outFooterStage" class="text-[#f5b942]">GALA FINAL 2026</span> &bull; Teatro Juares, Barquisimeto
             </span>
             <span class="font-tnum font-extrabold text-[#f5b942]" id="outElectionsTotal">0 VOTOS</span>
           </div>
@@ -1259,7 +1273,7 @@
           <div class="flex items-center min-w-0 flex-1">
             <div class="px-6 py-4 bg-[#e11d48] font-fox text-lg font-black uppercase tracking-widest text-white shrink-0 flex items-center gap-3 self-stretch">
               <img src="./logo_color.png" alt="Logo" style="-webkit-filter: brightness(0) invert(1); filter: brightness(0) invert(1);" class="h-8 w-auto object-contain logo-pure-white logo-alive" />
-              <span id="outTickerStage">SEMIFINALES</span>
+              <span id="outTickerStage">GALA FINAL</span>
             </div>
             <div id="outTickerText" class="name-reveal-text px-6 py-3 font-fox text-2xl font-extrabold uppercase tracking-wide text-white truncate">
               ESCANEA EL CÓDIGO QR Y VOTA POR TUS 5 FAVORITOS EN DIRECTO
@@ -1291,6 +1305,21 @@
 
     // 2. Backend independiente de STREAMING (soporta YoloLiv / YoloCast o YouTube)
     const ENDPOINT_STREAM_CONFIG = "https://script.google.com/macros/s/AKfycbzR-IPRu-qFuGHV8qVQjr2bOJ9NjGCWEcrCiOm3msHbZhPJHPKF8HY0neOnt8M4QiTw/exec";
+
+    const ESCALETA_GRAN_FINAL = [
+      { key: "fin_1", voteId: 26, orden: 1, nombre: "Roshelen Victoria Rivas Valderrama", estado: "Nueva Esparta", edad: 11, categoria: "Infantil", tema: "Lo que El Tocuyo me dio", autor: "Letra y Música de: Omar Carrizales", genero: "Golpe Tocuyano", tono: "A", shortId: "_G_7_hSKTZA" },
+      { key: "fin_2", voteId: 29, orden: 2, nombre: "Sebastián Omar Sucre Lafaurie", estado: "Sucre", edad: 14, categoria: "Juvenil", tema: "Reflexión", autor: "Letra y Música de: Virgilio Arrieta", genero: "Golpe Tocuyano", tono: "F", shortId: "T1foDecyaz4" },
+      { key: "fin_3", voteId: 23, orden: 3, nombre: "Michell Saray Meza Villamizar", estado: "Táchira", edad: 8, categoria: "Infantil", tema: "Suelo Larense", autor: "Letra y Música de: Pastor Jiménez", genero: "Vals Larense", tono: "Em", shortId: "KarvJK7Eums" },
+      { key: "fin_4", voteId: 14, orden: 4, nombre: "Gabriela González", estado: "Amazonas", edad: 13, categoria: "Juvenil", tema: "El espanto", autor: "Letra y Música de: Adelis Freitez", genero: "Merengue Larense", tono: "D", shortId: "79nkO6SvvdY" },
+      { key: "fin_5", voteId: 3, orden: 5, nombre: "Ángel Gabriel Sánchez", estado: "Carabobo", edad: 11, categoria: "Infantil", tema: "Noches Larenses", autor: "Letra y Música de: Juan Ramón Barrios", genero: "Bambuco Larense", tono: "A", shortId: "BKrNX8sXLxQ" },
+      { key: "fin_6", voteId: 24, orden: 6, nombre: "Natalia Moreno", estado: "Zulia", edad: 14, categoria: "Juvenil", tema: "Los Griñafitos", autor: "Letra y Música de: Henry Martínez", genero: "Golpe Tocuyano", tono: "G", shortId: "cDC3j42em6k" },
+      { key: "fin_7", voteId: 20, orden: 7, nombre: "José Pablo Luces Maurera", estado: "Sucre", edad: 10, categoria: "Infantil", tema: "Lara es una Sola", autor: "Letra y Música de: Virgilio Arrieta", genero: "Golpe Tocuyano", tono: "D", shortId: "WEUn5S3SjQc" },
+      { key: "fin_8", voteId: 16, orden: 8, nombre: "Iviangelis Carolina Figueroa Rodríguez", estado: "Nueva Esparta", edad: 16, categoria: "Juvenil", tema: "Guitarra Larense", autor: "Letra y Música de: Gilberto Mejías Palazzi", genero: "Vals Larense", tono: "A", shortId: "ViHlHCqC5DE" },
+      { key: "fin_9", voteId: 13, orden: 9, nombre: "Gabriela Galilea Andrade Gutiérrez", estado: "Zulia", edad: 11, categoria: "Infantil", tema: "Los 2 Gavilanes", autor: "Letra y Música de: Adelis Freitez", genero: "Merengue Larense", tono: "A", shortId: "uqfYsz2oKeA" },
+      { key: "fin_10", voteId: 18, orden: 10, nombre: "Jeremías Andrés Torres Yegues", estado: "Anzoátegui", edad: 14, categoria: "Juvenil", tema: "Acidito", autor: "Letra y Música de: Adelis Freitez", genero: "Merengue Larense", tono: "D", shortId: "iefvIVpKd-w" },
+      { key: "fin_11", voteId: 22, orden: 11, nombre: "Marialnolys Velázquez", estado: "Delta Amacuro", edad: 9, categoria: "Infantil", tema: "El Espanto", autor: "Letra y Música de: Adelis Freitez", genero: "Merengue Larense", tono: "E", shortId: "KiCBHQvwQ90" },
+      { key: "fin_12", voteId: 9, orden: 12, nombre: "Daniela Alejandra Fontana", estado: "Trujillo", edad: 13, categoria: "Juvenil", tema: "Un Barquisimetano", autor: "Letra y Música de: Pilar García", genero: "Golpe Tocuyano", tono: "C", shortId: "SXODrGfMJ0E" }
+    ];
 
     const ESCALETA_INFANTIL = [
       { key: "inf_1", voteId: 13, orden: 1, nombre: "Gabriela Galilea Andrade Gutiérrez", estado: "Zulia", categoria: "Infantil", tema: "Los 2 Gavilanes", autor: "Letra y Música de: Adelis Freitez", genero: "Merengue Larense", shortId: "uqfYsz2oKeA" },
@@ -1353,14 +1382,14 @@
     const isOutputMode = params.get("mode") === "output";
     let canalId = (params.get("canal") || "FNNS2026").toUpperCase().replace(/[^A-Z0-9_-]/g, "");
     let safeGuidesVisible = true;
-    let participanteActivoKey = "juv_1";
+    let participanteActivoKey = "fin_1";
     let ultimaUrlQrRenderizada = "";
     let ultimoTransitionTrigger = 0;
     let trSalidaTimer = null;
     let trLimpiarTimer = null;
 
     let state = {
-      eventStage: "SEMIFINALES",
+      eventStage: "GALA FINAL",
       bugLive: false,
       foxElections: false,
       foxTower: false,
@@ -1370,15 +1399,15 @@
       pipDelegation: false,
       pipPosition: "bottom-right",
       pipCalibrate: false,
-      pipState: "DELEGACIÓN TRUJILLO",
+      pipState: "DELEGACIÓN NUEVA ESPARTA",
       pipCaption: "REACCIÓN EN SALA · APOYO FAMILIAR",
-      artistName: "Daniela Alejandra Fontana",
-      artistState: "Trujillo",
-      artistCategory: "Juvenil",
-      artistSong: "ORDEN #01 · SEMIFINALES",
-      songTitle: "Un Barquisimetano",
-      songAuthor: "Letra y Música de: Pilar García",
-      songGenre: "Golpe Tocuyano · Tono C",
+      artistName: "Roshelen Victoria Rivas Valderrama",
+      artistState: "Nueva Esparta",
+      artistCategory: "Infantil",
+      artistSong: "ORDEN #01 · GALA FINAL",
+      songTitle: "Lo que El Tocuyo me dio",
+      songAuthor: "Letra y Música de: Omar Carrizales",
+      songGenre: "Golpe Tocuyano · Tono A",
       tickerText: "ESCANEA EL CÓDIGO QR Y VOTA POR TUS 5 FAVORITOS EN DIRECTO",
       voteUrl: detectarUrlVotacionPorDefecto(),
       trDurationMs: 4000,
@@ -1517,7 +1546,7 @@
       btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i><span>PUBLICANDO...</span>`;
 
       const etapaTexto = state.eventStage === "GALA FINAL"
-        ? "Gala Final Nacional · Señal Oficial"
+        ? "Gala Final Nacional · Teatro Juares"
         : "Semifinales Nacionales · Señal Oficial";
 
       try {
@@ -1532,7 +1561,7 @@
             youtubeId: info.ytId || streamInput,
             estadoTransmision,
             tituloGala: etapaTexto,
-            subtituloLugar: "La Flor de Venezuela · Barquisimeto, Estado Lara",
+            subtituloLugar: "Teatro Juares, Barquisimeto · Estado Lara",
             avisoBanner,
             chatActivo,
             votacionAbierta
@@ -1812,11 +1841,16 @@
     }
 
     function seleccionarParticipantePorKey(key) {
-      const p = [...ESCALETA_INFANTIL, ...ESCALETA_JUVENIL].find(x => x.key === key);
+      const p = [...ESCALETA_GRAN_FINAL, ...ESCALETA_INFANTIL, ...ESCALETA_JUVENIL].find(x => x.key === key);
       if (!p) return;
 
       participanteActivoKey = p.key;
-      const ordenTag = `ORDEN #${String(p.orden).padStart(2, "0")} · ${state.eventStage}`;
+      const etapaParaOrden = p.key.startsWith("fin_") ? "GALA FINAL" : state.eventStage;
+      if (p.key.startsWith("fin_")) {
+        state.eventStage = "GALA FINAL";
+      }
+
+      const ordenTag = `ORDEN #${String(p.orden).padStart(2, "0")} · ${etapaParaOrden}`;
       const generoConTono = p.tono
         ? `${p.genero || "Música Venezolana"} · Tono ${p.tono}`
         : (p.genero || "Música Venezolana");
@@ -1839,6 +1873,9 @@
     function renderizarListasCategorias() {
       const q = (document.getElementById("filtroRapidoParticipantes")?.value || "").toLowerCase().trim();
 
+      const granFinal = ESCALETA_GRAN_FINAL.filter(p =>
+        `${p.orden} ${p.nombre} ${p.estado} ${p.categoria} ${p.edad || ""} ${p.tema} ${p.genero} ${p.tono || ""}`.toLowerCase().includes(q)
+      );
       const infantiles = ESCALETA_INFANTIL.filter(p =>
         `${p.orden} ${p.nombre} ${p.estado} ${p.tema} ${p.genero}`.toLowerCase().includes(q)
       );
@@ -1846,8 +1883,31 @@
         `${p.orden} ${p.nombre} ${p.estado} ${p.edad || ""} ${p.tema} ${p.genero} ${p.tono || ""}`.toLowerCase().includes(q)
       );
 
+      document.getElementById("countGranFinal").innerText = granFinal.length;
       document.getElementById("countInfantil").innerText = infantiles.length;
       document.getElementById("countJuvenil").innerText = juveniles.length;
+
+      document.getElementById("listaChipsGranFinal").innerHTML = granFinal.map(p => {
+        const activo = p.key === participanteActivoKey;
+        const ord = String(p.orden).padStart(2, "0");
+        const esInf = p.categoria === "Infantil";
+        const detalle = `${p.categoria} · ${p.tema} · ${p.genero}${p.tono ? ` (${p.tono})` : ""}`;
+        return `
+          <button
+            type="button"
+            onclick="seleccionarParticipantePorKey('${p.key}')"
+            class="text-left px-3 py-2 rounded-xl border text-xs transition cursor-pointer flex flex-col gap-0.5 ${activo ? "bg-[#f5b942] text-slate-950 border-amber-300 shadow-md" : "bg-white/[0.04] hover:bg-white/[0.1] border-white/10 text-slate-200"}"
+          >
+            <div class="flex items-center justify-between gap-1.5 w-full">
+              <span class="font-extrabold truncate">#${ord} ${p.nombre}</span>
+              <span class="text-[9px] font-black uppercase tracking-wider shrink-0 px-1.5 py-0.5 rounded ${activo ? "bg-black/15 text-slate-950" : esInf ? "bg-sky-400/20 text-sky-300" : "bg-[#f5b942]/20 text-[#f5b942]"}">${p.estado}</span>
+            </div>
+            <div class="text-[10px] truncate ${activo ? "text-slate-950 font-bold" : "text-slate-300"}">
+              ♪ ${detalle}
+            </div>
+          </button>
+        `;
+      }).join("");
 
       document.getElementById("listaChipsInfantil").innerHTML = infantiles.map(p => {
         const activo = p.key === participanteActivoKey;
@@ -1914,7 +1974,7 @@
 
     function aplicarEstadoVisual() {
       const capas = ["bugLive", "foxElections", "foxTower", "lowerArtist", "songInfo", "tickerBanner", "pipDelegation"];
-      const etapaActual = (state.eventStage || "SEMIFINALES").toUpperCase();
+      const etapaActual = (state.eventStage || "GALA FINAL").toUpperCase();
       const esInfantil = (state.artistCategory || "").toLowerCase() === "infantil";
       renderizarCodigosQR(state.voteUrl);
 
@@ -1967,7 +2027,6 @@
 
         document.getElementById("outTickerText").innerText = state.tickerText;
 
-        // Datos de la transición de ~4s
         document.getElementById("outTrStage").innerText = `${etapaActual} · 2026`;
         document.getElementById("outTrOrderPill").innerText = state.artistSong || `ORDEN #01`;
         document.getElementById("outTrState").innerText = (state.artistState || "VENEZUELA").toUpperCase();
@@ -2168,7 +2227,7 @@
         } catch (e) {}
       }
       if (!state.voteUrl) state.voteUrl = detectarUrlVotacionPorDefecto();
-      if (!state.eventStage) state.eventStage = "SEMIFINALES";
+      if (!state.eventStage) state.eventStage = "GALA FINAL";
 
       if (isOutputMode) {
         document.documentElement.classList.add("mode-output");
